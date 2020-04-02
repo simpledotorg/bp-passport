@@ -1,29 +1,37 @@
-import React from 'react'
-import {View, Image} from 'react-native'
+import React, {useEffect} from 'react'
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
-
 import {useDarkMode} from 'react-native-dark-mode'
+import {IntlProvider} from 'react-intl'
+import useLocaleMessages from './effects/use-locale-messages.effect'
 
-import {iconSplash, containerStyles, colors} from './styles'
+import {colors} from './styles'
+
+import SCREENS from './constants/screens'
+import LaunchScreen from './screens/LaunchScreen'
+import SplashScreen from './screens/SplashScreen'
+
+import {forFade} from './navigation/interpolators'
 
 const Stack = createStackNavigator()
 
 export default function App() {
-  return <Navigation />
-}
+  const localeMessages = useLocaleMessages()
 
-function SplashScreen() {
+  useEffect(() => {
+    console.log(
+      'localeMessages changed >> ',
+      localeMessages.locale,
+      localeMessages.messages,
+    )
+  }, [localeMessages])
+
   return (
-    <View
-      style={[
-        containerStyles.fill,
-        containerStyles.centeredContent,
-        {backgroundColor: colors.Black},
-      ]}>
-      <Image source={iconSplash} />
-      <View />
-    </View>
+    <IntlProvider
+      locale={localeMessages.locale}
+      messages={localeMessages.messages}>
+      <Navigation />
+    </IntlProvider>
   )
 }
 
@@ -46,17 +54,32 @@ function Navigation() {
   return (
     <NavigationContainer ref={ref} theme={isDarkMode ? theme : theme}>
       <Stack.Navigator
-        initialRouteName="SplashScreen"
+        initialRouteName={SCREENS.LAUNCH}
         headerMode={'none'}
+        mode="modal"
         screenOptions={{
-          gestureEnabled: true,
+          gestureEnabled: false,
         }}>
+        <Stack.Screen name={SCREENS.LAUNCH} component={LaunchScreen} />
         <Stack.Screen
-          name="SplashScreen"
-          component={SplashScreen}
-          options={{title: 'BP Passport'}}
+          name={SCREENS.MAIN_STACK}
+          component={MainStack}
+          options={{cardStyleInterpolator: forFade}}
         />
       </Stack.Navigator>
     </NavigationContainer>
+  )
+}
+
+function MainStack() {
+  return (
+    <Stack.Navigator
+      initialRouteName={SCREENS.SPLASH}
+      headerMode={'none'}
+      screenOptions={{
+        gestureEnabled: true,
+      }}>
+      <Stack.Screen name={SCREENS.SPLASH} component={SplashScreen} />
+    </Stack.Navigator>
   )
 }
