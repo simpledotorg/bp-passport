@@ -152,7 +152,10 @@ android {
             keyPassword 'android'
         }
          release {
-            if (project.hasProperty('BPPASSPORT_UPLOAD_STORE_FILE')) {
+            if (System.getProperty("APPCENTER_KEYSTORE_PASSWORD")) {
+                //AppCenter autosigning
+            }
+            else if (project.hasProperty('BPPASSPORT_UPLOAD_STORE_FILE')) {
                 storeFile file(BPPASSPORT_UPLOAD_STORE_FILE)
                 storePassword BPPASSPORT_UPLOAD_STORE_PASSWORD
                 keyAlias BPPASSPORT_UPLOAD_KEY_ALIAS
