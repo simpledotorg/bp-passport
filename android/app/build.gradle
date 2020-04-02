@@ -151,6 +151,14 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+         release {
+            if (project.hasProperty('BPPASSPORT_UPLOAD_STORE_FILE')) {
+                storeFile file(BPPASSPORT_UPLOAD_STORE_FILE)
+                storePassword BPPASSPORT_UPLOAD_STORE_PASSWORD
+                keyAlias BPPASSPORT_UPLOAD_KEY_ALIAS
+                keyPassword BPPASSPORT_UPLOAD_KEY_PASSWORD
+            }
+        }
     }
     buildTypes {
         debug {
@@ -159,7 +167,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -206,6 +214,10 @@ dependencies {
     debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.flipper'
     }
+
+    def appCenterSdkVersion = '3.1.0'
+    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
