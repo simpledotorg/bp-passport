@@ -153,16 +153,7 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
-         release {
-            if (!isAppCenterBuild) {
-                if (project.hasProperty('BPPASSPORT_UPLOAD_STORE_FILE')) {
-                    storeFile file(BPPASSPORT_UPLOAD_STORE_FILE)
-                    storePassword BPPASSPORT_UPLOAD_STORE_PASSWORD
-                    keyAlias BPPASSPORT_UPLOAD_KEY_ALIAS
-                    keyPassword BPPASSPORT_UPLOAD_KEY_PASSWORD
-                }
-            }
-        }
+         
     }
     buildTypes {
         debug {
