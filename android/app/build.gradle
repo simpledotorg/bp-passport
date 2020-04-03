@@ -121,7 +121,7 @@ def jscFlavor = 'org.webkit:android-jsc-intl:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
-def isAppCenterBuild = false;
+def isAppCenterBuild = true;
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -146,14 +146,23 @@ android {
             include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
     }
-    signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+    if (!isAppCenterBuild) {
+        signingConfigs {
+            debug {
+                storeFile file('debug.keystore')
+                storePassword 'android'
+                keyAlias 'androiddebugkey'
+                keyPassword 'android'
+            }
+            release {
+                if (project.hasProperty('BPPASSPORT_UPLOAD_STORE_FILE')) {
+                    storeFile file(BPPASSPORT_UPLOAD_STORE_FILE)
+                    storePassword BPPASSPORT_UPLOAD_STORE_PASSWORD
+                    keyAlias BPPASSPORT_UPLOAD_KEY_ALIAS
+                    keyPassword BPPASSPORT_UPLOAD_KEY_PASSWORD
+                }
+             }
         }
-         
     }
     buildTypes {
         debug {
