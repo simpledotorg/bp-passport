@@ -121,7 +121,7 @@ def jscFlavor = 'org.webkit:android-jsc-intl:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
-def isAppCenterBuild = true;
+def isAppCenterBuild = System.properties.containsKey('APPCENTER_BUILD_ID');
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
