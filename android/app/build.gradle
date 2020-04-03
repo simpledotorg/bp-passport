@@ -121,6 +121,8 @@ def jscFlavor = 'org.webkit:android-jsc-intl:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
+def isAppCenterBuild = System.getProperty("APPCENTER_BUILD_ID") ? true : false;
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -130,11 +132,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.bppassport"
+        applicationId "org.simple.bppassport"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
     }
     splits {
         abi {
@@ -144,6 +146,25 @@ android {
             include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
     }
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+         release {
+            if (isAppCenterBuild) {
+                //AppCenter autosigning
+            }
+            else if (project.hasProperty('BPPASSPORT_UPLOAD_STORE_FILE')) {
+                storeFile file(BPPASSPORT_UPLOAD_STORE_FILE)
+                storePassword BPPASSPORT_UPLOAD_STORE_PASSWORD
+                keyAlias BPPASSPORT_UPLOAD_KEY_ALIAS
+                keyPassword BPPASSPORT_UPLOAD_KEY_PASSWORD
+            }
+        }
+    }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -151,7 +172,9 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            //signingConfig signingConfigs.release
+             if (!isAppCenterBuild) {
+                signingConfig signingConfigs.release
+             }
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
