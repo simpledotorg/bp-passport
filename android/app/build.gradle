@@ -121,8 +121,7 @@ def jscFlavor = 'org.webkit:android-jsc-intl:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
-//def isAppCenterBuild = System.properties.containsKey('APPCENTER_BUILD_ID');
-def isAppCenterBuild = true;
+def isAppCenterBuild = System.properties.containsKey('APPCENTER_KEYSTORE_PASSWORD');
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -170,9 +169,7 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://facebook.github.io/react-native/docs/signed-apk-android.
-             if (!isAppCenterBuild) {
+            if (!isAppCenterBuild) {
                 signingConfig signingConfigs.release
              }
             minifyEnabled enableProguardInReleaseBuilds
