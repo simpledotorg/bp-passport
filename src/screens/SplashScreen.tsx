@@ -10,7 +10,7 @@ function SplashScreen({navigation}: any) {
       style={[
         containerStyles.fill,
         containerStyles.centeredContent,
-        {backgroundColor: colors.White},
+        {backgroundColor: colors.white},
       ]}>
       <Text>
         <FormattedMessage id="splash.title" />

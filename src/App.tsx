@@ -44,7 +44,7 @@ function Navigation() {
     dark: false,
     colors: {
       primary: 'rgb(255, 45, 85)',
-      background: colors.Black,
+      background: colors.black,
       card: 'rgb(255, 255, 255)',
       text: 'rgb(28, 28, 30)',
       border: 'rgb(199, 199, 204)',
