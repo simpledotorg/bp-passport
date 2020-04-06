@@ -7,7 +7,7 @@ import SCREENS from '../constants/screens'
 function LaunchScreen({navigation}: any) {
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace(SCREENS.MAIN_STACK)
+      navigation.replace(SCREENS.SPLASH)
     }, 2000)
   }, [])
 
