@@ -33,7 +33,13 @@ sudo gem install cocoapods
 yarn
 ```
 
-3. CD to `[projectroot]/ios` folder and make a copy of the `keystore-placeholder.properties` file:
+3. CD to `[projectroot]/ios` folder and install the project iOS pod dependencies:
+
+```
+pod install
+```
+
+4. CD to `[projectroot]/android/app` folder and make a copy of the `keystore-placeholder.properties` file:
 
 ```
 cp keystore-placeholder.properties keystore.properties
