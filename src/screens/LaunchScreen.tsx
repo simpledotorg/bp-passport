@@ -16,7 +16,7 @@ function LaunchScreen({navigation}: any) {
       style={[
         containerStyles.fill,
         containerStyles.centeredContent,
-        {backgroundColor: colors.Black},
+        {backgroundColor: colors.black},
       ]}>
       <Image source={iconSplash} />
       <View />
