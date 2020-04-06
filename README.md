@@ -118,3 +118,21 @@ code .
 Please note that before attempting to debug/run the React Native project from VSCode you will need to ensure that React Native's metro bundler is not already running in any background terminal window. It if is close the window!
 
 ## Switching git branches
+
+**Everytime you switch branches run the following steps**:
+
+1. Close any terminal window running metro bundler
+
+2. Close VSCode
+
+3. CD to the BP Passport project root then update package dependencies:
+
+```
+yarn
+```
+
+4. CD to `[projectroot]/ios` folder and update the project iOS pods dependencies:
+
+```
+pod install
+```
