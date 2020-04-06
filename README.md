@@ -33,11 +33,19 @@ sudo gem install cocoapods
 yarn
 ```
 
-3. CD to `[projectroot]/ios` folder and install/update the project iOS pods dependencies:
+3. CD to `[projectroot]/ios` folder and install the project iOS pod dependencies:
 
 ```
 pod install
 ```
+
+4. CD to `[projectroot]/android/app` folder and make a copy of the `keystore-placeholder.properties` file:
+
+```
+cp keystore-placeholder.properties keystore.properties
+```
+
+NB - you can update the values in the new `keystore-placeholder.properties` file if you wish to sign android release builds locally. This file is required in order for the android app to build.
 
 ### VSCode Environment
 
