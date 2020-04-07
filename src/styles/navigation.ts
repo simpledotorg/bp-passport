@@ -13,6 +13,15 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
     color: colors.white100,
   },
+  userNameHeaderTitleStyle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    fontStyle: 'normal',
+    fontFamily: 'Roboto',
+    lineHeight: 28,
+    letterSpacing: 0.2,
+    color: colors.white100,
+  },
 })
 
 export default styles

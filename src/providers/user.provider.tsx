@@ -7,8 +7,6 @@ const initialUserState: User | undefined = {
   password_digest: '123 4567',
 }
 
-console.log('HELLO??', initialUserState)
-
 type ContextProps = {
   user: User | undefined
 }
