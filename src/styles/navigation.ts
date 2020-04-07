@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     lineHeight: 28,
     letterSpacing: 0.2,
     color: colors.white100,
-    marginLeft: 16,
   },
 })
 
