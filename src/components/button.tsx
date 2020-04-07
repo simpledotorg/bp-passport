@@ -10,7 +10,6 @@ export const Button = (props: any) => {
       style={[
         {
           ...props.style,
-          width: '100%',
           height: 48,
           borderRadius: 2,
           backgroundColor: colors.blue2,
