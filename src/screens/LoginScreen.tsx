@@ -2,7 +2,7 @@ import React from 'react'
 import {SafeAreaView, View, Image} from 'react-native'
 
 import SCREENS from '../constants/screens'
-import {containerStyles, colors} from '../styles'
+import {containerStyles, colors, bpPassportImage} from '../styles'
 import {Button, Link, PageHeader} from '../components'
 
 function Login({navigation}: any) {
@@ -15,16 +15,7 @@ function Login({navigation}: any) {
           containerStyles.centeredContent,
           containerStyles.pageContainer,
         ]}>
-        <Image
-          style={[
-            {
-              width: '90%',
-              maxHeight: '60%',
-              resizeMode: 'contain',
-            },
-          ]}
-          source={require('../assets/images/bp_passport.png')}
-        />
+        <Image source={bpPassportImage} />
         <View
           style={[
             {
