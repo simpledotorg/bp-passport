@@ -21,7 +21,9 @@ export const HomeHeaderTitle = (props: any) => {
         },
       ]}>
       {hasFullName && (
-        <Text style={navigation.headerTitleStyle}>{user?.full_name}</Text>
+        <Text style={{...navigation.userNameHeaderTitleStyle, fontSize: 28}}>
+          {user?.full_name}
+        </Text>
       )}
       {hasPasswordDigest && (
         <Text
