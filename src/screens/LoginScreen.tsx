@@ -1,18 +1,14 @@
 import React from 'react'
-import {View, Image} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
+import {SafeAreaView, View, Image} from 'react-native'
 
 import SCREENS from '../constants/screens'
 import {containerStyles, colors} from '../styles'
-import {HeaderBar, HeaderBarText, Button, Link, PageHeader} from '../components'
+import {Button, Link, PageHeader} from '../components'
 
 function Login({navigation}: any) {
   return (
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-      <HeaderBar>
-        <HeaderBarText>Login</HeaderBarText>
-      </HeaderBar>
       <View
         style={[
           containerStyles.fill,
