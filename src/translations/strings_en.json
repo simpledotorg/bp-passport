@@ -15,5 +15,11 @@
   "page-titles.verify-your-number": "Verify your number",
   "page-titles.all-bp": "All BP",
   "page-titles.settings": "Settings",
-  "page-titles.contact-a-doctor": "Contact a doctor"
+  "page-titles.contact-a-doctor": "Contact a doctor",
+  "consent.by_confirming": "By using this app, you confirm that any patient data you enter is given with your informed consent.",
+  "consent.personal_data": "This means that you know that you are entering personal data into the app, understand what data is being collected, and know that you may be contacted via WhatsApp, text message, or other methods using the phone number provided in the app.",
+  "consent.data_privacy": "Patient data and privacy is protected by the use of safeguarding technology and by restricting user access. More information can be found {here} and in our {digital_principles}.",
+  "consent.here": "here",
+  "consent.digital_principles": "Digital Principles",
+  "consent.i_agree": "I agree"
 }

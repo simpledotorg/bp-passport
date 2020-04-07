@@ -7,6 +7,7 @@ import LaunchScreen from './screens/LaunchScreen'
 import PrivacyPolicyScreen from './screens/PrivacyPolicyScreen'
 import SplashScreen from './screens/SplashScreen'
 import LoginScreen from './screens/LoginScreen'
+import ConsentScreen from './screens/ConsentScreen'
 
 import SCREENS from './constants/screens'
 
@@ -50,6 +51,14 @@ function MainStack() {
         name={SCREENS.SPLASH}
         component={SplashScreen}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name={SCREENS.CONSENT}
+        component={ConsentScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.consent'}),
+        }}
       />
       <Stack.Screen
         name={SCREENS.PRIVACY_POLICY}
