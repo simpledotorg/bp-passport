@@ -1,18 +1,15 @@
 import React from 'react'
-import {View} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
+import {SafeAreaView, View, StatusBar} from 'react-native'
 
 import {containerStyles, colors} from '../styles'
-import {HeaderBar, HeaderBarText, Button} from '../components'
+import {Button} from '../components'
 import SCREENS from '../constants/screens'
 
 function PrivacyPolicy({navigation}: any) {
   return (
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-      <HeaderBar>
-        <HeaderBarText>Privacy Policy</HeaderBarText>
-      </HeaderBar>
+      <StatusBar backgroundColor="blue" barStyle="light-content" />
       <View
         style={[containerStyles.fill, containerStyles.centeredContent]}></View>
       <View
