@@ -1,5 +1,5 @@
 import React from 'react'
-import {Text, TextProperties} from 'react-native'
+import {Text} from 'react-native'
 
 import {colors} from '../styles'
 
