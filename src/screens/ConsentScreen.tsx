@@ -1,5 +1,5 @@
 import React from 'react'
-import {SafeAreaView, View, StatusBar} from 'react-native'
+import {SafeAreaView, View, StatusBar, Linking} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 
 import {containerStyles, colors} from '../styles'
@@ -28,12 +28,20 @@ function Consent({navigation}: any) {
             id="consent.data_privacy"
             values={{
               here: (
-                <BodyText style={{color: colors.blue2}}>
+                <BodyText
+                  style={{color: colors.blue2}}
+                  onPress={() => {
+                    Linking.openURL('https://simple.org/patient-privacy')
+                  }}>
                   <FormattedMessage id="consent.here" />
                 </BodyText>
               ),
               digital_principles: (
-                <BodyText style={{color: colors.blue2}}>
+                <BodyText
+                  style={{color: colors.blue2}}
+                  onPress={() => {
+                    Linking.openURL('https://www.simple.org/digitalprinciples/')
+                  }}>
                   <FormattedMessage id="consent.digital_principles" />
                 </BodyText>
               ),
