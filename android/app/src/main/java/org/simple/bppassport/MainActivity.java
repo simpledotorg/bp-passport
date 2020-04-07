@@ -1,4 +1,4 @@
-package com.bppassport;
+package org.simple.bppassport;
 
 import com.facebook.react.ReactActivity;
 
