@@ -3,5 +3,17 @@
   "splash.track": "Track your blood pressure",
   "splash.talk": "Talk to a real doctor about your BP",
   "splash.reminders": "Reminders to take medicines",
-  "splash.next-button": "NEXT"
+  "splash.next-button": "NEXT",
+  "login.title": "Scan your BP Passport card with your camera",
+  "login.primary-button": "Scan BP Passport",
+  "login.no-bp-passport": "I don't have a BP Passport card",
+  "page-titles.splash": "Splash",
+  "page-titles.privacy-policy": "Privacy Policy",
+  "page-titles.login": "Login",
+  "page-titles.consent": "Consent",
+  "page-titles.scan-bp-passport": "Scan BP Passport",
+  "page-titles.verify-your-number": "Verify your number",
+  "page-titles.all-bp": "All BP",
+  "page-titles.settings": "Settings",
+  "page-titles.contact-a-doctor": "Contact a doctor"
 }

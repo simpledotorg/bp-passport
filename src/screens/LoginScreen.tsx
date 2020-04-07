@@ -1,5 +1,6 @@
 import React from 'react'
 import {SafeAreaView, View, Image} from 'react-native'
+import {FormattedMessage} from 'react-intl'
 
 import SCREENS from '../constants/screens'
 import {containerStyles, colors, bpPassportImage} from '../styles'
@@ -23,7 +24,7 @@ function Login({navigation}: any) {
             },
           ]}>
           <PageHeader style={{textAlign: 'center'}}>
-            Scan your BP Passport card with your camera
+            <FormattedMessage id="login.title" />
           </PageHeader>
         </View>
       </View>
@@ -34,7 +35,7 @@ function Login({navigation}: any) {
           },
         ]}>
         <Button
-          title={'Scan BP Passport'}
+          title={<FormattedMessage id="login.primary-button" />}
           onPress={() => {
             navigation.navigate(SCREENS.PRIVACY_POLICY)
           }}
@@ -47,7 +48,9 @@ function Login({navigation}: any) {
               marginTop: 16,
             },
           ]}>
-          <Link>I don't have a BP Passport card</Link>
+          <Link>
+            <FormattedMessage id="login.no-bp-passport" />
+          </Link>
         </View>
       </View>
     </SafeAreaView>

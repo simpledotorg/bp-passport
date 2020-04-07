@@ -1,6 +1,7 @@
 import React from 'react'
 import {createStackNavigator} from '@react-navigation/stack'
 import {forFade} from './navigation/interpolators'
+import {useIntl} from 'react-intl'
 
 import LaunchScreen from './screens/LaunchScreen'
 import PrivacyPolicyScreen from './screens/PrivacyPolicyScreen'
@@ -35,6 +36,8 @@ const Navigation = () => {
 export default Navigation
 
 function MainStack() {
+  const intl = useIntl()
+
   return (
     <Stack.Navigator
       initialRouteName={SCREENS.SPLASH}
@@ -51,12 +54,18 @@ function MainStack() {
       <Stack.Screen
         name={SCREENS.PRIVACY_POLICY}
         component={PrivacyPolicyScreen}
-        options={{headerBackTitle: ' '}}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.privacy-policy'}),
+        }}
       />
       <Stack.Screen
         name={SCREENS.LOGIN}
         component={LoginScreen}
-        options={{headerBackTitle: ' '}}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.login'}),
+        }}
       />
     </Stack.Navigator>
   )
