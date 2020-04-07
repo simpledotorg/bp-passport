@@ -21,3 +21,22 @@ export const BodyText = (props: any) => {
     />
   )
 }
+
+export const BodyHeader = (props: any) => {
+  return (
+    <Text
+      {...props}
+      style={[
+        {
+          fontSize: 18,
+          fontWeight: '500',
+          fontStyle: 'normal',
+          lineHeight: 28,
+          letterSpacing: 0,
+          color: colors.grey0,
+          ...props.style,
+        },
+      ]}
+    />
+  )
+}

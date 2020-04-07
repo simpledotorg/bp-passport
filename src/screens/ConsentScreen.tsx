@@ -18,14 +18,14 @@ function Consent({navigation}: any) {
           {margin: 24},
         ]}>
         <BodyText style={{marginBottom: 24}}>
-          <FormattedMessage id="consent.by_confirming" />
+          <FormattedMessage id="consent.by-confirming" />
         </BodyText>
         <BodyText style={{marginBottom: 24}}>
-          <FormattedMessage id="consent.personal_data" />
+          <FormattedMessage id="consent.personal-data" />
         </BodyText>
         <BodyText>
           <FormattedMessage
-            id="consent.data_privacy"
+            id="consent.data-privacy"
             values={{
               here: (
                 <BodyText
@@ -33,7 +33,7 @@ function Consent({navigation}: any) {
                   onPress={() => {
                     Linking.openURL('https://simple.org/patient-privacy')
                   }}>
-                  <FormattedMessage id="consent.here" />
+                  <FormattedMessage id="general.here" />
                 </BodyText>
               ),
               digital_principles: (
@@ -42,7 +42,7 @@ function Consent({navigation}: any) {
                   onPress={() => {
                     Linking.openURL('https://www.simple.org/digitalprinciples/')
                   }}>
-                  <FormattedMessage id="consent.digital_principles" />
+                  <FormattedMessage id="consent.digital-principles" />
                 </BodyText>
               ),
             }}
@@ -56,7 +56,7 @@ function Consent({navigation}: any) {
           },
         ]}>
         <Button
-          title={<FormattedMessage id="consent.i_agree" />}
+          title={<FormattedMessage id="general.i-agree" />}
           onPress={() => {
             navigation.navigate(SCREENS.PRIVACY_POLICY)
           }}
