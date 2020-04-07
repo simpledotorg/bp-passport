@@ -11,9 +11,6 @@ function SplashScreen({navigation}: any) {
   return (
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-      <HeaderBar>
-        <HeaderBarText>Splash</HeaderBarText>
-      </HeaderBar>
       <View style={[containerStyles.fill, containerStyles.centeredContent]}>
         <Text>
           <FormattedMessage id="splash.title" />

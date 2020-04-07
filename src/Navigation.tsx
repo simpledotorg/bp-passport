@@ -8,11 +8,18 @@ import LoginScreen from './screens/LoginScreen'
 
 import SCREENS from './constants/screens'
 
+import {colors, navigation as navigationStyle} from './styles'
+
 const Stack = createStackNavigator()
 
 const Navigation = () => {
   return (
-    <Stack.Navigator initialRouteName="LaunchScreen" headerMode="none">
+    <Stack.Navigator
+      initialRouteName="LaunchScreen"
+      screenOptions={{
+        ...navigationStyle,
+        headerTintColor: colors.white100,
+      }}>
       <Stack.Screen name={SCREENS.LAUNCH} component={LaunchScreen} />
       <Stack.Screen name={SCREENS.SPLASH} component={SplashScreen} />
       <Stack.Screen
