@@ -31,9 +31,9 @@ function SplashScreen({navigation}: any) {
           },
         ]}>
         <Button
-          title={'Go to Privacy and Policy'}
+          title={'Consent'}
           onPress={() => {
-            navigation.navigate(SCREENS.PRIVACY_POLICY)
+            navigation.navigate(SCREENS.CONSENT)
           }}
         />
       </View>
