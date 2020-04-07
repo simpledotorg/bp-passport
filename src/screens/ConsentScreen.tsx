@@ -1,5 +1,5 @@
 import React from 'react'
-import {SafeAreaView, View, StatusBar, Text} from 'react-native'
+import {SafeAreaView, View, StatusBar} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 
 import {containerStyles, colors} from '../styles'
