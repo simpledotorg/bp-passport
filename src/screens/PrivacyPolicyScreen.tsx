@@ -10,9 +10,6 @@ function PrivacyPolicy({navigation}: any) {
   return (
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-      <HeaderBar>
-        <HeaderBarText>Privacy Policy</HeaderBarText>
-      </HeaderBar>
       <View
         style={[containerStyles.fill, containerStyles.centeredContent]}></View>
       <View
