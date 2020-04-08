@@ -11,14 +11,7 @@ export const HomeHeaderTitle = () => {
   const hasPasswordDigest = user?.password_digest ? true : false
 
   return (
-    <View
-      style={[
-        {
-          ...containerStyles.fill,
-          justifyContent: 'center',
-          alignItems: 'center',
-        },
-      ]}>
+    <View style={[containerStyles.fill, containerStyles.centeredContent]}>
       {hasFullName && (
         <Text
           style={{
