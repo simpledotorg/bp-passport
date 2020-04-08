@@ -6,6 +6,8 @@ import useLocaleMessages from './effects/use-locale-messages.effect'
 
 import Navigation from './Navigation'
 
+import UserProvider from './providers/user.provider'
+
 export default function App() {
   const localeMessages = useLocaleMessages()
 
@@ -13,9 +15,11 @@ export default function App() {
     <IntlProvider
       locale={localeMessages.locale}
       messages={localeMessages.messages}>
-      <NavigationContainer>
-        <Navigation />
-      </NavigationContainer>
+      <UserProvider>
+        <NavigationContainer>
+          <Navigation />
+        </NavigationContainer>
+      </UserProvider>
     </IntlProvider>
   )
 }
