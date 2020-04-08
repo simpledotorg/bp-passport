@@ -42,8 +42,7 @@ function Login({navigation}: any) {
           <Button
             title={<FormattedMessage id="login.primary-button" />}
             onPress={() => {
-              // navigation.navigate(SCREENS.SCAN_BP_PASSPORT)
-              navigation.navigate(SCREENS.VERIFY_YOUR_NUMBER)
+              navigation.navigate(SCREENS.SCAN_BP_PASSPORT)
             }}
           />
           <View
