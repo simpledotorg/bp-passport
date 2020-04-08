@@ -1,9 +1,9 @@
 import React from 'react'
-import {SafeAreaView, View, Text} from 'react-native'
+import {SafeAreaView, View, Text, Image} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 
-import {containerStyles, colors} from '../styles'
-import {Button} from '../components'
+import {containerStyles, colors, bpLogo, iconSplash} from '../styles'
+import {Button, PageHeader} from '../components'
 import SCREENS from '../constants/screens'
 
 function SplashScreen({navigation}: any) {
@@ -11,6 +11,10 @@ function SplashScreen({navigation}: any) {
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
       <View style={[containerStyles.fill, containerStyles.centeredContent]}>
+        <View style={{flex: 1, backgroundColor: colors.green1, width: '100%'}}>
+          <Image source={iconSplash} />
+          <Image source={bpLogo} />
+        </View>
         <Text>
           <FormattedMessage id="splash.title" />
         </Text>
