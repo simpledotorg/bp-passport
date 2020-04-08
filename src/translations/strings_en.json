@@ -24,5 +24,7 @@
   "consent.digital-principles": "Digital Principles",
   "general.here": "here",
   "general.i-agree": "I agree",
-  "general.ok": "ok"
+  "general.ok": "ok",
+  "scan.qr-instruction": "Hold camera over this symbol on BP Passport",
+  "scan.no-camera-permissions": "Camera Permissions need to be enabled"
 }
