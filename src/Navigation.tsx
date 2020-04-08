@@ -95,6 +95,7 @@ function MainStack() {
           headerTitle: () => <HomeHeaderTitle />,
           headerRight: () => <ButtonIcon />,
           headerLeft: () => null,
+          gestureEnabled: false,
         }}
       />
     </Stack.Navigator>
