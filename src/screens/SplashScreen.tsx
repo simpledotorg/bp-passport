@@ -11,22 +11,37 @@ function SplashScreen({navigation}: any) {
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
       <View style={[containerStyles.fill, containerStyles.centeredContent]}>
-        <View style={{flex: 1, backgroundColor: colors.green1, width: '100%'}}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            borderBottomWidth: 1,
+            borderBottomColor: colors.grey3,
+          }}>
           <Image source={iconSplash} />
-          <Image source={bpLogo} />
+          <Image source={bpLogo} style={{width: 250, height: 35}} />
         </View>
-        <Text>
-          <FormattedMessage id="splash.title" />
-        </Text>
-        <Text>
-          <FormattedMessage id="splash.track" />
-        </Text>
-        <Text>
-          <FormattedMessage id="splash.talk" />
-        </Text>
-        <Text>
-          <FormattedMessage id="splash.reminders" />
-        </Text>
+        <View style={{flex: 2}}>
+          <View>
+            <PageHeader>
+              <FormattedMessage id="splash.sub-title" />
+            </PageHeader>
+          </View>
+          <Text>
+            <FormattedMessage id="splash.title" />
+          </Text>
+          <Text>
+            <FormattedMessage id="splash.track" />
+          </Text>
+          <Text>
+            <FormattedMessage id="splash.talk" />
+          </Text>
+          <Text>
+            <FormattedMessage id="splash.reminders" />
+          </Text>
+        </View>
       </View>
       <View
         style={[
