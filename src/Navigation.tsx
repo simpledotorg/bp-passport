@@ -1,5 +1,6 @@
 import React from 'react'
-import {createStackNavigator} from '@react-navigation/stack'
+import {View, Text} from 'react-native'
+import {createStackNavigator, useHeaderHeight} from '@react-navigation/stack'
 import {forFade} from './navigation/interpolators'
 import {useIntl} from 'react-intl'
 
@@ -8,9 +9,10 @@ import PrivacyPolicyScreen from './screens/PrivacyPolicyScreen'
 import SplashScreen from './screens/SplashScreen'
 import LoginScreen from './screens/LoginScreen'
 import ConsentScreen from './screens/ConsentScreen'
+import HomeScreen from './screens/HomeScreen'
 
 import SCREENS from './constants/screens'
-
+import {HomeHeaderTitle, ButtonIcon} from './components'
 import {colors, navigation as navigationStyle} from './styles'
 
 const Stack = createStackNavigator()
@@ -38,6 +40,8 @@ export default Navigation
 
 function MainStack() {
   const intl = useIntl()
+
+  const headerHeightIncludingSafeArea = useHeaderHeight()
 
   return (
     <Stack.Navigator
@@ -74,6 +78,23 @@ function MainStack() {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.login'}),
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.HOME}
+        component={HomeScreen}
+        options={{
+          ...navigationStyle,
+          headerStyle: {
+            ...navigationStyle.headerStyle,
+            height: headerHeightIncludingSafeArea + 56,
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+          headerTitleAlign: 'center',
+          headerTitle: () => <HomeHeaderTitle />,
+          headerRight: () => <ButtonIcon />,
+          headerLeft: () => null,
         }}
       />
     </Stack.Navigator>
