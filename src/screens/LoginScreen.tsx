@@ -37,7 +37,7 @@ function Login({navigation}: any) {
         <Button
           title={<FormattedMessage id="login.primary-button" />}
           onPress={() => {
-            navigation.navigate(SCREENS.PRIVACY_POLICY)
+            navigation.navigate(SCREENS.HOME)
           }}
         />
         <View
