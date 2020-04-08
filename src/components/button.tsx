@@ -51,9 +51,9 @@ export const ButtonIcon = (props: any) => {
         {
           width: 44,
           height: 44,
-          ...props.style,
           alignItems: 'center',
           justifyContent: 'center',
+          ...props.style,
         },
       ]}>
       <Icon
