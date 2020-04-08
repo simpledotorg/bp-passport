@@ -1,9 +1,9 @@
 import React from 'react'
-import {SafeAreaView, View, Text} from 'react-native'
+import {SafeAreaView, View, Text, Image} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 
-import {containerStyles, colors} from '../styles'
-import {Button} from '../components'
+import {containerStyles, colors, bpLogo, iconSplash} from '../styles'
+import {Button, PageHeader} from '../components'
 import SCREENS from '../constants/screens'
 
 function SplashScreen({navigation}: any) {
@@ -11,18 +11,37 @@ function SplashScreen({navigation}: any) {
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
       <View style={[containerStyles.fill, containerStyles.centeredContent]}>
-        <Text>
-          <FormattedMessage id="splash.title" />
-        </Text>
-        <Text>
-          <FormattedMessage id="splash.track" />
-        </Text>
-        <Text>
-          <FormattedMessage id="splash.talk" />
-        </Text>
-        <Text>
-          <FormattedMessage id="splash.reminders" />
-        </Text>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            borderBottomWidth: 1,
+            borderBottomColor: colors.grey3,
+          }}>
+          <Image source={iconSplash} />
+          <Image source={bpLogo} style={{width: 250, height: 35}} />
+        </View>
+        <View style={{flex: 2}}>
+          <View>
+            <PageHeader>
+              <FormattedMessage id="splash.sub-title" />
+            </PageHeader>
+          </View>
+          <Text>
+            <FormattedMessage id="splash.title" />
+          </Text>
+          <Text>
+            <FormattedMessage id="splash.track" />
+          </Text>
+          <Text>
+            <FormattedMessage id="splash.talk" />
+          </Text>
+          <Text>
+            <FormattedMessage id="splash.reminders" />
+          </Text>
+        </View>
       </View>
       <View
         style={[
