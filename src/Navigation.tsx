@@ -1,6 +1,6 @@
 import React from 'react'
 import {View, Text} from 'react-native'
-import {createStackNavigator} from '@react-navigation/stack'
+import {createStackNavigator, useHeaderHeight} from '@react-navigation/stack'
 import {forFade} from './navigation/interpolators'
 import {useIntl} from 'react-intl'
 
@@ -12,9 +12,7 @@ import ConsentScreen from './screens/ConsentScreen'
 import HomeScreen from './screens/HomeScreen'
 
 import SCREENS from './constants/screens'
-
 import {HomeHeaderTitle, ButtonIcon} from './components'
-
 import {colors, navigation as navigationStyle} from './styles'
 
 const Stack = createStackNavigator()
@@ -43,9 +41,11 @@ export default Navigation
 function MainStack() {
   const intl = useIntl()
 
+  const headerHeightIncludingSafeArea = useHeaderHeight()
+
   return (
     <Stack.Navigator
-      initialRouteName={SCREENS.HOME}
+      initialRouteName={SCREENS.SPLASH}
       screenOptions={{
         ...navigationStyle,
         headerTintColor: colors.white100,
@@ -87,13 +87,14 @@ function MainStack() {
           ...navigationStyle,
           headerStyle: {
             ...navigationStyle.headerStyle,
-            height: 100,
+            height: headerHeightIncludingSafeArea + 56,
             elevation: 0,
             shadowOpacity: 0,
           },
           headerTitleAlign: 'center',
           headerTitle: () => <HomeHeaderTitle />,
           headerRight: () => <ButtonIcon />,
+          headerLeft: () => null,
         }}
       />
     </Stack.Navigator>

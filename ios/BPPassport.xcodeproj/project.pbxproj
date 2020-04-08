@@ -12,6 +12,7 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1D2B934BB72B433C812BAD3F /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D221B62789254A77B5F403F6 /* Roboto-Bold.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -20,6 +21,7 @@
 		4844AEE8243639D8007893AC /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4844AEE7243639D8007893AC /* AppCenter-Config.plist */; };
 		B127D0CAEDBDD09DF68689BE /* libPods-BPPassport.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DBF19D97A2736797B04F91 /* libPods-BPPassport.a */; };
 		B4845A5B5E7EDD21B6C35EF7 /* libPods-BPPassport-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FADF5A10EEF0B5214A2178 /* libPods-BPPassport-tvOS.a */; };
+		B7F7F9EDE1CB46E590054CEF /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5588719090F04F7F8F85D5C6 /* Roboto-Regular.ttf */; };
 		C4023095C99BDA72A06AE542 /* libPods-BPPassport-BPPassportTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 757FEDBA05BC22918DA70ED1 /* libPods-BPPassport-BPPassportTests.a */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +48,7 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* BPPassportTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BPPassportTests.m; sourceTree = "<group>"; };
 		07DBF19D97A2736797B04F91 /* libPods-BPPassport.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BPPassport.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		09CBEF13E89F426698173C41 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* BPPassport.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BPPassport.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = BPPassport/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = BPPassport/AppDelegate.m; sourceTree = "<group>"; };
@@ -53,20 +56,37 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = BPPassport/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = BPPassport/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = BPPassport/main.m; sourceTree = "<group>"; };
+		1FB179EE129D496184B37569 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
+		25D3AB65CF1B413CAAE967B0 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		2AC00273BDC7460B83C1A099 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		2CF36A37CB594896AE7B4EDB /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* BPPassport-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BPPassport-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* BPPassport-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BPPassport-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		359BA7885057F672B7914811 /* Pods-BPPassport.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport.release.xcconfig"; path = "Target Support Files/Pods-BPPassport/Pods-BPPassport.release.xcconfig"; sourceTree = "<group>"; };
+		364FD615F73E45CFAEFF4501 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		45FADF5A10EEF0B5214A2178 /* libPods-BPPassport-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BPPassport-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4844AEE7243639D8007893AC /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "BPPassport/AppCenter-Config.plist"; sourceTree = "<group>"; };
+		5588719090F04F7F8F85D5C6 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../src/assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		562935CE554A3FB138C671F5 /* Pods-BPPassport-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-BPPassport-tvOSTests/Pods-BPPassport-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		63CD378839314FC9B67E55C9 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		644052F6E8264788B5CFAD1A /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		757FEDBA05BC22918DA70ED1 /* libPods-BPPassport-BPPassportTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BPPassport-BPPassportTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F1F566BDFB04307B45B625F /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		93377FD7BE979BC742C1E247 /* Pods-BPPassport-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-tvOS.release.xcconfig"; path = "Target Support Files/Pods-BPPassport-tvOS/Pods-BPPassport-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		98F6067EFC5D89645CFAF89B /* Pods-BPPassport-BPPassportTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-BPPassportTests.release.xcconfig"; path = "Target Support Files/Pods-BPPassport-BPPassportTests/Pods-BPPassport-BPPassportTests.release.xcconfig"; sourceTree = "<group>"; };
+		A0BCFBED5B454110AABFC264 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
+		B90D3B29F8BA4930959073F2 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		CCC9880D480864A0870E8527 /* Pods-BPPassport-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-BPPassport-tvOS/Pods-BPPassport-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		D221B62789254A77B5F403F6 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Bold.ttf"; path = "../src/assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		D333822C4DEB08396A3AC986 /* Pods-BPPassport.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport.debug.xcconfig"; path = "Target Support Files/Pods-BPPassport/Pods-BPPassport.debug.xcconfig"; sourceTree = "<group>"; };
 		D610E931FC8BE562B6C0D3BC /* Pods-BPPassport-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-BPPassport-tvOSTests/Pods-BPPassport-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		D662D73747934AB98B512637 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		E46A6F3563B84BA5A8C0552F /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		E76DB0B7753843ABA6071FBA /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
+		EBFC80D8B1824E2AB70CD450 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		F0378E6C5E3F4FA98E984F06 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		F894799E8FFD0B428416E46D /* libPods-BPPassport-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BPPassport-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF3CE6FE8A7A39588F6DE08E /* Pods-BPPassport-BPPassportTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-BPPassportTests.debug.xcconfig"; path = "Target Support Files/Pods-BPPassport-BPPassportTests/Pods-BPPassport-BPPassportTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -152,6 +172,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4D515CBF1C0F4057A579E4FB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D221B62789254A77B5F403F6 /* Roboto-Bold.ttf */,
+				5588719090F04F7F8F85D5C6 /* Roboto-Regular.ttf */,
+				E46A6F3563B84BA5A8C0552F /* AntDesign.ttf */,
+				364FD615F73E45CFAEFF4501 /* Entypo.ttf */,
+				09CBEF13E89F426698173C41 /* EvilIcons.ttf */,
+				7F1F566BDFB04307B45B625F /* Feather.ttf */,
+				2AC00273BDC7460B83C1A099 /* FontAwesome.ttf */,
+				B90D3B29F8BA4930959073F2 /* FontAwesome5_Brands.ttf */,
+				F0378E6C5E3F4FA98E984F06 /* FontAwesome5_Regular.ttf */,
+				A0BCFBED5B454110AABFC264 /* FontAwesome5_Solid.ttf */,
+				E76DB0B7753843ABA6071FBA /* Fontisto.ttf */,
+				644052F6E8264788B5CFAD1A /* Foundation.ttf */,
+				EBFC80D8B1824E2AB70CD450 /* Ionicons.ttf */,
+				2CF36A37CB594896AE7B4EDB /* MaterialCommunityIcons.ttf */,
+				63CD378839314FC9B67E55C9 /* MaterialIcons.ttf */,
+				1FB179EE129D496184B37569 /* Octicons.ttf */,
+				25D3AB65CF1B413CAAE967B0 /* SimpleLineIcons.ttf */,
+				D662D73747934AB98B512637 /* Zocial.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		5D622412F31249947594CFC3 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -183,6 +228,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				5D622412F31249947594CFC3 /* Pods */,
+				4D515CBF1C0F4057A579E4FB /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -347,6 +393,8 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				4844AEE8243639D8007893AC /* AppCenter-Config.plist in Resources */,
+				1D2B934BB72B433C812BAD3F /* Roboto-Bold.ttf in Resources */,
+				B7F7F9EDE1CB46E590054CEF /* Roboto-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,7 +428,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		1E7B973DC146D05F9F61BAF3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
