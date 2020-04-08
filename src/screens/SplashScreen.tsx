@@ -1,6 +1,7 @@
 import React from 'react'
 import {SafeAreaView, View, Text, Image} from 'react-native'
 import {FormattedMessage} from 'react-intl'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {containerStyles, colors, iconSplash, bpLogo} from '../styles'
 import {Button, PageHeader, BodyHeader, BodyText} from '../components'
@@ -39,23 +40,47 @@ function SplashScreen({navigation}: any) {
         <BodyHeader>
           <FormattedMessage id="splash.sub-title" />
         </BodyHeader>
-        <View style={{marginTop: 24}}>
-          <BodyText>
+        <View
+          style={{
+            marginTop: 24,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Icon name="edit" size={24} />
+          <BodyText style={{marginLeft: 16}}>
             <FormattedMessage id="splash.track" />
           </BodyText>
         </View>
-        <View style={{marginTop: 24}}>
-          <BodyText>
+        <View
+          style={{
+            marginTop: 24,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Icon name="record-voice-over" size={24} />
+          <BodyText style={{marginLeft: 16}}>
             <FormattedMessage id="splash.talk" />
           </BodyText>
         </View>
-        <View style={{marginTop: 24}}>
-          <BodyText>
+        <View
+          style={{
+            marginTop: 24,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Icon name="local-pharmacy" size={24} />
+          <BodyText style={{marginLeft: 16}}>
             <FormattedMessage id="splash.medicine" />
           </BodyText>
         </View>
-        <View style={{marginTop: 24}}>
-          <BodyText>
+        <View
+          style={{
+            marginTop: 24,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Icon name="alarm" size={24} />
+          <BodyText style={{marginLeft: 16}}>
             <FormattedMessage id="splash.reminders" />
           </BodyText>
         </View>
