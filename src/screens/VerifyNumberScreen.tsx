@@ -15,8 +15,8 @@ function VerifyNumber({navigation}: any) {
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-        <View style={{margin: 12}}>
-          <BodyText style={{textAlign: 'center', marginTop: 12}}>
+        <View style={{margin: 24}}>
+          <BodyText style={{textAlign: 'center'}}>
             <FormattedMessage
               id="verify.verify-number"
               values={{
@@ -55,35 +55,35 @@ function VerifyNumber({navigation}: any) {
             onPress={() => {}}
             title={<FormattedMessage id="general.verify" />}
           />
-        </View>
-        {codeError && (
+          {codeError && (
+            <BodyHeader
+              style={{
+                fontSize: 16,
+                color: colors.red1,
+                textAlign: 'center',
+              }}>
+              <FormattedMessage id="verify.incorrect-code" />
+            </BodyHeader>
+          )}
           <BodyHeader
             style={{
-              fontSize: 16,
-              color: colors.red1,
+              color: colors.grey1,
+              width: '100%',
               textAlign: 'center',
+              marginTop: 16,
             }}>
-            <FormattedMessage id="verify.incorrect-code" />
+            <FormattedMessage
+              id="verify.didnt-receive"
+              values={{
+                resend: (
+                  <BodyHeader style={{color: colors.blue2}} onPress={() => {}}>
+                    <FormattedMessage id="verify.resend" />
+                  </BodyHeader>
+                ),
+              }}
+            />
           </BodyHeader>
-        )}
-        <BodyHeader
-          style={{
-            color: colors.grey1,
-            width: '100%',
-            textAlign: 'center',
-            marginTop: 16,
-          }}>
-          <FormattedMessage
-            id="verify.didnt-receive"
-            values={{
-              resend: (
-                <BodyHeader style={{color: colors.blue2}} onPress={() => {}}>
-                  <FormattedMessage id="verify.resend" />
-                </BodyHeader>
-              ),
-            }}
-          />
-        </BodyHeader>
+        </View>
       </SafeAreaView>
     </View>
   )
