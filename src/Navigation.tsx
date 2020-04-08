@@ -13,7 +13,7 @@ import HomeScreen from './screens/HomeScreen'
 
 import SCREENS from './constants/screens'
 
-import {HomeHeaderTitle} from './components'
+import {HomeHeaderTitle, ButtonIcon} from './components'
 
 import {colors, navigation as navigationStyle} from './styles'
 
@@ -88,9 +88,12 @@ function MainStack() {
           headerStyle: {
             ...navigationStyle.headerStyle,
             height: 100,
+            elevation: 0,
+            shadowOpacity: 0,
           },
           headerTitleAlign: 'center',
-          headerTitle: (props) => <HomeHeaderTitle />,
+          headerTitle: () => <HomeHeaderTitle />,
+          headerRight: () => <ButtonIcon />,
         }}
       />
     </Stack.Navigator>
