@@ -2,61 +2,71 @@ import React from 'react'
 import {SafeAreaView, View, Text, Image} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 
-import {containerStyles, colors, bpLogo, iconSplash} from '../styles'
-import {Button, PageHeader} from '../components'
+import {containerStyles, colors, iconSplash, bpLogo} from '../styles'
+import {Button, PageHeader, BodyHeader, BodyText} from '../components'
 import SCREENS from '../constants/screens'
 
 function SplashScreen({navigation}: any) {
   return (
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-      <View style={[containerStyles.fill, containerStyles.centeredContent]}>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            width: '100%',
-            borderBottomWidth: 1,
-            borderBottomColor: colors.grey3,
-          }}>
-          <Image source={iconSplash} />
-          <Image source={bpLogo} style={{width: 250, height: 35}} />
-        </View>
-        <View style={{flex: 2}}>
-          <View>
-            <PageHeader>
-              <FormattedMessage id="splash.sub-title" />
-            </PageHeader>
-          </View>
-          <Text>
-            <FormattedMessage id="splash.title" />
-          </Text>
-          <Text>
-            <FormattedMessage id="splash.track" />
-          </Text>
-          <Text>
-            <FormattedMessage id="splash.talk" />
-          </Text>
-          <Text>
-            <FormattedMessage id="splash.reminders" />
-          </Text>
-        </View>
-      </View>
       <View
         style={[
-          {
-            margin: 12,
-          },
+          containerStyles.fill,
+          containerStyles.centeredContent,
+          {margin: 24, justifyContent: 'flex-start', alignItems: 'flex-start'},
         ]}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingTop: 24,
+            paddingBottom: 24,
+            width: '100%',
+            borderBottomColor: colors.grey3,
+            borderBottomWidth: 1,
+            marginBottom: 24,
+          }}>
+          <Image
+            source={iconSplash}
+            style={{width: 32, height: 32, flexShrink: 0, marginRight: 14}}
+          />
+          <Image
+            source={bpLogo}
+            style={{height: 32, resizeMode: 'contain', marginTop: 5}}
+          />
+        </View>
+        <BodyHeader>
+          <FormattedMessage id="splash.sub-title" />
+        </BodyHeader>
+        <View style={{marginTop: 24}}>
+          <BodyText>
+            <FormattedMessage id="splash.track" />
+          </BodyText>
+        </View>
+        <View style={{marginTop: 24}}>
+          <BodyText>
+            <FormattedMessage id="splash.talk" />
+          </BodyText>
+        </View>
+        <View style={{marginTop: 24}}>
+          <BodyText>
+            <FormattedMessage id="splash.medicine" />
+          </BodyText>
+        </View>
+        <View style={{marginTop: 24}}>
+          <BodyText>
+            <FormattedMessage id="splash.reminders" />
+          </BodyText>
+        </View>
         <Button
-          title={'Consent'}
+          style={{width: '100%', marginTop: 24}}
+          title={<FormattedMessage id="general.next" />}
           onPress={() => {
             navigation.navigate(SCREENS.CONSENT)
           }}
         />
       </View>
-      <View />
     </SafeAreaView>
   )
 }
