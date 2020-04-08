@@ -21,5 +21,6 @@
   "consent.data_privacy": "Patient data and privacy is protected by the use of safeguarding technology and by restricting user access. More information can be found {here} and in our {digital_principles}.",
   "consent.here": "here",
   "consent.digital_principles": "Digital Principles",
-  "consent.i_agree": "I agree"
+  "consent.i_agree": "I agree",
+  "home.password_digest_prefix": "BP Passport:"
 }
