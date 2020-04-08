@@ -62,7 +62,7 @@ function Consent({navigation}: any) {
         <Button
           title={<FormattedMessage id="general.i-agree" />}
           onPress={() => {
-            navigation.navigate(SCREENS.PRIVACY_POLICY)
+            navigation.navigate(SCREENS.LOGIN)
           }}
         />
       </View>
