@@ -24,6 +24,12 @@
   "general.here": "here",
   "general.i-agree": "I agree",
   "general.ok": "ok",
+  "general.verify": "Verify",
   "scan.qr-instruction": "Hold camera over this symbol on BP Passport",
-  "scan.no-camera-permissions": "Camera Permissions need to be enabled"
+  "scan.no-camera-permissions": "Camera Permissions need to be enabled",
+  "verify.verify-number": "Please verify the 5 digit PIN code we texted to: {number}",
+  "verify.verify-placeholder": "Code",
+  "verify.incorrect-code": "Please enter the correct code",
+  "verify.didnt-receive": "Didn’t receive the code? {resend}",
+  "verify.resend": "Resend SMS"
 }
