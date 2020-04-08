@@ -40,49 +40,51 @@ function SplashScreen({navigation}: any) {
         <BodyHeader>
           <FormattedMessage id="splash.sub-title" />
         </BodyHeader>
-        <View
-          style={{
-            marginTop: 24,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
-          <Icon name="edit" size={24} />
-          <BodyText style={{marginLeft: 16}}>
-            <FormattedMessage id="splash.track" />
-          </BodyText>
-        </View>
-        <View
-          style={{
-            marginTop: 24,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
-          <Icon name="record-voice-over" size={24} />
-          <BodyText style={{marginLeft: 16}}>
-            <FormattedMessage id="splash.talk" />
-          </BodyText>
-        </View>
-        <View
-          style={{
-            marginTop: 24,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
-          <Icon name="local-pharmacy" size={24} />
-          <BodyText style={{marginLeft: 16}}>
-            <FormattedMessage id="splash.medicine" />
-          </BodyText>
-        </View>
-        <View
-          style={{
-            marginTop: 24,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
-          <Icon name="alarm" size={24} />
-          <BodyText style={{marginLeft: 16}}>
-            <FormattedMessage id="splash.reminders" />
-          </BodyText>
+        <View style={{width: '90%'}}>
+          <View
+            style={{
+              marginTop: 24,
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <Icon name="edit" size={24} />
+            <BodyText style={{marginLeft: 16}}>
+              <FormattedMessage id="splash.track" />
+            </BodyText>
+          </View>
+          <View
+            style={{
+              marginTop: 24,
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <Icon name="record-voice-over" size={24} />
+            <BodyText style={{marginLeft: 16}}>
+              <FormattedMessage id="splash.talk" />
+            </BodyText>
+          </View>
+          <View
+            style={{
+              marginTop: 24,
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <Icon name="local-pharmacy" size={24} />
+            <BodyText style={{marginLeft: 16}}>
+              <FormattedMessage id="splash.medicine" />
+            </BodyText>
+          </View>
+          <View
+            style={{
+              marginTop: 24,
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <Icon name="alarm" size={24} />
+            <BodyText style={{marginLeft: 16}}>
+              <FormattedMessage id="splash.reminders" />
+            </BodyText>
+          </View>
         </View>
         <Button
           style={{width: '100%', marginTop: 24}}
