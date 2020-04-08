@@ -8,6 +8,7 @@ import SplashScreen from './screens/SplashScreen'
 import LoginScreen from './screens/LoginScreen'
 import ConsentScreen from './screens/ConsentScreen'
 import ScanPassportScreen from './screens/ScanPassportScreen'
+import VerifyNumberScreen from './screens/VerifyNumberScreen'
 
 import SCREENS from './constants/screens'
 
@@ -74,6 +75,14 @@ function MainStack() {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.scan-bp-passport'}),
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.VERIFY_YOUR_NUMBER}
+        component={VerifyNumberScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.verify-your-number'}),
         }}
       />
     </Stack.Navigator>
