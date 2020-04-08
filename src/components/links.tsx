@@ -6,6 +6,7 @@ import {colors} from '../styles'
 export const Link = (props: any) => {
   return (
     <Text
+      {...props}
       style={[
         {
           height: 20,
@@ -15,9 +16,9 @@ export const Link = (props: any) => {
           lineHeight: 20,
           letterSpacing: 0.2,
           color: colors.blue2,
+          ...props.style,
         },
       ]}
-      {...props}
     />
   )
 }

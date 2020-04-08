@@ -5,10 +5,10 @@ import {forFade} from './navigation/interpolators'
 import {useIntl} from 'react-intl'
 
 import LaunchScreen from './screens/LaunchScreen'
-import PrivacyPolicyScreen from './screens/PrivacyPolicyScreen'
 import SplashScreen from './screens/SplashScreen'
 import LoginScreen from './screens/LoginScreen'
 import ConsentScreen from './screens/ConsentScreen'
+import ScanPassportScreen from './screens/ScanPassportScreen'
 import HomeScreen from './screens/HomeScreen'
 
 import SCREENS from './constants/screens'
@@ -65,19 +65,19 @@ function MainStack() {
         }}
       />
       <Stack.Screen
-        name={SCREENS.PRIVACY_POLICY}
-        component={PrivacyPolicyScreen}
-        options={{
-          headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.privacy-policy'}),
-        }}
-      />
-      <Stack.Screen
         name={SCREENS.LOGIN}
         component={LoginScreen}
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.login'}),
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.SCAN_BP_PASSPORT}
+        component={ScanPassportScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.scan-bp-passport'}),
         }}
       />
       <Stack.Screen
@@ -95,6 +95,7 @@ function MainStack() {
           headerTitle: () => <HomeHeaderTitle />,
           headerRight: () => <ButtonIcon />,
           headerLeft: () => null,
+          gestureEnabled: false,
         }}
       />
     </Stack.Navigator>
