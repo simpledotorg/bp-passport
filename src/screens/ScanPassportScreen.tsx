@@ -60,6 +60,7 @@ function ScanPassportScreen() {
             flex: 1,
             width: '100%',
             marginTop: 12,
+            overflow: 'hidden',
           }}>
           <RNCamera
             ref={camera}
