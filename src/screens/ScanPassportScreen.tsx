@@ -1,27 +1,33 @@
 import React, {useRef, useState} from 'react'
-import {SafeAreaView, View, Image} from 'react-native'
+import {SafeAreaView, View, Image, Alert} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 import {RNCamera} from 'react-native-camera'
-import Modal from 'react-native-modal'
 
 import {containerStyles, qrImage, qrMaskImage, colors} from '../styles'
 import {BodyHeader} from '../components'
+import SCREENS from '../constants/screens'
 
-function ScanPassportScreen() {
-  const [profileId, setProfileId] = useState(false)
+function ScanPassportScreen({navigation}: any) {
   const camera: null | {current: any} = useRef(null)
 
-  const takePicture = async () => {
-    if (camera) {
-      const options = {quality: 0.5, base64: true}
-      const data = await camera.current.takePictureAsync(options)
-
-      console.log(data.uri)
-    }
-  }
+  const [hasReadCode, setHasReadCode] = useState(false)
 
   const onBarCodeRead = (event: any) => {
-    setProfileId(event.data)
+    const udid: string | undefined = event.data
+    if (!hasReadCode && udid) {
+      setHasReadCode(true)
+      Alert.alert(
+        'QR UDID',
+        `${udid}\n\nTodo - integrate with API`,
+        [
+          {
+            text: 'OK',
+            onPress: () => navigation.replace(SCREENS.VERIFY_YOUR_NUMBER),
+          },
+        ],
+        {cancelable: false},
+      )
+    }
   }
 
   return (
@@ -60,6 +66,7 @@ function ScanPassportScreen() {
             flex: 1,
             width: '100%',
             marginTop: 12,
+            overflow: 'hidden',
           }}>
           <RNCamera
             ref={camera}
@@ -111,20 +118,6 @@ function ScanPassportScreen() {
           </RNCamera>
         </View>
       </View>
-      <Modal
-        isVisible={profileId}
-        style={{
-          alignItems: 'center',
-        }}>
-        <View
-          style={{
-            backgroundColor: colors.white100,
-            padding: 24,
-            width: '80%',
-          }}>
-          <BodyHeader>{profileId}</BodyHeader>
-        </View>
-      </Modal>
     </SafeAreaView>
   )
 }

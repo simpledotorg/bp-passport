@@ -9,6 +9,7 @@ const SCREENS = {
   ALL_BP: 'ALL_BP',
   SETTINGS: 'SETTINGS',
   CONTACT_A_DOCTOR: 'CONTACT_A_DOCTOR',
+  HOME: 'HOME',
 }
 
 export default SCREENS

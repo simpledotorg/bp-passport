@@ -1,6 +1,7 @@
 import React from 'react'
 import {TouchableOpacity, Text} from 'react-native'
-
+import Icon from 'react-native-vector-icons/MaterialIcons'
+//@types/react-native-vector-icons
 import colors from '../styles/colors'
 
 export const Button = (props: any) => {
@@ -38,6 +39,28 @@ export const Button = (props: any) => {
           {props.title}
         </Text>
       )}
+    </TouchableOpacity>
+  )
+}
+
+export const ButtonIcon = (props: any) => {
+  return (
+    <TouchableOpacity
+      {...props}
+      style={[
+        {
+          width: 44,
+          height: 44,
+          alignItems: 'center',
+          justifyContent: 'center',
+          ...props.style,
+        },
+      ]}>
+      <Icon
+        name="settings"
+        size={24}
+        color={props?.styles?.color ?? colors.white72}
+      />
     </TouchableOpacity>
   )
 }

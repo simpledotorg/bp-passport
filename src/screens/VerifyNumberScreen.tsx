@@ -4,6 +4,7 @@ import {FormattedMessage, useIntl, FormattedDate} from 'react-intl'
 
 import {containerStyles, colors} from '../styles'
 import {BodyText, Button, BodyHeader} from '../components'
+import SCREENS from '../constants/screens'
 
 function VerifyNumber({navigation}: any) {
   const intl = useIntl()
@@ -52,7 +53,9 @@ function VerifyNumber({navigation}: any) {
           />
           <Button
             style={{marginTop: 24}}
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate(SCREENS.HOME)
+            }}
             title={<FormattedMessage id="general.verify" />}
           />
           {codeError && (
