@@ -4,7 +4,6 @@ import {forFade} from './navigation/interpolators'
 import {useIntl} from 'react-intl'
 
 import LaunchScreen from './screens/LaunchScreen'
-import PrivacyPolicyScreen from './screens/PrivacyPolicyScreen'
 import SplashScreen from './screens/SplashScreen'
 import LoginScreen from './screens/LoginScreen'
 import ConsentScreen from './screens/ConsentScreen'
@@ -59,14 +58,6 @@ function MainStack() {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.consent'}),
-        }}
-      />
-      <Stack.Screen
-        name={SCREENS.PRIVACY_POLICY}
-        component={PrivacyPolicyScreen}
-        options={{
-          headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.privacy-policy'}),
         }}
       />
       <Stack.Screen
