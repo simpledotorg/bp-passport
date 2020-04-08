@@ -25,5 +25,6 @@
   "general.i-agree": "I agree",
   "general.ok": "ok",
   "scan.qr-instruction": "Hold camera over this symbol on BP Passport",
-  "scan.no-camera-permissions": "Camera Permissions need to be enabled"
+  "scan.no-camera-permissions": "Camera Permissions need to be enabled",
+  "home.password_digest_prefix": "BP Passport:"
 }
