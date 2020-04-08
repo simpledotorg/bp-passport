@@ -1,5 +1,5 @@
 import React from 'react'
-import {SafeAreaView, View, StatusBar, Linking} from 'react-native'
+import {SafeAreaView, View, ScrollView, StatusBar, Linking} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 
 import {containerStyles, colors} from '../styles'
@@ -17,37 +17,41 @@ function Consent({navigation}: any) {
           containerStyles.centeredContent,
           {margin: 24},
         ]}>
-        <BodyText style={{marginBottom: 24}}>
-          <FormattedMessage id="consent.by-confirming" />
-        </BodyText>
-        <BodyText style={{marginBottom: 24}}>
-          <FormattedMessage id="consent.personal-data" />
-        </BodyText>
-        <BodyText>
-          <FormattedMessage
-            id="consent.data-privacy"
-            values={{
-              here: (
-                <BodyText
-                  style={{color: colors.blue2}}
-                  onPress={() => {
-                    Linking.openURL('https://simple.org/patient-privacy')
-                  }}>
-                  <FormattedMessage id="general.here" />
-                </BodyText>
-              ),
-              digital_principles: (
-                <BodyText
-                  style={{color: colors.blue2}}
-                  onPress={() => {
-                    Linking.openURL('https://www.simple.org/digitalprinciples/')
-                  }}>
-                  <FormattedMessage id="consent.digital-principles" />
-                </BodyText>
-              ),
-            }}
-          />
-        </BodyText>
+        <ScrollView>
+          <BodyText style={{marginBottom: 24}}>
+            <FormattedMessage id="consent.by-confirming" />
+          </BodyText>
+          <BodyText style={{marginBottom: 24}}>
+            <FormattedMessage id="consent.personal-data" />
+          </BodyText>
+          <BodyText>
+            <FormattedMessage
+              id="consent.data-privacy"
+              values={{
+                here: (
+                  <BodyText
+                    style={{color: colors.blue2}}
+                    onPress={() => {
+                      Linking.openURL('https://simple.org/patient-privacy')
+                    }}>
+                    <FormattedMessage id="general.here" />
+                  </BodyText>
+                ),
+                digital_principles: (
+                  <BodyText
+                    style={{color: colors.blue2}}
+                    onPress={() => {
+                      Linking.openURL(
+                        'https://www.simple.org/digitalprinciples/',
+                      )
+                    }}>
+                    <FormattedMessage id="consent.digital-principles" />
+                  </BodyText>
+                ),
+              }}
+            />
+          </BodyText>
+        </ScrollView>
       </View>
       <View
         style={[

@@ -1,7 +1,8 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import {SafeAreaView, View, Image} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 import Modal from 'react-native-modal'
+import {RNCamera, CameraStatus} from 'react-native-camera'
 
 import SCREENS from '../constants/screens'
 import {containerStyles, colors, bpPassportImage} from '../styles'
@@ -41,7 +42,7 @@ function Login({navigation}: any) {
           <Button
             title={<FormattedMessage id="login.primary-button" />}
             onPress={() => {
-              navigation.navigate(SCREENS.PRIVACY_POLICY)
+              navigation.navigate(SCREENS.SCAN_BP_PASSPORT)
             }}
           />
           <View

@@ -8,6 +8,7 @@ import PrivacyPolicyScreen from './screens/PrivacyPolicyScreen'
 import SplashScreen from './screens/SplashScreen'
 import LoginScreen from './screens/LoginScreen'
 import ConsentScreen from './screens/ConsentScreen'
+import ScanPassportScreen from './screens/ScanPassportScreen'
 
 import SCREENS from './constants/screens'
 
@@ -74,6 +75,14 @@ function MainStack() {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.login'}),
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.SCAN_BP_PASSPORT}
+        component={ScanPassportScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.scan-bp-passport'}),
         }}
       />
     </Stack.Navigator>
