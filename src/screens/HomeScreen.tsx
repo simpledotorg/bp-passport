@@ -6,7 +6,6 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import {containerStyles, colors} from '../styles'
 import {UserContext} from '../providers/user.provider'
 import SCREENS from '../constants/screens'
-import {RootStackParamList} from '../Navigation'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -56,7 +55,8 @@ function Home({navigation}: Props) {
             marginHorizontal: 24,
             marginBottom: 24,
           },
-        ]}></ScrollView>
+        ]}
+      />
     </SafeAreaView>
   )
 }
