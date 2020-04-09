@@ -2,12 +2,23 @@ import React, {useRef, useState} from 'react'
 import {SafeAreaView, View, Image, Alert} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 import {RNCamera} from 'react-native-camera'
+import {StackNavigationProp} from '@react-navigation/stack'
 
 import {containerStyles, qrImage, qrMaskImage, colors} from '../styles'
 import {BodyHeader} from '../components'
 import SCREENS from '../constants/screens'
+import {RootStackParamList} from '../Navigation'
 
-function ScanPassportScreen({navigation}: any) {
+type ScanScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  SCREENS.LAUNCH
+>
+
+type Props = {
+  navigation: ScanScreenNavigationProp
+}
+
+function ScanPassportScreen({navigation}: Props) {
   const camera: null | {current: any} = useRef(null)
 
   const [hasReadCode, setHasReadCode] = useState(false)

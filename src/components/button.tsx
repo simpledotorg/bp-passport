@@ -1,16 +1,27 @@
-import React from 'react'
-import {TouchableOpacity, Text} from 'react-native'
+import React, {ReactNode} from 'react'
+import {
+  TouchableOpacity,
+  Text,
+  StyleProp,
+  ViewStyle,
+  ButtonProps as NativeButtonProps,
+} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 //@types/react-native-vector-icons
 import colors from '../styles/colors'
 
-export const Button = (props: any) => {
+interface ButtonProps extends NativeButtonProps {
+  children?: ReactNode
+  style?: StyleProp<ViewStyle>
+  title: string
+}
+
+export const Button = (props: ButtonProps) => {
   return (
     <TouchableOpacity
       {...props}
       style={[
         {
-          ...props.style,
           height: 48,
           borderRadius: 2,
           backgroundColor: colors.blue2,
@@ -22,6 +33,7 @@ export const Button = (props: any) => {
           shadowRadius: 1, // iOS box shadow
           elevation: 2, // Android elevation
         },
+        props.style,
       ]}>
       {props.title && (
         <Text
@@ -43,23 +55,29 @@ export const Button = (props: any) => {
   )
 }
 
-export const ButtonIcon = (props: any) => {
+interface ButtonIconProps {
+  style?: StyleProp<ViewStyle>
+  iconColor?: string
+  iconSize?: number
+}
+
+export const ButtonIcon = (props: ButtonIconProps) => {
   return (
     <TouchableOpacity
-      {...props}
       style={[
         {
           width: 44,
           height: 44,
           alignItems: 'center',
           justifyContent: 'center',
-          ...props.style,
         },
-      ]}>
+        props.style,
+      ]}
+      {...props}>
       <Icon
         name="settings"
-        size={24}
-        color={props?.styles?.color ?? colors.white72}
+        size={props.iconSize ?? 24}
+        color={props.iconColor ?? colors.white72}
       />
     </TouchableOpacity>
   )

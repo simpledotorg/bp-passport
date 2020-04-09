@@ -1,5 +1,4 @@
 import React from 'react'
-import {View, Text} from 'react-native'
 import {createStackNavigator, useHeaderHeight} from '@react-navigation/stack'
 import {forFade} from './navigation/interpolators'
 import {useIntl} from 'react-intl'
@@ -16,7 +15,21 @@ import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon} from './components'
 import {colors, navigation as navigationStyle} from './styles'
 
-const Stack = createStackNavigator()
+type RootStackParamList = {
+  LAUNCH: undefined
+  MAIN_STACK: undefined
+  SPLASH: undefined
+  LOGIN: undefined
+  CONSENT: undefined
+  SCAN_BP_PASSPORT: undefined
+  VERIFY_YOUR_NUMBER: undefined
+  ALL_BP: undefined
+  SETTINGS: undefined
+  CONTACT_A_DOCTOR: undefined
+  HOME: undefined
+}
+
+const Stack = createStackNavigator<RootStackParamList>()
 
 const Navigation = () => {
   return (
