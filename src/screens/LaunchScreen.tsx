@@ -1,10 +1,21 @@
 import React, {useEffect} from 'react'
 import {View, Image} from 'react-native'
+import {StackNavigationProp} from '@react-navigation/stack'
 
-import {iconSplash, containerStyles, colors} from '../styles'
+import {iconLaunch, containerStyles, colors} from '../styles'
 import SCREENS from '../constants/screens'
+import {RootStackParamList} from '../Navigation'
 
-function LaunchScreen({navigation}: any) {
+type LaunchScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  SCREENS.LAUNCH
+>
+
+type Props = {
+  navigation: LaunchScreenNavigationProp
+}
+
+function LaunchScreen({navigation}: Props) {
   useEffect(() => {
     setTimeout(() => {
       navigation.replace(SCREENS.MAIN_STACK)
@@ -16,9 +27,9 @@ function LaunchScreen({navigation}: any) {
       style={[
         containerStyles.fill,
         containerStyles.centeredContent,
-        {backgroundColor: colors.Black},
+        {backgroundColor: colors.black},
       ]}>
-      <Image source={iconSplash} />
+      <Image source={iconLaunch} />
       <View />
     </View>
   )

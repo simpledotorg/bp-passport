@@ -35,12 +35,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "com.bppassport",
+    package = "org.simple.bppassport",
 )
 
 android_resource(
     name = "res",
-    package = "com.bppassport",
+    package = "org.simple.bppassport",
     res = "src/main/res",
 )
 
