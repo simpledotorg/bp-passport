@@ -1,12 +1,23 @@
 import React, {useState} from 'react'
 import {SafeAreaView, View, TextInput} from 'react-native'
-import {FormattedMessage, useIntl, FormattedDate} from 'react-intl'
+import {FormattedMessage, useIntl} from 'react-intl'
+import {StackNavigationProp} from '@react-navigation/stack'
 
 import {containerStyles, colors} from '../styles'
 import {BodyText, Button, BodyHeader} from '../components'
 import SCREENS from '../constants/screens'
+import {RootStackParamList} from '../Navigation'
 
-function VerifyNumber({navigation}: any) {
+type VerifyNumberScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  SCREENS.VERIFY_YOUR_NUMBER
+>
+
+type Props = {
+  navigation: VerifyNumberScreenNavigationProp
+}
+
+function VerifyNumber({navigation}: Props) {
   const intl = useIntl()
 
   const [input, setInput] = useState('')
@@ -56,7 +67,7 @@ function VerifyNumber({navigation}: any) {
             onPress={() => {
               navigation.navigate(SCREENS.HOME)
             }}
-            title={<FormattedMessage id="general.verify" />}
+            title={intl.formatMessage({id: 'general.verify'})}
           />
           {codeError && (
             <BodyHeader
@@ -79,7 +90,7 @@ function VerifyNumber({navigation}: any) {
               id="verify.didnt-receive"
               values={{
                 resend: (
-                  <BodyHeader style={{color: colors.blue2}} onPress={() => {}}>
+                  <BodyHeader style={{color: colors.blue2}}>
                     <FormattedMessage id="verify.resend" />
                   </BodyHeader>
                 ),
