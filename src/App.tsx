@@ -18,6 +18,7 @@ export default function App() {
     // Add a request interceptor
     axiosInterceptor.current = axios.interceptors.request.use(
       (config) => {
+        // TODO: Replace when ready
         // config.headers = {
         //   Authorization:
         //     'Bearer b23d213d435d3923ed00b82d10dfd0fd9aa21e2a46a0faa36e648875b07b87a7',
