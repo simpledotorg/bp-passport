@@ -90,7 +90,7 @@ function VerifyNumber({navigation}: Props) {
               id="verify.didnt-receive"
               values={{
                 resend: (
-                  <BodyHeader style={{color: colors.blue2}} onPress={() => {}}>
+                  <BodyHeader style={{color: colors.blue2}}>
                     <FormattedMessage id="verify.resend" />
                   </BodyHeader>
                 ),
