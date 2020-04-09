@@ -3,6 +3,7 @@ import {SafeAreaView, View, Image, Alert, ViewProps} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 import {RNCamera, BarCodeType} from 'react-native-camera'
 import {StackNavigationProp} from '@react-navigation/stack'
+import AsyncStorage from '@react-native-community/async-storage'
 
 import {containerStyles, qrImage, qrMaskImage, colors} from '../styles'
 import {BodyHeader} from '../components'
@@ -31,17 +32,13 @@ function ScanPassportScreen({navigation}: Props) {
     const udid: string | undefined = event.data
     if (!hasReadCode && udid) {
       setHasReadCode(true)
-      Alert.alert(
-        'QR UDID',
-        `${udid}\n\nTodo - integrate with API`,
-        [
-          {
-            text: 'OK',
-            onPress: () => navigation.replace(SCREENS.VERIFY_YOUR_NUMBER),
-          },
-        ],
-        {cancelable: false},
-      )
+      try {
+        AsyncStorage.setItem('token', udid).then((response) => {
+          navigation.navigate(SCREENS.VERIFY_YOUR_NUMBER)
+        })
+      } catch (error) {
+        console.log('Error saving UUID')
+      }
     }
   }
 

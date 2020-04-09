@@ -1,5 +1,6 @@
 import React from 'react'
 import {createStackNavigator, useHeaderHeight} from '@react-navigation/stack'
+import {RouteProp} from '@react-navigation/native'
 import {forFade} from './navigation/interpolators'
 import {useIntl} from 'react-intl'
 
@@ -17,7 +18,7 @@ import {colors, navigation as navigationStyle} from './styles'
 
 export type RootStackParamList = {
   LAUNCH: undefined
-  MAIN_STACK: undefined
+  MAIN_STACK: {token: string | null}
   SPLASH: undefined
   LOGIN: undefined
   CONSENT: undefined
@@ -27,6 +28,12 @@ export type RootStackParamList = {
   SETTINGS: undefined
   CONTACT_A_DOCTOR: undefined
   HOME: undefined
+}
+
+type MainStackRouteProp = RouteProp<RootStackParamList, 'MAIN_STACK'>
+
+type MainStackProps = {
+  route: MainStackRouteProp
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -52,14 +59,18 @@ const Navigation = () => {
 
 export default Navigation
 
-function MainStack() {
+function MainStack({route}: MainStackProps) {
   const intl = useIntl()
+
+  const {token} = route.params
 
   const headerHeightIncludingSafeArea = useHeaderHeight()
 
+  console.log(token)
+
   return (
     <Stack.Navigator
-      initialRouteName={SCREENS.SPLASH}
+      initialRouteName={token ? SCREENS.HOME : SCREENS.SPLASH}
       screenOptions={{
         ...navigationStyle,
         headerTintColor: colors.white100,
