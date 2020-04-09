@@ -19,7 +19,12 @@ function ScanPassportScreen({navigation}: any) {
       Alert.alert(
         'QR UDID',
         `${udid}\n\nTodo - integrate with API`,
-        [{text: 'OK', onPress: () => navigation.replace(SCREENS.HOME)}],
+        [
+          {
+            text: 'OK',
+            onPress: () => navigation.replace(SCREENS.VERIFY_YOUR_NUMBER),
+          },
+        ],
         {cancelable: false},
       )
     }
@@ -27,7 +32,7 @@ function ScanPassportScreen({navigation}: any) {
 
   return (
     <SafeAreaView style={[containerStyles.fill]}>
-      <View style={[containerStyles.fill, containerStyles.centeredContent]}>
+      <View style={[containerStyles.fill]}>
         <View
           style={[
             containerStyles.pageContainer,
@@ -35,9 +40,8 @@ function ScanPassportScreen({navigation}: any) {
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
-              padding: 0,
-              width: '100%',
-              marginTop: 12,
+              paddingHorizontal: 24,
+              paddingVertical: 20,
             },
           ]}>
           <Image
@@ -51,7 +55,6 @@ function ScanPassportScreen({navigation}: any) {
             style={{
               fontSize: 20,
               flex: 1,
-              flexWrap: 'wrap',
             }}>
             <FormattedMessage id="scan.qr-instruction" />
           </BodyHeader>
@@ -59,8 +62,6 @@ function ScanPassportScreen({navigation}: any) {
         <View
           style={{
             flex: 1,
-            width: '100%',
-            marginTop: 12,
             overflow: 'hidden',
           }}>
           <RNCamera

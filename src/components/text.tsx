@@ -1,12 +1,18 @@
-import React from 'react'
-import {Text} from 'react-native'
+import React, {ReactNode} from 'react'
+import {Text, StyleProp, ViewStyle, TextStyle} from 'react-native'
 
 import {colors} from '../styles'
 
-export const BodyText = (props: any) => {
+interface IPropsBodyText {
+  style?: StyleProp<TextStyle>
+  children?: ReactNode
+  onPress?: () => any
+}
+
+export const BodyText = (props: IPropsBodyText) => {
   return (
     <Text
-      {...props}
+      onPress={props.onPress}
       style={[
         {
           fontSize: 16,
@@ -15,17 +21,22 @@ export const BodyText = (props: any) => {
           lineHeight: 24,
           letterSpacing: 0.5,
           color: colors.grey0,
-          ...props.style,
         },
-      ]}
-    />
+        props.style,
+      ]}>
+      {props.children}
+    </Text>
   )
 }
 
-export const BodyHeader = (props: any) => {
+interface IPropsBodyHeader {
+  style?: StyleProp<TextStyle>
+  children?: ReactNode
+}
+
+export const BodyHeader = (props: IPropsBodyHeader) => {
   return (
     <Text
-      {...props}
       style={[
         {
           fontSize: 18,
@@ -34,9 +45,10 @@ export const BodyHeader = (props: any) => {
           lineHeight: 28,
           letterSpacing: 0,
           color: colors.grey0,
-          ...props.style,
         },
-      ]}
-    />
+        props.style,
+      ]}>
+      {props.children}
+    </Text>
   )
 }
