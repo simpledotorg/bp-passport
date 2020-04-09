@@ -6,11 +6,13 @@ import {colors} from '../styles'
 interface Props extends TextProps {
   children?: ReactNode
   style?: StyleProp<TextStyle>
+  onPress?: () => any
 }
 
 export const BodyText = (props: Props) => {
   return (
     <Text
+      {...props}
       style={[
         {
           fontSize: 16,
@@ -22,7 +24,6 @@ export const BodyText = (props: Props) => {
         },
         props.style,
       ]}
-      {...props}
     />
   )
 }
@@ -30,6 +31,7 @@ export const BodyText = (props: Props) => {
 export const BodyHeader = (props: Props) => {
   return (
     <Text
+      {...props}
       style={[
         {
           fontSize: 18,
@@ -41,7 +43,6 @@ export const BodyHeader = (props: Props) => {
         },
         props.style,
       ]}
-      {...props}
     />
   )
 }

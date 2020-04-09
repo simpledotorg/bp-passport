@@ -7,7 +7,6 @@ import {
   ButtonProps as NativeButtonProps,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-//@types/react-native-vector-icons
 import colors from '../styles/colors'
 
 interface ButtonProps extends NativeButtonProps {
@@ -64,6 +63,7 @@ interface ButtonIconProps {
 export const ButtonIcon = (props: ButtonIconProps) => {
   return (
     <TouchableOpacity
+      {...props}
       style={[
         {
           width: 44,
@@ -72,8 +72,7 @@ export const ButtonIcon = (props: ButtonIconProps) => {
           justifyContent: 'center',
         },
         props.style,
-      ]}
-      {...props}>
+      ]}>
       <Icon
         name="settings"
         size={props.iconSize ?? 24}
