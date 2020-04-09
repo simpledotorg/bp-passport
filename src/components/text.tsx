@@ -6,6 +6,7 @@ import {colors} from '../styles'
 interface Props extends TextProps {
   children?: ReactNode
   style?: StyleProp<TextStyle>
+  onPress?: () => any
 }
 
 export const BodyText = (props: Props) => {

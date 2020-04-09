@@ -7,7 +7,6 @@ import {
   ButtonProps as NativeButtonProps,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-//@types/react-native-vector-icons
 import colors from '../styles/colors'
 
 interface ButtonProps extends NativeButtonProps {
