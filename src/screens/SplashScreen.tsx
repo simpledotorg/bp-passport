@@ -31,25 +31,25 @@ function SplashScreen({navigation}: any) {
               flexDirection: 'row',
               alignItems: 'center',
             }}>
-            <Icon name="edit" size={24} />
+            <Icon name="edit" size={24} color={colors.grey2} />
             <BodyText style={styles.itemText}>
               <FormattedMessage id="splash.track" />
             </BodyText>
           </View>
           <View style={styles.item}>
-            <Icon name="record-voice-over" size={24} />
+            <Icon name="record-voice-over" size={24} color={colors.grey2} />
             <BodyText style={styles.itemText}>
               <FormattedMessage id="splash.talk" />
             </BodyText>
           </View>
           <View style={styles.item}>
-            <Icon name="local-pharmacy" size={24} />
+            <Icon name="local-pharmacy" size={24} color={colors.grey2} />
             <BodyText style={styles.itemText}>
               <FormattedMessage id="splash.medicine" />
             </BodyText>
           </View>
           <View style={styles.item}>
-            <Icon name="alarm" size={24} />
+            <Icon name="alarm" size={24} color={colors.grey2} />
             <BodyText style={styles.itemText}>
               <FormattedMessage id="splash.reminders" />
             </BodyText>
