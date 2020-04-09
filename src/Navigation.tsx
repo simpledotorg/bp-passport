@@ -15,7 +15,7 @@ import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon} from './components'
 import {colors, navigation as navigationStyle} from './styles'
 
-type RootStackParamList = {
+export type RootStackParamList = {
   LAUNCH: undefined
   MAIN_STACK: undefined
   SPLASH: undefined
