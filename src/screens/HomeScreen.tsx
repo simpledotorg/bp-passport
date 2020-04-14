@@ -1,11 +1,22 @@
 import React, {useContext} from 'react'
 import {Dimensions} from 'react-native'
 import {SafeAreaView, View, StatusBar, ScrollView} from 'react-native'
-import {FormattedMessage} from 'react-intl'
+import {StackNavigationProp} from '@react-navigation/stack'
+
 import {containerStyles, colors} from '../styles'
 import {UserContext} from '../providers/user.provider'
+import SCREENS from '../constants/screens'
 
-function Home({navigation}: any) {
+type HomeScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  SCREENS.HOME
+>
+
+type Props = {
+  navigation: HomeScreenNavigationProp
+}
+
+function Home({navigation}: Props) {
   const {user} = useContext(UserContext)
 
   return (
@@ -44,7 +55,8 @@ function Home({navigation}: any) {
             marginHorizontal: 24,
             marginBottom: 24,
           },
-        ]}></ScrollView>
+        ]}
+      />
     </SafeAreaView>
   )
 }

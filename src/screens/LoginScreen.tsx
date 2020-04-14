@@ -1,14 +1,25 @@
-import React, {useState, useRef} from 'react'
+import React, {useState} from 'react'
 import {SafeAreaView, View, Image} from 'react-native'
-import {FormattedMessage} from 'react-intl'
+import {FormattedMessage, useIntl} from 'react-intl'
 import Modal from 'react-native-modal'
-import {RNCamera, CameraStatus} from 'react-native-camera'
+import {StackNavigationProp} from '@react-navigation/stack'
 
 import SCREENS from '../constants/screens'
 import {containerStyles, colors, bpPassportImage} from '../styles'
 import {Button, Link, PageHeader, BodyText, BodyHeader} from '../components'
+import {RootStackParamList} from '../Navigation'
 
-function Login({navigation}: any) {
+type LoginScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  SCREENS.LOGIN
+>
+
+type Props = {
+  navigation: LoginScreenNavigationProp
+}
+
+function Login({navigation}: Props) {
+  const intl = useIntl()
   const [showNoBpPassportModal, setShowNoBpPassportModal] = useState(false)
 
   return (
@@ -40,7 +51,7 @@ function Login({navigation}: any) {
             },
           ]}>
           <Button
-            title={<FormattedMessage id="login.primary-button" />}
+            title={intl.formatMessage({id: 'login.primary-button'})}
             onPress={() => {
               navigation.navigate(SCREENS.SCAN_BP_PASSPORT)
             }}
