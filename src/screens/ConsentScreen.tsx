@@ -1,12 +1,25 @@
 import React from 'react'
 import {SafeAreaView, View, ScrollView, StatusBar, Linking} from 'react-native'
-import {FormattedMessage} from 'react-intl'
+import {FormattedMessage, useIntl} from 'react-intl'
+import {StackNavigationProp} from '@react-navigation/stack'
 
 import {containerStyles, colors} from '../styles'
 import {Button, Link, BodyText} from '../components'
 import SCREENS from '../constants/screens'
+import {RootStackParamList} from '../Navigation'
 
-function Consent({navigation}: any) {
+type ConsentScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  SCREENS.CONSENT
+>
+
+type Props = {
+  navigation: ConsentScreenNavigationProp
+}
+
+function Consent({navigation}: Props) {
+  const intl = useIntl()
+
   return (
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
@@ -60,7 +73,7 @@ function Consent({navigation}: any) {
           },
         ]}>
         <Button
-          title={<FormattedMessage id="general.i-agree" />}
+          title={intl.formatMessage({id: 'general.i-agree'})}
           onPress={() => {
             navigation.navigate(SCREENS.LOGIN)
           }}

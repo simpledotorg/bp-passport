@@ -1,13 +1,26 @@
 import React from 'react'
 import {SafeAreaView, View, Image, StyleSheet} from 'react-native'
-import {FormattedMessage} from 'react-intl'
+import {FormattedMessage, useIntl, IntlContext} from 'react-intl'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import {StackNavigationProp} from '@react-navigation/stack'
 
 import {containerStyles, colors, iconSplash, bpLogo} from '../styles'
 import {Button, BodyHeader, BodyText} from '../components'
 import SCREENS from '../constants/screens'
+import {RootStackParamList} from '../Navigation'
 
-function SplashScreen({navigation}: any) {
+type SplashScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  SCREENS.SPLASH
+>
+
+type Props = {
+  navigation: SplashScreenNavigationProp
+}
+
+function SplashScreen({navigation}: Props) {
+  const intl = useIntl()
+
   return (
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
@@ -57,7 +70,7 @@ function SplashScreen({navigation}: any) {
         </View>
         <Button
           style={{marginTop: 24}}
-          title={<FormattedMessage id="general.next" />}
+          title={intl.formatMessage({id: 'general.next'})}
           onPress={() => {
             navigation.navigate(SCREENS.CONSENT)
           }}

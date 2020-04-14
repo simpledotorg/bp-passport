@@ -1,18 +1,33 @@
-import React, {useRef, useState} from 'react'
-import {SafeAreaView, View, Image, Alert} from 'react-native'
+import React, {useState} from 'react'
+import {SafeAreaView, View, Image, Alert, ViewProps} from 'react-native'
 import {FormattedMessage} from 'react-intl'
-import {RNCamera} from 'react-native-camera'
+import {RNCamera, BarCodeType} from 'react-native-camera'
+import {StackNavigationProp} from '@react-navigation/stack'
 
 import {containerStyles, qrImage, qrMaskImage, colors} from '../styles'
 import {BodyHeader} from '../components'
 import SCREENS from '../constants/screens'
+import {RootStackParamList} from '../Navigation'
 
-function ScanPassportScreen({navigation}: any) {
-  const camera: null | {current: any} = useRef(null)
+type ScanScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  SCREENS.LAUNCH
+>
 
+type Props = {
+  navigation: ScanScreenNavigationProp
+}
+
+type BarCodeRead = {
+  data: string
+  rawData?: string
+  type: keyof BarCodeType
+}
+
+function ScanPassportScreen({navigation}: Props) {
   const [hasReadCode, setHasReadCode] = useState(false)
 
-  const onBarCodeRead = (event: any) => {
+  const onBarCodeRead = (event: BarCodeRead) => {
     const udid: string | undefined = event.data
     if (!hasReadCode && udid) {
       setHasReadCode(true)
@@ -65,7 +80,6 @@ function ScanPassportScreen({navigation}: any) {
             overflow: 'hidden',
           }}>
           <RNCamera
-            ref={camera}
             style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}
             type={RNCamera.Constants.Type.back}
             flashMode={RNCamera.Constants.FlashMode.off}
