@@ -96,11 +96,12 @@ function Home({navigation}: Props) {
           <>
             <View style={[styles.homeContainer]}>
               <BodyHeader style={[styles.sectionHeader]}>
-                My Medicines
+                <FormattedMessage id="home.my-medicines" />
               </BodyHeader>
               <BodyText
                 style={[
                   {
+                    marginTop: 8,
                     fontSize: 18,
                     color: colors.grey1,
                   },
