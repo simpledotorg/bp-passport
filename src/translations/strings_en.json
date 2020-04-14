@@ -34,5 +34,10 @@
   "verify.incorrect-code": "Please enter the correct code",
   "verify.didnt-receive": "Didn’t receive the code? {resend}",
   "verify.resend": "Resend SMS",
-  "home.password-digest-prefix": "BP Passport:"
+  "home.password-digest-prefix": "BP Passport:",
+  "home.contact-a-doctor": "Contact a doctor",
+  "home.no-bp": "You have no BP recorded",
+  "home.take-your-medicines": "Take your medicines",
+  "home.take-medicine-as-directed": "Take as directed by your doctor, even if you feel fine",
+  "home.no-more-medicines": "No more medicines? Contact a doctor below"
 }
