@@ -11,6 +11,7 @@ import ConsentScreen from './screens/ConsentScreen'
 import ScanPassportScreen from './screens/ScanPassportScreen'
 import VerifyNumberScreen from './screens/VerifyNumberScreen'
 import HomeScreen from './screens/HomeScreen'
+import SettingsScreen from './screens/SettingsScreen'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon} from './components'
@@ -46,7 +47,7 @@ function MainStack() {
 
   return (
     <Stack.Navigator
-      initialRouteName={SCREENS.SPLASH}
+      initialRouteName={SCREENS.SETTINGS}
       screenOptions={{
         ...navigationStyle,
         headerTintColor: colors.white100,
@@ -105,6 +106,14 @@ function MainStack() {
           headerRight: () => <ButtonIcon />,
           headerLeft: () => null,
           gestureEnabled: false,
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.SETTINGS}
+        component={SettingsScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.settings'}),
         }}
       />
     </Stack.Navigator>
