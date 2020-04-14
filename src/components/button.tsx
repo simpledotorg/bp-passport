@@ -63,6 +63,7 @@ interface ButtonIconProps {
 export const ButtonIcon = (props: ButtonIconProps) => {
   return (
     <TouchableOpacity
+      {...props}
       style={[
         {
           width: 44,
@@ -71,8 +72,7 @@ export const ButtonIcon = (props: ButtonIconProps) => {
           justifyContent: 'center',
         },
         props.style,
-      ]}
-      {...props}>
+      ]}>
       <Icon
         name="settings"
         size={props.iconSize ?? 24}
