@@ -1,5 +1,9 @@
 import React from 'react'
-import {createStackNavigator, useHeaderHeight} from '@react-navigation/stack'
+import {
+  createStackNavigator,
+  useHeaderHeight,
+  StackNavigationProp,
+} from '@react-navigation/stack'
 import {forFade} from './navigation/interpolators'
 import {useIntl} from 'react-intl'
 
@@ -53,7 +57,16 @@ const Navigation = () => {
 
 export default Navigation
 
-function MainStack() {
+type MainStackNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  SCREENS.MAIN_STACK
+>
+
+type Props = {
+  navigation: MainStackNavigationProp
+}
+
+function MainStack({navigation}: Props) {
   const intl = useIntl()
 
   const headerHeightIncludingSafeArea = useHeaderHeight()
@@ -116,7 +129,9 @@ function MainStack() {
           },
           headerTitleAlign: 'center',
           headerTitle: () => <HomeHeaderTitle />,
-          headerRight: () => <ButtonIcon />,
+          headerRight: () => (
+            <ButtonIcon onPress={() => navigation.navigate(SCREENS.SETTINGS)} />
+          ),
           headerLeft: () => null,
           gestureEnabled: false,
         }}
