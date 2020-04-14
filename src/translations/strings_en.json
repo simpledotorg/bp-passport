@@ -39,5 +39,9 @@
   "settings.name": "Name",
   "settings.state": "State",
   "settings.language": "Language",
-  "settings.about": "About"
+  "settings.about": "About",
+  "translation.en": "English",
+  "translation.hi": "Hindi",
+  "translation.mr": "Marathi",
+  "translation.pa": "Punjabi"
 }
