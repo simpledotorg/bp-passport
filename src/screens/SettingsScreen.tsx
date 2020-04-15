@@ -43,13 +43,13 @@ function SettingsScreen({navigation}: any) {
           </View>
 
           <View style={styles.item}>
-            <BodyHeader>{user?.full_name}</BodyHeader>
+            <BodyHeader style={styles.itemText}>{user?.full_name}</BodyHeader>
             <BodyText style={styles.itemLabel}>
               <FormattedMessage id="settings.name" />
             </BodyText>
           </View>
           <View style={styles.item}>
-            <BodyHeader>Gujarat</BodyHeader>
+            <BodyHeader style={styles.itemText}>Gujarat</BodyHeader>
             <BodyText style={styles.itemLabel}>
               <FormattedMessage id="settings.state" />
             </BodyText>
@@ -121,12 +121,40 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   headerText: {
+    fontFamily: 'Roboto',
+    fontSize: 16,
     fontWeight: 'bold',
+    fontStyle: 'normal',
+    lineHeight: 24,
+    letterSpacing: 0.5,
+    color: colors.grey0,
   },
   item: {flexDirection: 'column', marginBottom: 16},
-  itemLabel: {fontSize: 14, color: colors.grey1},
-  linkText: {
+  itemText: {
+    fontFamily: 'Roboto',
     fontSize: 18,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    lineHeight: 28,
+    letterSpacing: 0.2,
+    color: colors.grey0,
+  },
+  itemLabel: {
+    fontFamily: 'Roboto',
+    fontSize: 14,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    lineHeight: 20,
+    letterSpacing: 0.2,
+    color: colors.grey1,
+  },
+  linkText: {
+    fontFamily: 'Roboto',
+    fontSize: 18,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    lineHeight: 28,
+    letterSpacing: 0.2,
     color: colors.blue2,
   },
 })
