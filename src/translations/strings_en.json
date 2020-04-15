@@ -43,5 +43,17 @@
   "home.my-medicines": "My medicines",
   "home.see-all": "See all",
   "home.high-bp": "High BP",
-  "home.normal-bp": "Normal BP"
+  "home.normal-bp": "Normal BP",
+  "settings.profile": "Profile",
+  "settings.name": "Name",
+  "settings.state": "State",
+  "settings.language": "Language",
+  "settings.about": "About",
+  "settings.privacy-link": "Privacy policy",
+  "settings.terms-link": "Terms and conditions",
+  "settings.about-link": "About",
+  "translation.en": "English",
+  "translation.hi": "Hindi",
+  "translation.mr": "Marathi",
+  "translation.pa": "Punjabi"
 }
