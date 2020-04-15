@@ -1,13 +1,10 @@
 import axios from 'axios'
-
 import {API_ENDPOINT} from './constants'
 
-interface LoginBody {
-  phone_number: string
-  password: string
-  otp: string
+export const authRequestOtp = (body: {passport_id: string}) => {
+  return axios.post(`${API_ENDPOINT}/patient/request_otp`, body)
 }
 
-export const login = (body: LoginBody) => {
-  return axios.post(`${API_ENDPOINT}/login`, body)
+export const authActivate = (body: {passport_id: string; otp: string}) => {
+  return axios.post(`${API_ENDPOINT}/patient/activate`, body)
 }

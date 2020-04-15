@@ -5,6 +5,7 @@ import {
   StyleProp,
   ViewStyle,
   ButtonProps as NativeButtonProps,
+  TouchableOpacityProps,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import colors from '../styles/colors'
@@ -54,7 +55,7 @@ export const Button = (props: ButtonProps) => {
   )
 }
 
-interface ButtonIconProps {
+interface ButtonIconProps extends TouchableOpacityProps {
   style?: StyleProp<ViewStyle>
   iconColor?: string
   iconSize?: number

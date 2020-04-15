@@ -2,11 +2,17 @@ import React, {useState} from 'react'
 import {SafeAreaView, View, TextInput} from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
+import {RouteProp} from '@react-navigation/native'
 
 import {containerStyles, colors} from '../styles'
 import {BodyText, Button, BodyHeader} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
+
+type VerifyNumberRouteProp = RouteProp<
+  RootStackParamList,
+  SCREENS.VERIFY_YOUR_NUMBER
+>
 
 type VerifyNumberScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -15,13 +21,17 @@ type VerifyNumberScreenNavigationProp = StackNavigationProp<
 
 type Props = {
   navigation: VerifyNumberScreenNavigationProp
+  route: VerifyNumberRouteProp
 }
 
-function VerifyNumber({navigation}: Props) {
+function VerifyNumber({navigation, route}: Props) {
   const intl = useIntl()
 
   const [input, setInput] = useState('')
   const [codeError, setCodeError] = useState(false)
+
+  const {passport_id} = route.params
+  console.log('passport_id: ', passport_id)
 
   return (
     <View style={{flex: 1}}>
