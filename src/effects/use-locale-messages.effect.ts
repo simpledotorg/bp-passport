@@ -19,7 +19,17 @@ const useLocaleMessages = () => {
   )
   const [messages, setMessages] = useState(languages[locale])
 
-  return {locale, messages}
+  useEffect(() => {
+    setMessages(languages[locale])
+  }, [locale])
+
+  console.log(locale)
+
+  return {
+    locale,
+    messages,
+    setLocale,
+  }
 }
 
 export default useLocaleMessages
