@@ -23,7 +23,7 @@ import {colors, navigation as navigationStyle} from './styles'
 
 export type RootStackParamList = {
   LAUNCH: undefined
-  MAIN_STACK: {token: string | null}
+  MAIN_STACK: undefined
   SPLASH: undefined
   LOGIN: undefined
   CONSENT: undefined
@@ -33,12 +33,6 @@ export type RootStackParamList = {
   SETTINGS: undefined
   CONTACT_A_DOCTOR: undefined
   HOME: undefined
-}
-
-type MainStackRouteProp = RouteProp<RootStackParamList, 'MAIN_STACK'>
-
-type MainStackProps = {
-  route: MainStackRouteProp
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -64,18 +58,14 @@ const Navigation = () => {
 
 export default Navigation
 
-function MainStack({route}: MainStackProps) {
+function MainStack() {
   const intl = useIntl()
-
-  const {token} = route.params
 
   const headerHeightIncludingSafeArea = useHeaderHeight()
 
-  console.log(token)
-
   return (
     <Stack.Navigator
-      initialRouteName={token ? SCREENS.HOME : SCREENS.SPLASH}
+      initialRouteName={SCREENS.SPLASH}
       screenOptions={{
         ...navigationStyle,
         headerTintColor: colors.white100,
