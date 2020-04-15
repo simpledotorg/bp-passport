@@ -40,5 +40,17 @@
   "home.take-your-medicines": "Take your medicines",
   "home.take-medicine-as-directed": "Take as directed by your doctor, even if you feel fine",
   "home.no-more-medicines": "No more medicines? Contact a doctor below",
-  "home.my-medicines": "My medicines"
+  "home.my-medicines": "My medicines",
+  "settings.profile": "Profile",
+  "settings.name": "Name",
+  "settings.state": "State",
+  "settings.language": "Language",
+  "settings.about": "About",
+  "settings.privacy-link": "Privacy policy",
+  "settings.terms-link": "Terms and conditions",
+  "settings.about-link": "About",
+  "translation.en": "English",
+  "translation.hi": "Hindi",
+  "translation.mr": "Marathi",
+  "translation.pa": "Punjabi"
 }
