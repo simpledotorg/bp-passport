@@ -8,13 +8,17 @@ import Navigation from './Navigation'
 
 import UserProvider from './providers/user.provider'
 
-export default function App() {
-  const localeMessages = useLocaleMessages()
+const App = () => {
+  const locale = useLocaleMessages()
+
+  useEffect(() => {
+    console.log('change')
+  }, [locale.locale])
+
+  console.log(locale.messages)
 
   return (
-    <IntlProvider
-      locale={localeMessages.locale}
-      messages={localeMessages.messages}>
+    <IntlProvider locale={locale.locale} messages={locale.messages}>
       <UserProvider>
         <NavigationContainer>
           <Navigation />
@@ -23,3 +27,5 @@ export default function App() {
     </IntlProvider>
   )
 }
+
+export default App

@@ -6,19 +6,30 @@ import hi from '../translations/strings_hi_IN.json'
 import mr from '../translations/strings_mr_IN.json'
 import pa from '../translations/strings_pa_IN.json'
 
+import {AVAILABLE_TRANSLATIONS, ENGLISH} from '../constants/languages'
+
 const useLocaleMessages = () => {
   const languages: {
-    [key: string]: any
+    [key: string]: {}
   } = {en, hi, mr, pa}
 
-  const availableTranslations = ['en', 'hi', 'mr', 'pa']
   const [locale, setLocale] = useState(
-    RNLocalize.findBestAvailableLanguage(availableTranslations)?.languageTag ||
-      'en',
+    RNLocalize.findBestAvailableLanguage(AVAILABLE_TRANSLATIONS)?.languageTag ||
+      ENGLISH,
   )
   const [messages, setMessages] = useState(languages[locale])
 
-  return {locale, messages}
+  useEffect(() => {
+    setMessages(languages[locale])
+  }, [locale])
+
+  console.log(locale)
+
+  return {
+    locale,
+    messages,
+    setLocale,
+  }
 }
 
 export default useLocaleMessages

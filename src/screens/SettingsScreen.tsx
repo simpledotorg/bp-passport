@@ -8,27 +8,35 @@ import {
   Platform,
 } from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
-import Picker from 'react-native-picker-select'
+import Picker, {Item} from 'react-native-picker-select'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {getLocales} from 'react-native-localize'
 
 import {containerStyles, colors} from '../styles'
 import {BodyText, BodyHeader} from '../components'
 import {UserContext} from '../providers/user.provider'
+import {AVAILABLE_TRANSLATIONS, ENGLISH} from '../constants/languages'
+import useLocaleMessages from '../effects/use-locale-messages.effect'
 
 function SettingsScreen({navigation}: any) {
   const {user} = useContext(UserContext)
   const intl = useIntl()
-  const locales = getLocales().map((locale) => {
-    return {
-      label: intl.formatMessage({
-        id: `translation.${locale.languageCode}`,
-      }),
-      value: locale.languageCode,
-    }
-  })
+  const locale = useLocaleMessages()
 
-  const [selectedLanguage, setSelectedLanguage] = useState('en')
+  const locales = getLocales().reduce((memo: Item[], {languageCode}) => {
+    if (AVAILABLE_TRANSLATIONS.includes(languageCode)) {
+      const translation = {
+        label: intl.formatMessage({
+          id: `translation.${languageCode}`,
+        }),
+        value: languageCode,
+      }
+
+      memo.push(translation)
+    }
+
+    return memo
+  }, [])
 
   return (
     <SafeAreaView
@@ -61,9 +69,9 @@ function SettingsScreen({navigation}: any) {
           </View>
           <View style={{marginBottom: 40}}>
             <Picker
-              onValueChange={(language) => setSelectedLanguage(language)}
+              onValueChange={(language) => locale.setLocale(language)}
               items={locales}
-              value={selectedLanguage}
+              value={locale.locale}
               placeholder={{}}
               useNativeAndroidPickerStyle={false}
               style={pickerStyles}
