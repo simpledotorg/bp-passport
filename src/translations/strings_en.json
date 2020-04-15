@@ -40,5 +40,8 @@
   "home.take-your-medicines": "Take your medicines",
   "home.take-medicine-as-directed": "Take as directed by your doctor, even if you feel fine",
   "home.no-more-medicines": "No more medicines? Contact a doctor below",
-  "home.my-medicines": "My medicines"
+  "home.my-medicines": "My medicines",
+  "home.see-all": "See all",
+  "home.high-bp": "High BP",
+  "home.normal-bp": "Normal BP"
 }
