@@ -1,5 +1,9 @@
 import React from 'react'
-import {createStackNavigator, useHeaderHeight} from '@react-navigation/stack'
+import {
+  createStackNavigator,
+  useHeaderHeight,
+  StackNavigationProp,
+} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
 import {forFade} from './navigation/interpolators'
 import {useIntl} from 'react-intl'
@@ -11,6 +15,7 @@ import ConsentScreen from './screens/ConsentScreen'
 import ScanPassportScreen from './screens/ScanPassportScreen'
 import VerifyNumberScreen from './screens/VerifyNumberScreen'
 import HomeScreen from './screens/HomeScreen'
+import SettingsScreen from './screens/SettingsScreen'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon} from './components'
@@ -23,7 +28,7 @@ export type RootStackParamList = {
   LOGIN: undefined
   CONSENT: undefined
   SCAN_BP_PASSPORT: undefined
-  VERIFY_YOUR_NUMBER: undefined
+  VERIFY_YOUR_NUMBER: {passport_id: string}
   ALL_BP: undefined
   SETTINGS: undefined
   CONTACT_A_DOCTOR: undefined
@@ -126,9 +131,19 @@ function MainStack({route}: MainStackProps) {
           },
           headerTitleAlign: 'center',
           headerTitle: () => <HomeHeaderTitle />,
-          headerRight: () => <ButtonIcon />,
+          headerRight: () => (
+            <ButtonIcon onPress={() => navigation.navigate(SCREENS.SETTINGS)} />
+          ),
           headerLeft: () => null,
           gestureEnabled: false,
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.SETTINGS}
+        component={SettingsScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.settings'}),
         }}
       />
     </Stack.Navigator>
