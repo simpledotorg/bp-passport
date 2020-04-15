@@ -72,7 +72,7 @@ function SplashScreen({navigation}: Props) {
           style={{marginTop: 24}}
           title={intl.formatMessage({id: 'general.next'})}
           onPress={() => {
-            navigation.navigate(SCREENS.CONSENT)
+            navigation.navigate(SCREENS.HOME)
           }}
         />
       </View>
