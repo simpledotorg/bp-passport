@@ -22,7 +22,7 @@ import {
 import {UserContext} from '../providers/user.provider'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-import {Button, BodyHeader, BodyText} from '../components'
+import {Button, BodyHeader, BodyText, BpInformation} from '../components'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -32,6 +32,8 @@ type HomeScreenNavigationProp = StackNavigationProp<
 type Props = {
   navigation: HomeScreenNavigationProp
 }
+
+const BP_SHOW_LIMIT = 3
 
 function Home({navigation}: Props) {
   const {user} = useContext(UserContext)
@@ -56,7 +58,14 @@ function Home({navigation}: Props) {
       diastolic: 92,
       date: '02/02/02',
     },
+    {
+      systolic: 139,
+      diastolic: 76,
+      date: '02/02/02',
+    },
   ]
+
+  const showBpHistoryButton = bps.length > BP_SHOW_LIMIT
 
   const isBloodPressureHigh = (bp: any) => {
     // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
@@ -155,54 +164,29 @@ function Home({navigation}: Props) {
         <View style={[styles.homeContainer]}>
           <BodyHeader style={[styles.sectionHeader]}>My BP</BodyHeader>
           {bps ? (
-            bps.map((bp, index) => (
-              <View
-                key={index}
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginTop: 16,
-                }}>
-                <Image source={redHeart} style={[styles.informationIcon]} />
-                <View>
-                  <BodyText
-                    style={{
-                      fontSize: 18,
-                      color: colors.grey0,
-                      fontWeight: '500',
-                    }}>{`${bp.systolic}/${bp.diastolic}`}</BodyText>
-                  <BodyText
-                    style={{
-                      fontSize: 16,
+            <>
+              {bps.map((bp, index) => {
+                if (index > BP_SHOW_LIMIT - 1) {
+                  return null
+                }
 
-                      color: colors.grey1,
-                    }}>
-                    {bp.date}
-                  </BodyText>
-                </View>
-                {isBloodPressureHigh(bp) ? (
-                  <BodyText
-                    style={[
-                      styles.bpText,
-                      {
-                        color: colors.red1,
-                      },
-                    ]}>
-                    High BP
-                  </BodyText>
-                ) : (
-                  <BodyText
-                    style={[
-                      styles.bpText,
-                      {
-                        color: colors.green1,
-                      },
-                    ]}>
-                    Normal BP
-                  </BodyText>
-                )}
-              </View>
-            ))
+                return <BpInformation bp={bp} key={index} />
+              })}
+              {showBpHistoryButton && (
+                <Button
+                  style={{
+                    marginTop: 15,
+                    backgroundColor: colors.blue3,
+                    shadowColor: 'rgba(0, 117, 235, 0.3)',
+                  }}
+                  buttonColor={colors.blue2}
+                  title={intl.formatMessage({id: 'home.see-all'})}
+                  onPress={() => {
+                    navigation.navigate(SCREENS.BP_HISTORY, {bps})
+                  }}
+                />
+              )}
+            </>
           ) : (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Image
@@ -266,11 +250,6 @@ const styles = StyleSheet.create({
   sectionText: {
     fontSize: 18,
     fontWeight: '500',
-  },
-  bpText: {
-    fontWeight: '500',
-    fontSize: 18,
-    marginLeft: 'auto',
   },
   informationIcon: {
     marginRight: 16,
