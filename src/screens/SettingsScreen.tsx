@@ -15,18 +15,37 @@ import {getLocales} from 'react-native-localize'
 import {containerStyles, colors} from '../styles'
 import {BodyText, BodyHeader} from '../components'
 import {UserContext} from '../providers/user.provider'
+import {AVAILABLE_TRANSLATIONS} from '../constants/languages'
 
 function SettingsScreen({navigation}: any) {
   const {user} = useContext(UserContext)
   const intl = useIntl()
-  const locales = getLocales().map((locale) => {
-    return {
-      label: intl.formatMessage({
-        id: `translation.${locale.languageCode}`,
-      }),
-      value: locale.languageCode,
+  const locales = getLocales().reduce((memo: object[], {languageCode}) => {
+    if (AVAILABLE_TRANSLATIONS.includes(languageCode)) {
+      const translation = {
+        label: intl.formatMessage({
+          id: `translation.${languageCode}`,
+        }),
+        value: languageCode,
+      }
+
+      memo.push(translation)
     }
-  })
+
+    return memo
+  }, [])
+
+  // .filter((locale) => {
+  //   return AVAILABLE_TRANSLATIONS.includes(locale.languageCode)
+  // })
+  // .map((locale) => {
+  //   return {
+  //     label: intl.formatMessage({
+  //       id: `translation.${locale.languageCode}`,
+  //     }),
+  //     value: locale.languageCode,
+  //   }
+  // })
 
   const [selectedLanguage, setSelectedLanguage] = useState('en')
 
