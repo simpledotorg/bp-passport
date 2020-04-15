@@ -33,7 +33,7 @@ export type RootStackParamList = {
   SETTINGS: undefined
   CONTACT_A_DOCTOR: undefined
   HOME: undefined
-  BP_HISTORY: {bps: []}
+  BP_HISTORY: {bps: object[]}
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
