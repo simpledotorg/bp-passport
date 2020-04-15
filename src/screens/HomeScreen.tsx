@@ -67,12 +67,6 @@ function Home({navigation}: Props) {
 
   const showBpHistoryButton = bps.length > BP_SHOW_LIMIT
 
-  const isBloodPressureHigh = (bp: any) => {
-    // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
-    // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
-    return bp.systolic >= 140 || bp.diastolic >= 90
-  }
-
   return (
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
