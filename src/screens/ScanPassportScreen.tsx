@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {SafeAreaView, View, Image, Alert, ViewProps} from 'react-native'
+import {SafeAreaView, View, Image, Alert} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 import {RNCamera, BarCodeType} from 'react-native-camera'
 import {StackNavigationProp} from '@react-navigation/stack'

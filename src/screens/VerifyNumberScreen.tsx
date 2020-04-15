@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {SafeAreaView, View, TextInput} from 'react-native'
+import {SafeAreaView, View, TextInput, Alert} from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
@@ -8,6 +8,7 @@ import {containerStyles, colors} from '../styles'
 import {BodyText, Button, BodyHeader} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
+import {authActivate} from '../api'
 
 type VerifyNumberRouteProp = RouteProp<
   RootStackParamList,
@@ -24,7 +25,15 @@ type Props = {
   route: VerifyNumberRouteProp
 }
 
+enum UIState {
+  Normal,
+  CallingAPI,
+}
+
 function VerifyNumber({navigation, route}: Props) {
+  // Todo - implement ActivityIndicator UI while api being called
+  const [uiState, setUIState] = useState(UIState.Normal)
+
   const intl = useIntl()
 
   const [input, setInput] = useState('')
@@ -32,6 +41,33 @@ function VerifyNumber({navigation, route}: Props) {
 
   const {passport_id} = route.params
   console.log('passport_id: ', passport_id)
+
+  const verifyOTP = (otp: string) => {
+    if (uiState === UIState.Normal) {
+      setUIState(UIState.CallingAPI)
+
+      return authActivate({passport_id, otp})
+        .then(() => {
+          navigation.replace(SCREENS.HOME)
+        })
+        .catch((error: Error) => {
+          Alert.alert(
+            'Error',
+            `${error}`,
+            [
+              {
+                text: 'OK',
+                onPress: () => {},
+              },
+            ],
+            {cancelable: false},
+          )
+        })
+        .finally(() => {
+          setUIState(UIState.Normal)
+        })
+    }
+  }
 
   return (
     <View style={{flex: 1}}>
@@ -75,7 +111,7 @@ function VerifyNumber({navigation, route}: Props) {
           <Button
             style={{marginTop: 24}}
             onPress={() => {
-              navigation.navigate(SCREENS.HOME)
+              verifyOTP(input)
             }}
             title={intl.formatMessage({id: 'general.verify'})}
           />
