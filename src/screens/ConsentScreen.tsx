@@ -32,10 +32,13 @@ function Consent({navigation}: Props) {
         ]}>
         <ScrollView>
           <BodyText style={{marginBottom: 24}}>
-            <FormattedMessage id="consent.by-confirming" />
+            <FormattedMessage id="consent.by-using-app" />
           </BodyText>
           <BodyText style={{marginBottom: 24}}>
-            <FormattedMessage id="consent.personal-data" />
+            <FormattedMessage id="consent.this-means-that" />
+          </BodyText>
+          <BodyText style={{marginBottom: 24}}>
+            <FormattedMessage id="consent.patient-data" />
           </BodyText>
           <BodyText>
             <FormattedMessage
