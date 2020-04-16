@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react'
+import React, {useRef, useEffect, useContext} from 'react'
 import {NavigationContainer} from '@react-navigation/native'
 import {IntlProvider} from 'react-intl'
 import axios from 'axios'
@@ -9,10 +9,12 @@ import {
 } from './effects/use-locale-messages.effect'
 import Navigation from './Navigation'
 import UserProvider from './providers/user.provider'
+import AuthProvider from './providers/auth.provider'
 import en from './translations/strings_en.json'
 import hi from './translations/strings_hi_IN.json'
 import mr from './translations/strings_mr_IN.json'
 import pa from './translations/strings_pa_IN.json'
+import SCREENS from './constants/screens'
 
 const App = () => {
   const languages: {
@@ -20,6 +22,8 @@ const App = () => {
   } = {en, hi, mr, pa}
 
   const axiosInterceptor: any = useRef(null)
+
+  const navigationRef = React.useRef()
 
   useEffect(() => {
     if (axiosInterceptor.current !== null) {
@@ -51,9 +55,11 @@ const App = () => {
           return (
             <IntlProvider locale={locale} messages={languages[locale]}>
               <UserProvider>
-                <NavigationContainer>
-                  <Navigation />
-                </NavigationContainer>
+                <AuthProvider>
+                  <NavigationContainer>
+                    <Navigation />
+                  </NavigationContainer>
+                </AuthProvider>
               </UserProvider>
             </IntlProvider>
           )

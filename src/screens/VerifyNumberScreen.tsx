@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import {SafeAreaView, View, TextInput, Alert} from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -8,7 +8,8 @@ import {containerStyles, colors} from '../styles'
 import {BodyText, Button, BodyHeader} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-import {authActivate, getPatient} from '../api'
+import {authActivate} from '../api'
+import {AuthContext} from '../providers/auth.provider'
 
 type VerifyNumberRouteProp = RouteProp<
   RootStackParamList,
@@ -34,6 +35,8 @@ function VerifyNumber({navigation, route}: Props) {
   // Todo - implement ActivityIndicator UI while api being called
   const [uiState, setUIState] = useState(UIState.Normal)
 
+  const {setAuthParams} = useContext(AuthContext)
+
   const intl = useIntl()
 
   const [input, setInput] = useState('')
@@ -47,9 +50,10 @@ function VerifyNumber({navigation, route}: Props) {
       setUIState(UIState.CallingAPI)
 
       return authActivate({passport_id, otp})
-        .then(() => {
-          getPatient()
-          navigation.replace(SCREENS.HOME)
+        .then((authParams) => {
+          if (authParams) {
+            setAuthParams(authParams)
+          }
         })
         .catch((error: Error) => {
           Alert.alert(
