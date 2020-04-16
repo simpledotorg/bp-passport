@@ -126,7 +126,7 @@ function MainStack({navigation}: Props) {
         component={VerifyNumberScreen}
         options={{
           headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.verify-your-number'}),
+          title: intl.formatMessage({id: 'page-titles.verify-pin'}),
         }}
       />
       <Stack.Screen

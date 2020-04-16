@@ -47,7 +47,7 @@ export const BpInformation = ({bp}: any) => {
               color: colors.red1,
             },
           ]}>
-          <FormattedMessage id="home.high-bp" />
+          <FormattedMessage id="general.high-bp" />
         </BodyText>
       ) : (
         <BodyText
@@ -57,7 +57,7 @@ export const BpInformation = ({bp}: any) => {
               color: colors.green1,
             },
           ]}>
-          <FormattedMessage id="home.normal-bp" />
+          <FormattedMessage id="general.normal-bp" />
         </BodyText>
       )}
     </View>

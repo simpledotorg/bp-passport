@@ -80,16 +80,10 @@ function VerifyNumber({navigation, route}: Props) {
         style={[containerStyles.fill, {backgroundColor: colors.white}]}>
         <View style={{margin: 24}}>
           <BodyText style={{textAlign: 'center'}}>
-            <FormattedMessage
-              id="verify.verify-number"
-              values={{
-                number: (
-                  <BodyText style={{fontWeight: 'bold'}}>
-                    '+X XXX XXX XX14'
-                  </BodyText>
-                ),
-              }}
-            />
+            <FormattedMessage id="verify-pin.please-verify" />{' '}
+          </BodyText>
+          <BodyText style={{textAlign: 'center', fontWeight: 'bold'}}>
+            +X XXX XXX XX14
           </BodyText>
           <TextInput
             style={{
@@ -108,7 +102,7 @@ function VerifyNumber({navigation, route}: Props) {
               color: colors.grey0,
               marginTop: 36,
             }}
-            placeholder={intl.formatMessage({id: 'verify.verify-placeholder'})}
+            placeholder={intl.formatMessage({id: 'verify-pin.code'})}
             onChangeText={(text) => setInput(text)}
             value={input}
             keyboardType={'numeric'}
@@ -127,7 +121,7 @@ function VerifyNumber({navigation, route}: Props) {
                 color: colors.red1,
                 textAlign: 'center',
               }}>
-              <FormattedMessage id="verify.incorrect-code" />
+              <FormattedMessage id="verify-pin.wrong-pin" />
             </BodyHeader>
           )}
           <BodyHeader
@@ -137,16 +131,10 @@ function VerifyNumber({navigation, route}: Props) {
               textAlign: 'center',
               marginTop: 16,
             }}>
-            <FormattedMessage
-              id="verify.didnt-receive"
-              values={{
-                resend: (
-                  <BodyHeader style={{color: colors.blue2}}>
-                    <FormattedMessage id="verify.resend" />
-                  </BodyHeader>
-                ),
-              }}
-            />
+            <FormattedMessage id="verify-pin.no-pin" />{' '}
+            <BodyHeader style={{color: colors.blue2}}>
+              <FormattedMessage id="verify-pin.resend-sms-link" />
+            </BodyHeader>
           </BodyHeader>
         </View>
       </SafeAreaView>
