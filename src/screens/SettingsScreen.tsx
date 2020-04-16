@@ -92,7 +92,7 @@ function SettingsScreen({navigation}: any) {
               onPress={() => {
                 Linking.openURL('https://simple.org/patient-privacy')
               }}>
-              <FormattedMessage id="settings.privacy-link" />
+              <FormattedMessage id="settings.privacy-policy-link" />
             </BodyText>
           </View>
           <View style={styles.item}>
@@ -110,7 +110,7 @@ function SettingsScreen({navigation}: any) {
               onPress={() => {
                 Linking.openURL('https://simple.org/')
               }}>
-              <FormattedMessage id="settings.about-link" />
+              <FormattedMessage id="settings.about" />
             </BodyText>
           </View>
         </View>

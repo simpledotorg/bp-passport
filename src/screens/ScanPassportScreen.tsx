@@ -105,7 +105,7 @@ function ScanPassportScreen({navigation}: Props) {
               fontSize: 20,
               flex: 1,
             }}>
-            <FormattedMessage id="scan.qr-instruction" />
+            <FormattedMessage id="scan-bp-passport.hold-camera" />
           </BodyHeader>
         </View>
         <View
@@ -138,7 +138,7 @@ function ScanPassportScreen({navigation}: Props) {
                     width: '80%',
                     textAlign: 'center',
                   }}>
-                  <FormattedMessage id="scan.no-camera-permissions" />
+                  <FormattedMessage id="login.allow-camera-access" />
                 </BodyHeader>
               </View>
             }>
