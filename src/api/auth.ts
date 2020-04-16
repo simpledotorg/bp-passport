@@ -3,6 +3,7 @@ import {API_ENDPOINT} from './constants'
 
 export const authRequestOtp = (body: {passport_id: string}) => {
   return axios.post(`${API_ENDPOINT}/patient/request_otp`, body)
+  // return axios.post(`${API_ENDPOINT}/patient/activate`, body)
 }
 
 export interface AuthParams {
@@ -15,6 +16,7 @@ export const authActivate = async (body: {
   otp: string
 }) => {
   try {
+    // const response = await axios.post(`${API_ENDPOINT}/patient/login`, body)
     const response = await axios.post(`${API_ENDPOINT}/patient/activate`, body)
     const data: AuthParams = response.data
     if (!data.access_token || !data.patient_id) {
