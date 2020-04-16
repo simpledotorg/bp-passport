@@ -23,8 +23,6 @@ const App = () => {
 
   const axiosInterceptor: any = useRef(null)
 
-  const navigationRef = React.useRef()
-
   useEffect(() => {
     if (axiosInterceptor.current !== null) {
       axios.interceptors.request.eject(axiosInterceptor.current)
