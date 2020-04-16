@@ -4,6 +4,7 @@ import {
   useHeaderHeight,
   StackNavigationProp,
 } from '@react-navigation/stack'
+import {RouteProp} from '@react-navigation/native'
 import {forFade} from './navigation/interpolators'
 import {useIntl} from 'react-intl'
 
@@ -28,7 +29,7 @@ export type RootStackParamList = {
   LOGIN: undefined
   CONSENT: undefined
   SCAN_BP_PASSPORT: undefined
-  VERIFY_YOUR_NUMBER: undefined
+  VERIFY_YOUR_NUMBER: {passport_id: string}
   ALL_BP: undefined
   SETTINGS: undefined
   CONTACT_A_DOCTOR: undefined
@@ -59,16 +60,7 @@ const Navigation = () => {
 
 export default Navigation
 
-type MainStackNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  SCREENS.MAIN_STACK
->
-
-type Props = {
-  navigation: MainStackNavigationProp
-}
-
-function MainStack({navigation}: Props) {
+function MainStack() {
   const intl = useIntl()
 
   const headerHeightIncludingSafeArea = useHeaderHeight()

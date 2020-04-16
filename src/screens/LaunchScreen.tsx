@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {View, Image} from 'react-native'
 import {StackNavigationProp} from '@react-navigation/stack'
 
