@@ -8,7 +8,7 @@ import {containerStyles, colors} from '../styles'
 import {BodyText, Button, BodyHeader} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-import {authActivate} from '../api'
+import {authActivate, getPatient} from '../api'
 
 type VerifyNumberRouteProp = RouteProp<
   RootStackParamList,
@@ -48,6 +48,7 @@ function VerifyNumber({navigation, route}: Props) {
 
       return authActivate({passport_id, otp})
         .then(() => {
+          getPatient()
           navigation.replace(SCREENS.HOME)
         })
         .catch((error: Error) => {

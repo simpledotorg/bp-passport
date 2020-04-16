@@ -39,7 +39,19 @@ yarn
 pod install
 ```
 
-4. CD to `[projectroot]/android/app` folder and make a copy of the `keystore-placeholder.properties` file:
+4. CD to `[projectroot]` folder and create your own development enviroment file:
+
+```
+cp .env.development.default .env.development
+```
+
+5. Optionally create your own production/release enviroment file:
+
+```
+cp .env.production.default .env.production
+```
+
+6. CD to `[projectroot]/android/app` folder and make a copy of the `keystore-placeholder.properties` file:
 
 ```
 cp keystore-placeholder.properties keystore.properties
