@@ -35,7 +35,8 @@
     "react-native-reanimated": "^1.7.1",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.4.0",
-    "react-native-vector-icons": "^6.6.0"
+    "react-native-vector-icons": "^6.6.0",
+    "simple-mock-api": "^0.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -54,7 +55,6 @@
     "path": "^0.12.7",
     "prettier": "^2.0.2",
     "react-test-renderer": "16.11.0",
-    "simple-mock-api": "^0.0.2",
     "tslint": "^6.1.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^4.2.0",
