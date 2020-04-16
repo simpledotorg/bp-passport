@@ -1,7 +1,8 @@
-import React, {createContext, useState, useEffect} from 'react'
+import React, {createContext, useState, useEffect, useContext} from 'react'
 import {AuthParams} from '../api'
 import {getPatient} from '../api/patient'
 import AsyncStorage from '@react-native-community/async-storage'
+import {UserContext} from '../providers/user.provider'
 
 export enum LoginState {
   LoggedOut,
@@ -29,6 +30,8 @@ const AuthProvider = ({children}) => {
   const [loginState, setLoginState] = useState(LoginState.LoggedOut)
   const [header, setHeader] = useState(null)
 
+  const {updatePatientData} = useContext(UserContext)
+
   const signOut = async () => {
     setAuthParams(undefined)
     setLoginState(LoginState.LoggedOut)
@@ -43,10 +46,11 @@ const AuthProvider = ({children}) => {
     if (authParams && loginState === LoginState.LoggedOut) {
       setLoginState(LoginState.LoggingIn)
       getPatient()
-        .then(() => {
+        .then((patientData) => {
           // worked out! token and patient are valid
           setLoginState(LoginState.LoggedIn)
-
+          console.log('NK 1...')
+          updatePatientData(patientData)
           AsyncStorage.multiSet([
             [KEYS.ACCESS_TOKEN, authParams.access_token],
             [KEYS.PATIENT_ID, authParams.patient_id],
