@@ -83,5 +83,9 @@
   "general.days": "days",
   "general.day": "day",
   "general.hours": "hours",
-  "general.hour": "hour"
+  "general.hour": "hour",
+  "translation.en": "English",
+  "translation.hi": "Hindi",
+  "translation.mr": "Marathi",
+  "translation.pa": "Punjabi"
 }
