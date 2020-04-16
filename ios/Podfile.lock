@@ -251,13 +251,13 @@ PODS:
     - React-cxxreact (= 0.62.0)
     - React-jsi (= 0.62.0)
   - React-jsinspector (0.62.0)
-  - react-native-camera (3.22.0):
+  - react-native-camera (3.23.1):
     - React
-    - react-native-camera/RCT (= 3.22.0)
-    - react-native-camera/RN (= 3.22.0)
-  - react-native-camera/RCT (3.22.0):
+    - react-native-camera/RCT (= 3.23.1)
+    - react-native-camera/RN (= 3.23.1)
+  - react-native-camera/RCT (3.23.1):
     - React
-  - react-native-camera/RN (3.22.0):
+  - react-native-camera/RN (3.23.1):
     - React
   - react-native-safe-area-context (0.7.3):
     - React
@@ -322,15 +322,17 @@ PODS:
     - ReactCommon/callinvoker (= 0.62.0)
   - ReactNativeDarkMode (0.2.2):
     - React
-  - RNCMaskedView (0.1.7):
+  - RNCAsyncStorage (1.9.0):
+    - React
+  - RNCMaskedView (0.1.9):
     - React
   - RNCPicker (1.3.0):
     - React
   - RNGestureHandler (1.6.1):
     - React
-  - RNLocalize (1.3.4):
+  - RNLocalize (1.4.0):
     - React
-  - RNReanimated (1.7.1):
+  - RNReanimated (1.8.0):
     - React
   - RNScreens (2.4.0):
     - React
@@ -379,6 +381,7 @@ DEPENDENCIES:
   - ReactCommon/callinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeDarkMode (from `../node_modules/react-native-dark-mode`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPicker (from `../node_modules/@react-native-community/picker`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -466,6 +469,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeDarkMode:
     :path: "../node_modules/react-native-dark-mode"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
   RNCPicker:
@@ -514,7 +519,7 @@ SPEC CHECKSUMS:
   React-jsi: bc8166d6833cdcb0848c80710b26ce63fad2c099
   React-jsiexecutor: 8bf0b2707f05865113415088c398a7f98c0cf546
   React-jsinspector: 8e5913c4c6c54f0d3f9c9fc630c465a89cded65d
-  react-native-camera: 33db8f7b774b32f3583be9376d05ed583154815b
+  react-native-camera: 1b52abea404d04e040edb3e74b7c5523c01a3089
   react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
   React-RCTActionSheet: 674afbc8b9c76e0a83520e0a51da29a70802c03f
   React-RCTAnimation: f5f24330d09ee677fb49e0782f8321868f4df431
@@ -527,11 +532,12 @@ SPEC CHECKSUMS:
   React-RCTVibration: 0630aeb11e22f87c180ca9c0c3a0a0aba780cc62
   ReactCommon: d22162ab8f1358c53dfcd0f9c4d82d38facdbc48
   ReactNativeDarkMode: 0178ffca3b10f6a7c9f49d6f9810232b328fa949
-  RNCMaskedView: 76c40a1d41c3e2535df09246a2b5487f04de0814
+  RNCAsyncStorage: 453cd7c335ec9ba3b877e27d02238956b76f3268
+  RNCMaskedView: 71fc32d971f03b7f03d6ab6b86b730c4ee64f5b6
   RNCPicker: 7d06ee91dff65b0bcd400ca00039051d5ddcb938
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
-  RNLocalize: 215c419a17d7585eb7a63c748ebfd042e0cb2c3d
-  RNReanimated: 4e102df74a9674fa943e05f97f3362b6e44d0b48
+  RNLocalize: b6df30cc25ae736d37874f9bce13351db2f56796
+  RNReanimated: 955cf4068714003d2f1a6e2bae3fb1118f359aff
   RNScreens: b5c0e1b2b04512919e78bd3898e144a157ce2363
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: 9db9ff2025ad21d1ac0a8b3c85d5ac4e7c29d525

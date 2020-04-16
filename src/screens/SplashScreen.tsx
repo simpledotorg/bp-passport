@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {SafeAreaView, View, Image, StyleSheet} from 'react-native'
 import {FormattedMessage, useIntl, IntlContext} from 'react-intl'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -72,7 +72,7 @@ function SplashScreen({navigation}: Props) {
           style={{marginTop: 24}}
           title={intl.formatMessage({id: 'general.next'})}
           onPress={() => {
-            navigation.navigate(SCREENS.HOME)
+            navigation.navigate(SCREENS.CONSENT)
           }}
         />
       </View>
