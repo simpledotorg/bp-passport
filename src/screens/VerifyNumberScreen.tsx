@@ -80,10 +80,7 @@ function VerifyNumber({navigation, route}: Props) {
         style={[containerStyles.fill, {backgroundColor: colors.white}]}>
         <View style={{margin: 24}}>
           <BodyText style={{textAlign: 'center'}}>
-            <FormattedMessage id="verify-pin.please-verify" />{' '}
-          </BodyText>
-          <BodyText style={{textAlign: 'center', fontWeight: 'bold'}}>
-            +X XXX XXX XX14
+            <FormattedMessage id="verify-pin.please-verify" />
           </BodyText>
           <TextInput
             style={{
