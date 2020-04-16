@@ -40,7 +40,7 @@ function Login({navigation}: Props) {
               },
             ]}>
             <PageHeader style={{textAlign: 'center'}}>
-              <FormattedMessage id="login.title" />
+              <FormattedMessage id="login.scan-your-passport" />
             </PageHeader>
           </View>
         </View>
@@ -51,7 +51,7 @@ function Login({navigation}: Props) {
             },
           ]}>
           <Button
-            title={intl.formatMessage({id: 'login.primary-button'})}
+            title={intl.formatMessage({id: 'page-titles.scan-bp-passport'})}
             onPress={() => {
               navigation.navigate(SCREENS.SCAN_BP_PASSPORT)
             }}
@@ -68,7 +68,7 @@ function Login({navigation}: Props) {
               onPress={() => {
                 setShowNoBpPassportModal(true)
               }}>
-              <FormattedMessage id="login.no-bp-passport" />
+              <FormattedMessage id="login.no-passport-link" />
             </Link>
           </View>
         </View>
@@ -85,11 +85,11 @@ function Login({navigation}: Props) {
             width: '80%',
           }}>
           <BodyHeader>
-            <FormattedMessage id="login.bp-update-incoming-title" />
+            <FormattedMessage id="login.update-coming-soon" />
           </BodyHeader>
           <BodyText
             style={{marginTop: 16, marginBottom: 32, color: colors.grey1}}>
-            <FormattedMessage id="login.bp-update-incoming" />
+            <FormattedMessage id="login.try-again" />
           </BodyText>
           <Link
             style={{
