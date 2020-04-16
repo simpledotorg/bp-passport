@@ -16,12 +16,12 @@ import {containerStyles, colors} from '../styles'
 import {BodyText, BodyHeader} from '../components'
 import {UserContext} from '../providers/user.provider'
 import {AVAILABLE_TRANSLATIONS, ENGLISH} from '../constants/languages'
-import useLocaleMessages from '../effects/use-locale-messages.effect'
+import {useLocale} from '../effects/use-locale-messages.effect'
 
 function SettingsScreen({navigation}: any) {
   const {user} = useContext(UserContext)
   const intl = useIntl()
-  const locale = useLocaleMessages()
+  const {locale, setLocale} = useLocale()
 
   const locales = getLocales().reduce((memo: Item[], {languageCode}) => {
     if (AVAILABLE_TRANSLATIONS.includes(languageCode)) {
@@ -69,9 +69,9 @@ function SettingsScreen({navigation}: any) {
           </View>
           <View style={{marginBottom: 40}}>
             <Picker
-              onValueChange={(language) => locale.setLocale(language)}
+              onValueChange={(language: string) => setLocale(language)}
               items={locales}
-              value={locale.locale}
+              value={locale}
               placeholder={{}}
               useNativeAndroidPickerStyle={false}
               style={pickerStyles}
