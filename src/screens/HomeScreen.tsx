@@ -189,7 +189,7 @@ function Home({navigation}: Props) {
                     shadowColor: 'rgba(0, 117, 235, 0.3)',
                   }}
                   buttonColor={colors.blue2}
-                  title={intl.formatMessage({id: 'home.see-all'})}
+                  title={intl.formatMessage({id: 'general.see-all'})}
                   onPress={() => {
                     navigation.navigate(SCREENS.BP_HISTORY, {bps})
                   }}
@@ -225,7 +225,7 @@ function Home({navigation}: Props) {
           marginTop: 'auto',
           margin: 8,
         }}
-        title={intl.formatMessage({id: 'home.contact-a-doctor'})}
+        title={intl.formatMessage({id: 'general.contact-a-doctor'})}
         onPress={() => {}}
       />
     </SafeAreaView>
