@@ -76,7 +76,7 @@ function MainStack({navigation}: Props) {
 
   return (
     <Stack.Navigator
-      initialRouteName={SCREENS.HOME}
+      initialRouteName={SCREENS.SPLASH}
       screenOptions={{
         ...navigationStyle,
         headerTintColor: colors.white100,
