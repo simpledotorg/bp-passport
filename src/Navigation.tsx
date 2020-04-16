@@ -60,14 +60,23 @@ const Navigation = () => {
 
 export default Navigation
 
-function MainStack() {
+type MainStackNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  SCREENS.MAIN_STACK
+>
+
+type Props = {
+  navigation: MainStackNavigationProp
+}
+
+function MainStack({navigation}: Props) {
   const intl = useIntl()
 
   const headerHeightIncludingSafeArea = useHeaderHeight()
 
   return (
     <Stack.Navigator
-      initialRouteName={SCREENS.SETTINGS}
+      initialRouteName={SCREENS.HOME}
       screenOptions={{
         ...navigationStyle,
         headerTintColor: colors.white100,
