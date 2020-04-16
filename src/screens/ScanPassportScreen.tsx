@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import {SafeAreaView, View, Image, Alert, ViewProps} from 'react-native'
+import React, {useState, useEffect} from 'react'
+import {SafeAreaView, View, Image, Alert} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 import {RNCamera, BarCodeType} from 'react-native-camera'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -8,6 +8,8 @@ import {containerStyles, qrImage, qrMaskImage, colors} from '../styles'
 import {BodyHeader} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
+
+import {authRequestOtp} from '../api'
 
 type ScanScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -24,26 +26,58 @@ type BarCodeRead = {
   type: keyof BarCodeType
 }
 
+enum UIState {
+  Normal,
+  CallingAPI,
+}
+
 function ScanPassportScreen({navigation}: Props) {
+  // Todo - implement ActivityIndicator UI while api being called
+  const [uiState, setUIState] = useState(UIState.Normal)
+
   const [hasReadCode, setHasReadCode] = useState(false)
 
   const onBarCodeRead = (event: BarCodeRead) => {
-    const udid: string | undefined = event.data
-    if (!hasReadCode && udid) {
+    if (!hasReadCode && event.type === RNCamera.Constants.BarCodeType.qr) {
       setHasReadCode(true)
-      Alert.alert(
-        'QR UDID',
-        `${udid}\n\nTodo - integrate with API`,
-        [
-          {
-            text: 'OK',
-            onPress: () => navigation.replace(SCREENS.VERIFY_YOUR_NUMBER),
-          },
-        ],
-        {cancelable: false},
-      )
+      setUIState(UIState.CallingAPI)
+      const passport_id = event.data
+      return authRequestOtp({passport_id})
+        .then(() => {
+          navigation.replace(SCREENS.VERIFY_YOUR_NUMBER, {passport_id})
+        })
+        .catch((error: Error) => {
+          Alert.alert(
+            'Error',
+            `${error}`,
+            [
+              {
+                text: 'OK',
+                onPress: () => {
+                  setHasReadCode(false)
+                },
+              },
+            ],
+            {cancelable: false},
+          )
+        })
+        .finally(() => {
+          setUIState(UIState.Normal)
+        })
     }
   }
+
+  // test a working/not working code in the simulator
+  /*
+  useEffect(() => {
+    const good = '86d89f24-fc11-4829-aa4e-5daee20a370a'
+    const bad = 'fdsfds'
+    onBarCodeRead({
+      data: bad,
+      type: RNCamera.Constants.BarCodeType.qr,
+    })
+  }, [])
+  */
 
   return (
     <SafeAreaView style={[containerStyles.fill]}>
