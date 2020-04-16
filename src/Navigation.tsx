@@ -4,6 +4,7 @@ import {
   useHeaderHeight,
   StackNavigationProp,
 } from '@react-navigation/stack'
+import {RouteProp} from '@react-navigation/native'
 import {forFade} from './navigation/interpolators'
 import {useIntl} from 'react-intl'
 
@@ -13,6 +14,7 @@ import LoginScreen from './screens/LoginScreen'
 import ConsentScreen from './screens/ConsentScreen'
 import ScanPassportScreen from './screens/ScanPassportScreen'
 import VerifyNumberScreen from './screens/VerifyNumberScreen'
+import BpHistoryScreen from './screens/BpHistoryScreen'
 import HomeScreen from './screens/HomeScreen'
 import SettingsScreen from './screens/SettingsScreen'
 
@@ -27,11 +29,12 @@ export type RootStackParamList = {
   LOGIN: undefined
   CONSENT: undefined
   SCAN_BP_PASSPORT: undefined
-  VERIFY_YOUR_NUMBER: undefined
+  VERIFY_YOUR_NUMBER: {passport_id: string}
   ALL_BP: undefined
   SETTINGS: undefined
   CONTACT_A_DOCTOR: undefined
   HOME: undefined
+  BP_HISTORY: {bps: object[]}
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -57,16 +60,7 @@ const Navigation = () => {
 
 export default Navigation
 
-type MainStackNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  SCREENS.MAIN_STACK
->
-
-type Props = {
-  navigation: MainStackNavigationProp
-}
-
-function MainStack({navigation}: Props) {
+function MainStack() {
   const intl = useIntl()
 
   const headerHeightIncludingSafeArea = useHeaderHeight()
@@ -114,6 +108,14 @@ function MainStack({navigation}: Props) {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.verify-your-number'}),
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.BP_HISTORY}
+        component={BpHistoryScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.all-bp'}),
         }}
       />
       <Stack.Screen

@@ -14,6 +14,7 @@ interface ButtonProps extends NativeButtonProps {
   children?: ReactNode
   style?: StyleProp<ViewStyle>
   title: string
+  buttonColor?: string
 }
 
 export const Button = (props: ButtonProps) => {
@@ -44,7 +45,7 @@ export const Button = (props: ButtonProps) => {
               fontStyle: 'normal',
               lineHeight: 20,
               letterSpacing: 1.25,
-              color: colors.white100,
+              color: props.buttonColor || colors.white100,
               textTransform: 'uppercase',
             },
           ]}>
