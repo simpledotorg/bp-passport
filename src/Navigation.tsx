@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext, useEffect} from 'react'
 import {
   createStackNavigator,
   useHeaderHeight,
@@ -17,6 +17,7 @@ import VerifyNumberScreen from './screens/VerifyNumberScreen'
 import BpHistoryScreen from './screens/BpHistoryScreen'
 import HomeScreen from './screens/HomeScreen'
 import SettingsScreen from './screens/SettingsScreen'
+import {AuthContext, LoginState} from './providers/auth.provider'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon} from './components'
@@ -49,6 +50,7 @@ const Navigation = () => {
         gestureEnabled: false,
       }}>
       <Stack.Screen name={SCREENS.LAUNCH} component={LaunchScreen} />
+
       <Stack.Screen
         name={SCREENS.MAIN_STACK}
         component={MainStack}
@@ -74,9 +76,19 @@ function MainStack({navigation}: Props) {
 
   const headerHeightIncludingSafeArea = useHeaderHeight()
 
+  const {loginState} = useContext(AuthContext)
+
+  useEffect(() => {
+    if (loginState !== LoginState.LoggedOut) {
+      navigation.navigate(SCREENS.HOME)
+    }
+  }, [loginState])
+
   return (
     <Stack.Navigator
-      initialRouteName={SCREENS.SPLASH}
+      initialRouteName={
+        loginState === LoginState.LoggedOut ? SCREENS.SPLASH : SCREENS.HOME
+      }
       screenOptions={{
         ...navigationStyle,
         headerTintColor: colors.white100,

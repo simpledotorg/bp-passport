@@ -17,12 +17,12 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* BPPassportTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* BPPassportTests.m */; };
-		3241D77D444ACFB79E47E171 /* libPods-BPPassport-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F894799E8FFD0B428416E46D /* libPods-BPPassport-tvOSTests.a */; };
+		3E6BFE1FAD164C7B11BC2106 /* libPods-BPPassport-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE9A9A57A03BB69B3C0E309D /* libPods-BPPassport-tvOSTests.a */; };
 		4844AEE8243639D8007893AC /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4844AEE7243639D8007893AC /* AppCenter-Config.plist */; };
-		B127D0CAEDBDD09DF68689BE /* libPods-BPPassport.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DBF19D97A2736797B04F91 /* libPods-BPPassport.a */; };
-		B4845A5B5E7EDD21B6C35EF7 /* libPods-BPPassport-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FADF5A10EEF0B5214A2178 /* libPods-BPPassport-tvOS.a */; };
+		88601027D892E6BDA2BE6629 /* libPods-BPPassport-BPPassportTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F7EA508E8E6B9E2F36541CA /* libPods-BPPassport-BPPassportTests.a */; };
 		B7F7F9EDE1CB46E590054CEF /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5588719090F04F7F8F85D5C6 /* Roboto-Regular.ttf */; };
-		C4023095C99BDA72A06AE542 /* libPods-BPPassport-BPPassportTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 757FEDBA05BC22918DA70ED1 /* libPods-BPPassport-BPPassportTests.a */; };
+		BD8AE594720AE3F9BEC40308 /* libPods-BPPassport-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6E982E9EEABF23C3C6311AC /* libPods-BPPassport-tvOS.a */; };
+		D4E6B072962A1A81D6AE356E /* libPods-BPPassport.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C4F2541EFAFDDE9F6AD5A56 /* libPods-BPPassport.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,8 +47,11 @@
 		00E356EE1AD99517003FC87E /* BPPassportTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BPPassportTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* BPPassportTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BPPassportTests.m; sourceTree = "<group>"; };
-		07DBF19D97A2736797B04F91 /* libPods-BPPassport.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BPPassport.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		010650241A2E353243EC2CD0 /* Pods-BPPassport-BPPassportTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-BPPassportTests.debug.xcconfig"; path = "Target Support Files/Pods-BPPassport-BPPassportTests/Pods-BPPassport-BPPassportTests.debug.xcconfig"; sourceTree = "<group>"; };
 		09CBEF13E89F426698173C41 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		0C4F2541EFAFDDE9F6AD5A56 /* libPods-BPPassport.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BPPassport.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D6E3981C5D32BB0310C45E5 /* Pods-BPPassport-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-BPPassport-tvOSTests/Pods-BPPassport-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		0E550B11894E74E1C6D0EFD8 /* Pods-BPPassport.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport.release.xcconfig"; path = "Target Support Files/Pods-BPPassport/Pods-BPPassport.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* BPPassport.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BPPassport.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = BPPassport/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = BPPassport/AppDelegate.m; sourceTree = "<group>"; };
@@ -56,39 +59,36 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = BPPassport/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = BPPassport/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = BPPassport/main.m; sourceTree = "<group>"; };
+		1B8399AF6B1547C489A00BF8 /* Pods-BPPassport-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-BPPassport-tvOS/Pods-BPPassport-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		1F7EA508E8E6B9E2F36541CA /* libPods-BPPassport-BPPassportTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BPPassport-BPPassportTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FB179EE129D496184B37569 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		25D3AB65CF1B413CAAE967B0 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		2AC00273BDC7460B83C1A099 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		2CF36A37CB594896AE7B4EDB /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* BPPassport-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BPPassport-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* BPPassport-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BPPassport-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		359BA7885057F672B7914811 /* Pods-BPPassport.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport.release.xcconfig"; path = "Target Support Files/Pods-BPPassport/Pods-BPPassport.release.xcconfig"; sourceTree = "<group>"; };
 		364FD615F73E45CFAEFF4501 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
-		45FADF5A10EEF0B5214A2178 /* libPods-BPPassport-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BPPassport-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4844AEE7243639D8007893AC /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "BPPassport/AppCenter-Config.plist"; sourceTree = "<group>"; };
 		5588719090F04F7F8F85D5C6 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../src/assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
-		562935CE554A3FB138C671F5 /* Pods-BPPassport-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-BPPassport-tvOSTests/Pods-BPPassport-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		63CD378839314FC9B67E55C9 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		644052F6E8264788B5CFAD1A /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		757FEDBA05BC22918DA70ED1 /* libPods-BPPassport-BPPassportTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BPPassport-BPPassportTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A8B876A42E58327C3528493 /* Pods-BPPassport-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-BPPassport-tvOSTests/Pods-BPPassport-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		7980D13B016F7E20ECB26264 /* Pods-BPPassport-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-tvOS.release.xcconfig"; path = "Target Support Files/Pods-BPPassport-tvOS/Pods-BPPassport-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		7F1F566BDFB04307B45B625F /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
-		93377FD7BE979BC742C1E247 /* Pods-BPPassport-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-tvOS.release.xcconfig"; path = "Target Support Files/Pods-BPPassport-tvOS/Pods-BPPassport-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		98F6067EFC5D89645CFAF89B /* Pods-BPPassport-BPPassportTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-BPPassportTests.release.xcconfig"; path = "Target Support Files/Pods-BPPassport-BPPassportTests/Pods-BPPassport-BPPassportTests.release.xcconfig"; sourceTree = "<group>"; };
 		A0BCFBED5B454110AABFC264 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
+		A6E982E9EEABF23C3C6311AC /* libPods-BPPassport-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BPPassport-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B06742538B33F3D7DA17881C /* Pods-BPPassport.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport.debug.xcconfig"; path = "Target Support Files/Pods-BPPassport/Pods-BPPassport.debug.xcconfig"; sourceTree = "<group>"; };
 		B90D3B29F8BA4930959073F2 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
-		CCC9880D480864A0870E8527 /* Pods-BPPassport-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-BPPassport-tvOS/Pods-BPPassport-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		D221B62789254A77B5F403F6 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Bold.ttf"; path = "../src/assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; };
-		D333822C4DEB08396A3AC986 /* Pods-BPPassport.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport.debug.xcconfig"; path = "Target Support Files/Pods-BPPassport/Pods-BPPassport.debug.xcconfig"; sourceTree = "<group>"; };
-		D610E931FC8BE562B6C0D3BC /* Pods-BPPassport-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-BPPassport-tvOSTests/Pods-BPPassport-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		D662D73747934AB98B512637 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		DC695A7750188302BD3B43CC /* Pods-BPPassport-BPPassportTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-BPPassportTests.release.xcconfig"; path = "Target Support Files/Pods-BPPassport-BPPassportTests/Pods-BPPassport-BPPassportTests.release.xcconfig"; sourceTree = "<group>"; };
+		DE9A9A57A03BB69B3C0E309D /* libPods-BPPassport-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BPPassport-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E46A6F3563B84BA5A8C0552F /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		E76DB0B7753843ABA6071FBA /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		EBFC80D8B1824E2AB70CD450 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F0378E6C5E3F4FA98E984F06 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
-		F894799E8FFD0B428416E46D /* libPods-BPPassport-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BPPassport-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FF3CE6FE8A7A39588F6DE08E /* Pods-BPPassport-BPPassportTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BPPassport-BPPassportTests.debug.xcconfig"; path = "Target Support Files/Pods-BPPassport-BPPassportTests/Pods-BPPassport-BPPassportTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,7 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4023095C99BDA72A06AE542 /* libPods-BPPassport-BPPassportTests.a in Frameworks */,
+				88601027D892E6BDA2BE6629 /* libPods-BPPassport-BPPassportTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,7 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B127D0CAEDBDD09DF68689BE /* libPods-BPPassport.a in Frameworks */,
+				D4E6B072962A1A81D6AE356E /* libPods-BPPassport.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,7 +112,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B4845A5B5E7EDD21B6C35EF7 /* libPods-BPPassport-tvOS.a in Frameworks */,
+				BD8AE594720AE3F9BEC40308 /* libPods-BPPassport-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,7 +120,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3241D77D444ACFB79E47E171 /* libPods-BPPassport-tvOSTests.a in Frameworks */,
+				3E6BFE1FAD164C7B11BC2106 /* libPods-BPPassport-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,10 +164,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				07DBF19D97A2736797B04F91 /* libPods-BPPassport.a */,
-				757FEDBA05BC22918DA70ED1 /* libPods-BPPassport-BPPassportTests.a */,
-				45FADF5A10EEF0B5214A2178 /* libPods-BPPassport-tvOS.a */,
-				F894799E8FFD0B428416E46D /* libPods-BPPassport-tvOSTests.a */,
+				0C4F2541EFAFDDE9F6AD5A56 /* libPods-BPPassport.a */,
+				1F7EA508E8E6B9E2F36541CA /* libPods-BPPassport-BPPassportTests.a */,
+				A6E982E9EEABF23C3C6311AC /* libPods-BPPassport-tvOS.a */,
+				DE9A9A57A03BB69B3C0E309D /* libPods-BPPassport-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -200,14 +200,14 @@
 		5D622412F31249947594CFC3 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D333822C4DEB08396A3AC986 /* Pods-BPPassport.debug.xcconfig */,
-				359BA7885057F672B7914811 /* Pods-BPPassport.release.xcconfig */,
-				FF3CE6FE8A7A39588F6DE08E /* Pods-BPPassport-BPPassportTests.debug.xcconfig */,
-				98F6067EFC5D89645CFAF89B /* Pods-BPPassport-BPPassportTests.release.xcconfig */,
-				CCC9880D480864A0870E8527 /* Pods-BPPassport-tvOS.debug.xcconfig */,
-				93377FD7BE979BC742C1E247 /* Pods-BPPassport-tvOS.release.xcconfig */,
-				562935CE554A3FB138C671F5 /* Pods-BPPassport-tvOSTests.debug.xcconfig */,
-				D610E931FC8BE562B6C0D3BC /* Pods-BPPassport-tvOSTests.release.xcconfig */,
+				B06742538B33F3D7DA17881C /* Pods-BPPassport.debug.xcconfig */,
+				0E550B11894E74E1C6D0EFD8 /* Pods-BPPassport.release.xcconfig */,
+				010650241A2E353243EC2CD0 /* Pods-BPPassport-BPPassportTests.debug.xcconfig */,
+				DC695A7750188302BD3B43CC /* Pods-BPPassport-BPPassportTests.release.xcconfig */,
+				1B8399AF6B1547C489A00BF8 /* Pods-BPPassport-tvOS.debug.xcconfig */,
+				7980D13B016F7E20ECB26264 /* Pods-BPPassport-tvOS.release.xcconfig */,
+				0D6E3981C5D32BB0310C45E5 /* Pods-BPPassport-tvOSTests.debug.xcconfig */,
+				6A8B876A42E58327C3528493 /* Pods-BPPassport-tvOSTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -253,11 +253,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "BPPassportTests" */;
 			buildPhases = (
-				E2DA707A2FDA924833C2A6B3 /* [CP] Check Pods Manifest.lock */,
+				CDDEAA65BA9E12C41DA6B799 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				5025EFE3A6C24EA18AAAB451 /* [CP] Copy Pods Resources */,
+				1A8259CD8345A1D38EA3BFC4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -273,13 +273,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "BPPassport" */;
 			buildPhases = (
-				1E7B973DC146D05F9F61BAF3 /* [CP] Check Pods Manifest.lock */,
+				C4508CFC644D37CDEB27E1AF /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				299C4BD8E4A8DB3CEEB1F1DA /* [CP] Copy Pods Resources */,
+				2A8E3C9FCEEBB7E07C8278EE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -294,7 +294,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "BPPassport-tvOS" */;
 			buildPhases = (
-				B61D413EE860CDE86DB07AEA /* [CP] Check Pods Manifest.lock */,
+				160232D05011A2674C7F8ED1 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -314,7 +314,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "BPPassport-tvOSTests" */;
 			buildPhases = (
-				FBAE850DAC8B1B5FFF989173 /* [CP] Check Pods Manifest.lock */,
+				3C2368ACC1F48EFB0582F409 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -430,7 +430,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		1E7B973DC146D05F9F61BAF3 /* [CP] Check Pods Manifest.lock */ = {
+		160232D05011A2674C7F8ED1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -445,14 +445,62 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-BPPassport-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-BPPassport-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		299C4BD8E4A8DB3CEEB1F1DA /* [CP] Copy Pods Resources */ = {
+		1A8259CD8345A1D38EA3BFC4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BPPassport-BPPassportTests/Pods-BPPassport-BPPassportTests-resources.sh",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BPPassport-BPPassportTests/Pods-BPPassport-BPPassportTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2A8E3C9FCEEBB7E07C8278EE /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -514,99 +562,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		5025EFE3A6C24EA18AAAB451 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BPPassport-BPPassportTests/Pods-BPPassport-BPPassportTests-resources.sh",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BPPassport-BPPassportTests/Pods-BPPassport-BPPassportTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B61D413EE860CDE86DB07AEA /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-BPPassport-tvOS-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E2DA707A2FDA924833C2A6B3 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-BPPassport-BPPassportTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FBAE850DAC8B1B5FFF989173 /* [CP] Check Pods Manifest.lock */ = {
+		3C2368ACC1F48EFB0582F409 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -622,6 +578,50 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-BPPassport-tvOSTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C4508CFC644D37CDEB27E1AF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BPPassport-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CDDEAA65BA9E12C41DA6B799 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BPPassport-BPPassportTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -733,7 +733,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FF3CE6FE8A7A39588F6DE08E /* Pods-BPPassport-BPPassportTests.debug.xcconfig */;
+			baseConfigurationReference = 010650241A2E353243EC2CD0 /* Pods-BPPassport-BPPassportTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -756,7 +756,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 98F6067EFC5D89645CFAF89B /* Pods-BPPassport-BPPassportTests.release.xcconfig */;
+			baseConfigurationReference = DC695A7750188302BD3B43CC /* Pods-BPPassport-BPPassportTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -776,7 +776,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D333822C4DEB08396A3AC986 /* Pods-BPPassport.debug.xcconfig */;
+			baseConfigurationReference = B06742538B33F3D7DA17881C /* Pods-BPPassport.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -808,7 +808,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 359BA7885057F672B7914811 /* Pods-BPPassport.release.xcconfig */;
+			baseConfigurationReference = 0E550B11894E74E1C6D0EFD8 /* Pods-BPPassport.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -834,7 +834,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CCC9880D480864A0870E8527 /* Pods-BPPassport-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 1B8399AF6B1547C489A00BF8 /* Pods-BPPassport-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -863,7 +863,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 93377FD7BE979BC742C1E247 /* Pods-BPPassport-tvOS.release.xcconfig */;
+			baseConfigurationReference = 7980D13B016F7E20ECB26264 /* Pods-BPPassport-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -892,7 +892,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 562935CE554A3FB138C671F5 /* Pods-BPPassport-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 0D6E3981C5D32BB0310C45E5 /* Pods-BPPassport-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -919,7 +919,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D610E931FC8BE562B6C0D3BC /* Pods-BPPassport-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = 6A8B876A42E58327C3528493 /* Pods-BPPassport-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;

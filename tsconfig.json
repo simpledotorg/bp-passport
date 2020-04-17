@@ -10,6 +10,7 @@
     "resolveJsonModule": true,
     "noEmit": true,
     "strict": true,
+    "strictPropertyInitialization": false,
     "target": "esnext"
   },
   "exclude": [
