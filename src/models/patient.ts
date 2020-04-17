@@ -3,7 +3,7 @@ const Realm = require('realm')
 export interface Patient {
   patient_id: string
   full_name?: string
-  password_digest?: string
+  bp_short_code?: string
 }
 
 /*
