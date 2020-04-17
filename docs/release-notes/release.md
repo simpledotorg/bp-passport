@@ -4,15 +4,29 @@
 
 ### Overview
 
-Build 0.3 is prepped to connect the live api when it's ready. However, at the time of completing build 0.3 the api spec was not finalised and the GET /patient api call not yet available so we've rolled this build out to connect to our own mock api for now.
+Please note that build 0.3 is prepped to connect the live api when it's ready. However, at the time of completing build 0.3 the api spec was not finalised and the GET /patient api call not yet available so we've rolled this build out to connect to our own mock api for now.
 
-This does mean that any QR code and any OTP will appear to authenticate against our mock api.
+This does mean that any QR code and any OTP will appear to authenticate against our mock api. The app will handle errors when connected to a working api.
 
 ### What's New
 
-- It handles the 2-step authentication including error handling from the api. Please note however that our mock server has been setup to accept any QR code so you'll only be able to
+- Mock API created and now in use but current app to unblock front end app dev.
+- 2-step authentication including error handling from the api.
+- Scan Screen complete (now calls api and displays loading ui and error handling)
+- Verify Screen complete (now calls api and displays loading ui and error handling)
+- Loading and rendering Patient data from api
+- Loading and rendering BP data from api
+- Loading and rendering medicine data from api
+- Home Screen
+- All BP Records screen complete
+
 - 2-factor api authentication complete
   Please n
+
+### Bug fixes
+
+- A few design/layout tweaks from testing
+- App now uses native Alert view on iOS and Android where applicable
 
 ## Version 0.2
 
