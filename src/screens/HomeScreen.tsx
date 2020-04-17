@@ -24,6 +24,7 @@ import {AuthContext, LoginState} from '../providers/auth.provider'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {Button, BodyHeader, BodyText, BpInformation} from '../components'
+import {BloodPressure} from '../models'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -37,7 +38,6 @@ type Props = {
 const BP_SHOW_LIMIT = 3
 
 function Home({navigation}: Props) {
-  // Todo - implement Home Loading State when logging in....
   const {loginState} = useContext(AuthContext)
   switch (loginState) {
     case LoginState.LoggingIn:
@@ -51,34 +51,15 @@ function Home({navigation}: Props) {
       break
   }
 
+  const showLoading = loginState === LoginState.LoggingIn
+
   const {user} = useContext(UserContext)
+  const {bloodPressures} = useContext(UserContext)
   const intl = useIntl()
 
+  const bps: BloodPressure[] = bloodPressures ?? []
   const [hasMedicines, setHasMedicines] = useState(false)
   const medicines = ['Amlodipine 10 mg', 'Telmisartan 40 mg']
-
-  const bps = [
-    {
-      systolic: 150,
-      diastolic: 88,
-      date: '02/02/02',
-    },
-    {
-      systolic: 132,
-      diastolic: 88,
-      date: '02/02/02',
-    },
-    {
-      systolic: 132,
-      diastolic: 92,
-      date: '02/02/02',
-    },
-    {
-      systolic: 139,
-      diastolic: 76,
-      date: '02/02/02',
-    },
-  ]
 
   const showBpHistoryButton = bps.length > BP_SHOW_LIMIT
 
@@ -109,125 +90,140 @@ function Home({navigation}: Props) {
           ]}
         />
       </View>
-      <ScrollView contentContainerStyle={[containerStyles.fill]}>
-        {hasMedicines && (
-          <>
-            <View style={[styles.homeContainer]}>
-              <BodyHeader style={[styles.sectionHeader]}>
-                <FormattedMessage id="home.my-medicines" />
-              </BodyHeader>
-              <BodyText
-                style={[
-                  {
-                    marginTop: 8,
-                    fontSize: 18,
-                    color: colors.grey1,
-                  },
-                ]}>
-                <FormattedMessage id={'home.no-more-medicines'} />
-              </BodyText>
-              {medicines.map((medicine, index) => (
-                <View
-                  key={index}
-                  style={[
-                    {
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      marginTop: index === 0 ? 8 : 0,
-                    },
-                  ]}>
+      {showLoading && (
+        <View style={[containerStyles.fill]}>
+          <View style={[styles.homeContainer, {flex: 1}]} />
+          <View style={[styles.homeContainer, {flex: 2}]} />
+        </View>
+      )}
+      {!showLoading && (
+        <>
+          <ScrollView contentContainerStyle={[containerStyles.fill]}>
+            {hasMedicines && (
+              <>
+                <View style={[styles.homeContainer]}>
+                  <BodyHeader style={[styles.sectionHeader]}>
+                    <FormattedMessage id="home.my-medicines" />
+                  </BodyHeader>
+                  <BodyText
+                    style={[
+                      {
+                        marginTop: 8,
+                        fontSize: 18,
+                        color: colors.grey1,
+                      },
+                    ]}>
+                    <FormattedMessage id={'home.no-more-medicines'} />
+                  </BodyText>
+                  {medicines.map((medicine, index) => (
+                    <View
+                      key={index}
+                      style={[
+                        {
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          marginTop: index === 0 ? 8 : 0,
+                        },
+                      ]}>
+                      <Image
+                        source={medicinePill}
+                        style={[styles.informationIcon]}
+                      />
+                      <BodyText
+                        style={{
+                          fontSize: 18,
+                          color: colors.grey0,
+                          fontWeight: '500',
+                        }}>
+                        {medicine}
+                      </BodyText>
+                    </View>
+                  ))}
+                </View>
+                <View style={[styles.homeContainer, {flexDirection: 'row'}]}>
                   <Image
-                    source={medicinePill}
+                    source={medicineClock}
                     style={[styles.informationIcon]}
                   />
-                  <BodyText
+                  <View style={[{flexShrink: 1}]}>
+                    <BodyText style={[styles.sectionText]}>
+                      <FormattedMessage id={'home.take-your-medicines'} />
+                    </BodyText>
+                    <BodyText
+                      style={[
+                        {
+                          fontSize: 18,
+                          color: colors.grey1,
+                        },
+                      ]}>
+                      <FormattedMessage id={'home.take-medicine-as-directed'} />
+                    </BodyText>
+                  </View>
+                </View>
+              </>
+            )}
+            <View style={[styles.homeContainer]}>
+              <BodyHeader style={[styles.sectionHeader]}>My BP</BodyHeader>
+              {bps ? (
+                <>
+                  {bps.map((bp, index) => {
+                    if (index > BP_SHOW_LIMIT - 1) {
+                      return null
+                    }
+
+                    return <BpInformation bp={bp} key={index} />
+                  })}
+                  {showBpHistoryButton && (
+                    <Button
+                      style={{
+                        marginTop: 15,
+                        backgroundColor: colors.blue3,
+                        shadowColor: 'rgba(0, 117, 235, 0.3)',
+                      }}
+                      buttonColor={colors.blue2}
+                      title={intl.formatMessage({id: 'general.see-all'})}
+                      onPress={() => {
+                        navigation.navigate(SCREENS.BP_HISTORY, {
+                          bps,
+                        })
+                      }}
+                    />
+                  )}
+                </>
+              ) : (
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <Image
                     style={{
-                      fontSize: 18,
-                      color: colors.grey0,
-                      fontWeight: '500',
-                    }}>
-                    {medicine}
+                      marginTop: 32,
+                      marginBottom: 4,
+                    }}
+                    source={greyHeart}
+                  />
+                  <BodyText
+                    style={[
+                      styles.sectionText,
+                      {
+                        color: colors.grey1,
+                        marginBottom: 70,
+                      },
+                    ]}>
+                    <FormattedMessage id={'home.no-bp'} />
                   </BodyText>
                 </View>
-              ))}
-            </View>
-            <View style={[styles.homeContainer, {flexDirection: 'row'}]}>
-              <Image source={medicineClock} style={[styles.informationIcon]} />
-              <View style={[{flexShrink: 1}]}>
-                <BodyText style={[styles.sectionText]}>
-                  <FormattedMessage id={'home.take-your-medicines'} />
-                </BodyText>
-                <BodyText
-                  style={[
-                    {
-                      fontSize: 18,
-                      color: colors.grey1,
-                    },
-                  ]}>
-                  <FormattedMessage id={'home.take-medicine-as-directed'} />
-                </BodyText>
-              </View>
-            </View>
-          </>
-        )}
-        <View style={[styles.homeContainer]}>
-          <BodyHeader style={[styles.sectionHeader]}>My BP</BodyHeader>
-          {bps ? (
-            <>
-              {bps.map((bp, index) => {
-                if (index > BP_SHOW_LIMIT - 1) {
-                  return null
-                }
-
-                return <BpInformation bp={bp} key={index} />
-              })}
-              {showBpHistoryButton && (
-                <Button
-                  style={{
-                    marginTop: 15,
-                    backgroundColor: colors.blue3,
-                    shadowColor: 'rgba(0, 117, 235, 0.3)',
-                  }}
-                  buttonColor={colors.blue2}
-                  title={intl.formatMessage({id: 'general.see-all'})}
-                  onPress={() => {
-                    navigation.navigate(SCREENS.BP_HISTORY, {bps})
-                  }}
-                />
               )}
-            </>
-          ) : (
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Image
-                style={{
-                  marginTop: 32,
-                  marginBottom: 4,
-                }}
-                source={greyHeart}
-              />
-              <BodyText
-                style={[
-                  styles.sectionText,
-                  {
-                    color: colors.grey1,
-                    marginBottom: 70,
-                  },
-                ]}>
-                <FormattedMessage id={'home.no-bp'} />
-              </BodyText>
             </View>
-          )}
-        </View>
-      </ScrollView>
-      <Button
-        style={{
-          backgroundColor: colors.green1,
-          marginTop: 'auto',
-          margin: 8,
-        }}
-        title={intl.formatMessage({id: 'general.contact-a-doctor'})}
-        onPress={() => {}}
-      />
+          </ScrollView>
+          <Button
+            style={{
+              backgroundColor: colors.green1,
+              marginTop: 'auto',
+              margin: 8,
+            }}
+            title={intl.formatMessage({id: 'general.contact-a-doctor'})}
+            onPress={() => {}}
+          />
+        </>
+      )}
     </SafeAreaView>
   )
 }

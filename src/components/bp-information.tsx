@@ -1,18 +1,24 @@
 import React from 'react'
 import {View, StyleSheet, Image} from 'react-native'
-import {useIntl, FormattedMessage} from 'react-intl'
-
+import {FormattedMessage} from 'react-intl'
 import {colors, redHeart} from '../styles'
 
 import {Button, BodyHeader, BodyText} from './'
+import {BloodPressure} from '../models'
 
-export const BpInformation = ({bp}: any) => {
-  const intl = useIntl()
+type Props = {
+  bp: BloodPressure
+}
 
-  const isBloodPressureHigh = (bp: any) => {
+export const BpInformation = ({bp}: Props) => {
+  const isBloodPressureHigh = (bpIn: BloodPressure) => {
     // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
     // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
-    return bp.systolic >= 140 || bp.diastolic >= 90
+    return bpIn.systolic >= 140 || bpIn.diastolic >= 90
+  }
+
+  const displayDate = (bpIn: BloodPressure) => {
+    return bpIn.recorded_at ? new Date(bpIn.recorded_at).toDateString() : null
   }
 
   return (
@@ -36,7 +42,7 @@ export const BpInformation = ({bp}: any) => {
 
             color: colors.grey1,
           }}>
-          {bp.date}
+          {displayDate(bp)}
         </BodyText>
       </View>
       {isBloodPressureHigh(bp) ? (
