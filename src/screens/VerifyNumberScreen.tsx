@@ -39,7 +39,7 @@ function VerifyNumber({navigation, route}: Props) {
   const inputRef = useRef<any>(null)
 
   const [uiState, setUIState] = useState(UIState.Normal)
-  const [error, setError] = useState<Error | undefined>(new Error('Fuck'))
+  const [error, setError] = useState<Error | undefined>(undefined)
   const [modalIsVisible, setModalIsVisible] = useState(false)
   const [input, setInput] = useState('')
 
@@ -100,7 +100,8 @@ function VerifyNumber({navigation, route}: Props) {
             keyboardType={'numeric'}
           />
           <Button
-            style={{marginTop: 24}}
+            style={[{marginTop: 24}]}
+            disabled={!input}
             onPress={() => {
               verifyOTP(input)
             }}
