@@ -24,6 +24,7 @@ import {AuthContext, LoginState} from '../providers/auth.provider'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {Button, BodyHeader, BodyText, BpInformation} from '../components'
+import {BloodPressure} from '../models'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -52,11 +53,14 @@ function Home({navigation}: Props) {
   }
 
   const {user} = useContext(UserContext)
+  const {bloodPressures} = useContext(UserContext)
   const intl = useIntl()
 
+  const bps: BloodPressure[] = bloodPressures ?? []
   const [hasMedicines, setHasMedicines] = useState(false)
   const medicines = ['Amlodipine 10 mg', 'Telmisartan 40 mg']
 
+  /*
   const bps = [
     {
       systolic: 150,
@@ -79,7 +83,7 @@ function Home({navigation}: Props) {
       date: '02/02/02',
     },
   ]
-
+*/
   const showBpHistoryButton = bps.length > BP_SHOW_LIMIT
 
   return (
@@ -191,7 +195,9 @@ function Home({navigation}: Props) {
                   buttonColor={colors.blue2}
                   title={intl.formatMessage({id: 'general.see-all'})}
                   onPress={() => {
-                    navigation.navigate(SCREENS.BP_HISTORY, {bps})
+                    navigation.navigate(SCREENS.BP_HISTORY, {
+                      bps,
+                    })
                   }}
                 />
               )}
