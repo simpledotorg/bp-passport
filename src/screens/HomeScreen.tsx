@@ -58,7 +58,7 @@ function Home({navigation}: Props) {
   const intl = useIntl()
 
   const bps: BloodPressure[] = bloodPressures ?? []
-  const [hasMedicines, setHasMedicines] = useState(false)
+  const [hasMedicines, setHasMedicines] = useState(true)
   const medicines = ['Amlodipine 10 mg', 'Telmisartan 40 mg']
 
   const showBpHistoryButton = bps.length > BP_SHOW_LIMIT
@@ -98,7 +98,7 @@ function Home({navigation}: Props) {
       )}
       {!showLoading && (
         <>
-          <ScrollView contentContainerStyle={[containerStyles.fill]}>
+          <ScrollView contentContainerStyle={styles.scrollContent}>
             {hasMedicines && (
               <>
                 <View style={[styles.homeContainer]}>
@@ -113,7 +113,7 @@ function Home({navigation}: Props) {
                         color: colors.grey1,
                       },
                     ]}>
-                    <FormattedMessage id={'home.no-more-medicines'} />
+                    <FormattedMessage id={'home.no-medicines'} />
                   </BodyText>
                   {medicines.map((medicine, index) => (
                     <View
@@ -147,7 +147,7 @@ function Home({navigation}: Props) {
                   />
                   <View style={[{flexShrink: 1}]}>
                     <BodyText style={[styles.sectionText]}>
-                      <FormattedMessage id={'home.take-your-medicines'} />
+                      <FormattedMessage id={'home.take-medicines'} />
                     </BodyText>
                     <BodyText
                       style={[
@@ -156,7 +156,7 @@ function Home({navigation}: Props) {
                           color: colors.grey1,
                         },
                       ]}>
-                      <FormattedMessage id={'home.take-medicine-as-directed'} />
+                      <FormattedMessage id={'home.take-as-directed'} />
                     </BodyText>
                   </View>
                 </View>
@@ -213,15 +213,15 @@ function Home({navigation}: Props) {
               )}
             </View>
           </ScrollView>
-          <Button
-            style={{
-              backgroundColor: colors.green1,
-              marginTop: 'auto',
-              margin: 8,
-            }}
-            title={intl.formatMessage({id: 'general.contact-a-doctor'})}
-            onPress={() => {}}
-          />
+          <View style={styles.buttonContainer}>
+            <Button
+              style={{
+                backgroundColor: colors.green1,
+              }}
+              title={intl.formatMessage({id: 'general.contact-a-doctor'})}
+              onPress={() => {}}
+            />
+          </View>
         </>
       )}
     </SafeAreaView>
@@ -231,6 +231,14 @@ function Home({navigation}: Props) {
 export default Home
 
 const styles = StyleSheet.create({
+  scrollContent: {
+    paddingBottom: 20,
+  },
+  buttonContainer: {
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    backgroundColor: colors.green2,
+  },
   homeContainer: {
     backgroundColor: colors.white100,
     borderRadius: 4,
