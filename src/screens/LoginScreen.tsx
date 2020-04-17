@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {SafeAreaView, View, Image} from 'react-native'
+import {SafeAreaView, View, Image, Alert, TouchableOpacity} from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
 import Modal from 'react-native-modal'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -47,7 +47,7 @@ function Login({navigation}: Props) {
         <View
           style={[
             {
-              margin: 16,
+              margin: 12,
             },
           ]}>
           <Button
@@ -56,54 +56,32 @@ function Login({navigation}: Props) {
               navigation.navigate(SCREENS.SCAN_BP_PASSPORT)
             }}
           />
-          <View
+          <TouchableOpacity
             style={[
               {
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginTop: 16,
+                marginTop: 12,
+                padding: 4,
               },
-            ]}>
-            <Link
-              onPress={() => {
-                setShowNoBpPassportModal(true)
-              }}>
+            ]}
+            onPress={() => {
+              Alert.alert(
+                intl.formatMessage({id: 'login.update-coming-soon'}),
+                intl.formatMessage({id: 'login.try-again'}),
+                [
+                  {
+                    text: intl.formatMessage({id: 'general.ok'}),
+                  },
+                ],
+              )
+            }}>
+            <Link>
               <FormattedMessage id="login.no-passport-link" />
             </Link>
-          </View>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
-      <Modal
-        isVisible={showNoBpPassportModal}
-        style={{
-          alignItems: 'center',
-        }}>
-        <View
-          style={{
-            backgroundColor: colors.white100,
-            padding: 24,
-            width: '80%',
-          }}>
-          <BodyHeader>
-            <FormattedMessage id="login.update-coming-soon" />
-          </BodyHeader>
-          <BodyText
-            style={{marginTop: 16, marginBottom: 32, color: colors.grey1}}>
-            <FormattedMessage id="login.try-again" />
-          </BodyText>
-          <Link
-            style={{
-              textAlign: 'right',
-              textTransform: 'uppercase',
-              color: colors.blue2,
-            }}
-            onPress={() => {
-              setShowNoBpPassportModal(false)
-            }}>
-            <FormattedMessage id="general.ok" />
-          </Link>
-        </View>
-      </Modal>
     </View>
   )
 }
