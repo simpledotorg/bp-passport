@@ -44,11 +44,13 @@ const AuthProvider = ({children}) => {
     if (authParams && loginState === LoginState.LoggedOut) {
       setLoginState(LoginState.LoggingIn)
       getPatient()
-        .then((patientData) => {
+        .then((patientResponseData) => {
           // worked out! token and patient are valid
           setLoginState(LoginState.LoggedIn)
-          console.log('NK 1...')
-          updatePatientData(patientData)
+          if (patientResponseData) {
+            updatePatientData(patientResponseData)
+          }
+
           AsyncStorage.multiSet([
             [KEYS.ACCESS_TOKEN, authParams.access_token],
             [KEYS.PATIENT_ID, authParams.patient_id],
