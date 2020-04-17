@@ -20,7 +20,7 @@ import SettingsScreen from './screens/SettingsScreen'
 import {AuthContext, LoginState} from './providers/auth.provider'
 
 import SCREENS from './constants/screens'
-import {HomeHeaderTitle, ButtonIcon} from './components'
+import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
 import {colors, navigation as navigationStyle} from './styles'
 
 export type RootStackParamList = {
@@ -42,21 +42,23 @@ const Stack = createStackNavigator<RootStackParamList>()
 
 const Navigation = () => {
   return (
-    <Stack.Navigator
-      initialRouteName={SCREENS.LAUNCH}
-      headerMode={'none'}
-      mode="modal"
-      screenOptions={{
-        gestureEnabled: false,
-      }}>
-      <Stack.Screen name={SCREENS.LAUNCH} component={LaunchScreen} />
+    <>
+      <Stack.Navigator
+        initialRouteName={SCREENS.LAUNCH}
+        headerMode={'none'}
+        mode="modal"
+        screenOptions={{
+          gestureEnabled: false,
+        }}>
+        <Stack.Screen name={SCREENS.LAUNCH} component={LaunchScreen} />
 
-      <Stack.Screen
-        name={SCREENS.MAIN_STACK}
-        component={MainStack}
-        options={{cardStyleInterpolator: forFade}}
-      />
-    </Stack.Navigator>
+        <Stack.Screen
+          name={SCREENS.MAIN_STACK}
+          component={MainStack}
+          options={{cardStyleInterpolator: forFade}}
+        />
+      </Stack.Navigator>
+    </>
   )
 }
 
