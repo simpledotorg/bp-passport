@@ -22,6 +22,7 @@ This does mean that any QR code and any OTP will appear to authenticate against 
 - All BP Records screen complete
 - Settings Screen complete
 - Ability to change language in settings complete
+- Successful login now persists user between app sessions
 
 ### Issues / fixes
 
