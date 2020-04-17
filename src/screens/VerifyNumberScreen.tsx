@@ -118,18 +118,20 @@ function VerifyNumber({navigation, route}: Props) {
               <FormattedMessage id="verify-pin.wrong-pin" />
             </BodyHeader>
           )}
-          <BodyHeader
-            style={{
-              color: colors.grey1,
-              width: '100%',
-              textAlign: 'center',
-              marginTop: 16,
-            }}>
-            <FormattedMessage id="verify-pin.no-pin" />{' '}
-            <BodyHeader style={{color: colors.blue2}}>
-              <FormattedMessage id="verify-pin.resend-sms-link" />
+          {error && (
+            <BodyHeader
+              style={{
+                color: colors.grey1,
+                width: '100%',
+                textAlign: 'center',
+                marginTop: 16,
+              }}>
+              <FormattedMessage id="verify-pin.no-pin" />{' '}
+              <BodyHeader style={{color: colors.blue2}}>
+                <FormattedMessage id="verify-pin.resend-sms-link" />
+              </BodyHeader>
             </BodyHeader>
-          </BodyHeader>
+          )}
         </View>
       </SafeAreaView>
 
