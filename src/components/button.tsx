@@ -34,6 +34,11 @@ export const Button = (props: ButtonProps) => {
           shadowRadius: 1, // iOS box shadow
           elevation: 2, // Android elevation
         },
+        props.disabled
+          ? {
+              backgroundColor: colors.grey3,
+            }
+          : {},
         props.style,
       ]}>
       {props.title && (
@@ -45,7 +50,9 @@ export const Button = (props: ButtonProps) => {
               fontStyle: 'normal',
               lineHeight: 20,
               letterSpacing: 1.25,
-              color: props.buttonColor || colors.white100,
+              color: props.disabled
+                ? colors.grey2
+                : props.buttonColor || colors.white100,
               textTransform: 'uppercase',
             },
           ]}>
