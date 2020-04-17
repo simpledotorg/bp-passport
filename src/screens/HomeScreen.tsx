@@ -20,6 +20,7 @@ import {
   medicinePill,
 } from '../styles'
 import {UserContext} from '../providers/user.provider'
+import {AuthContext, LoginState} from '../providers/auth.provider'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {Button, BodyHeader, BodyText, BpInformation} from '../components'
@@ -36,6 +37,20 @@ type Props = {
 const BP_SHOW_LIMIT = 3
 
 function Home({navigation}: Props) {
+  // Todo - implement Home Loading State when logging in....
+  const {loginState} = useContext(AuthContext)
+  switch (loginState) {
+    case LoginState.LoggingIn:
+      // show animation state
+      break
+    case LoginState.LoggedIn:
+      // show user profile
+      break
+    case LoginState.LoggedOut:
+      // n /a
+      break
+  }
+
   const {user} = useContext(UserContext)
   const intl = useIntl()
 
