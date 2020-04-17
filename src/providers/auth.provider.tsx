@@ -12,7 +12,6 @@ export enum LoginState {
 
 export const AuthContext = createContext({
   loginState: LoginState.LoggedOut,
-  header: null,
   setAuthParams: (params: AuthParams | undefined) => {},
   setLoginState: (state: LoginState) => {},
   signOut: async () => {},
@@ -28,7 +27,6 @@ const AuthProvider = ({children}) => {
     undefined,
   )
   const [loginState, setLoginState] = useState(LoginState.LoggedOut)
-  const [header, setHeader] = useState(null)
 
   const {updatePatientData} = useContext(UserContext)
 
@@ -90,7 +88,6 @@ const AuthProvider = ({children}) => {
       value={{
         setLoginState,
         loginState,
-        header,
         setAuthParams,
         signOut,
       }}>
