@@ -30,7 +30,7 @@ function Consent({navigation}: Props) {
           containerStyles.centeredContent,
           {margin: 24},
         ]}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <BodyText style={{marginBottom: 24}}>
             <FormattedMessage id="consent.by-using-app" />
           </BodyText>
