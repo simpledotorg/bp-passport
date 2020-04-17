@@ -51,8 +51,7 @@ export const HomeHeaderTitle = () => {
       )}
       {hasPasswordDigest && (
         <Text style={{...navigation.homeSubHeaderTitleStyle}} numberOfLines={1}>
-          <FormattedMessage id="general.bp-passport" />
-          {user?.password_digest}
+          <FormattedMessage id="general.bp-passport" /> {user?.password_digest}
         </Text>
       )}
     </View>
