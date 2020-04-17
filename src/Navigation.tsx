@@ -152,9 +152,16 @@ function MainStack({navigation}: Props) {
           },
           headerTitleAlign: 'center',
           headerTitle: () => <HomeHeaderTitle />,
-          headerRight: () => (
-            <ButtonIcon onPress={() => navigation.navigate(SCREENS.SETTINGS)} />
-          ),
+          headerRight: () => {
+            if (loginState === LoginState.LoggedIn) {
+              return (
+                <ButtonIcon
+                  onPress={() => navigation.navigate(SCREENS.SETTINGS)}
+                />
+              )
+            }
+            return null
+          },
           headerLeft: () => null,
           gestureEnabled: false,
         }}
