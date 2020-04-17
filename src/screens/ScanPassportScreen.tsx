@@ -36,40 +36,49 @@ function ScanPassportScreen({navigation}: Props) {
   // Todo - implement ActivityIndicator UI while api being called
   const [uiState, setUIState] = useState(UIState.Normal)
   const [hasReadCode, setHasReadCode] = useState(false)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<Error | undefined>(undefined)
+  const [modalIsVisible, setModalIsVisible] = useState(false)
 
   const onBarCodeRead = (event: BarCodeRead) => {
     if (!hasReadCode && event.type === RNCamera.Constants.BarCodeType.qr) {
       setHasReadCode(true)
       setUIState(UIState.CallingAPI)
+      setModalIsVisible(true)
       const passport_id = event.data
       return authRequestOtp({passport_id})
         .then(() => {
-          setUIState(UIState.Normal)
-          setTimeout(() => {
-            navigation.replace(SCREENS.VERIFY_YOUR_NUMBER, {passport_id})
-          }, 300)
+          navigation.replace(SCREENS.VERIFY_YOUR_NUMBER, {passport_id})
         })
-        .catch((error: Error) => {
+        .catch((err: Error) => {
+          setError(err)
+        })
+        .finally(() => {
           setUIState(UIState.Normal)
-          setTimeout(() => {
-            Alert.alert(
-              'Error',
-              `${error}`,
-              [
-                {
-                  text: 'OK',
-                  onPress: () => {
-                    setHasReadCode(false)
-                  },
-                },
-              ],
-              {cancelable: false},
-            )
-          }, 800)
+          setModalIsVisible(false)
         })
     }
   }
+
+  useEffect(() => {
+    if (error && !modalIsVisible && uiState === UIState.Normal) {
+      setTimeout(() => {
+        Alert.alert(
+          'Error',
+          `${error}`,
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                setError(undefined)
+                setHasReadCode(false)
+              },
+            },
+          ],
+          {cancelable: false},
+        )
+      }, 500)
+    }
+  }, [error, uiState, modalIsVisible])
 
   // test a working/not working code in the simulator
   /*
@@ -173,9 +182,13 @@ function ScanPassportScreen({navigation}: Props) {
         </View>
       </SafeAreaView>
       <Modal
-        isVisible={uiState === UIState.CallingAPI}
+        isVisible={modalIsVisible}
         style={{
           alignItems: 'center',
+        }}
+        onModalHide={() => {
+          console.log('onModalHide')
+          setModalIsVisible(false)
         }}>
         <View
           style={{
