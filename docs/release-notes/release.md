@@ -17,13 +17,13 @@ This does mean that any QR code and any OTP will appear to authenticate against 
 - Loading and rendering Patient data from api
 - Loading and rendering BP data from api
 - Loading and rendering medicine data from api
-- Home Screen
+- Home Screen (apart from loading) complete (now calls api and displays loading ui), supports state for no BP, 3 or less BP, medicine, no medicine etc.
+- Home Screen loading state - 50% complete
 - All BP Records screen complete
+- Settings Screen complete
+- Ability to change language in settings complete
 
-- 2-factor api authentication complete
-  Please n
-
-### Bug fixes
+### Issues / fixes
 
 - A few design/layout tweaks from testing
 - App now uses native Alert view on iOS and Android where applicable
