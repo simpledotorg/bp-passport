@@ -15,7 +15,7 @@ export const LoadingOverlay = () => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <ActivityIndicator size="large" />
+      <ActivityIndicator size="large" color={colors.blue2} />
     </View>
   )
 }
