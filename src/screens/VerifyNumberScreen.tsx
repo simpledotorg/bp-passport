@@ -39,7 +39,7 @@ function VerifyNumber({navigation, route}: Props) {
   const inputRef = useRef<any>(null)
 
   const [uiState, setUIState] = useState(UIState.Normal)
-  const [error, setError] = useState<Error | undefined>(undefined)
+  const [error, setError] = useState<Error | undefined>(new Error('Fuck'))
   const [modalIsVisible, setModalIsVisible] = useState(false)
   const [input, setInput] = useState('')
 
@@ -112,6 +112,7 @@ function VerifyNumber({navigation, route}: Props) {
                 fontSize: 16,
                 color: colors.red1,
                 textAlign: 'center',
+                marginTop: 12,
               }}>
               <FormattedMessage id="verify-pin.wrong-pin" />
             </BodyHeader>
