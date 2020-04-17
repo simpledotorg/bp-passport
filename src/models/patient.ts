@@ -1,9 +1,9 @@
-const Realm = require('realm')
+// const Realm = require('realm')
 
 export interface Patient {
   patient_id: string
   full_name?: string
-  bp_short_code?: string
+  password_digest?: string
 }
 
 /*
