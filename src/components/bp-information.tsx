@@ -1,8 +1,9 @@
 import React from 'react'
 import {View, StyleSheet, Image} from 'react-native'
 import {FormattedMessage} from 'react-intl'
-import {colors, redHeart} from '../styles'
+import {format} from 'date-fns'
 
+import {colors, redHeart} from '../styles'
 import {Button, BodyHeader, BodyText} from './'
 import {BloodPressure} from '../models'
 
@@ -18,7 +19,9 @@ export const BpInformation = ({bp}: Props) => {
   }
 
   const displayDate = (bpIn: BloodPressure) => {
-    return bpIn.recorded_at ? new Date(bpIn.recorded_at).toDateString() : null
+    return bpIn.recorded_at
+      ? format(new Date(bpIn.recorded_at), 'dd-MMM-yyy')
+      : null
   }
 
   return (
@@ -35,7 +38,7 @@ export const BpInformation = ({bp}: Props) => {
             fontSize: 18,
             color: colors.grey0,
             fontWeight: '500',
-          }}>{`${bp.systolic}/${bp.diastolic}`}</BodyText>
+          }}>{`${bp.systolic} / ${bp.diastolic}`}</BodyText>
         <BodyText
           style={{
             fontSize: 16,
@@ -45,27 +48,32 @@ export const BpInformation = ({bp}: Props) => {
           {displayDate(bp)}
         </BodyText>
       </View>
-      {isBloodPressureHigh(bp) ? (
-        <BodyText
-          style={[
-            styles.bpText,
-            {
-              color: colors.red1,
-            },
-          ]}>
-          <FormattedMessage id="general.high-bp" />
-        </BodyText>
-      ) : (
-        <BodyText
-          style={[
-            styles.bpText,
-            {
-              color: colors.green1,
-            },
-          ]}>
-          <FormattedMessage id="general.normal-bp" />
-        </BodyText>
-      )}
+      <View
+        style={{
+          marginLeft: 'auto',
+        }}>
+        {isBloodPressureHigh(bp) ? (
+          <BodyText
+            style={[
+              styles.bpText,
+              {
+                color: colors.red1,
+              },
+            ]}>
+            <FormattedMessage id="general.high-bp" />
+          </BodyText>
+        ) : (
+          <BodyText
+            style={[
+              styles.bpText,
+              {
+                color: colors.green1,
+              },
+            ]}>
+            <FormattedMessage id="general.normal-bp" />
+          </BodyText>
+        )}
+      </View>
     </View>
   )
 }
@@ -75,6 +83,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 18,
     marginLeft: 'auto',
+    textAlign: 'center',
   },
   informationIcon: {
     marginRight: 16,
