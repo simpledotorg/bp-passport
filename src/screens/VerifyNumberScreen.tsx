@@ -1,11 +1,12 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useRef} from 'react'
 import {SafeAreaView, View, TextInput, Alert} from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
+import Modal from 'react-native-modal'
 
 import {containerStyles, colors} from '../styles'
-import {BodyText, Button, BodyHeader} from '../components'
+import {BodyText, Button, BodyHeader, LoadingOverlay} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {authActivate} from '../api'
@@ -32,22 +33,24 @@ enum UIState {
 }
 
 function VerifyNumber({navigation, route}: Props) {
-  // Todo - implement ActivityIndicator UI while api being called
-  const [uiState, setUIState] = useState(UIState.Normal)
-
   const {setAuthParams} = useContext(AuthContext)
-
   const intl = useIntl()
 
+  const inputRef = useRef<any>(null)
+
+  const [uiState, setUIState] = useState(UIState.Normal)
+  const [error, setError] = useState<Error | undefined>(undefined)
+  const [modalIsVisible, setModalIsVisible] = useState(false)
   const [input, setInput] = useState('')
-  const [codeError, setCodeError] = useState(false)
 
   const {passport_id} = route.params
   console.log('passport_id: ', passport_id)
 
   const verifyOTP = (otp: string) => {
+    inputRef.current.blur()
     if (uiState === UIState.Normal) {
       setUIState(UIState.CallingAPI)
+      setModalIsVisible(true)
 
       return authActivate({passport_id, otp})
         .then((authParams) => {
@@ -56,26 +59,17 @@ function VerifyNumber({navigation, route}: Props) {
           }
         })
         .catch((error: Error) => {
-          Alert.alert(
-            'Error',
-            `${error}`,
-            [
-              {
-                text: 'OK',
-                onPress: () => {},
-              },
-            ],
-            {cancelable: false},
-          )
+          setError(error)
         })
         .finally(() => {
           setUIState(UIState.Normal)
+          setModalIsVisible(false)
         })
     }
   }
 
   return (
-    <View style={{flex: 1}}>
+    <>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white}]}>
         <View style={{margin: 24}}>
@@ -83,6 +77,7 @@ function VerifyNumber({navigation, route}: Props) {
             <FormattedMessage id="verify-pin.please-verify" />
           </BodyText>
           <TextInput
+            ref={inputRef}
             style={{
               width: '100%',
               height: 56,
@@ -111,7 +106,7 @@ function VerifyNumber({navigation, route}: Props) {
             }}
             title={intl.formatMessage({id: 'general.verify'})}
           />
-          {codeError && (
+          {error && (
             <BodyHeader
               style={{
                 fontSize: 16,
@@ -135,7 +130,18 @@ function VerifyNumber({navigation, route}: Props) {
           </BodyHeader>
         </View>
       </SafeAreaView>
-    </View>
+
+      <Modal
+        isVisible={modalIsVisible}
+        style={{
+          alignItems: 'center',
+        }}
+        onModalHide={() => {
+          setModalIsVisible(false)
+        }}>
+        <LoadingOverlay />
+      </Modal>
+    </>
   )
 }
 
