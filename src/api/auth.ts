@@ -2,8 +2,7 @@ import axios from 'axios'
 import {API_ENDPOINT} from './constants'
 
 export const authRequestOtp = (body: {passport_id: string}) => {
-  return axios.post(`${API_ENDPOINT}/patient/request_otp`, body)
-  // return axios.post(`${API_ENDPOINT}/patient/activate`, body)
+  return axios.post(`${API_ENDPOINT}/patient/activate`, body)
 }
 
 export interface AuthParams {
@@ -16,15 +15,13 @@ export const authActivate = async (body: {
   otp: string
 }) => {
   try {
-    // const response = await axios.post(`${API_ENDPOINT}/patient/login`, body)
-    const response = await axios.post(`${API_ENDPOINT}/patient/activate`, body)
-    const data: AuthParams = response.data
-    if (!data.access_token || !data.patient_id) {
+    const response = await axios.post(`${API_ENDPOINT}/patient/login`, body)
+    const authParams: AuthParams = response.data?.patient
+    if (!authParams.access_token || !authParams.patient_id) {
       throw new Error('Invalid authentication data')
     }
-    console.log('Authentication complete')
-    console.log('access_token: ', data)
-    return data
+    console.log('Authentication complete', authParams)
+    return authParams
   } catch (err) {
     throw err
   }
