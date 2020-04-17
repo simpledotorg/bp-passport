@@ -1,5 +1,10 @@
-import React from 'react'
-import {createStackNavigator, useHeaderHeight} from '@react-navigation/stack'
+import React, {useContext, useEffect} from 'react'
+import {
+  createStackNavigator,
+  useHeaderHeight,
+  StackNavigationProp,
+} from '@react-navigation/stack'
+import {RouteProp} from '@react-navigation/native'
 import {forFade} from './navigation/interpolators'
 import {useIntl} from 'react-intl'
 
@@ -9,10 +14,13 @@ import LoginScreen from './screens/LoginScreen'
 import ConsentScreen from './screens/ConsentScreen'
 import ScanPassportScreen from './screens/ScanPassportScreen'
 import VerifyNumberScreen from './screens/VerifyNumberScreen'
+import BpHistoryScreen from './screens/BpHistoryScreen'
 import HomeScreen from './screens/HomeScreen'
+import SettingsScreen from './screens/SettingsScreen'
+import {AuthContext, LoginState} from './providers/auth.provider'
 
 import SCREENS from './constants/screens'
-import {HomeHeaderTitle, ButtonIcon} from './components'
+import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
 import {colors, navigation as navigationStyle} from './styles'
 
 export type RootStackParamList = {
@@ -22,44 +30,67 @@ export type RootStackParamList = {
   LOGIN: undefined
   CONSENT: undefined
   SCAN_BP_PASSPORT: undefined
-  VERIFY_YOUR_NUMBER: undefined
+  VERIFY_YOUR_NUMBER: {passport_id: string}
   ALL_BP: undefined
   SETTINGS: undefined
   CONTACT_A_DOCTOR: undefined
   HOME: undefined
+  BP_HISTORY: {bps: object[]}
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
 
 const Navigation = () => {
   return (
-    <Stack.Navigator
-      initialRouteName={SCREENS.LAUNCH}
-      headerMode={'none'}
-      mode="modal"
-      screenOptions={{
-        gestureEnabled: false,
-      }}>
-      <Stack.Screen name={SCREENS.LAUNCH} component={LaunchScreen} />
-      <Stack.Screen
-        name={SCREENS.MAIN_STACK}
-        component={MainStack}
-        options={{cardStyleInterpolator: forFade}}
-      />
-    </Stack.Navigator>
+    <>
+      <Stack.Navigator
+        initialRouteName={SCREENS.LAUNCH}
+        headerMode={'none'}
+        mode="modal"
+        screenOptions={{
+          gestureEnabled: false,
+        }}>
+        <Stack.Screen name={SCREENS.LAUNCH} component={LaunchScreen} />
+
+        <Stack.Screen
+          name={SCREENS.MAIN_STACK}
+          component={MainStack}
+          options={{cardStyleInterpolator: forFade}}
+        />
+      </Stack.Navigator>
+    </>
   )
 }
 
 export default Navigation
 
-function MainStack() {
+type MainStackNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  SCREENS.MAIN_STACK
+>
+
+type Props = {
+  navigation: MainStackNavigationProp
+}
+
+function MainStack({navigation}: Props) {
   const intl = useIntl()
 
   const headerHeightIncludingSafeArea = useHeaderHeight()
 
+  const {loginState} = useContext(AuthContext)
+
+  useEffect(() => {
+    if (loginState !== LoginState.LoggedOut) {
+      navigation.navigate(SCREENS.HOME)
+    }
+  }, [loginState])
+
   return (
     <Stack.Navigator
-      initialRouteName={SCREENS.SPLASH}
+      initialRouteName={
+        loginState === LoginState.LoggedOut ? SCREENS.SPLASH : SCREENS.HOME
+      }
       screenOptions={{
         ...navigationStyle,
         headerTintColor: colors.white100,
@@ -99,7 +130,15 @@ function MainStack() {
         component={VerifyNumberScreen}
         options={{
           headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.verify-your-number'}),
+          title: intl.formatMessage({id: 'page-titles.verify-pin'}),
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.BP_HISTORY}
+        component={BpHistoryScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.all-bp'}),
         }}
       />
       <Stack.Screen
@@ -115,9 +154,26 @@ function MainStack() {
           },
           headerTitleAlign: 'center',
           headerTitle: () => <HomeHeaderTitle />,
-          headerRight: () => <ButtonIcon />,
+          headerRight: () => {
+            if (loginState === LoginState.LoggedIn) {
+              return (
+                <ButtonIcon
+                  onPress={() => navigation.navigate(SCREENS.SETTINGS)}
+                />
+              )
+            }
+            return null
+          },
           headerLeft: () => null,
           gestureEnabled: false,
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.SETTINGS}
+        component={SettingsScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.settings'}),
         }}
       />
     </Stack.Navigator>

@@ -30,39 +30,33 @@ function Consent({navigation}: Props) {
           containerStyles.centeredContent,
           {margin: 24},
         ]}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <BodyText style={{marginBottom: 24}}>
-            <FormattedMessage id="consent.by-confirming" />
+            <FormattedMessage id="consent.by-using-app" />
           </BodyText>
           <BodyText style={{marginBottom: 24}}>
-            <FormattedMessage id="consent.personal-data" />
+            <FormattedMessage id="consent.this-means-that" />
           </BodyText>
-          <BodyText>
-            <FormattedMessage
-              id="consent.data-privacy"
-              values={{
-                here: (
-                  <BodyText
-                    style={{color: colors.blue2}}
-                    onPress={() => {
-                      Linking.openURL('https://simple.org/patient-privacy')
-                    }}>
-                    <FormattedMessage id="general.here" />
-                  </BodyText>
-                ),
-                digital_principles: (
-                  <BodyText
-                    style={{color: colors.blue2}}
-                    onPress={() => {
-                      Linking.openURL(
-                        'https://www.simple.org/digitalprinciples/',
-                      )
-                    }}>
-                    <FormattedMessage id="consent.digital-principles" />
-                  </BodyText>
-                ),
-              }}
-            />
+          <BodyText style={{marginBottom: 24}}>
+            <FormattedMessage id="consent.patient-data" />{' '}
+            <BodyText
+              style={{color: colors.blue2}}
+              onPress={() => {
+                Linking.openURL('https://simple.org/patient-privacy')
+              }}>
+              <FormattedMessage id="consent.here-link" />{' '}
+            </BodyText>
+            <BodyText>
+              <FormattedMessage id="consent.and-in-our" />{' '}
+            </BodyText>
+            <BodyText
+              style={{color: colors.blue2}}
+              onPress={() => {
+                Linking.openURL('https://simple.org/digitalprinciples/')
+              }}>
+              <FormattedMessage id="consent.digital-principles-link" />
+            </BodyText>
+            <BodyText>.</BodyText>
           </BodyText>
         </ScrollView>
       </View>

@@ -1,18 +1,19 @@
 import React, {createContext, useState, useEffect, useContext} from 'react'
-import {User} from '../models'
-
-const initialUserState: User | undefined = {
-  id: 'example',
-  full_name: 'Anish Acharya',
-  password_digest: '123 4567',
-}
+import {Patient, BloodPressure} from '../models'
+import {PatientResponseData} from '../api/patient'
 
 type ContextProps = {
-  user: User | undefined
+  bloodPressures: BloodPressure[]
+  updatePatientData: (patientData: PatientResponseData) => any
+  user: Patient | undefined
 }
 
 export const UserContext = createContext<Partial<ContextProps>>({
   user: undefined,
+  bloodPressures: [],
+  updatePatientData: async (patientData: Patient) => {
+    return true
+  },
 })
 
 export interface IProps {
@@ -20,9 +21,30 @@ export interface IProps {
 }
 
 const UserProvider = ({children}: IProps) => {
-  const [user, setUser] = useState<User | undefined>(initialUserState)
+  const [user, setUser] = useState<Patient | undefined>(undefined)
+  const [bloodPressures, setBloodPressures] = useState<BloodPressure[]>([])
 
-  return <UserContext.Provider value={{user}}>{children}</UserContext.Provider>
+  const updatePatientData = async (
+    patientResponseData: PatientResponseData,
+  ) => {
+    // Todo - write/update patient offline
+    // Todo - write/update blood pressures offline
+    const {
+      patient_id,
+      full_name,
+      password_digest,
+      blood_pressures,
+    } = patientResponseData
+    setUser({patient_id, full_name, password_digest})
+    setBloodPressures(blood_pressures.slice())
+    return true
+  }
+
+  return (
+    <UserContext.Provider value={{user, bloodPressures, updatePatientData}}>
+      {children}
+    </UserContext.Provider>
+  )
 }
 
 export default UserProvider

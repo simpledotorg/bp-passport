@@ -21,6 +21,9 @@ DerivedData
 *.ipa
 *.xcuserstate
 
+# Environment
+.env.development
+
 # Android/IntelliJ
 #
 build/
