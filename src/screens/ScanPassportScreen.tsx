@@ -6,7 +6,7 @@ import {RNCamera, BarCodeType} from 'react-native-camera'
 import {StackNavigationProp} from '@react-navigation/stack'
 
 import {containerStyles, qrImage, qrMaskImage, colors} from '../styles'
-import {BodyHeader} from '../components'
+import {BodyHeader, LoadingOverlay} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 
@@ -81,16 +81,14 @@ function ScanPassportScreen({navigation}: Props) {
   }, [error, uiState, modalIsVisible])
 
   // test a working/not working code in the simulator
-  /*
   useEffect(() => {
     const good = '86d89f24-fc11-4829-aa4e-5daee20a370a'
     const bad = 'fdsfds'
     onBarCodeRead({
-      data: bad,
+      data: good,
       type: RNCamera.Constants.BarCodeType.qr,
     })
   }, [])
-  */
 
   return (
     <>
@@ -187,20 +185,9 @@ function ScanPassportScreen({navigation}: Props) {
           alignItems: 'center',
         }}
         onModalHide={() => {
-          console.log('onModalHide')
           setModalIsVisible(false)
         }}>
-        <View
-          style={{
-            backgroundColor: colors.white100,
-            padding: 24,
-            width: '80%',
-            height: '50%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <ActivityIndicator size="large" />
-        </View>
+        <LoadingOverlay />
       </Modal>
     </>
   )
