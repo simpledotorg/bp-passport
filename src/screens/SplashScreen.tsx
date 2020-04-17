@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {SafeAreaView, View, Image, StyleSheet} from 'react-native'
 import {FormattedMessage, useIntl, IntlContext} from 'react-intl'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -34,7 +34,7 @@ function SplashScreen({navigation}: Props) {
         </View>
 
         <BodyHeader>
-          <FormattedMessage id="splash.sub-title" />
+          <FormattedMessage id="splash.in-this-app" />
         </BodyHeader>
 
         <View>
@@ -46,25 +46,25 @@ function SplashScreen({navigation}: Props) {
             }}>
             <Icon name="edit" size={24} color={colors.grey2} />
             <BodyText style={styles.itemText}>
-              <FormattedMessage id="splash.track" />
+              <FormattedMessage id="splash.record-and-track" />
             </BodyText>
           </View>
           <View style={styles.item}>
             <Icon name="record-voice-over" size={24} color={colors.grey2} />
             <BodyText style={styles.itemText}>
-              <FormattedMessage id="splash.talk" />
+              <FormattedMessage id="splash.video-consult-bp" />
             </BodyText>
           </View>
           <View style={styles.item}>
             <Icon name="local-pharmacy" size={24} color={colors.grey2} />
             <BodyText style={styles.itemText}>
-              <FormattedMessage id="splash.medicine" />
+              <FormattedMessage id="splash.video-consult-medicine" />
             </BodyText>
           </View>
           <View style={styles.item}>
             <Icon name="alarm" size={24} color={colors.grey2} />
             <BodyText style={styles.itemText}>
-              <FormattedMessage id="splash.reminders" />
+              <FormattedMessage id="splash.get-reminders" />
             </BodyText>
           </View>
         </View>

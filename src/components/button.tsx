@@ -5,6 +5,7 @@ import {
   StyleProp,
   ViewStyle,
   ButtonProps as NativeButtonProps,
+  TouchableOpacityProps,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import colors from '../styles/colors'
@@ -13,6 +14,7 @@ interface ButtonProps extends NativeButtonProps {
   children?: ReactNode
   style?: StyleProp<ViewStyle>
   title: string
+  buttonColor?: string
 }
 
 export const Button = (props: ButtonProps) => {
@@ -32,6 +34,11 @@ export const Button = (props: ButtonProps) => {
           shadowRadius: 1, // iOS box shadow
           elevation: 2, // Android elevation
         },
+        props.disabled
+          ? {
+              backgroundColor: colors.grey3,
+            }
+          : {},
         props.style,
       ]}>
       {props.title && (
@@ -43,7 +50,9 @@ export const Button = (props: ButtonProps) => {
               fontStyle: 'normal',
               lineHeight: 20,
               letterSpacing: 1.25,
-              color: colors.white100,
+              color: props.disabled
+                ? colors.grey2
+                : props.buttonColor || colors.white100,
               textTransform: 'uppercase',
             },
           ]}>
@@ -54,7 +63,7 @@ export const Button = (props: ButtonProps) => {
   )
 }
 
-interface ButtonIconProps {
+interface ButtonIconProps extends TouchableOpacityProps {
   style?: StyleProp<ViewStyle>
   iconColor?: string
   iconSize?: number
@@ -63,6 +72,7 @@ interface ButtonIconProps {
 export const ButtonIcon = (props: ButtonIconProps) => {
   return (
     <TouchableOpacity
+      {...props}
       style={[
         {
           width: 44,
@@ -71,8 +81,7 @@ export const ButtonIcon = (props: ButtonIconProps) => {
           justifyContent: 'center',
         },
         props.style,
-      ]}
-      {...props}>
+      ]}>
       <Icon
         name="settings"
         size={props.iconSize ?? 24}
