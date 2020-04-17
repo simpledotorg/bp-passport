@@ -10,12 +10,11 @@ import {
 import {FormattedMessage, useIntl} from 'react-intl'
 import Picker, {Item} from 'react-native-picker-select'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import {getLocales} from 'react-native-localize'
 
 import {containerStyles, colors} from '../styles'
 import {BodyText, BodyHeader} from '../components'
 import {UserContext} from '../providers/user.provider'
-import {AVAILABLE_TRANSLATIONS, ENGLISH} from '../constants/languages'
+import {AVAILABLE_TRANSLATIONS} from '../constants/languages'
 import {useLocale} from '../effects/use-locale-messages.effect'
 
 function SettingsScreen({navigation}: any) {
@@ -23,20 +22,16 @@ function SettingsScreen({navigation}: any) {
   const intl = useIntl()
   const {locale, setLocale} = useLocale()
 
-  const locales = getLocales().reduce((memo: Item[], {languageCode}) => {
-    if (AVAILABLE_TRANSLATIONS.includes(languageCode)) {
-      const translation = {
-        label: intl.formatMessage({
-          id: `translation.${languageCode}`,
-        }),
-        value: languageCode,
-      }
+  const locales: Item[] = []
 
-      memo.push(translation)
-    }
-
-    return memo
-  }, [])
+  AVAILABLE_TRANSLATIONS.forEach((language) => {
+    locales.push({
+      label: intl.formatMessage({
+        id: `translation.${language}`,
+      }),
+      value: language,
+    })
+  })
 
   return (
     <SafeAreaView
