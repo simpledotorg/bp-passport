@@ -1,5 +1,5 @@
 import React, {createContext, useState, useEffect, useContext} from 'react'
-import {Patient, BloodPressure} from '../models'
+import {Patient, BloodPressure, Medication} from '../models'
 import {PatientResponseData} from '../api/patient'
 import {
   writeItemToDisk,
@@ -11,17 +11,20 @@ import {
 const KEYS = {
   USER: 'user',
   BLOOD_PRESSURES: 'bloodPressures',
+  MEDICATION: 'medication',
 }
 
 type ContextProps = {
-  bloodPressures: BloodPressure[]
+  bloodPressures: BloodPressure[] | undefined
+  medications: Medication[] | undefined
   updatePatientData: (patientData: PatientResponseData) => any
   user: Patient | undefined
 }
 
 export const UserContext = createContext<Partial<ContextProps>>({
   user: undefined,
-  bloodPressures: [],
+  bloodPressures: undefined,
+  medications: undefined,
   updatePatientData: async (patientData: Patient) => {
     return true
   },
@@ -33,9 +36,13 @@ export interface IProps {
 
 const UserProvider = ({children}: IProps) => {
   const [user, setUser] = useState<Patient | undefined>(undefined)
-  const [bloodPressures, setBloodPressures] = useState<BloodPressure[]>([])
+  const [bloodPressures, setBloodPressures] = useState<
+    BloodPressure[] | undefined
+  >(undefined)
 
-  // const [test, setTest] = useState(false)
+  const [medications, setMedications] = useState<Medication[] | undefined>(
+    undefined,
+  )
 
   const updatePatientData = async (
     patientResponseData: PatientResponseData,
@@ -45,15 +52,19 @@ const UserProvider = ({children}: IProps) => {
       full_name,
       password_digest,
       blood_pressures,
+      medications,
     } = patientResponseData
     const userData = {patient_id, full_name, password_digest}
     const bloodPressuresData = blood_pressures.slice()
+    const medicationsData = (medications ?? []).slice()
     setUser(userData)
     setBloodPressures(bloodPressuresData)
+    setMedications(medicationsData)
 
     try {
       writeItemToDisk(userData, KEYS.USER)
       writeItemsToDisk(bloodPressuresData, KEYS.BLOOD_PRESSURES)
+      writeItemsToDisk(medicationsData, KEYS.MEDICATION)
     } catch (error) {
       // Error getting data
     }
@@ -65,30 +76,24 @@ const UserProvider = ({children}: IProps) => {
       try {
         const userData = await readItemFromDisk(KEYS.USER)
         if (userData) {
-          // console.log('userData from cache', userData)
           setUser(userData)
-          // setTest(true)
         }
 
         const bloodPressuresData = await readItemsFromDisk(KEYS.BLOOD_PRESSURES)
-        // console.log('bloodPressuresData from cache', bloodPressuresData)
         if (bloodPressuresData) {
           setBloodPressures(bloodPressuresData)
         }
       } catch (error) {
         // Error getting data
-        console.log('huh? ', error)
+        console.log('initFromOfflineCache error ', error)
       }
     }
     initFromOfflineCache()
   }, [])
 
-  useEffect(() => {
-    // console.log('bloodPressures changed: ', bloodPressures)
-  }, [user, bloodPressures])
-
   return (
-    <UserContext.Provider value={{user, bloodPressures, updatePatientData}}>
+    <UserContext.Provider
+      value={{user, bloodPressures, medications, updatePatientData}}>
       {children}
     </UserContext.Provider>
   )

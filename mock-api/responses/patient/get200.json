@@ -13,6 +13,20 @@
     "password_digest": "123 4567",
     "age": 35,
     "age_updated_at": "2020-02-12T14:14:49.633Z",
+    "medications": [
+      {
+        "name": "Amlodipine",
+        "dosage": "10 mg",
+        "rxnorm_code": "123",
+        "is_protocol_drug": true
+      },
+      {
+        "name": "Telmisartan",
+        "dosage": "40 mg",
+        "rxnorm_code": "321",
+        "is_protocol_drug": true
+      }
+    ],
     "appointments": [
       {
         "facility": {
