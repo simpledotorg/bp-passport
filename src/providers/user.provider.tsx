@@ -11,7 +11,7 @@ import {
 const KEYS = {
   USER: 'user',
   BLOOD_PRESSURES: 'bloodPressures',
-  MEDICATION: 'medication',
+  MEDICATIONS: 'medications',
 }
 
 type ContextProps = {
@@ -64,7 +64,7 @@ const UserProvider = ({children}: IProps) => {
     try {
       writeItemToDisk(userData, KEYS.USER)
       writeItemsToDisk(bloodPressuresData, KEYS.BLOOD_PRESSURES)
-      writeItemsToDisk(medicationsData, KEYS.MEDICATION)
+      writeItemsToDisk(medicationsData, KEYS.MEDICATIONS)
     } catch (error) {
       // Error getting data
     }
@@ -82,6 +82,11 @@ const UserProvider = ({children}: IProps) => {
         const bloodPressuresData = await readItemsFromDisk(KEYS.BLOOD_PRESSURES)
         if (bloodPressuresData) {
           setBloodPressures(bloodPressuresData)
+        }
+
+        const medicationsData = await readItemsFromDisk(KEYS.MEDICATIONS)
+        if (medicationsData) {
+          setMedications(medicationsData)
         }
       } catch (error) {
         // Error getting data
