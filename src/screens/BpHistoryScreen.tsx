@@ -1,5 +1,5 @@
 import React from 'react'
-import {SafeAreaView, View, ScrollView} from 'react-native'
+import {SafeAreaView, View, FlatList} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 
@@ -24,22 +24,28 @@ type Props = {
 }
 
 function BpHistoryScreen({navigation, route}: Props) {
-  const {bps} = route.params
+  const {bps}: {bps: any[]} = route.params
 
   return (
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-        <ScrollView>
-          <View style={{padding: 24}}>
-            <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
-              BP History
-            </BodyHeader>
-            {bps.map((bp, index) => {
-              return <BpInformation bp={bp} key={index} />
-            })}
-          </View>
-        </ScrollView>
+        <View style={{flex: 1, paddingVertical: 24, paddingLeft: 24}}>
+          <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
+            BP History
+          </BodyHeader>
+          <FlatList
+            data={bps}
+            renderItem={({item}) => (
+              <View style={{marginRight: 24}}>
+                <BpInformation bp={item} />
+              </View>
+            )}
+            keyExtractor={(item, index) => {
+              return `key-${index}`
+            }}
+          />
+        </View>
       </SafeAreaView>
     </View>
   )
