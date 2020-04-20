@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {View, Text, StyleSheet} from 'react-native'
 import {containerStyles, navigation, colors} from '../styles'
 import {UserContext} from '../providers/user.provider'
@@ -19,11 +19,14 @@ export const HomeHeaderTitle = () => {
       break
   }
 
-  const showLoading = loginState === LoginState.LoggingIn
   const {user} = useContext(UserContext)
+
+  const showLoading = loginState === LoginState.LoggingIn && user === undefined
 
   const hasFullName = user?.full_name ? true : false
   const hasPasswordDigest = user?.password_digest ? true : false
+
+  useEffect(() => {}, [user, loginState])
 
   if (showLoading) {
     return (
