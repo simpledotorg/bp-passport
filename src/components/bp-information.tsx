@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, StyleSheet, Image} from 'react-native'
+import {View, StyleSheet, Image, ViewStyle} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 import {format} from 'date-fns'
 
@@ -9,9 +9,10 @@ import {BloodPressure} from '../models'
 
 type Props = {
   bp: BloodPressure
+  style?: ViewStyle
 }
 
-export const BpInformation = ({bp}: Props) => {
+export const BpInformation = ({bp, style = {}}: Props) => {
   const isBloodPressureHigh = (bpIn: BloodPressure) => {
     // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
     // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
@@ -28,8 +29,8 @@ export const BpInformation = ({bp}: Props) => {
     <View
       style={{
         flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 16,
+        marginTop: 24,
+        ...style,
       }}>
       <Image source={redHeart} style={[styles.informationIcon]} />
       <View>

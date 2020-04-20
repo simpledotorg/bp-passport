@@ -180,7 +180,7 @@ function Home({navigation}: Props) {
             )}
             <View style={[styles.homeContainer]}>
               <BodyHeader style={[styles.sectionHeader]}>My BP</BodyHeader>
-              {bps ? (
+              {bps.length > 0 ? (
                 <>
                   {bps.map((bp, index) => {
                     if (index > BP_SHOW_LIMIT - 1) {
@@ -223,7 +223,7 @@ function Home({navigation}: Props) {
                         marginBottom: 70,
                       },
                     ]}>
-                    <FormattedMessage id={'home.no-bp'} />
+                    <FormattedMessage id={'home.you-have-no-bp'} />
                   </BodyText>
                 </View>
               )}
