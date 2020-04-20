@@ -28,8 +28,7 @@ export const BpInformation = ({bp}: Props) => {
     <View
       style={{
         flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 16,
+        marginTop: 24,
       }}>
       <Image source={redHeart} style={[styles.informationIcon]} />
       <View>
