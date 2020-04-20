@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import {
   Dimensions,
   SafeAreaView,
@@ -24,7 +24,7 @@ import {AuthContext, LoginState} from '../providers/auth.provider'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {Button, BodyHeader, BodyText, BpInformation} from '../components'
-import {BloodPressure} from '../models'
+import {BloodPressure, Medication} from '../models'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -51,15 +51,31 @@ function Home({navigation}: Props) {
       break
   }
 
-  const showLoading = loginState === LoginState.LoggingIn
-
   const {user} = useContext(UserContext)
   const {bloodPressures} = useContext(UserContext)
+  const {medications} = useContext(UserContext)
   const intl = useIntl()
 
+  const showLoading =
+    loginState === LoginState.LoggingIn && bloodPressures === undefined
+
+  useEffect(() => {}, [loginState, user, bloodPressures, medications])
+
   const bps: BloodPressure[] = bloodPressures ?? []
-  const [hasMedicines, setHasMedicines] = useState(true)
-  const medicines = ['Amlodipine 10 mg', 'Telmisartan 40 mg']
+
+  const meds: Medication[] = medications ?? []
+
+  const hasMedicines = meds.length > 0
+
+  const medicationDisplayName = (medication: Medication) => {
+    let ret = medication.name
+    if (medication.dosage) {
+      if (ret.length > 0) {
+        ret += ' ' + medication.dosage
+      }
+    }
+    return ret
+  }
 
   const showBpHistoryButton = bps.length > BP_SHOW_LIMIT
 
@@ -115,7 +131,7 @@ function Home({navigation}: Props) {
                     ]}>
                     <FormattedMessage id={'home.no-medicines'} />
                   </BodyText>
-                  {medicines.map((medicine, index) => (
+                  {meds.map((medicine, index) => (
                     <View
                       key={index}
                       style={[
@@ -135,7 +151,7 @@ function Home({navigation}: Props) {
                           color: colors.grey0,
                           fontWeight: '500',
                         }}>
-                        {medicine}
+                        {medicationDisplayName(medicine)}
                       </BodyText>
                     </View>
                   ))}

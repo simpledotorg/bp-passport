@@ -1,8 +1,15 @@
-import React, {createContext, useState, useEffect, useContext} from 'react'
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+} from 'react'
 import {AuthParams} from '../api'
 import {getPatient} from '../api/patient'
 import AsyncStorage from '@react-native-community/async-storage'
 import {UserContext} from '../providers/user.provider'
+import axios from 'axios'
 
 export enum LoginState {
   LoggedOut,
@@ -27,8 +34,35 @@ const AuthProvider = ({children}) => {
     undefined,
   )
   const [loginState, setLoginState] = useState(LoginState.LoggedOut)
-
   const {updatePatientData} = useContext(UserContext)
+
+  const axiosInterceptor: any = useRef(null)
+
+  useEffect(() => {
+    if (axiosInterceptor.current !== null) {
+      axios.interceptors.request.eject(axiosInterceptor.current)
+    }
+
+    axiosInterceptor.current = axios.interceptors.request.use(
+      (config) => {
+        if (authParams) {
+          config.headers = {
+            Authorization: `Bearer ${authParams.access_token}`,
+          }
+          config.headers['X-Patient-ID'] = authParams.patient_id
+        }
+
+        config.headers['Content-Type'] = 'application/json'
+        config.headers['Cache-Control'] = 'no-cache'
+        return config
+      },
+      (error) => {
+        // Do something with request error
+        console.log('error with axois interceptor', error)
+        return Promise.reject(error)
+      },
+    )
+  }, [authParams])
 
   const signOut = async () => {
     setAuthParams(undefined)
@@ -74,6 +108,7 @@ const AuthProvider = ({children}) => {
         const patientId = values[1][1]
 
         if (accessToken && patientId) {
+          console.log('setAuthParams: ', accessToken, patientId)
           setAuthParams({
             access_token: accessToken,
             patient_id: patientId,

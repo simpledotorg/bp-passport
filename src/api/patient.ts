@@ -1,13 +1,14 @@
 import axios from 'axios'
 
 import {MOCK_API_ENDPOINT} from './constants'
-import {BloodPressure} from '../models'
+import {BloodPressure, Medication} from '../models'
 
 export interface PatientResponseData {
   patient_id: string
   full_name?: string
   password_digest?: string
   blood_pressures: BloodPressure[]
+  medications: Medication[]
 }
 
 export const getPatient = async () => {
