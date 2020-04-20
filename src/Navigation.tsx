@@ -17,11 +17,13 @@ import VerifyNumberScreen from './screens/VerifyNumberScreen'
 import BpHistoryScreen from './screens/BpHistoryScreen'
 import HomeScreen from './screens/HomeScreen'
 import SettingsScreen from './screens/SettingsScreen'
+import BpDetailsScreen from './screens/BpDetailsScreen'
 import {AuthContext, LoginState} from './providers/auth.provider'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
 import {colors, navigation as navigationStyle} from './styles'
+import {BloodPressure} from './models'
 
 export type RootStackParamList = {
   LAUNCH: undefined
@@ -35,7 +37,8 @@ export type RootStackParamList = {
   SETTINGS: undefined
   CONTACT_A_DOCTOR: undefined
   HOME: undefined
-  BP_HISTORY: {bps: object[]}
+  BP_HISTORY: {bps: BloodPressure[]}
+  BP_DETAILS: {bp: BloodPressure}
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -139,6 +142,14 @@ function MainStack({navigation}: Props) {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.all-bp'}),
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.BP_DETAILS}
+        component={BpDetailsScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.details'}),
         }}
       />
       <Stack.Screen

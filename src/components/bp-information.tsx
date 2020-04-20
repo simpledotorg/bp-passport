@@ -10,9 +10,10 @@ import {BloodPressure} from '../models'
 type Props = {
   bp: BloodPressure
   style?: ViewStyle
+  compact?: boolean
 }
 
-export const BpInformation = ({bp, style = {}}: Props) => {
+export const BpInformation = ({bp, style = {}, compact = false}: Props) => {
   const isBloodPressureHigh = (bpIn: BloodPressure) => {
     // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
     // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
@@ -23,6 +24,30 @@ export const BpInformation = ({bp, style = {}}: Props) => {
     return bpIn.recorded_at
       ? format(new Date(bpIn.recorded_at), 'dd-MMM-yyy')
       : null
+  }
+
+  const getBPText = () => {
+    return isBloodPressureHigh(bp) ? (
+      <BodyText
+        style={[
+          styles.bpText,
+          {
+            color: colors.red1,
+          },
+        ]}>
+        <FormattedMessage id="general.high-bp" />
+      </BodyText>
+    ) : (
+      <BodyText
+        style={[
+          styles.bpText,
+          {
+            color: colors.green1,
+          },
+        ]}>
+        <FormattedMessage id="general.normal-bp" />
+      </BodyText>
+    )
   }
 
   return (
@@ -39,7 +64,15 @@ export const BpInformation = ({bp, style = {}}: Props) => {
             fontSize: 18,
             color: colors.grey0,
             fontWeight: '500',
-          }}>{`${bp.systolic} / ${bp.diastolic}`}</BodyText>
+          }}>
+          <>{`${bp.systolic} / ${bp.diastolic}`}</>
+          {compact && (
+            <>
+              {`, `}
+              {getBPText()}
+            </>
+          )}
+        </BodyText>
         <BodyText
           style={{
             fontSize: 16,
@@ -49,32 +82,14 @@ export const BpInformation = ({bp, style = {}}: Props) => {
           {displayDate(bp)}
         </BodyText>
       </View>
-      <View
-        style={{
-          marginLeft: 'auto',
-        }}>
-        {isBloodPressureHigh(bp) ? (
-          <BodyText
-            style={[
-              styles.bpText,
-              {
-                color: colors.red1,
-              },
-            ]}>
-            <FormattedMessage id="general.high-bp" />
-          </BodyText>
-        ) : (
-          <BodyText
-            style={[
-              styles.bpText,
-              {
-                color: colors.green1,
-              },
-            ]}>
-            <FormattedMessage id="general.normal-bp" />
-          </BodyText>
-        )}
-      </View>
+      {!compact && (
+        <View
+          style={{
+            marginLeft: 'auto',
+          }}>
+          {getBPText()}
+        </View>
+      )}
     </View>
   )
 }
