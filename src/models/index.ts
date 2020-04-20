@@ -1,2 +1,3 @@
 export * from './patient'
 export * from './blood-pressure'
+export * from './medication'
