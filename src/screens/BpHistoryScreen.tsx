@@ -1,12 +1,20 @@
 import React from 'react'
-import {SafeAreaView, View, FlatList} from 'react-native'
+import {
+  SafeAreaView,
+  View,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {containerStyles, colors} from '../styles'
 import {BodyHeader, BpInformation} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
+import {BloodPressure} from '../models'
 
 type BpHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -24,13 +32,13 @@ type Props = {
 }
 
 function BpHistoryScreen({navigation, route}: Props) {
-  const {bps}: {bps: any[]} = route.params
+  const {bps}: {bps: BloodPressure[]} = route.params
 
   return (
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-        <View style={{flex: 1, paddingVertical: 24, paddingLeft: 24}}>
+        <View style={{flex: 1, paddingTop: 24, paddingLeft: 24}}>
           <View style={{marginBottom: 24}}>
             <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
               BP History
@@ -39,12 +47,27 @@ function BpHistoryScreen({navigation, route}: Props) {
           <FlatList
             data={bps}
             renderItem={({item, index}) => (
-              <View style={{marginRight: 24}}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate(SCREENS.BP_DETAILS, {bp: item})
+                }}
+                style={[
+                  {paddingRight: 24},
+                  styles.historyItem,
+                  index === bps.length - 1 ? {borderBottomWidth: 0} : {},
+                ]}>
                 <BpInformation
+                  compact
                   bp={item}
-                  style={index === 0 ? {marginTop: 0} : null}
+                  style={index === 0 ? {marginTop: 0} : {marginTop: 12}}
                 />
-              </View>
+                <Icon
+                  name="chevron-right"
+                  size={24}
+                  style={{marginLeft: 'auto'}}
+                  color={colors.blue2}
+                />
+              </TouchableOpacity>
             )}
             keyExtractor={(item, index) => {
               return `key-${index}`
@@ -57,3 +80,13 @@ function BpHistoryScreen({navigation, route}: Props) {
 }
 
 export default BpHistoryScreen
+
+const styles = StyleSheet.create({
+  historyItem: {
+    borderColor: colors.grey3,
+    borderBottomWidth: 1,
+    paddingBottom: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+})
