@@ -94,7 +94,7 @@ function SettingsScreen({navigation}: any) {
             <BodyText
               style={styles.linkText}
               onPress={() => {
-                Linking.openURL('https://simple.org/terms ')
+                Linking.openURL('https://simple.org/terms')
               }}>
               <FormattedMessage id="settings.terms-link" />
             </BodyText>
