@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import {
   Dimensions,
   SafeAreaView,
@@ -51,11 +51,14 @@ function Home({navigation}: Props) {
       break
   }
 
-  const showLoading = loginState === LoginState.LoggingIn
-
   const {user} = useContext(UserContext)
   const {bloodPressures} = useContext(UserContext)
   const intl = useIntl()
+
+  const showLoading =
+    loginState === LoginState.LoggingIn && (bloodPressures ?? []).length === 0
+
+  useEffect(() => {}, [user, bloodPressures, loginState])
 
   const bps: BloodPressure[] = bloodPressures ?? []
   const [hasMedicines, setHasMedicines] = useState(true)

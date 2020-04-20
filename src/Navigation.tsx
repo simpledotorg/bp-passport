@@ -18,6 +18,7 @@ import BpHistoryScreen from './screens/BpHistoryScreen'
 import HomeScreen from './screens/HomeScreen'
 import SettingsScreen from './screens/SettingsScreen'
 import {AuthContext, LoginState} from './providers/auth.provider'
+import {UserContext} from './providers/user.provider'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
@@ -79,12 +80,15 @@ function MainStack({navigation}: Props) {
   const headerHeightIncludingSafeArea = useHeaderHeight()
 
   const {loginState} = useContext(AuthContext)
+  const {user} = useContext(UserContext)
 
   useEffect(() => {
     if (loginState !== LoginState.LoggedOut) {
       navigation.navigate(SCREENS.HOME)
     }
   }, [loginState])
+
+  useEffect(() => {}, [user])
 
   return (
     <Stack.Navigator
@@ -155,7 +159,10 @@ function MainStack({navigation}: Props) {
           headerTitleAlign: 'center',
           headerTitle: () => <HomeHeaderTitle />,
           headerRight: () => {
-            if (loginState === LoginState.LoggedIn) {
+            if (
+              loginState === LoginState.LoggedIn ||
+              (loginState === LoginState.LoggingIn && user !== undefined)
+            ) {
               return (
                 <ButtonIcon
                   onPress={() => navigation.navigate(SCREENS.SETTINGS)}
