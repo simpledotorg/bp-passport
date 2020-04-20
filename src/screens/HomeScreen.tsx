@@ -57,7 +57,7 @@ function Home({navigation}: Props) {
   const {bloodPressures} = useContext(UserContext)
   const intl = useIntl()
 
-  const bps: BloodPressure[] = bloodPressures ?? []
+  const bps: BloodPressure[] = [] ?? []
   const [hasMedicines, setHasMedicines] = useState(true)
   const medicines = ['Amlodipine 10 mg', 'Telmisartan 40 mg']
 
