@@ -33,7 +33,6 @@ enum UIState {
 }
 
 function ScanPassportScreen({navigation}: Props) {
-  // Todo - implement ActivityIndicator UI while api being called
   const [uiState, setUIState] = useState(UIState.Normal)
   const [hasReadCode, setHasReadCode] = useState(false)
   const [error, setError] = useState<Error | undefined>(undefined)
