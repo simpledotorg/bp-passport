@@ -57,7 +57,7 @@ function Home({navigation}: Props) {
   const {bloodPressures} = useContext(UserContext)
   const intl = useIntl()
 
-  const bps: BloodPressure[] = bloodPressures ?? []
+  const bps: BloodPressure[] = []
   const [hasMedicines, setHasMedicines] = useState(true)
   const medicines = ['Amlodipine 10 mg', 'Telmisartan 40 mg']
 
@@ -164,7 +164,7 @@ function Home({navigation}: Props) {
             )}
             <View style={[styles.homeContainer]}>
               <BodyHeader style={[styles.sectionHeader]}>My BP</BodyHeader>
-              {bps ? (
+              {bps.length > 0 ? (
                 <>
                   {bps.map((bp, index) => {
                     if (index > BP_SHOW_LIMIT - 1) {
@@ -207,7 +207,7 @@ function Home({navigation}: Props) {
                         marginBottom: 70,
                       },
                     ]}>
-                    <FormattedMessage id={'home.no-bp'} />
+                    <FormattedMessage id={'home.you-have-no-bp'} />
                   </BodyText>
                 </View>
               )}
