@@ -1,5 +1,5 @@
 import React from 'react'
-import {SafeAreaView, View, TextInput} from 'react-native'
+import {SafeAreaView, View, ScrollView} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 
@@ -30,14 +30,16 @@ function BpHistoryScreen({navigation, route}: Props) {
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-        <View style={{margin: 24}}>
-          <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
-            BP History
-          </BodyHeader>
-          {bps.map((bp, index) => {
-            return <BpInformation bp={bp} key={index} />
-          })}
-        </View>
+        <ScrollView>
+          <View style={{padding: 24}}>
+            <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
+              BP History
+            </BodyHeader>
+            {bps.map((bp, index) => {
+              return <BpInformation bp={bp} key={index} />
+            })}
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </View>
   )
