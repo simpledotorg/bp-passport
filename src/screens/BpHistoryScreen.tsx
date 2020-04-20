@@ -31,14 +31,19 @@ function BpHistoryScreen({navigation, route}: Props) {
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white}]}>
         <View style={{flex: 1, paddingVertical: 24, paddingLeft: 24}}>
-          <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
-            BP History
-          </BodyHeader>
+          <View style={{marginBottom: 24}}>
+            <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
+              BP History
+            </BodyHeader>
+          </View>
           <FlatList
             data={bps}
-            renderItem={({item}) => (
+            renderItem={({item, index}) => (
               <View style={{marginRight: 24}}>
-                <BpInformation bp={item} />
+                <BpInformation
+                  bp={item}
+                  style={index === 0 ? {marginTop: 0} : null}
+                />
               </View>
             )}
             keyExtractor={(item, index) => {
