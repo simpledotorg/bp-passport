@@ -59,7 +59,7 @@ function Home({navigation}: Props) {
   const showLoading =
     loginState === LoginState.LoggingIn && bloodPressures === undefined
 
-  useEffect(() => {}, [user, bloodPressures, loginState])
+  useEffect(() => {}, [loginState, user, bloodPressures, medications])
 
   const bps: BloodPressure[] = bloodPressures ?? []
 
