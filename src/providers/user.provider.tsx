@@ -55,8 +55,8 @@ const UserProvider = ({children}: IProps) => {
       medications,
     } = patientResponseData
     const userData = {patient_id, full_name, password_digest}
-    const bloodPressuresData = blood_pressures.slice()
-    const medicationsData = (medications ?? []).slice()
+    const bloodPressuresData = [...blood_pressures]
+    const medicationsData = [...medications]
     setUser(userData)
     setBloodPressures(bloodPressuresData)
     setMedications(medicationsData)
