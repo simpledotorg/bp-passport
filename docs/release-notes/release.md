@@ -18,7 +18,7 @@ This does mean that any QR code and any OTP will appear to authenticate against 
 - Loading and rendering BP data from api
 - Loading and rendering medicine data from api
 - Home Screen (apart from loading) complete (now calls api and displays loading ui), supports state for no BP, 3 or less BP, medicine, no medicine etc.
-- Home Screen loading state - 50% complete
+- Home Screen loading state - 50% complete. Animations still to come
 - All BP Records screen complete
 - Settings Screen complete
 - Ability to change language in settings complete
