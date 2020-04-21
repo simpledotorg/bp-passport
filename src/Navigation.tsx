@@ -18,6 +18,7 @@ import BpHistoryScreen from './screens/BpHistoryScreen'
 import HomeScreen from './screens/HomeScreen'
 import SettingsScreen from './screens/SettingsScreen'
 import BpDetailsScreen from './screens/BpDetailsScreen'
+import AddBpScreen from './screens/AddBpScreen'
 import {AuthContext, LoginState} from './providers/auth.provider'
 import {UserContext} from './providers/user.provider'
 
@@ -40,6 +41,7 @@ export type RootStackParamList = {
   HOME: undefined
   BP_HISTORY: {bps: BloodPressure[]}
   BP_DETAILS: {bp: BloodPressure}
+  ADD_BP: undefined
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -154,6 +156,14 @@ function MainStack({navigation}: Props) {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.details'}),
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.ADD_BP}
+        component={AddBpScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.new-bp'}),
         }}
       />
       <Stack.Screen
