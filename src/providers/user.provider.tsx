@@ -1,4 +1,6 @@
 import React, {createContext, useState, useEffect, useContext} from 'react'
+import {isBefore} from 'date-fns'
+
 import {Patient, BloodPressure, Medication} from '../models'
 import {PatientResponseData} from '../api/patient'
 import {
@@ -17,7 +19,8 @@ const KEYS = {
 type ContextProps = {
   bloodPressures: BloodPressure[] | undefined
   medications: Medication[] | undefined
-  updatePatientData: (patientData: PatientResponseData) => any
+  setPatientData: (patientData: PatientResponseData) => any
+  updatePatientBloodPressureData: (bloodPressures: BloodPressure[]) => any
   user: Patient | undefined
 }
 
@@ -25,7 +28,12 @@ export const UserContext = createContext<Partial<ContextProps>>({
   user: undefined,
   bloodPressures: undefined,
   medications: undefined,
-  updatePatientData: async (patientData: Patient) => {
+  setPatientData: async (patientData: Patient) => {
+    return true
+  },
+  updatePatientBloodPressureData: async (
+    bloodPressures: updatePatientBloodPressureData[],
+  ) => {
     return true
   },
 })
@@ -44,9 +52,21 @@ const UserProvider = ({children}: IProps) => {
     undefined,
   )
 
-  const updatePatientData = async (
-    patientResponseData: PatientResponseData,
-  ) => {
+  const updateThenSetBloodPressures = (bloodPressures: BloodPressure[]) => {
+    // setBloodPressures(bloodPressures.sort)
+    setBloodPressures(
+      bloodPressures.sort((a: BloodPressure, b: BloodPressure) => {
+        return isBefore(
+          new Date(a.recorded_at ?? ''),
+          new Date(b.recorded_at ?? ''),
+        )
+          ? 1
+          : -1
+      }),
+    )
+  }
+
+  const setPatientData = async (patientResponseData: PatientResponseData) => {
     const {
       patient_id,
       full_name,
@@ -58,13 +78,27 @@ const UserProvider = ({children}: IProps) => {
     const bloodPressuresData = [...blood_pressures]
     const medicationsData = [...medications]
     setUser(userData)
-    setBloodPressures(bloodPressuresData)
+    updateThenSetBloodPressures(bloodPressuresData)
     setMedications(medicationsData)
 
     try {
       writeItemToDisk(userData, KEYS.USER)
       writeItemsToDisk(bloodPressuresData, KEYS.BLOOD_PRESSURES)
       writeItemsToDisk(medicationsData, KEYS.MEDICATIONS)
+    } catch (error) {
+      // Error getting data
+    }
+    return true
+  }
+
+  const updatePatientBloodPressureData = async (
+    bloodPressures: BloodPressure[],
+  ) => {
+    const bloodPressuresData = [...bloodPressures]
+    updateThenSetBloodPressures(bloodPressuresData)
+
+    try {
+      writeItemsToDisk(bloodPressuresData, KEYS.BLOOD_PRESSURES)
     } catch (error) {
       // Error getting data
     }
@@ -81,7 +115,7 @@ const UserProvider = ({children}: IProps) => {
 
         const bloodPressuresData = await readItemsFromDisk(KEYS.BLOOD_PRESSURES)
         if (bloodPressuresData) {
-          setBloodPressures(bloodPressuresData)
+          updateThenSetBloodPressures(bloodPressuresData)
         }
 
         const medicationsData = await readItemsFromDisk(KEYS.MEDICATIONS)
@@ -98,7 +132,13 @@ const UserProvider = ({children}: IProps) => {
 
   return (
     <UserContext.Provider
-      value={{user, bloodPressures, medications, updatePatientData}}>
+      value={{
+        user,
+        bloodPressures,
+        medications,
+        setPatientData,
+        updatePatientBloodPressureData,
+      }}>
       {children}
     </UserContext.Provider>
   )

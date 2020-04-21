@@ -34,7 +34,7 @@ const AuthProvider = ({children}) => {
     undefined,
   )
   const [loginState, setLoginState] = useState(LoginState.LoggedOut)
-  const {updatePatientData} = useContext(UserContext)
+  const {setPatientData} = useContext(UserContext)
 
   const axiosInterceptor: any = useRef(null)
 
@@ -82,7 +82,7 @@ const AuthProvider = ({children}) => {
           // worked out! token and patient are valid
           setLoginState(LoginState.LoggedIn)
           if (patientResponseData) {
-            updatePatientData(patientResponseData)
+            setPatientData(patientResponseData)
           }
 
           AsyncStorage.multiSet([

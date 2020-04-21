@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import {SafeAreaView, View, StyleSheet, TextInput} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -10,6 +10,7 @@ import {BodyText, Button} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {BloodPressure} from '../models'
+import {UserContext} from '../providers/user.provider'
 
 type AddBpScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -25,6 +26,10 @@ type Props = {
 
 function AddBpScreen({navigation, route}: Props) {
   const intl = useIntl()
+  const {bloodPressures, updatePatientBloodPressureData} = useContext(
+    UserContext,
+  )
+
   const [systolic, setSystolic] = useState('')
   const [diastolic, setDiastolic] = useState('')
 
@@ -60,7 +65,20 @@ function AddBpScreen({navigation, route}: Props) {
               marginTop: 24,
             }}
             onPress={() => {
-              // TODO: Save BP
+              const newBloodPressure: BloodPressure = {
+                diastolic: Number(diastolic),
+                systolic: Number(systolic),
+                offline: true,
+                recorded_at: new Date().toISOString(),
+              }
+              const updatedBloodPressures = [
+                ...(bloodPressures ?? []),
+                newBloodPressure,
+              ]
+
+              if (updatePatientBloodPressureData) {
+                updatePatientBloodPressureData(updatedBloodPressures)
+              }
               navigation.goBack()
             }}
           />
