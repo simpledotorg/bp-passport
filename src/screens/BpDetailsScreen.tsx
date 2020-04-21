@@ -84,35 +84,47 @@ function BpDetailsScreen({navigation, route}: Props) {
           <BodyText style={styles.bpTag}>
             <FormattedMessage id="general.date" />
           </BodyText>
-          <Button
-            style={{
-              marginTop: 24,
-              backgroundColor: colors.blue3,
-              shadowColor: 'rgba(0, 117, 235, 0.3)',
-            }}
-            buttonColor={colors.blue2}
-            title={intl.formatMessage({id: 'general.delete-bp'})}
-            onPress={() => {
-              Alert.alert(
-                intl.formatMessage({id: 'general.delete-bp'}),
-                intl.formatMessage({id: 'general.delete-bp-confirm'}),
-                [
-                  {
-                    text: intl.formatMessage({id: 'general.cancel'}),
-                  },
-                  {
-                    text: intl.formatMessage({id: 'general.ok'}),
-                    onPress: () => {
-                      console.log('delete')
-                      // TODO: Trigger a request
-                      navigation.goBack()
+          {bp.facility && (
+            <>
+              <BodyText style={[styles.bpBold, {marginTop: 16}]}>
+                {bp.facility.name}
+              </BodyText>
+              <BodyText style={styles.bpTag}>
+                <FormattedMessage id="general.added-at" />
+              </BodyText>
+            </>
+          )}
+
+          {bp.offline && (
+            <Button
+              style={{
+                marginTop: 24,
+                backgroundColor: colors.blue3,
+                shadowColor: 'rgba(0, 117, 235, 0.3)',
+              }}
+              buttonColor={colors.blue2}
+              title={intl.formatMessage({id: 'general.delete-bp'})}
+              onPress={() => {
+                Alert.alert(
+                  intl.formatMessage({id: 'general.delete-bp'}),
+                  intl.formatMessage({id: 'general.delete-bp-confirm'}),
+                  [
+                    {
+                      text: intl.formatMessage({id: 'general.cancel'}),
                     },
-                  },
-                ],
-                {cancelable: true},
-              )
-            }}
-          />
+                    {
+                      text: intl.formatMessage({id: 'general.ok'}),
+                      onPress: () => {
+                        // TODO: Trigger a request
+                        navigation.goBack()
+                      },
+                    },
+                  ],
+                  {cancelable: true},
+                )
+              }}
+            />
+          )}
         </View>
       </SafeAreaView>
     </View>

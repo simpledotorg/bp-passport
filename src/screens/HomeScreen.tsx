@@ -189,22 +189,38 @@ function Home({navigation}: Props) {
 
                     return <BpInformation bp={bp} key={index} />
                   })}
-                  {showBpHistoryButton && (
+                  <View style={{marginTop: 15, flexDirection: 'row'}}>
                     <Button
-                      style={{
-                        marginTop: 15,
-                        backgroundColor: colors.blue3,
-                        shadowColor: 'rgba(0, 117, 235, 0.3)',
-                      }}
+                      style={[
+                        styles.bpButton,
+                        {
+                          marginRight: showBpHistoryButton ? 12 : 0,
+                        },
+                      ]}
                       buttonColor={colors.blue2}
-                      title={intl.formatMessage({id: 'general.see-all'})}
+                      title={intl.formatMessage({id: 'home.add-bp'})}
                       onPress={() => {
-                        navigation.navigate(SCREENS.BP_HISTORY, {
-                          bps,
-                        })
+                        navigation.navigate(SCREENS.ADD_BP)
                       }}
                     />
-                  )}
+                    {showBpHistoryButton && (
+                      <Button
+                        style={[
+                          styles.bpButton,
+                          {
+                            marginLeft: 12,
+                          },
+                        ]}
+                        buttonColor={colors.blue2}
+                        title={intl.formatMessage({id: 'general.see-all'})}
+                        onPress={() => {
+                          navigation.navigate(SCREENS.BP_HISTORY, {
+                            bps,
+                          })
+                        }}
+                      />
+                    )}
+                  </View>
                 </>
               ) : (
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -283,5 +299,10 @@ const styles = StyleSheet.create({
   informationIcon: {
     marginRight: 16,
     flexShrink: 0,
+  },
+  bpButton: {
+    backgroundColor: colors.blue3,
+    shadowColor: 'rgba(0, 117, 235, 0.3)',
+    flex: 1,
   },
 })
