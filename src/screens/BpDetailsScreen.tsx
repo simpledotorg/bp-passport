@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {SafeAreaView, View, StyleSheet, Alert} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -10,6 +10,7 @@ import {BodyText, Button} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {BloodPressure} from '../models'
+import {UserContext} from '../providers/user.provider'
 
 type BpDetailsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -25,6 +26,9 @@ type Props = {
 
 function BpDetailsScreen({navigation, route}: Props) {
   const intl = useIntl()
+  const {bloodPressures, updatePatientBloodPressureData} = useContext(
+    UserContext,
+  )
   const {bp}: {bp: BloodPressure} = route.params
 
   const isBloodPressureHigh = (bpIn: BloodPressure) => {
@@ -115,7 +119,15 @@ function BpDetailsScreen({navigation, route}: Props) {
                     {
                       text: intl.formatMessage({id: 'general.ok'}),
                       onPress: () => {
-                        // TODO: Trigger a request
+                        const updatedBloodPressures = (
+                          bloodPressures ?? []
+                        ).filter((filterBp) => {
+                          return filterBp !== bp
+                        })
+
+                        if (updatePatientBloodPressureData) {
+                          updatePatientBloodPressureData(updatedBloodPressures)
+                        }
                         navigation.goBack()
                       },
                     },
