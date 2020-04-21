@@ -52,7 +52,8 @@ const UserProvider = ({children}: IProps) => {
     undefined,
   )
 
-  const updateThenSetBloodPressures = (bloodPressures: BloodPressure[]) => {
+  // Sorts the blood pressures by latest dates first and then sets them
+  const sortDatesThenSetBloodPressures = (bloodPressures: BloodPressure[]) => {
     // setBloodPressures(bloodPressures.sort)
     setBloodPressures(
       bloodPressures.sort((a: BloodPressure, b: BloodPressure) => {
@@ -78,7 +79,7 @@ const UserProvider = ({children}: IProps) => {
     const bloodPressuresData = [...blood_pressures]
     const medicationsData = [...medications]
     setUser(userData)
-    updateThenSetBloodPressures(bloodPressuresData)
+    sortDatesThenSetBloodPressures(bloodPressuresData)
     setMedications(medicationsData)
 
     try {
@@ -95,7 +96,7 @@ const UserProvider = ({children}: IProps) => {
     bloodPressures: BloodPressure[],
   ) => {
     const bloodPressuresData = [...bloodPressures]
-    updateThenSetBloodPressures(bloodPressuresData)
+    sortDatesThenSetBloodPressures(bloodPressuresData)
 
     try {
       writeItemsToDisk(bloodPressuresData, KEYS.BLOOD_PRESSURES)
@@ -115,7 +116,7 @@ const UserProvider = ({children}: IProps) => {
 
         const bloodPressuresData = await readItemsFromDisk(KEYS.BLOOD_PRESSURES)
         if (bloodPressuresData) {
-          updateThenSetBloodPressures(bloodPressuresData)
+          sortDatesThenSetBloodPressures(bloodPressuresData)
         }
 
         const medicationsData = await readItemsFromDisk(KEYS.MEDICATIONS)
