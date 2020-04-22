@@ -19,6 +19,7 @@ const KEYS = {
 type ContextProps = {
   bloodPressures: BloodPressure[] | undefined
   medications: Medication[] | undefined
+  hasLoadedOfflineData: boolean
   setPatientData: (patientData: PatientResponseData) => any
   updatePatientBloodPressureData: (bloodPressures: BloodPressure[]) => any
   user: Patient | undefined
@@ -28,12 +29,11 @@ export const UserContext = createContext<Partial<ContextProps>>({
   user: undefined,
   bloodPressures: undefined,
   medications: undefined,
+  hasLoadedOfflineData: false,
   setPatientData: async (patientData: Patient) => {
     return true
   },
-  updatePatientBloodPressureData: async (
-    bloodPressures: updatePatientBloodPressureData[],
-  ) => {
+  updatePatientBloodPressureData: async (bloodPressures: BloodPressure[]) => {
     return true
   },
 })
@@ -47,14 +47,15 @@ const UserProvider = ({children}: IProps) => {
   const [bloodPressures, setBloodPressures] = useState<
     BloodPressure[] | undefined
   >(undefined)
-
   const [medications, setMedications] = useState<Medication[] | undefined>(
     undefined,
+  )
+  const [hasLoadedOfflineData, setHasLoadedOfflineData] = useState<boolean>(
+    false,
   )
 
   // Sorts the blood pressures by latest dates first and then sets them
   const sortDatesThenSetBloodPressures = (bloodPressures: BloodPressure[]) => {
-    // setBloodPressures(bloodPressures.sort)
     setBloodPressures(
       bloodPressures.sort((a: BloodPressure, b: BloodPressure) => {
         return isBefore(
@@ -76,8 +77,12 @@ const UserProvider = ({children}: IProps) => {
       medications,
     } = patientResponseData
     const userData = {patient_id, full_name, password_digest}
-    const bloodPressuresData = [...blood_pressures]
+    const bloodPressuresData = [
+      ...blood_pressures,
+      ...(bloodPressures ?? []).filter((bp) => bp.offline),
+    ]
     const medicationsData = [...medications]
+
     setUser(userData)
     sortDatesThenSetBloodPressures(bloodPressuresData)
     setMedications(medicationsData)
@@ -126,6 +131,10 @@ const UserProvider = ({children}: IProps) => {
       } catch (error) {
         // Error getting data
         console.log('initFromOfflineCache error ', error)
+      } finally {
+        setTimeout(() => {
+          setHasLoadedOfflineData(true)
+        }, 0)
       }
     }
     initFromOfflineCache()
@@ -139,6 +148,7 @@ const UserProvider = ({children}: IProps) => {
         medications,
         setPatientData,
         updatePatientBloodPressureData,
+        hasLoadedOfflineData,
       }}>
       {children}
     </UserContext.Provider>
