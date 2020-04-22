@@ -1,12 +1,17 @@
-import React, {useState, useContext} from 'react'
-import {SafeAreaView, View, StyleSheet, TextInput} from 'react-native'
+import React, {useState, useContext, useRef} from 'react'
+import {
+  SafeAreaView,
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableWithoutFeedback,
+} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import {format} from 'date-fns'
-import {FormattedMessage, useIntl} from 'react-intl'
+import {useIntl} from 'react-intl'
 
-import {containerStyles, colors, navigation} from '../styles'
-import {BodyText, Button} from '../components'
+import {containerStyles, colors} from '../styles'
+import {Button} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {BloodPressure} from '../models'
@@ -24,8 +29,10 @@ type Props = {
   route: AddBpScreen
 }
 
-const MIN_BP = 0
-const MAX_BP = 400
+const MIN_SYSTOLIC_BP = 70 // Potentially change to 70
+const MAX_SYSTOLIC_BP = 300
+const MIN_DIASTOLIC_BP = 40 // Potentially change to 40
+const MAX_DIASTOLIC_BP = 180
 
 function AddBpScreen({navigation, route}: Props) {
   const intl = useIntl()
@@ -33,24 +40,32 @@ function AddBpScreen({navigation, route}: Props) {
     UserContext,
   )
 
+  const systolicRef = useRef<null | any>(null)
+  const diastolicRef = useRef<null | any>(null)
+
   const [systolic, setSystolic] = useState('')
   const [diastolic, setDiastolic] = useState('')
 
   const isSaveDisabled = () => {
-    return systolic === '' || diastolic === ''
+    return !(
+      Number(systolic) >= MIN_SYSTOLIC_BP &&
+      Number(systolic) <= MAX_SYSTOLIC_BP &&
+      Number(diastolic) >= MIN_DIASTOLIC_BP &&
+      Number(diastolic) <= MAX_SYSTOLIC_BP
+    )
   }
 
-  const getMinMax = (input: string) => {
+  const getMinMax = (input: string, min: number, max: number) => {
     if (!input) {
       return input
     }
 
     const value = Number(input)
 
-    if (value < MIN_BP) {
-      return `${MIN_BP}`
-    } else if (value > MAX_BP) {
-      return `${MAX_BP}`
+    if (value < min) {
+      return `${min}`
+    } else if (value > max) {
+      return `${max}`
     }
 
     return value.toString()
@@ -60,48 +75,71 @@ function AddBpScreen({navigation, route}: Props) {
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white100}]}>
-        <View style={{padding: 24}}>
-          <View style={{flexDirection: 'row'}}>
-            <TextInput
-              style={[styles.input, {marginRight: 4}]}
-              onChangeText={(text) => setSystolic(getMinMax(text))}
-              placeholder={intl.formatMessage({id: 'general.systolic'})}
-              value={systolic.toString()}
-              keyboardType={'numeric'}
-            />
-            <TextInput
-              style={[styles.input, {marginLeft: 4}]}
-              onChangeText={(text) => setDiastolic(getMinMax(text))}
-              placeholder={intl.formatMessage({id: 'general.diastolic'})}
-              value={diastolic.toString()}
-              keyboardType={'numeric'}
+        <TouchableWithoutFeedback
+          style={{flex: 1, backgroundColor: 'blue'}}
+          onPress={() => {
+            if (systolicRef?.current?.blur) {
+              systolicRef?.current?.blur()
+            }
+            if (diastolicRef?.current?.blur) {
+              diastolicRef?.current?.blur()
+            }
+          }}>
+          <View style={{padding: 24, flex: 1}}>
+            <View style={{flexDirection: 'row'}}>
+              <TextInput
+                ref={systolicRef}
+                style={[styles.input, {marginRight: 4}]}
+                onChangeText={(text) => setSystolic(text)}
+                onBlur={() => {
+                  setSystolic(
+                    getMinMax(systolic, MIN_SYSTOLIC_BP, MAX_SYSTOLIC_BP),
+                  )
+                }}
+                placeholder={intl.formatMessage({id: 'general.systolic'})}
+                value={systolic.toString()}
+                keyboardType={'numeric'}
+              />
+              <TextInput
+                ref={diastolicRef}
+                style={[styles.input, {marginLeft: 4}]}
+                onChangeText={(text) => setDiastolic(text)}
+                onBlur={() => {
+                  setDiastolic(
+                    getMinMax(diastolic, MIN_DIASTOLIC_BP, MAX_DIASTOLIC_BP),
+                  )
+                }}
+                placeholder={intl.formatMessage({id: 'general.diastolic'})}
+                value={diastolic.toString()}
+                keyboardType={'numeric'}
+              />
+            </View>
+            <Button
+              title={intl.formatMessage({id: 'general.save'})}
+              disabled={isSaveDisabled()}
+              style={{
+                marginTop: 24,
+              }}
+              onPress={() => {
+                const newBloodPressure: BloodPressure = {
+                  diastolic: Number(diastolic),
+                  systolic: Number(systolic),
+                  offline: true,
+                  recorded_at: new Date().toISOString(),
+                }
+                const updatedBloodPressures = [
+                  ...(bloodPressures ?? []),
+                  newBloodPressure,
+                ]
+
+                if (updatePatientBloodPressureData) {
+                  updatePatientBloodPressureData(updatedBloodPressures)
+                }
+                navigation.goBack()
+              }}
             />
           </View>
-          <Button
-            title={intl.formatMessage({id: 'general.save'})}
-            disabled={isSaveDisabled()}
-            style={{
-              marginTop: 24,
-            }}
-            onPress={() => {
-              const newBloodPressure: BloodPressure = {
-                diastolic: Number(diastolic),
-                systolic: Number(systolic),
-                offline: true,
-                recorded_at: new Date().toISOString(),
-              }
-              const updatedBloodPressures = [
-                ...(bloodPressures ?? []),
-                newBloodPressure,
-              ]
-
-              if (updatePatientBloodPressureData) {
-                updatePatientBloodPressureData(updatedBloodPressures)
-              }
-              navigation.goBack()
-            }}
-          />
-        </View>
+        </TouchableWithoutFeedback>
       </SafeAreaView>
     </View>
   )
