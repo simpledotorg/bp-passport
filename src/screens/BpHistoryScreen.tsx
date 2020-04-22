@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {
   SafeAreaView,
   View,
@@ -15,6 +15,7 @@ import {BodyHeader, BpInformation} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {BloodPressure} from '../models'
+import {UserContext} from '../providers/user.provider'
 
 type BpHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -32,7 +33,7 @@ type Props = {
 }
 
 function BpHistoryScreen({navigation, route}: Props) {
-  const {bps}: {bps: BloodPressure[]} = route.params
+  const {bloodPressures = []} = useContext(UserContext)
 
   return (
     <View style={{flex: 1}}>
@@ -45,7 +46,7 @@ function BpHistoryScreen({navigation, route}: Props) {
             </BodyHeader>
           </View>
           <FlatList
-            data={bps}
+            data={bloodPressures}
             renderItem={({item, index}) => (
               <TouchableOpacity
                 onPress={() => {
@@ -54,7 +55,9 @@ function BpHistoryScreen({navigation, route}: Props) {
                 style={[
                   {paddingRight: 24},
                   styles.historyItem,
-                  index === bps.length - 1 ? {borderBottomWidth: 0} : {},
+                  index === bloodPressures.length - 1
+                    ? {borderBottomWidth: 0}
+                    : {},
                 ]}>
                 <BpInformation
                   compact

@@ -1,4 +1,6 @@
 import React, {createContext, useState, useEffect, useContext} from 'react'
+import {isBefore} from 'date-fns'
+
 import {Patient, BloodPressure, Medication} from '../models'
 import {PatientResponseData} from '../api/patient'
 import {
@@ -17,7 +19,9 @@ const KEYS = {
 type ContextProps = {
   bloodPressures: BloodPressure[] | undefined
   medications: Medication[] | undefined
-  updatePatientData: (patientData: PatientResponseData) => any
+  hasLoadedOfflineData: boolean
+  setPatientData: (patientData: PatientResponseData) => any
+  updatePatientBloodPressureData: (bloodPressures: BloodPressure[]) => any
   user: Patient | undefined
 }
 
@@ -25,7 +29,11 @@ export const UserContext = createContext<Partial<ContextProps>>({
   user: undefined,
   bloodPressures: undefined,
   medications: undefined,
-  updatePatientData: async (patientData: Patient) => {
+  hasLoadedOfflineData: false,
+  setPatientData: async (patientData: Patient) => {
+    return true
+  },
+  updatePatientBloodPressureData: async (bloodPressures: BloodPressure[]) => {
     return true
   },
 })
@@ -39,14 +47,28 @@ const UserProvider = ({children}: IProps) => {
   const [bloodPressures, setBloodPressures] = useState<
     BloodPressure[] | undefined
   >(undefined)
-
   const [medications, setMedications] = useState<Medication[] | undefined>(
     undefined,
   )
+  const [hasLoadedOfflineData, setHasLoadedOfflineData] = useState<boolean>(
+    false,
+  )
 
-  const updatePatientData = async (
-    patientResponseData: PatientResponseData,
-  ) => {
+  // Sorts the blood pressures by latest dates first and then sets them
+  const sortDatesThenSetBloodPressures = (bloodPressures: BloodPressure[]) => {
+    setBloodPressures(
+      bloodPressures.sort((a: BloodPressure, b: BloodPressure) => {
+        return isBefore(
+          new Date(a.recorded_at ?? ''),
+          new Date(b.recorded_at ?? ''),
+        )
+          ? 1
+          : -1
+      }),
+    )
+  }
+
+  const setPatientData = async (patientResponseData: PatientResponseData) => {
     const {
       patient_id,
       full_name,
@@ -55,16 +77,34 @@ const UserProvider = ({children}: IProps) => {
       medications,
     } = patientResponseData
     const userData = {patient_id, full_name, password_digest}
-    const bloodPressuresData = [...blood_pressures]
+    const bloodPressuresData = [
+      ...blood_pressures,
+      ...(bloodPressures ?? []).filter((bp) => bp.offline),
+    ]
     const medicationsData = [...medications]
+
     setUser(userData)
-    setBloodPressures(bloodPressuresData)
+    sortDatesThenSetBloodPressures(bloodPressuresData)
     setMedications(medicationsData)
 
     try {
       writeItemToDisk(userData, KEYS.USER)
       writeItemsToDisk(bloodPressuresData, KEYS.BLOOD_PRESSURES)
       writeItemsToDisk(medicationsData, KEYS.MEDICATIONS)
+    } catch (error) {
+      // Error getting data
+    }
+    return true
+  }
+
+  const updatePatientBloodPressureData = async (
+    bloodPressures: BloodPressure[],
+  ) => {
+    const bloodPressuresData = [...bloodPressures]
+    sortDatesThenSetBloodPressures(bloodPressuresData)
+
+    try {
+      writeItemsToDisk(bloodPressuresData, KEYS.BLOOD_PRESSURES)
     } catch (error) {
       // Error getting data
     }
@@ -81,7 +121,7 @@ const UserProvider = ({children}: IProps) => {
 
         const bloodPressuresData = await readItemsFromDisk(KEYS.BLOOD_PRESSURES)
         if (bloodPressuresData) {
-          setBloodPressures(bloodPressuresData)
+          sortDatesThenSetBloodPressures(bloodPressuresData)
         }
 
         const medicationsData = await readItemsFromDisk(KEYS.MEDICATIONS)
@@ -91,6 +131,10 @@ const UserProvider = ({children}: IProps) => {
       } catch (error) {
         // Error getting data
         console.log('initFromOfflineCache error ', error)
+      } finally {
+        setTimeout(() => {
+          setHasLoadedOfflineData(true)
+        }, 0)
       }
     }
     initFromOfflineCache()
@@ -98,7 +142,14 @@ const UserProvider = ({children}: IProps) => {
 
   return (
     <UserContext.Provider
-      value={{user, bloodPressures, medications, updatePatientData}}>
+      value={{
+        user,
+        bloodPressures,
+        medications,
+        setPatientData,
+        updatePatientBloodPressureData,
+        hasLoadedOfflineData,
+      }}>
       {children}
     </UserContext.Provider>
   )
