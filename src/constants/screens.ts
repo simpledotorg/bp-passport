@@ -12,6 +12,7 @@ enum SCREENS {
   HOME = 'HOME',
   BP_HISTORY = 'BP_HISTORY',
   BP_DETAILS = 'BP_DETAILS',
+  ADD_BP = 'ADD_BP',
 }
 
 export default SCREENS
