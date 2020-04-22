@@ -1,5 +1,30 @@
 # BP Passport
 
+## Version 0.4
+
+### Overview
+
+Points to sandbox api? User accounts test with?
+
+### What's New
+
+- App now reads/writes from offline storage (from api) for Patient details, Blood Pressures and Medications - no internet connection is required for the home screen state to render on a relaunch
+- Medicines loaded in from api
+- App now points to live sandbox api (rather than mock api)
+- All BPs screen ui changes (separator lines, disclosure arrow etc)
+- Adding offline BPs
+- Viewing BP Detail
+- Deleting offline BPs
+- Home Screen loading animation
+
+### Issues fixed
+
+- Bug - All My BP - Header is close to start of scroll list
+- Terms and conditions link going to the wrong URL
+- No blood pressure was showing no grey heart and information regarding no blood readings
+- Layout spacing on All BP screen
+- All BPs screen now scrolls if required
+
 ## Version 0.3
 
 ### Overview
