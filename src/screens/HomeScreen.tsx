@@ -23,8 +23,15 @@ import {UserContext} from '../providers/user.provider'
 import {AuthContext, LoginState} from '../providers/auth.provider'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-import {Button, BodyHeader, BodyText, BpInformation} from '../components'
+import {
+  Button,
+  BodyHeader,
+  BodyText,
+  BpInformation,
+  ContentLoadingSegment,
+} from '../components'
 import {BloodPressure, Medication} from '../models'
+import {ContentLoadingSegmentSize} from '../components/content-loading-segment'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -108,8 +115,9 @@ function Home({navigation}: Props) {
       </View>
       {showLoading && (
         <View style={[containerStyles.fill]}>
-          <View style={[styles.homeContainer, {flex: 1}]} />
-          <View style={[styles.homeContainer, {flex: 2}]} />
+          <ContentLoadingSegment size={ContentLoadingSegmentSize.Small} />
+          <ContentLoadingSegment size={ContentLoadingSegmentSize.Large} />
+          <ContentLoadingSegment size={ContentLoadingSegmentSize.Small} />
         </View>
       )}
       {!showLoading && (
