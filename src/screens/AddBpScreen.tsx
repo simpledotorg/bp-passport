@@ -24,6 +24,9 @@ type Props = {
   route: AddBpScreen
 }
 
+const MIN_BP = 0
+const MAX_BP = 400
+
 function AddBpScreen({navigation, route}: Props) {
   const intl = useIntl()
   const {bloodPressures, updatePatientBloodPressureData} = useContext(
@@ -37,6 +40,22 @@ function AddBpScreen({navigation, route}: Props) {
     return systolic === '' || diastolic === ''
   }
 
+  const getMinMax = (input: string) => {
+    if (!input) {
+      return input
+    }
+
+    const value = Number(input)
+
+    if (value < MIN_BP) {
+      return `${MIN_BP}`
+    } else if (value > MAX_BP) {
+      return `${MAX_BP}`
+    }
+
+    return value.toString()
+  }
+
   return (
     <View style={{flex: 1}}>
       <SafeAreaView
@@ -45,16 +64,16 @@ function AddBpScreen({navigation, route}: Props) {
           <View style={{flexDirection: 'row'}}>
             <TextInput
               style={[styles.input, {marginRight: 4}]}
-              onChangeText={(text) => setSystolic(text)}
+              onChangeText={(text) => setSystolic(getMinMax(text))}
               placeholder={intl.formatMessage({id: 'general.systolic'})}
-              value={systolic}
+              value={systolic.toString()}
               keyboardType={'numeric'}
             />
             <TextInput
               style={[styles.input, {marginLeft: 4}]}
-              onChangeText={(text) => setDiastolic(text)}
+              onChangeText={(text) => setDiastolic(getMinMax(text))}
               placeholder={intl.formatMessage({id: 'general.diastolic'})}
-              value={diastolic}
+              value={diastolic.toString()}
               keyboardType={'numeric'}
             />
           </View>
