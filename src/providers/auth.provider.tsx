@@ -34,7 +34,7 @@ const AuthProvider = ({children}) => {
     undefined,
   )
   const [loginState, setLoginState] = useState(LoginState.LoggedOut)
-  const {setPatientData} = useContext(UserContext)
+  const {setPatientData, hasLoadedOfflineData} = useContext(UserContext)
 
   const axiosInterceptor: any = useRef(null)
 
@@ -75,7 +75,11 @@ const AuthProvider = ({children}) => {
   }
 
   useEffect(() => {
-    if (authParams && loginState === LoginState.LoggedOut) {
+    if (
+      authParams &&
+      loginState === LoginState.LoggedOut &&
+      hasLoadedOfflineData
+    ) {
       setLoginState(LoginState.LoggingIn)
       getPatient()
         .then((patientResponseData) => {
@@ -95,7 +99,7 @@ const AuthProvider = ({children}) => {
           signOut()
         })
     }
-  }, [authParams])
+  }, [authParams, hasLoadedOfflineData])
 
   useEffect(() => {
     const checkCachedTokens = async () => {
