@@ -19,13 +19,12 @@ import HomeScreen from './screens/HomeScreen'
 import SettingsScreen from './screens/SettingsScreen'
 import BpDetailsScreen from './screens/BpDetailsScreen'
 import AddBpScreen from './screens/AddBpScreen'
-import {AuthContext, LoginState} from './providers/auth.provider'
-import {UserContext} from './providers/user.provider'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
 import {colors, navigation as navigationStyle} from './styles'
-import {BloodPressure} from './models'
+import {BloodPressure, Patient} from './models'
+import {LoginState} from './providers/auth.provider'
 
 export type RootStackParamList = {
   LAUNCH: undefined
@@ -84,9 +83,15 @@ function MainStack({navigation}: Props) {
 
   const headerHeightIncludingSafeArea = useHeaderHeight()
 
+  /*
   const {loginState} = useContext(AuthContext)
-  const {user} = useContext(UserContext)
+  const {user} = useContext(UserContext) */
 
+  // todo: redux
+  const loginState = LoginState.LoggedOut
+  const user: Patient | undefined = undefined
+
+  /* todo:redux
   useEffect(() => {
     if (loginState !== LoginState.LoggedOut) {
       navigation.navigate(SCREENS.HOME)
@@ -94,11 +99,14 @@ function MainStack({navigation}: Props) {
   }, [loginState])
 
   useEffect(() => {}, [user])
+  */
 
   return (
     <Stack.Navigator
       initialRouteName={
-        loginState === LoginState.LoggedOut ? SCREENS.SPLASH : SCREENS.HOME
+        // todo:redux
+        /*loginState === LoginState.LoggedOut ? SCREENS.SPLASH : SCREENS.HOME*/
+        SCREENS.SPLASH
       }
       screenOptions={{
         ...navigationStyle,

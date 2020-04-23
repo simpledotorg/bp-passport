@@ -19,7 +19,6 @@ const KEYS = {
 type ContextProps = {
   bloodPressures: BloodPressure[] | undefined
   medications: Medication[] | undefined
-  hasLoadedOfflineData: boolean
   setPatientData: (patientData: PatientResponseData) => any
   updatePatientBloodPressureData: (bloodPressures: BloodPressure[]) => any
   user: Patient | undefined
@@ -29,7 +28,6 @@ export const UserContext = createContext<Partial<ContextProps>>({
   user: undefined,
   bloodPressures: undefined,
   medications: undefined,
-  hasLoadedOfflineData: false,
   setPatientData: async (patientData: Patient) => {
     return true
   },
@@ -49,9 +47,6 @@ const UserProvider = ({children}: IProps) => {
   >(undefined)
   const [medications, setMedications] = useState<Medication[] | undefined>(
     undefined,
-  )
-  const [hasLoadedOfflineData, setHasLoadedOfflineData] = useState<boolean>(
-    false,
   )
 
   // Sorts the blood pressures by latest dates first and then sets them
@@ -131,10 +126,6 @@ const UserProvider = ({children}: IProps) => {
       } catch (error) {
         // Error getting data
         console.log('initFromOfflineCache error ', error)
-      } finally {
-        setTimeout(() => {
-          setHasLoadedOfflineData(true)
-        }, 0)
       }
     }
     initFromOfflineCache()
@@ -148,7 +139,6 @@ const UserProvider = ({children}: IProps) => {
         medications,
         setPatientData,
         updatePatientBloodPressureData,
-        hasLoadedOfflineData,
       }}>
       {children}
     </UserContext.Provider>

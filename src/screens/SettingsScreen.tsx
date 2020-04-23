@@ -13,12 +13,14 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {containerStyles, colors} from '../styles'
 import {BodyText, BodyHeader} from '../components'
-import {UserContext} from '../providers/user.provider'
 import {AVAILABLE_TRANSLATIONS} from '../constants/languages'
 import {useLocale} from '../effects/use-locale-messages.effect'
+import {Patient} from '../models'
 
 function SettingsScreen({navigation}: any) {
-  const {user} = useContext(UserContext)
+  // todo:redux
+  const user: Patient | undefined = undefined
+
   const intl = useIntl()
   const {locale, setLocale} = useLocale()
 

@@ -26,6 +26,8 @@ export const readItemFromDisk = async (key: string) => {
 export const writeItemsToDisk = async (items: any[], key: string) => {
   try {
     await AsyncStorage.setItem(key, JSON.stringify(items))
+
+    // await AsyncStorage.mergeItem(key, JSON.stringify(items))
     return true
   } catch (error) {
     // Error saving data

@@ -19,8 +19,6 @@ import {
   medicineClock,
   medicinePill,
 } from '../styles'
-import {UserContext} from '../providers/user.provider'
-import {AuthContext, LoginState} from '../providers/auth.provider'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {
@@ -32,6 +30,8 @@ import {
 } from '../components'
 import {BloodPressure, Medication} from '../models'
 import {ContentLoadingSegmentSize} from '../components/content-loading-segment'
+import {LoginState} from '../redux/auth/auth.reducer'
+import {Patient} from '../models'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -45,6 +45,7 @@ type Props = {
 const BP_SHOW_LIMIT = 3
 
 function Home({navigation}: Props) {
+  /*
   const {loginState} = useContext(AuthContext)
   switch (loginState) {
     case LoginState.LoggingIn:
@@ -56,11 +57,20 @@ function Home({navigation}: Props) {
     case LoginState.LoggedOut:
       // n /a
       break
-  }
+  } */
 
+  // todo:redux
+  const loginState = LoginState.LoggedOut
+
+  /*
   const {user} = useContext(UserContext)
   const {bloodPressures} = useContext(UserContext)
   const {medications} = useContext(UserContext)
+  */
+  // todo:redux
+  const user: Patient | undefined = undefined
+  const bloodPressures: BloodPressure[] = []
+  const medications: Medication[] = []
   const intl = useIntl()
 
   const showLoading =

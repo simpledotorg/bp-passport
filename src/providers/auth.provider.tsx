@@ -5,8 +5,6 @@ import React, {
   useContext,
   useRef,
 } from 'react'
-import {AuthParams} from '../api'
-import {getPatient} from '../api/patient'
 import AsyncStorage from '@react-native-community/async-storage'
 import {UserContext} from '../providers/user.provider'
 import axios from 'axios'
@@ -34,7 +32,7 @@ const AuthProvider = ({children}) => {
     undefined,
   )
   const [loginState, setLoginState] = useState(LoginState.LoggedOut)
-  const {setPatientData, hasLoadedOfflineData} = useContext(UserContext)
+  const {setPatientData} = useContext(UserContext)
 
   const axiosInterceptor: any = useRef(null)
 
@@ -75,11 +73,7 @@ const AuthProvider = ({children}) => {
   }
 
   useEffect(() => {
-    if (
-      authParams &&
-      loginState === LoginState.LoggedOut &&
-      hasLoadedOfflineData
-    ) {
+    if (authParams && loginState === LoginState.LoggedOut) {
       setLoginState(LoginState.LoggingIn)
       getPatient()
         .then((patientResponseData) => {
@@ -99,7 +93,7 @@ const AuthProvider = ({children}) => {
           signOut()
         })
     }
-  }, [authParams, hasLoadedOfflineData])
+  }, [authParams])
 
   useEffect(() => {
     const checkCachedTokens = async () => {
