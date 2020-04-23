@@ -1,12 +1,6 @@
 import React from 'react'
-import {AuthParams} from '../../api'
 import {AuthActionTypes} from './auth.types'
-
-export enum LoginState {
-  LoggedOut,
-  LoggingIn,
-  LoggedIn,
-}
+import {AuthParams, LoginState} from './auth.models'
 
 const INITIAL_STATE: {loginState: LoginState; authParams?: AuthParams} = {
   loginState: LoginState.LoggedOut,
@@ -19,6 +13,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         authParams: action.payload,
+        loginState: LoginState.LoggingIn,
       }
     default:
       return state

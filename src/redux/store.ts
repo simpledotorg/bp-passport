@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import {createStore, applyMiddleware, Action} from 'redux'
-import thunkMiddleware, {ThunkAction} from 'redux-thunk'
+import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk'
+import {useDispatch} from 'react-redux'
 import {createLogger} from 'redux-logger'
 import {persistStore, persistReducer} from 'redux-persist'
 
@@ -32,3 +33,16 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >
+
+/*
+export type ReduxDispatch = ThunkDispatch<IMyStoreType, any, Action>;
+export function useReduxDispatch(): ReduxDispatch {
+  return useDispatch<ReduxDispatch>();
+}
+*/
+
+export const useThunkDispatch = () => useDispatch<typeof store.dispatch>()
+/*
+export const appThunkDispatch = store.dispatch as Dispatch<Action<any>> &
+  ThunkDispatch<any, undefined, AnyAction>
+*/

@@ -1,16 +1,8 @@
 import axios, {AxiosRequestConfig} from 'axios'
 import {PatientActionTypes} from './patient.types'
+import {PatientResponseData, Patient} from './patient.models'
 import {AppThunk} from '../store'
-import {BloodPressure, Medication, Patient} from '../../models'
 import {API_ENDPOINT} from '../../constants/api'
-
-export interface PatientResponseData {
-  patient_id: string
-  full_name?: string
-  password_digest?: string
-  blood_pressures: BloodPressure[]
-  medications: Medication[]
-}
 
 export const setPatient = (patient: Patient) => ({
   type: PatientActionTypes.SET_PATIENT,

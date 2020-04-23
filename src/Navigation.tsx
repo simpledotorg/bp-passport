@@ -24,7 +24,9 @@ import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
 import {colors, navigation as navigationStyle} from './styles'
 import {BloodPressure, Patient} from './models'
-import {LoginState} from './providers/auth.provider'
+import {LoginState} from './redux/auth/auth.models'
+import {loginStateSelector} from './redux/auth/auth.selectors'
+import {patientSelector} from './redux/patient/patient.selectors'
 
 export type RootStackParamList = {
   LAUNCH: undefined
@@ -83,30 +85,22 @@ function MainStack({navigation}: Props) {
 
   const headerHeightIncludingSafeArea = useHeaderHeight()
 
-  /*
-  const {loginState} = useContext(AuthContext)
-  const {user} = useContext(UserContext) */
+  const loginState = loginStateSelector()
+  const apiUser = patientSelector()
 
-  // todo: redux
-  const loginState = LoginState.LoggedOut
-  const user: Patient | undefined = undefined
-
-  /* todo:redux
   useEffect(() => {
     if (loginState !== LoginState.LoggedOut) {
       navigation.navigate(SCREENS.HOME)
     }
   }, [loginState])
 
-  useEffect(() => {}, [user])
-  */
+  useEffect(() => {}, [apiUser])
 
   return (
     <Stack.Navigator
       initialRouteName={
         // todo:redux
-        /*loginState === LoginState.LoggedOut ? SCREENS.SPLASH : SCREENS.HOME*/
-        SCREENS.SPLASH
+        loginState === LoginState.LoggedOut ? SCREENS.SPLASH : SCREENS.HOME
       }
       screenOptions={{
         ...navigationStyle,
@@ -190,7 +184,7 @@ function MainStack({navigation}: Props) {
           headerRight: () => {
             if (
               loginState === LoginState.LoggedIn ||
-              (loginState === LoginState.LoggingIn && user !== undefined)
+              (loginState === LoginState.LoggingIn && apiUser !== undefined)
             ) {
               return (
                 <ButtonIcon
