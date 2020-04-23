@@ -76,7 +76,7 @@ function AddBpScreen({navigation, route}: Props) {
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white100}]}>
         <TouchableWithoutFeedback
-          style={{flex: 1, backgroundColor: 'blue'}}
+          style={{flex: 1}}
           onPress={() => {
             if (systolicRef?.current?.blur) {
               systolicRef?.current?.blur()
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white100,
     borderStyle: 'solid',
     borderWidth: 1,
-    borderColor: colors.grey2,
+    borderColor: colors.grey3,
     padding: 16,
     fontSize: 16,
     fontWeight: 'normal',

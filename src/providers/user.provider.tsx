@@ -1,7 +1,7 @@
 import React, {createContext, useState, useEffect, useContext} from 'react'
 import {isBefore} from 'date-fns'
 
-import {Patient, BloodPressure, Medication} from '../models'
+import {Patient, BloodPressure, Medication, BloodSugar} from '../models'
 import {PatientResponseData} from '../api/patient'
 import {
   writeItemToDisk,
@@ -19,6 +19,7 @@ const KEYS = {
 type ContextProps = {
   bloodPressures: BloodPressure[] | undefined
   medications: Medication[] | undefined
+  bloodSugars: BloodSugar[] | undefined
   hasLoadedOfflineData: boolean
   setPatientData: (patientData: PatientResponseData) => any
   updatePatientBloodPressureData: (bloodPressures: BloodPressure[]) => any
@@ -29,6 +30,7 @@ export const UserContext = createContext<Partial<ContextProps>>({
   user: undefined,
   bloodPressures: undefined,
   medications: undefined,
+  bloodSugars: undefined,
   hasLoadedOfflineData: false,
   setPatientData: async (patientData: Patient) => {
     return true
@@ -47,6 +49,9 @@ const UserProvider = ({children}: IProps) => {
   const [bloodPressures, setBloodPressures] = useState<
     BloodPressure[] | undefined
   >(undefined)
+  const [bloodSugars, setBloodSugars] = useState<BloodSugar[] | undefined>(
+    undefined,
+  )
   const [medications, setMedications] = useState<Medication[] | undefined>(
     undefined,
   )
@@ -75,6 +80,7 @@ const UserProvider = ({children}: IProps) => {
       password_digest,
       blood_pressures,
       medications,
+      blood_sugars,
     } = patientResponseData
     const userData = {patient_id, full_name, password_digest}
     const bloodPressuresData = [
@@ -86,6 +92,7 @@ const UserProvider = ({children}: IProps) => {
     setUser(userData)
     sortDatesThenSetBloodPressures(bloodPressuresData)
     setMedications(medicationsData)
+    setBloodSugars([...blood_sugars])
 
     try {
       writeItemToDisk(userData, KEYS.USER)

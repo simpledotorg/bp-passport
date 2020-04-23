@@ -14,18 +14,21 @@ import LoginScreen from './screens/LoginScreen'
 import ConsentScreen from './screens/ConsentScreen'
 import ScanPassportScreen from './screens/ScanPassportScreen'
 import VerifyNumberScreen from './screens/VerifyNumberScreen'
-import BpHistoryScreen from './screens/BpHistoryScreen'
 import HomeScreen from './screens/HomeScreen'
-import SettingsScreen from './screens/SettingsScreen'
-import BpDetailsScreen from './screens/BpDetailsScreen'
 import AddBpScreen from './screens/AddBpScreen'
+import BpHistoryScreen from './screens/BpHistoryScreen'
+import BpDetailsScreen from './screens/BpDetailsScreen'
+import SettingsScreen from './screens/SettingsScreen'
+import BsDetailsScreen from './screens/BsDetailsScreen'
+import BsHistoryScreen from './screens/BsHistoryScreen'
+import AddBsScreen from './screens/AddBsScreen'
 import {AuthContext, LoginState} from './providers/auth.provider'
 import {UserContext} from './providers/user.provider'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
 import {colors, navigation as navigationStyle} from './styles'
-import {BloodPressure} from './models'
+import {BloodPressure, BloodSugar} from './models'
 
 export type RootStackParamList = {
   LAUNCH: undefined
@@ -42,6 +45,9 @@ export type RootStackParamList = {
   BP_HISTORY: {bps: BloodPressure[]}
   BP_DETAILS: {bp: BloodPressure}
   ADD_BP: undefined
+  ADD_BS: undefined
+  BS_HISTORY: {bloodSugars: BloodSugar[]}
+  BS_DETAILS: {bs: BloodSugar}
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -164,6 +170,30 @@ function MainStack({navigation}: Props) {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.new-bp'}),
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.ADD_BS}
+        component={AddBsScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.new-bs'}),
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.BS_HISTORY}
+        component={BsHistoryScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.all-bs'}),
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.BS_DETAILS}
+        component={BsDetailsScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.details'}),
         }}
       />
       <Stack.Screen

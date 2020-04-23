@@ -14,7 +14,7 @@ import {UserContext} from '../providers/user.provider'
 
 type BpDetailsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  SCREENS.BP_HISTORY
+  SCREENS.BP_DETAILS
 >
 
 type BpDetailsScreen = RouteProp<RootStackParamList, SCREENS.BP_DETAILS>

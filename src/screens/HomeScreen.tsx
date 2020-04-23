@@ -15,7 +15,7 @@ import {
   containerStyles,
   colors,
   greyHeart,
-  redHeart,
+  grayDrop,
   medicineClock,
   medicinePill,
 } from '../styles'
@@ -28,9 +28,10 @@ import {
   BodyHeader,
   BodyText,
   BpInformation,
+  BsInformation,
   ContentLoadingSegment,
 } from '../components'
-import {BloodPressure, Medication} from '../models'
+import {BloodPressure, Medication, BLOOD_SUGAR_TYPES} from '../models'
 import {ContentLoadingSegmentSize} from '../components/content-loading-segment'
 
 type HomeScreenNavigationProp = StackNavigationProp<
@@ -42,7 +43,7 @@ type Props = {
   navigation: HomeScreenNavigationProp
 }
 
-const BP_SHOW_LIMIT = 3
+const HOME_PAGE_SHOW_LIMIT = 3
 
 function Home({navigation}: Props) {
   const {loginState} = useContext(AuthContext)
@@ -58,9 +59,52 @@ function Home({navigation}: Props) {
       break
   }
 
-  const {user} = useContext(UserContext)
-  const {bloodPressures} = useContext(UserContext)
-  const {medications} = useContext(UserContext)
+  const {
+    user,
+    bloodPressures = [],
+    medications = [],
+    bloodSugars = [
+      {
+        recorded_at: new Date().toISOString(),
+        type: BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
+        value: 200,
+        facility: {
+          country: 'India',
+          district: 'Majuli',
+          name: 'DH Malkharoda',
+          pin: '936166',
+          state: 'Maharashtra',
+          street_address: 'Gr Floor, Plot No 260, Mehar Bldg, Sector 28, Vashi',
+          village_or_colony: 'Malkharoda',
+        },
+      },
+      {
+        recorded_at: new Date().toISOString(),
+        type: BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR,
+        value: 126,
+        facility: {
+          country: 'India',
+          district: 'Majuli',
+          name: 'DH Malkharoda',
+          pin: '936166',
+          state: 'Maharashtra',
+          street_address: 'Gr Floor, Plot No 260, Mehar Bldg, Sector 28, Vashi',
+          village_or_colony: 'Malkharoda',
+        },
+      },
+      {
+        recorded_at: new Date().toISOString(),
+        type: BLOOD_SUGAR_TYPES.HEMOGLOBIC,
+        value: 6,
+      },
+      {
+        recorded_at: new Date().toISOString(),
+        type: BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
+        value: 40,
+      },
+    ],
+  } = useContext(UserContext)
+
   const intl = useIntl()
 
   const showLoading =
@@ -68,11 +112,7 @@ function Home({navigation}: Props) {
 
   useEffect(() => {}, [loginState, user, bloodPressures, medications])
 
-  const bps: BloodPressure[] = bloodPressures ?? []
-
-  const meds: Medication[] = medications ?? []
-
-  const hasMedicines = meds.length > 0
+  const hasMedicines = medications.length > 0
 
   const medicationDisplayName = (medication: Medication) => {
     let ret = medication.name
@@ -84,7 +124,8 @@ function Home({navigation}: Props) {
     return ret
   }
 
-  const showBpHistoryButton = bps.length > BP_SHOW_LIMIT
+  const showBpHistoryButton = bloodPressures.length > HOME_PAGE_SHOW_LIMIT
+  const showBsHistoryButton = bloodSugars.length > HOME_PAGE_SHOW_LIMIT
 
   return (
     <SafeAreaView
@@ -139,7 +180,7 @@ function Home({navigation}: Props) {
                     ]}>
                     <FormattedMessage id={'home.no-medicines'} />
                   </BodyText>
-                  {meds.map((medicine, index) => (
+                  {medications.map((medicine, index) => (
                     <View
                       key={index}
                       style={[
@@ -187,48 +228,18 @@ function Home({navigation}: Props) {
               </>
             )}
             <View style={[styles.homeContainer]}>
-              <BodyHeader style={[styles.sectionHeader]}>My BP</BodyHeader>
-              {bps.length > 0 ? (
+              <BodyHeader style={[styles.sectionHeader]}>
+                <FormattedMessage id="home.my-bp" />
+              </BodyHeader>
+              {bloodPressures.length > 0 ? (
                 <>
-                  {bps.map((bp, index) => {
-                    if (index > BP_SHOW_LIMIT - 1) {
+                  {bloodPressures.map((bp, index) => {
+                    if (index > HOME_PAGE_SHOW_LIMIT - 1) {
                       return null
                     }
 
                     return <BpInformation bp={bp} key={index} />
                   })}
-                  <View style={{marginTop: 15, flexDirection: 'row'}}>
-                    <Button
-                      style={[
-                        styles.bpButton,
-                        {
-                          marginRight: showBpHistoryButton ? 12 : 0,
-                        },
-                      ]}
-                      buttonColor={colors.blue2}
-                      title={intl.formatMessage({id: 'home.add-bp'})}
-                      onPress={() => {
-                        navigation.navigate(SCREENS.ADD_BP)
-                      }}
-                    />
-                    {showBpHistoryButton && (
-                      <Button
-                        style={[
-                          styles.bpButton,
-                          {
-                            marginLeft: 12,
-                          },
-                        ]}
-                        buttonColor={colors.blue2}
-                        title={intl.formatMessage({id: 'general.see-all'})}
-                        onPress={() => {
-                          navigation.navigate(SCREENS.BP_HISTORY, {
-                            bps,
-                          })
-                        }}
-                      />
-                    )}
-                  </View>
                 </>
               ) : (
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -245,12 +256,114 @@ function Home({navigation}: Props) {
                       {
                         color: colors.grey1,
                         marginBottom: 70,
+                        textAlign: 'center',
                       },
                     ]}>
                     <FormattedMessage id={'home.you-have-no-bp'} />
                   </BodyText>
                 </View>
               )}
+              <View style={{marginTop: 15, flexDirection: 'row'}}>
+                <Button
+                  style={[
+                    styles.bpButton,
+                    {
+                      marginRight: showBpHistoryButton ? 12 : 0,
+                    },
+                  ]}
+                  buttonColor={colors.blue2}
+                  title={intl.formatMessage({id: 'home.add-bp'})}
+                  onPress={() => {
+                    navigation.navigate(SCREENS.ADD_BP)
+                  }}
+                />
+                {showBpHistoryButton && (
+                  <Button
+                    style={[
+                      styles.bpButton,
+                      {
+                        marginLeft: 12,
+                      },
+                    ]}
+                    buttonColor={colors.blue2}
+                    title={intl.formatMessage({id: 'general.see-all'})}
+                    onPress={() => {
+                      navigation.navigate(SCREENS.BP_HISTORY, {
+                        bps: bloodPressures,
+                      })
+                    }}
+                  />
+                )}
+              </View>
+            </View>
+            <View style={[styles.homeContainer]}>
+              <BodyHeader style={[styles.sectionHeader]}>
+                <FormattedMessage id="home.my-blood-sugar" />
+              </BodyHeader>
+              {bloodSugars.length > 0 ? (
+                <>
+                  {bloodSugars.map((bs, index) => {
+                    if (index > HOME_PAGE_SHOW_LIMIT - 1) {
+                      return null
+                    }
+
+                    return <BsInformation bs={bs} key={index} />
+                  })}
+                </>
+              ) : (
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <Image
+                    style={{
+                      marginTop: 32,
+                      marginBottom: 4,
+                    }}
+                    source={grayDrop}
+                  />
+                  <BodyText
+                    style={[
+                      styles.sectionText,
+                      {
+                        color: colors.grey1,
+                        marginBottom: 70,
+                        textAlign: 'center',
+                      },
+                    ]}>
+                    <FormattedMessage id={'home.you-have-no-bs'} />
+                  </BodyText>
+                </View>
+              )}
+              <View style={{marginTop: 15, flexDirection: 'row'}}>
+                <Button
+                  style={[
+                    styles.bpButton,
+                    {
+                      marginRight: showBsHistoryButton ? 12 : 0,
+                    },
+                  ]}
+                  buttonColor={colors.blue2}
+                  title={intl.formatMessage({id: 'home.add-bs'})}
+                  onPress={() => {
+                    navigation.navigate(SCREENS.ADD_BS)
+                  }}
+                />
+                {showBsHistoryButton && (
+                  <Button
+                    style={[
+                      styles.bpButton,
+                      {
+                        marginLeft: 12,
+                      },
+                    ]}
+                    buttonColor={colors.blue2}
+                    title={intl.formatMessage({id: 'general.see-all'})}
+                    onPress={() => {
+                      navigation.navigate(SCREENS.BS_HISTORY, {
+                        bloodSugars,
+                      })
+                    }}
+                  />
+                )}
+              </View>
             </View>
           </ScrollView>
           <View style={styles.buttonContainer}>
