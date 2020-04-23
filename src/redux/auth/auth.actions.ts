@@ -1,27 +1,28 @@
-import axios from 'axios'
+import axios, {AxiosResponse} from 'axios'
 import {API_ENDPOINT} from '../../constants/api'
 import {AuthActionTypes} from './auth.types'
 import {AppThunk} from '../store'
-
-export interface AuthParams {
-  access_token: string
-  id: string /* patient id */
-  passport: {id: string /* passport id */; shortcode: string}
-}
 
 export const setAuthParams = (authParams: AuthParams) => ({
   type: AuthActionTypes.SET_AUTH_PARAMS,
   payload: authParams,
 })
 
-export const activate = (passportId: string): AppThunk => async (dispatch) => {
+export const activate = (
+  passportId: string,
+): AppThunk<Promise<boolean>> => async () => {
   try {
-    const response = await axios.post(`${API_ENDPOINT}/patient/activate`, {
+    await axios.post(`${API_ENDPOINT}/patient/activate`, {
       passport_id: passportId,
     })
     return true
   } catch (err) {
-    console.log('yo??')
+    const response: AxiosResponse | undefined = err.response
+    if (response && response.status) {
+      if (response.status === 404) {
+        throw new Error("Can't verify account")
+      }
+    }
     throw err
   }
 }

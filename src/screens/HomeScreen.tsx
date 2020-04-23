@@ -30,8 +30,11 @@ import {
 } from '../components'
 import {BloodPressure, Medication} from '../models'
 import {ContentLoadingSegmentSize} from '../components/content-loading-segment'
-import {LoginState} from '../redux/auth/auth.reducer'
-import {Patient} from '../models'
+
+import {LoginState} from '../redux/auth/auth.models'
+import {Patient} from '../redux/patient/patient.models'
+import {loginStateSelector} from '../redux/auth/auth.selectors'
+import {patientSelector} from '../redux/patient/patient.selectors'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -45,22 +48,10 @@ type Props = {
 const BP_SHOW_LIMIT = 3
 
 function Home({navigation}: Props) {
-  /*
-  const {loginState} = useContext(AuthContext)
-  switch (loginState) {
-    case LoginState.LoggingIn:
-      // show animation state
-      break
-    case LoginState.LoggedIn:
-      // show user profile
-      break
-    case LoginState.LoggedOut:
-      // n /a
-      break
-  } */
+  const loginState = loginStateSelector()
+  const apiUser = patientSelector()
 
-  // todo:redux
-  const loginState = LoginState.LoggedOut
+  console.log('loginState', loginState)
 
   /*
   const {user} = useContext(UserContext)
@@ -68,7 +59,6 @@ function Home({navigation}: Props) {
   const {medications} = useContext(UserContext)
   */
   // todo:redux
-  const user: Patient | undefined = undefined
   const bloodPressures: BloodPressure[] = []
   const medications: Medication[] = []
   const intl = useIntl()
@@ -76,7 +66,7 @@ function Home({navigation}: Props) {
   const showLoading =
     loginState === LoginState.LoggingIn && bloodPressures === undefined
 
-  useEffect(() => {}, [loginState, user, bloodPressures, medications])
+  useEffect(() => {}, [loginState, apiUser, bloodPressures, medications])
 
   const bps: BloodPressure[] = bloodPressures ?? []
 

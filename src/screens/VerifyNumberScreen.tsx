@@ -9,7 +9,7 @@ import {containerStyles, colors} from '../styles'
 import {BodyText, Button, BodyHeader, LoadingOverlay} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-import {useDispatch, useSelector} from 'react-redux'
+import {useThunkDispatch} from '../redux/store'
 import {setAuthParams, login} from '../redux/auth/auth.actions'
 
 type VerifyNumberRouteProp = RouteProp<
@@ -33,7 +33,7 @@ enum UIState {
 }
 
 function VerifyNumber({navigation, route}: Props) {
-  const dispatch = useDispatch()
+  const dispatch = useThunkDispatch()
 
   const intl = useIntl()
 
@@ -45,7 +45,6 @@ function VerifyNumber({navigation, route}: Props) {
   const [input, setInput] = useState('')
 
   const {passport_id} = route.params
-  console.log('passport_id: ', passport_id)
 
   const verifyOTP = (otp: string) => {
     inputRef.current.blur()
