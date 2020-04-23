@@ -61,7 +61,7 @@ function Home({navigation}: Props) {
 
   const {
     user,
-    bloodPressures = [],
+    bloodPressures,
     medications = [],
     bloodSugars = [
       {
@@ -107,6 +107,8 @@ function Home({navigation}: Props) {
 
   const intl = useIntl()
 
+  const bps: BloodPressure[] = bloodPressures ?? []
+
   const showLoading =
     loginState === LoginState.LoggingIn && bloodPressures === undefined
 
@@ -124,7 +126,7 @@ function Home({navigation}: Props) {
     return ret
   }
 
-  const showBpHistoryButton = bloodPressures.length > HOME_PAGE_SHOW_LIMIT
+  const showBpHistoryButton = bps.length > HOME_PAGE_SHOW_LIMIT
   const showBsHistoryButton = bloodSugars.length > HOME_PAGE_SHOW_LIMIT
 
   return (
@@ -231,9 +233,9 @@ function Home({navigation}: Props) {
               <BodyHeader style={[styles.sectionHeader]}>
                 <FormattedMessage id="home.my-bp" />
               </BodyHeader>
-              {bloodPressures.length > 0 ? (
+              {bps.length > 0 ? (
                 <>
-                  {bloodPressures.map((bp, index) => {
+                  {bps.map((bp, index) => {
                     if (index > HOME_PAGE_SHOW_LIMIT - 1) {
                       return null
                     }
@@ -289,7 +291,7 @@ function Home({navigation}: Props) {
                     title={intl.formatMessage({id: 'general.see-all'})}
                     onPress={() => {
                       navigation.navigate(SCREENS.BP_HISTORY, {
-                        bps: bloodPressures,
+                        bps,
                       })
                     }}
                   />
