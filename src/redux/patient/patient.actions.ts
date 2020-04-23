@@ -3,6 +3,7 @@ import {PatientActionTypes} from './patient.types'
 import {PatientResponseData, Patient} from './patient.models'
 import {AppThunk} from '../store'
 import {API_ENDPOINT} from '../../constants/api'
+import {mergeBloodPressures} from '../blood-pressure/blood-pressure.actions'
 
 export const setPatient = (patient: Patient) => ({
   type: PatientActionTypes.SET_PATIENT,
@@ -19,25 +20,29 @@ export const getPatient = (): AppThunk => async (dispatch, getState) => {
       headers: {},
     }
     config.headers.Authorization = `Bearer ${authParams.access_token}`
-    config.headers['X-Patient-ID'] = authParams.passport_id
+    config.headers['X-Patient-ID'] = authParams.id
     config.headers['Content-Type'] = 'application/json'
     config.headers['Cache-Control'] = 'no-cache'
 
     const response = await axios.get(`${API_ENDPOINT}/patient`, config)
     const patientResponseData: PatientResponseData = response.data?.patient
-    if (!patientResponseData.patient_id) {
+    if (!patientResponseData.id) {
       throw new Error('Invalid patient data')
     }
 
-    const {patient_id, full_name, password_digest} = patientResponseData
+    const {id, full_name, password_digest} = patientResponseData
 
     dispatch(
       setPatient({
-        patient_id,
+        id,
         full_name,
         password_digest,
       }),
     )
+
+    if (patientResponseData.blood_pressures) {
+      dispatch(mergeBloodPressures([...patientResponseData.blood_pressures]))
+    }
 
     return true
   } catch (err) {

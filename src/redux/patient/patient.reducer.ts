@@ -1,6 +1,6 @@
 import React from 'react'
 import {PatientActionTypes} from './patient.types'
-import {Patient} from '../../models'
+import {Patient} from './patient.models'
 
 const INITIAL_STATE: {patient?: Patient} = {
   patient: undefined,

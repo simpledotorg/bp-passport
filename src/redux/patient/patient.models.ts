@@ -1,7 +1,8 @@
-import {BloodPressure, Medication} from '../../models'
+import {BloodPressure} from '../blood-pressure/blood-pressure.models'
+import {Medication} from '../../models'
 
 export interface PatientResponseData {
-  patient_id: string
+  id: string
   full_name?: string
   password_digest?: string
   blood_pressures: BloodPressure[]
@@ -9,7 +10,7 @@ export interface PatientResponseData {
 }
 
 export interface Patient {
-  patient_id: string
+  id: string
   full_name?: string
   password_digest?: string
 }
