@@ -32,9 +32,15 @@ import {BloodPressure, Medication} from '../models'
 import {ContentLoadingSegmentSize} from '../components/content-loading-segment'
 
 import {LoginState} from '../redux/auth/auth.models'
-import {Patient} from '../redux/patient/patient.models'
-import {loginStateSelector} from '../redux/auth/auth.selectors'
+import {useThunkDispatch} from '../redux/store'
+import {getPatient} from '../redux/patient/patient.actions'
+
+import {
+  loginStateSelector,
+  authParamsSelector,
+} from '../redux/auth/auth.selectors'
 import {patientSelector} from '../redux/patient/patient.selectors'
+import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -48,23 +54,33 @@ type Props = {
 const BP_SHOW_LIMIT = 3
 
 function Home({navigation}: Props) {
+  const dispatch = useThunkDispatch()
+
   const loginState = loginStateSelector()
   const apiUser = patientSelector()
+  const authParams = authParamsSelector()
 
   console.log('loginState', loginState)
 
   /*
-  const {user} = useContext(UserContext)
-  const {bloodPressures} = useContext(UserContext)
   const {medications} = useContext(UserContext)
   */
   // todo:redux
-  const bloodPressures: BloodPressure[] = []
+  const bloodPressures = bloodPressuresSelector()
   const medications: Medication[] = []
   const intl = useIntl()
 
   const showLoading =
     loginState === LoginState.LoggingIn && bloodPressures === undefined
+
+  useEffect(() => {
+    // on first load refresh patient data if we have authParams we should refresh the api patient data
+    if (authParams) {
+      dispatch(getPatient()).catch((err) => {
+        console.log('oops: ', err)
+      })
+    }
+  }, [authParams])
 
   useEffect(() => {}, [loginState, apiUser, bloodPressures, medications])
 

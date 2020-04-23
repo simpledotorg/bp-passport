@@ -14,9 +14,9 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   // Whitelist (Save Specific Reducers)
-  whitelist: ['auth', 'patient'],
+  whitelist: ['auth'],
   // Blacklist (Don't Save Specific Reducers)
-  blacklist: [],
+  blacklist: ['patient'],
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
