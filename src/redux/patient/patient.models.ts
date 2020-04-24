@@ -1,5 +1,5 @@
 import {BloodPressure} from '../blood-pressure/blood-pressure.models'
-import {Medication} from '../../models'
+import {Medication} from '../medication/medication.models'
 
 export interface PatientResponseData {
   id: string
