@@ -15,7 +15,6 @@ import {
   containerStyles,
   colors,
   greyHeart,
-  redHeart,
   medicineClock,
   medicinePill,
 } from '../styles'
