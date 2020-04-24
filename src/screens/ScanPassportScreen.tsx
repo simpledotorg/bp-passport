@@ -9,8 +9,8 @@ import {containerStyles, qrImage, qrMaskImage, colors} from '../styles'
 import {BodyHeader, LoadingOverlay} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-
-import {authRequestOtp} from '../api'
+import {useThunkDispatch} from '../redux/store'
+import {activate} from '../redux/auth/auth.actions'
 
 type ScanScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -38,13 +38,16 @@ function ScanPassportScreen({navigation}: Props) {
   const [error, setError] = useState<Error | undefined>(undefined)
   const [modalIsVisible, setModalIsVisible] = useState(false)
 
+  const dispatch = useThunkDispatch()
+
   const onBarCodeRead = (event: BarCodeRead) => {
     if (!hasReadCode && event.type === RNCamera.Constants.BarCodeType.qr) {
       setHasReadCode(true)
       setUIState(UIState.CallingAPI)
       setModalIsVisible(true)
+      // tslint:disable-next-line: variable-name
       const passport_id = event.data
-      return authRequestOtp({passport_id})
+      return dispatch(activate(passport_id))
         .then(() => {
           navigation.replace(SCREENS.VERIFY_YOUR_NUMBER, {passport_id})
         })
@@ -82,14 +85,14 @@ function ScanPassportScreen({navigation}: Props) {
   // test a working/not working code in the simulator
   /*
   useEffect(() => {
-    const good = '86d89f24-fc11-4829-aa4e-5daee20a370a'
+    const good = '0f8ce338-c3b4-4640-a68a-8d64f8ffbb1a'
     const bad = 'fdsfds'
     onBarCodeRead({
       data: good,
       type: RNCamera.Constants.BarCodeType.qr,
     })
-  }, []) */
-
+  }, [])
+*/
   return (
     <>
       <SafeAreaView style={[containerStyles.fill]}>

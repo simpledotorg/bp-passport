@@ -14,8 +14,10 @@ import {containerStyles, colors} from '../styles'
 import {Button} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-import {BloodPressure} from '../models'
-import {UserContext} from '../providers/user.provider'
+
+import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
+import {useThunkDispatch} from '../redux/store'
+import {addBloodPressure} from '../redux/blood-pressure/blood-pressure.actions'
 
 type AddBpScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -36,15 +38,14 @@ const MAX_DIASTOLIC_BP = 180
 
 function AddBpScreen({navigation, route}: Props) {
   const intl = useIntl()
-  const {bloodPressures, updatePatientBloodPressureData} = useContext(
-    UserContext,
-  )
 
   const systolicRef = useRef<null | any>(null)
   const diastolicRef = useRef<null | any>(null)
 
   const [systolic, setSystolic] = useState('')
   const [diastolic, setDiastolic] = useState('')
+
+  const dispatch = useThunkDispatch()
 
   const isSaveDisabled = () => {
     return !(
@@ -127,14 +128,9 @@ function AddBpScreen({navigation, route}: Props) {
                   offline: true,
                   recorded_at: new Date().toISOString(),
                 }
-                const updatedBloodPressures = [
-                  ...(bloodPressures ?? []),
-                  newBloodPressure,
-                ]
 
-                if (updatePatientBloodPressureData) {
-                  updatePatientBloodPressureData(updatedBloodPressures)
-                }
+                dispatch(addBloodPressure(newBloodPressure))
+
                 navigation.goBack()
               }}
             />

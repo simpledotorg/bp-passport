@@ -14,8 +14,8 @@ import {containerStyles, colors} from '../styles'
 import {BodyHeader, BpInformation} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-import {BloodPressure} from '../models'
-import {UserContext} from '../providers/user.provider'
+import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
+import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
 
 type BpHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -33,7 +33,7 @@ type Props = {
 }
 
 function BpHistoryScreen({navigation, route}: Props) {
-  const {bloodPressures = []} = useContext(UserContext)
+  const bloodPressures = bloodPressuresSelector()
 
   return (
     <View style={{flex: 1}}>
