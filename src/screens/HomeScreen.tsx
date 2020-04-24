@@ -17,6 +17,7 @@ import {
   greyHeart,
   medicineClock,
   medicinePill,
+  grayDrop,
 } from '../styles'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
@@ -26,6 +27,7 @@ import {
   BodyText,
   BpInformation,
   ContentLoadingSegment,
+  BsInformation,
 } from '../components'
 
 import {ContentLoadingSegmentSize} from '../components/content-loading-segment'
@@ -41,6 +43,8 @@ import {
 import {patientSelector} from '../redux/patient/patient.selectors'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
+import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
+import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
 import {medicationsSelector} from '../redux/medication/medication.selectors'
 import {Medication} from '../redux/medication/medication.models'
 
@@ -53,7 +57,7 @@ type Props = {
   navigation: HomeScreenNavigationProp
 }
 
-const BP_SHOW_LIMIT = 3
+const HOME_PAGE_SHOW_LIMIT = 3
 
 function Home({navigation}: Props) {
   const dispatch = useThunkDispatch()
@@ -62,9 +66,10 @@ function Home({navigation}: Props) {
   const apiUser = patientSelector()
   const authParams = authParamsSelector()
 
-  console.log('loginState', loginState)
+  // console.log('loginState', loginState)
 
   const bloodPressures = bloodPressuresSelector()
+  const bloodSugars = bloodSugarsSelector()
   const medications = medicationsSelector()
   const intl = useIntl()
 
@@ -83,6 +88,7 @@ function Home({navigation}: Props) {
   useEffect(() => {}, [loginState, apiUser, bloodPressures, medications])
 
   const bps: BloodPressure[] = bloodPressures ?? []
+  const bss: BloodSugar[] = bloodSugars ?? []
 
   const meds: Medication[] = medications ?? []
 
@@ -98,7 +104,8 @@ function Home({navigation}: Props) {
     return ret
   }
 
-  const showBpHistoryButton = bps.length > BP_SHOW_LIMIT
+  const showBpHistoryButton = bps.length > HOME_PAGE_SHOW_LIMIT
+  const showBsHistoryButton = bss.length > HOME_PAGE_SHOW_LIMIT
 
   return (
     <SafeAreaView
@@ -201,48 +208,18 @@ function Home({navigation}: Props) {
               </>
             )}
             <View style={[styles.homeContainer]}>
-              <BodyHeader style={[styles.sectionHeader]}>My BP</BodyHeader>
+              <BodyHeader style={[styles.sectionHeader]}>
+                <FormattedMessage id="home.my-bp" />
+              </BodyHeader>
               {bps.length > 0 ? (
                 <>
                   {bps.map((bp, index) => {
-                    if (index > BP_SHOW_LIMIT - 1) {
+                    if (index > HOME_PAGE_SHOW_LIMIT - 1) {
                       return null
                     }
 
                     return <BpInformation bp={bp} key={index} />
                   })}
-                  <View style={{marginTop: 15, flexDirection: 'row'}}>
-                    <Button
-                      style={[
-                        styles.bpButton,
-                        {
-                          marginRight: showBpHistoryButton ? 12 : 0,
-                        },
-                      ]}
-                      buttonColor={colors.blue2}
-                      title={intl.formatMessage({id: 'home.add-bp'})}
-                      onPress={() => {
-                        navigation.navigate(SCREENS.ADD_BP)
-                      }}
-                    />
-                    {showBpHistoryButton && (
-                      <Button
-                        style={[
-                          styles.bpButton,
-                          {
-                            marginLeft: 12,
-                          },
-                        ]}
-                        buttonColor={colors.blue2}
-                        title={intl.formatMessage({id: 'general.see-all'})}
-                        onPress={() => {
-                          navigation.navigate(SCREENS.BP_HISTORY, {
-                            bps,
-                          })
-                        }}
-                      />
-                    )}
-                  </View>
                 </>
               ) : (
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -259,12 +236,114 @@ function Home({navigation}: Props) {
                       {
                         color: colors.grey1,
                         marginBottom: 70,
+                        textAlign: 'center',
                       },
                     ]}>
                     <FormattedMessage id={'home.you-have-no-bp'} />
                   </BodyText>
                 </View>
               )}
+              <View style={{marginTop: 15, flexDirection: 'row'}}>
+                <Button
+                  style={[
+                    styles.bpButton,
+                    {
+                      marginRight: showBpHistoryButton ? 12 : 0,
+                    },
+                  ]}
+                  buttonColor={colors.blue2}
+                  title={intl.formatMessage({id: 'home.add-bp'})}
+                  onPress={() => {
+                    navigation.navigate(SCREENS.ADD_BP)
+                  }}
+                />
+                {showBpHistoryButton && (
+                  <Button
+                    style={[
+                      styles.bpButton,
+                      {
+                        marginLeft: 12,
+                      },
+                    ]}
+                    buttonColor={colors.blue2}
+                    title={intl.formatMessage({id: 'general.see-all'})}
+                    onPress={() => {
+                      navigation.navigate(SCREENS.BP_HISTORY, {
+                        bps,
+                      })
+                    }}
+                  />
+                )}
+              </View>
+            </View>
+            <View style={[styles.homeContainer]}>
+              <BodyHeader style={[styles.sectionHeader]}>
+                <FormattedMessage id="home.my-blood-sugar" />
+              </BodyHeader>
+              {bss.length > 0 ? (
+                <>
+                  {bss.map((bs, index) => {
+                    if (index > HOME_PAGE_SHOW_LIMIT - 1) {
+                      return null
+                    }
+
+                    return <BsInformation bs={bs} key={index} />
+                  })}
+                </>
+              ) : (
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <Image
+                    style={{
+                      marginTop: 32,
+                      marginBottom: 4,
+                    }}
+                    source={grayDrop}
+                  />
+                  <BodyText
+                    style={[
+                      styles.sectionText,
+                      {
+                        color: colors.grey1,
+                        marginBottom: 70,
+                        textAlign: 'center',
+                      },
+                    ]}>
+                    <FormattedMessage id={'home.you-have-no-bs'} />
+                  </BodyText>
+                </View>
+              )}
+              <View style={{marginTop: 15, flexDirection: 'row'}}>
+                <Button
+                  style={[
+                    styles.bpButton,
+                    {
+                      marginRight: showBsHistoryButton ? 12 : 0,
+                    },
+                  ]}
+                  buttonColor={colors.blue2}
+                  title={intl.formatMessage({id: 'home.add-bs'})}
+                  onPress={() => {
+                    navigation.navigate(SCREENS.ADD_BS)
+                  }}
+                />
+                {showBsHistoryButton && (
+                  <Button
+                    style={[
+                      styles.bpButton,
+                      {
+                        marginLeft: 12,
+                      },
+                    ]}
+                    buttonColor={colors.blue2}
+                    title={intl.formatMessage({id: 'general.see-all'})}
+                    onPress={() => {
+                      navigation.navigate(SCREENS.BS_HISTORY, {
+                        bloodSugars: bss,
+                      })
+                    }}
+                  />
+                )}
+              </View>
             </View>
           </ScrollView>
           <View style={styles.buttonContainer}>

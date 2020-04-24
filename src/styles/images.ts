@@ -8,6 +8,8 @@ const greyHeart = require('../assets/images/grey-heart.png')
 const redHeart = require('../assets/images/red-heart.png')
 const medicineClock = require('../assets/images/clock.png')
 const medicinePill = require('../assets/images/pill.png')
+const grayDrop = require('../assets/images/gray-drop.png')
+const purpleDrop = require('../assets/images/purple-drop.png')
 
 export {
   iconLaunch,
@@ -20,4 +22,6 @@ export {
   redHeart,
   medicineClock,
   medicinePill,
+  grayDrop,
+  purpleDrop,
 }

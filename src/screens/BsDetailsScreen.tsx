@@ -9,64 +9,59 @@ import {containerStyles, colors, navigation} from '../styles'
 import {BodyText, Button} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-
-import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
+import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
+import {SUGAR_TYPE_VALUES} from '../constants/blood-sugars'
 import {useThunkDispatch} from '../redux/store'
-import {deleteBloodPressure} from '../redux/blood-pressure/blood-pressure.actions'
+import {deleteBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
 
-type BpDetailsScreenNavigationProp = StackNavigationProp<
+type BsDetailsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  SCREENS.BP_DETAILS
+  SCREENS.BS_DETAILS
 >
 
-type BpDetailsScreen = RouteProp<RootStackParamList, SCREENS.BP_DETAILS>
+type BsDetailsScreen = RouteProp<RootStackParamList, SCREENS.BS_DETAILS>
 
 type Props = {
-  navigation: BpDetailsScreenNavigationProp
-  route: BpDetailsScreen
+  navigation: BsDetailsScreenNavigationProp
+  route: BsDetailsScreen
 }
 
-function BpDetailsScreen({navigation, route}: Props) {
+function BsDetailsScreen({navigation, route}: Props) {
   const intl = useIntl()
+  const {bs} = route.params
+
   const dispatch = useThunkDispatch()
 
-  const {bp}: {bp: BloodPressure} = route.params
-
-  const isBloodPressureHigh = (bpIn: BloodPressure) => {
-    // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
-    // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
-    return bpIn.systolic >= 140 || bpIn.diastolic >= 90
-  }
-
-  const displayDate = (bpIn: BloodPressure) => {
-    return bpIn.recorded_at
-      ? format(
-          new Date(bpIn.recorded_at),
-          `dd-MMM-yyy '${intl.formatMessage({id: 'general.at'})}' hh:mm`,
-        )
+  const displayDate = (bsIn: BloodSugar) => {
+    return bsIn.recorded_at
+      ? format(new Date(bsIn.recorded_at), 'dd-MMM-yyy')
       : null
   }
 
-  const getBPText = () => {
-    return isBloodPressureHigh(bp) ? (
+  const isHighBloodSugar = () => {
+    return bs.blood_sugar_value >= SUGAR_TYPE_VALUES[bs.blood_sugar_type].high
+  }
+
+  const getBSText = () => {
+    return isHighBloodSugar() ? (
       <BodyText
         style={[
-          styles.bpText,
+          styles.bsText,
           {
             color: colors.red1,
           },
         ]}>
-        <FormattedMessage id="general.high-bp" />
+        <FormattedMessage id="bs.high-rbs" />
       </BodyText>
     ) : (
       <BodyText
         style={[
-          styles.bpText,
+          styles.bsText,
           {
             color: colors.green1,
           },
         ]}>
-        <FormattedMessage id="general.normal-bp" />
+        <FormattedMessage id="bs.normal-rbs" />
       </BodyText>
     )
   }
@@ -76,31 +71,35 @@ function BpDetailsScreen({navigation, route}: Props) {
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white100}]}>
         <View style={{padding: 24}}>
-          <BodyText style={styles.bpBold}>
-            {`${bp.systolic} / ${bp.diastolic}, `}
-            {getBPText()}
+          <BodyText style={styles.bsBold}>
+            {`${bs.blood_sugar_value} ${intl.formatMessage({id: 'bs.mgdl'})}`}
+            <>
+              {`, `}
+              {getBSText()}
+            </>
           </BodyText>
-          <BodyText style={styles.bpTag}>
-            <FormattedMessage id="general.bp" />
+          <BodyText style={styles.bsTag}>
+            <FormattedMessage
+              id={SUGAR_TYPE_VALUES[bs.blood_sugar_type].languageKey}
+            />
           </BodyText>
-          <BodyText style={[styles.bpBold, {marginTop: 16}]}>
-            {displayDate(bp)}
+          <BodyText style={[styles.bsBold, {marginTop: 16}]}>
+            {displayDate(bs)}
           </BodyText>
-          <BodyText style={styles.bpTag}>
+          <BodyText style={styles.bsTag}>
             <FormattedMessage id="general.date" />
           </BodyText>
-          {bp.facility && (
+          {bs.facility && (
             <>
-              <BodyText style={[styles.bpBold, {marginTop: 16}]}>
-                {bp.facility.name}
+              <BodyText style={[styles.bsBold, {marginTop: 16}]}>
+                {bs.facility.name}
               </BodyText>
-              <BodyText style={styles.bpTag}>
+              <BodyText style={styles.bsTag}>
                 <FormattedMessage id="general.added-at" />
               </BodyText>
             </>
           )}
-
-          {bp.offline && (
+          {bs.offline && (
             <Button
               style={{
                 marginTop: 24,
@@ -108,11 +107,11 @@ function BpDetailsScreen({navigation, route}: Props) {
                 shadowColor: 'rgba(0, 117, 235, 0.3)',
               }}
               buttonColor={colors.blue2}
-              title={intl.formatMessage({id: 'general.delete-bp'})}
+              title={intl.formatMessage({id: 'bs.delete-bs'})}
               onPress={() => {
                 Alert.alert(
-                  intl.formatMessage({id: 'general.delete-bp'}),
-                  intl.formatMessage({id: 'general.delete-bp-confirm'}),
+                  intl.formatMessage({id: 'bs.delete-bs'}),
+                  intl.formatMessage({id: 'bs.delete-bs-confirm'}),
                   [
                     {
                       text: intl.formatMessage({id: 'general.cancel'}),
@@ -120,7 +119,7 @@ function BpDetailsScreen({navigation, route}: Props) {
                     {
                       text: intl.formatMessage({id: 'general.ok'}),
                       onPress: () => {
-                        dispatch(deleteBloodPressure(bp))
+                        dispatch(deleteBloodSugar(bs))
                         navigation.goBack()
                       },
                     },
@@ -136,21 +135,21 @@ function BpDetailsScreen({navigation, route}: Props) {
   )
 }
 
-export default BpDetailsScreen
+export default BsDetailsScreen
 
 const styles = StyleSheet.create({
-  bpText: {
+  bsText: {
     fontWeight: '500',
     fontSize: 18,
     marginLeft: 'auto',
     textAlign: 'center',
   },
-  bpBold: {
+  bsBold: {
     fontSize: 18,
     color: colors.grey0,
     fontWeight: '500',
   },
-  bpTag: {
+  bsTag: {
     color: colors.grey1,
     fontSize: 14,
   },

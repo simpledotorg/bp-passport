@@ -11,28 +11,28 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {containerStyles, colors} from '../styles'
-import {BodyHeader, BpInformation} from '../components'
+import {BodyHeader, BsInformation} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
+import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
 
-type BpHistoryScreenNavigationProp = StackNavigationProp<
+type BsHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  SCREENS.BP_HISTORY
+  SCREENS.BS_HISTORY
 >
 
-type BpHistoryScreenRouteProp = RouteProp<
+type BsHistoryScreenRouteProp = RouteProp<
   RootStackParamList,
-  SCREENS.BP_HISTORY
+  SCREENS.BS_HISTORY
 >
 
 type Props = {
-  navigation: BpHistoryScreenNavigationProp
-  route: BpHistoryScreenRouteProp
+  navigation: BsHistoryScreenNavigationProp
+  route: BsHistoryScreenRouteProp
 }
 
-function BpHistoryScreen({navigation, route}: Props) {
-  const bloodPressures = bloodPressuresSelector()
+function BsHistoryScreen({navigation, route}: Props) {
+  const bloodSugars = bloodSugarsSelector()
 
   return (
     <View style={{flex: 1}}>
@@ -41,26 +41,26 @@ function BpHistoryScreen({navigation, route}: Props) {
         <View style={{flex: 1, paddingTop: 24, paddingLeft: 24}}>
           <View style={{marginBottom: 24}}>
             <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
-              BP History
+              BS History
             </BodyHeader>
           </View>
           <FlatList
-            data={bloodPressures}
+            data={bloodSugars}
             renderItem={({item, index}) => (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate(SCREENS.BP_DETAILS, {bp: item})
+                  navigation.navigate(SCREENS.BS_DETAILS, {bs: item})
                 }}
                 style={[
                   {paddingRight: 24},
                   styles.historyItem,
-                  index === bloodPressures.length - 1
+                  index === bloodSugars.length - 1
                     ? {borderBottomWidth: 0}
                     : {},
                 ]}>
-                <BpInformation
+                <BsInformation
                   compact
-                  bp={item}
+                  bs={item}
                   style={index === 0 ? {marginTop: 0} : {marginTop: 12}}
                 />
                 <Icon
@@ -81,7 +81,7 @@ function BpHistoryScreen({navigation, route}: Props) {
   )
 }
 
-export default BpHistoryScreen
+export default BsHistoryScreen
 
 const styles = StyleSheet.create({
   historyItem: {
