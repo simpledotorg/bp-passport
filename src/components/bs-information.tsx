@@ -1,15 +1,15 @@
 import React from 'react'
 import {View, StyleSheet, Image, ViewStyle} from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
-import {format} from 'date-fns'
 
 import {colors, purpleDrop} from '../styles'
 import {BodyText} from './'
+import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
 import {
-  BloodSugar,
-  BLOOD_SUGAR_TYPES,
-} from '../redux/blood-sugar/blood-sugar.models'
-import {SUGAR_TYPE_VALUES} from '../constants/blood-sugars'
+  displayDate,
+  isHighBloodSugar,
+  getBloodSugarDetails,
+} from '../utils/blood-sugars'
 
 type Props = {
   bs: BloodSugar
@@ -20,24 +20,9 @@ type Props = {
 export const BsInformation = ({bs, style = {}, compact = false}: Props) => {
   const intl = useIntl()
 
-  const displayDate = (bsIn: BloodSugar) => {
-    return bsIn.recorded_at
-      ? format(new Date(bsIn.recorded_at), 'dd-MMM-yyy')
-      : null
-  }
-
-  const isHighBloodSugar = () => {
-    return (
-      bs.blood_sugar_value >=
-      (
-        SUGAR_TYPE_VALUES[bs.blood_sugar_type] ??
-        SUGAR_TYPE_VALUES[BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR]
-      )?.high
-    )
-  }
-
   const getBSText = () => {
-    return isHighBloodSugar() ? (
+    const details = getBloodSugarDetails(bs)
+    return isHighBloodSugar(bs) ? (
       <BodyText
         style={[
           styles.bsText,
@@ -45,7 +30,9 @@ export const BsInformation = ({bs, style = {}, compact = false}: Props) => {
             color: colors.red1,
           },
         ]}>
-        <FormattedMessage id="bs.high-rbs" />
+        {`${intl.formatMessage({id: 'bs.high'})} ${intl.formatMessage({
+          id: details.languageTypeCode,
+        })}`}
       </BodyText>
     ) : (
       <BodyText
@@ -55,7 +42,9 @@ export const BsInformation = ({bs, style = {}, compact = false}: Props) => {
             color: colors.green1,
           },
         ]}>
-        <FormattedMessage id="bs.normal-rbs" />
+        {`${intl.formatMessage({id: 'bs.normal'})} ${intl.formatMessage({
+          id: details.languageTypeCode,
+        })}`}
       </BodyText>
     )
   }

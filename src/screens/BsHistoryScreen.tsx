@@ -54,7 +54,7 @@ function BsHistoryScreen({navigation, route}: Props) {
                 style={[
                   {paddingRight: 24},
                   styles.historyItem,
-                  index === bloodSugars.length - 1
+                  index === (bloodSugars ?? []).length - 1
                     ? {borderBottomWidth: 0}
                     : {},
                 ]}>

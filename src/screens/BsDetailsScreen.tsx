@@ -1,18 +1,20 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {SafeAreaView, View, StyleSheet, Alert} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import {format} from 'date-fns'
 import {FormattedMessage, useIntl} from 'react-intl'
 
 import {containerStyles, colors, navigation} from '../styles'
 import {BodyText, Button} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
-import {SUGAR_TYPE_VALUES} from '../constants/blood-sugars'
 import {useThunkDispatch} from '../redux/store'
 import {deleteBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
+import {
+  displayDate,
+  isHighBloodSugar,
+  getBloodSugarDetails,
+} from '../utils/blood-sugars'
 
 type BsDetailsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -32,18 +34,9 @@ function BsDetailsScreen({navigation, route}: Props) {
 
   const dispatch = useThunkDispatch()
 
-  const displayDate = (bsIn: BloodSugar) => {
-    return bsIn.recorded_at
-      ? format(new Date(bsIn.recorded_at), 'dd-MMM-yyy')
-      : null
-  }
-
-  const isHighBloodSugar = () => {
-    return bs.blood_sugar_value >= SUGAR_TYPE_VALUES[bs.blood_sugar_type].high
-  }
-
   const getBSText = () => {
-    return isHighBloodSugar() ? (
+    const details = getBloodSugarDetails(bs)
+    return isHighBloodSugar(bs) ? (
       <BodyText
         style={[
           styles.bsText,
@@ -51,7 +44,9 @@ function BsDetailsScreen({navigation, route}: Props) {
             color: colors.red1,
           },
         ]}>
-        <FormattedMessage id="bs.high-rbs" />
+        {`${intl.formatMessage({id: 'bs.high'})} ${intl.formatMessage({
+          id: details.languageTypeCode,
+        })}`}
       </BodyText>
     ) : (
       <BodyText
@@ -61,7 +56,9 @@ function BsDetailsScreen({navigation, route}: Props) {
             color: colors.green1,
           },
         ]}>
-        <FormattedMessage id="bs.normal-rbs" />
+        {`${intl.formatMessage({id: 'bs.normal'})} ${intl.formatMessage({
+          id: details.languageTypeCode,
+        })}`}
       </BodyText>
     )
   }
@@ -79,9 +76,7 @@ function BsDetailsScreen({navigation, route}: Props) {
             </>
           </BodyText>
           <BodyText style={styles.bsTag}>
-            <FormattedMessage
-              id={SUGAR_TYPE_VALUES[bs.blood_sugar_type].languageKey}
-            />
+            <FormattedMessage id={getBloodSugarDetails(bs).languageKey} />
           </BodyText>
           <BodyText style={[styles.bsBold, {marginTop: 16}]}>
             {displayDate(bs)}

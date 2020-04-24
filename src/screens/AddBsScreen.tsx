@@ -117,7 +117,8 @@ function AddBsScreen({navigation, route}: Props) {
                 placeholder={intl.formatMessage({id: 'bs.blood-sugar'})}
                 value={reading}
                 onChangeText={(text) => setReading(text)}
-                keyboardType={'numeric'}
+                keyboardType={'number-pad'}
+                maxLength={4}
               />
               <BodyText
                 style={{
