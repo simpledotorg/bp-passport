@@ -1,5 +1,6 @@
 import React from 'react'
 import {MedicationActionTypes} from './medication.types'
+import {AuthActionTypes} from '../auth/auth.types'
 import {Medication} from './medication.models'
 import {isBefore} from 'date-fns'
 
@@ -61,7 +62,10 @@ const medicationReducer = (state = INITIAL_STATE, action) => {
         ...state,
         medications: medicationsFiltered,
       }
-
+    case AuthActionTypes.LOG_OUT:
+      return {
+        ...INITIAL_STATE,
+      }
     default:
       return state
   }

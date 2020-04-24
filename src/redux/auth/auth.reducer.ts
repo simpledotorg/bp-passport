@@ -15,6 +15,16 @@ const authReducer = (state = INITIAL_STATE, action) => {
         authParams: action.payload,
         loginState: LoginState.LoggingIn,
       }
+    case AuthActionTypes.SET_LOGIN_STATE:
+      const loginState: LoginState = action.payload
+      return {
+        ...state,
+        loginState,
+      }
+    case AuthActionTypes.LOG_OUT:
+      return {
+        ...INITIAL_STATE,
+      }
     default:
       return state
   }

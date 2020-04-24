@@ -4,7 +4,8 @@ import {
   useHeaderHeight,
   StackNavigationProp,
 } from '@react-navigation/stack'
-import {RouteProp} from '@react-navigation/native'
+import {NavigationActions} from 'react-navigation'
+import {useNavigationState} from '@react-navigation/native'
 import {forFade} from './navigation/interpolators'
 import {useIntl} from 'react-intl'
 
@@ -88,8 +89,19 @@ function MainStack({navigation}: Props) {
   const loginState = loginStateSelector()
   const apiUser = patientSelector()
 
+  const mainStackRoutes = useNavigationState(
+    (state) => state.routes[state.index],
+  )
+  const routeCount = mainStackRoutes.state?.routes.length ?? 1
+
   useEffect(() => {
-    if (loginState !== LoginState.LoggedOut) {
+    if (loginState === LoginState.LoggedOut) {
+      if (routeCount <= 1) {
+        navigation.replace(SCREENS.SPLASH)
+      } else {
+        navigation.popToTop()
+      }
+    } else {
       navigation.navigate(SCREENS.HOME)
     }
   }, [loginState])
