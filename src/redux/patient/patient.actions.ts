@@ -4,6 +4,7 @@ import {PatientResponseData, Patient} from './patient.models'
 import {AppThunk} from '../store'
 import {API_ENDPOINT} from '../../constants/api'
 import {mergeBloodPressures} from '../blood-pressure/blood-pressure.actions'
+import {mergeMedications} from '../medication/medication.actions'
 
 export const setPatient = (patient: Patient) => ({
   type: PatientActionTypes.SET_PATIENT,
@@ -42,6 +43,10 @@ export const getPatient = (): AppThunk => async (dispatch, getState) => {
 
     if (patientResponseData.blood_pressures) {
       dispatch(mergeBloodPressures([...patientResponseData.blood_pressures]))
+    }
+
+    if (patientResponseData.medications) {
+      dispatch(mergeMedications([...patientResponseData.medications]))
     }
 
     return true

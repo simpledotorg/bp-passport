@@ -42,6 +42,8 @@ import {
 import {patientSelector} from '../redux/patient/patient.selectors'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
+import {medicationsSelector} from '../redux/medication/medication.selectors'
+import {Medication} from '../redux/medication/medication.models'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -63,12 +65,8 @@ function Home({navigation}: Props) {
 
   console.log('loginState', loginState)
 
-  /*
-  const {medications} = useContext(UserContext)
-  */
-  // todo:redux
   const bloodPressures = bloodPressuresSelector()
-  const medications: Medication[] = []
+  const medications = medicationsSelector()
   const intl = useIntl()
 
   const showLoading =
