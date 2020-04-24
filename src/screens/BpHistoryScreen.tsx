@@ -52,23 +52,27 @@ function BpHistoryScreen({navigation, route}: Props) {
                   navigation.navigate(SCREENS.BP_DETAILS, {bp: item})
                 }}
                 style={[
-                  {paddingRight: 24},
+                  {paddingRight: 24, marginTop: 12},
                   styles.historyItem,
                   index === bloodPressures.length - 1
                     ? {borderBottomWidth: 0}
                     : {},
                 ]}>
-                <BpInformation
-                  compact
-                  bp={item}
-                  style={index === 0 ? {marginTop: 0} : {marginTop: 12}}
-                />
-                <Icon
-                  name="chevron-right"
-                  size={24}
-                  style={{marginLeft: 'auto'}}
-                  color={colors.blue2}
-                />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <BpInformation compact bp={item} style={{marginTop: 0}} />
+                  <Icon
+                    name="chevron-right"
+                    size={24}
+                    style={{marginLeft: 'auto'}}
+                    color={colors.blue2}
+                  />
+                </View>
               </TouchableOpacity>
             )}
             keyExtractor={(item, index) => {
