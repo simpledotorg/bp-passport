@@ -118,6 +118,7 @@ function AddBsScreen({navigation, route}: Props) {
                 value={reading}
                 onChangeText={(text) => setReading(text)}
                 keyboardType={'numeric'}
+                maxLength={6}
               />
               <BodyText
                 style={{

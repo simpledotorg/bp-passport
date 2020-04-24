@@ -52,23 +52,27 @@ function BsHistoryScreen({navigation, route}: Props) {
                   navigation.navigate(SCREENS.BS_DETAILS, {bs: item})
                 }}
                 style={[
-                  {paddingRight: 24},
+                  {paddingRight: 24, marginTop: 12},
                   styles.historyItem,
-                  index === bloodSugars.length - 1
+                  index === (bloodSugars ?? []).length - 1
                     ? {borderBottomWidth: 0}
                     : {},
                 ]}>
-                <BsInformation
-                  compact
-                  bs={item}
-                  style={index === 0 ? {marginTop: 0} : {marginTop: 12}}
-                />
-                <Icon
-                  name="chevron-right"
-                  size={24}
-                  style={{marginLeft: 'auto'}}
-                  color={colors.blue2}
-                />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <BsInformation compact bs={item} style={{marginTop: 0}} />
+                  <Icon
+                    name="chevron-right"
+                    size={24}
+                    style={{marginLeft: 'auto'}}
+                    color={colors.blue2}
+                  />
+                </View>
               </TouchableOpacity>
             )}
             keyExtractor={(item, index) => {
