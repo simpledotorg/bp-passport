@@ -15,12 +15,9 @@ import {
   containerStyles,
   colors,
   greyHeart,
-  redHeart,
   medicineClock,
   medicinePill,
 } from '../styles'
-import {UserContext} from '../providers/user.provider'
-import {AuthContext, LoginState} from '../providers/auth.provider'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {
@@ -30,8 +27,22 @@ import {
   BpInformation,
   ContentLoadingSegment,
 } from '../components'
-import {BloodPressure, Medication} from '../models'
+
 import {ContentLoadingSegmentSize} from '../components/content-loading-segment'
+
+import {LoginState} from '../redux/auth/auth.models'
+import {useThunkDispatch} from '../redux/store'
+import {getPatient} from '../redux/patient/patient.actions'
+
+import {
+  loginStateSelector,
+  authParamsSelector,
+} from '../redux/auth/auth.selectors'
+import {patientSelector} from '../redux/patient/patient.selectors'
+import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
+import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
+import {medicationsSelector} from '../redux/medication/medication.selectors'
+import {Medication} from '../redux/medication/medication.models'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -45,28 +56,31 @@ type Props = {
 const BP_SHOW_LIMIT = 3
 
 function Home({navigation}: Props) {
-  const {loginState} = useContext(AuthContext)
-  switch (loginState) {
-    case LoginState.LoggingIn:
-      // show animation state
-      break
-    case LoginState.LoggedIn:
-      // show user profile
-      break
-    case LoginState.LoggedOut:
-      // n /a
-      break
-  }
+  const dispatch = useThunkDispatch()
 
-  const {user} = useContext(UserContext)
-  const {bloodPressures} = useContext(UserContext)
-  const {medications} = useContext(UserContext)
+  const loginState = loginStateSelector()
+  const apiUser = patientSelector()
+  const authParams = authParamsSelector()
+
+  console.log('loginState', loginState)
+
+  const bloodPressures = bloodPressuresSelector()
+  const medications = medicationsSelector()
   const intl = useIntl()
 
   const showLoading =
     loginState === LoginState.LoggingIn && bloodPressures === undefined
 
-  useEffect(() => {}, [loginState, user, bloodPressures, medications])
+  useEffect(() => {
+    // on first load refresh patient data if we have authParams we should refresh the api patient data
+    if (authParams) {
+      dispatch(getPatient()).catch((err) => {
+        console.log('error loading api patient: ', err)
+      })
+    }
+  }, [authParams])
+
+  useEffect(() => {}, [loginState, apiUser, bloodPressures, medications])
 
   const bps: BloodPressure[] = bloodPressures ?? []
 

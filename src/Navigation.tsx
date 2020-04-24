@@ -4,7 +4,8 @@ import {
   useHeaderHeight,
   StackNavigationProp,
 } from '@react-navigation/stack'
-import {RouteProp} from '@react-navigation/native'
+import {NavigationActions} from 'react-navigation'
+import {useNavigationState} from '@react-navigation/native'
 import {forFade} from './navigation/interpolators'
 import {useIntl} from 'react-intl'
 
@@ -19,13 +20,14 @@ import HomeScreen from './screens/HomeScreen'
 import SettingsScreen from './screens/SettingsScreen'
 import BpDetailsScreen from './screens/BpDetailsScreen'
 import AddBpScreen from './screens/AddBpScreen'
-import {AuthContext, LoginState} from './providers/auth.provider'
-import {UserContext} from './providers/user.provider'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
 import {colors, navigation as navigationStyle} from './styles'
-import {BloodPressure} from './models'
+import {BloodPressure} from './redux/blood-pressure/blood-pressure.models'
+import {LoginState} from './redux/auth/auth.models'
+import {loginStateSelector} from './redux/auth/auth.selectors'
+import {patientSelector} from './redux/patient/patient.selectors'
 
 export type RootStackParamList = {
   LAUNCH: undefined
@@ -84,16 +86,27 @@ function MainStack({navigation}: Props) {
 
   const headerHeightIncludingSafeArea = useHeaderHeight()
 
-  const {loginState} = useContext(AuthContext)
-  const {user} = useContext(UserContext)
+  const loginState = loginStateSelector()
+  const apiUser = patientSelector()
+
+  const mainStackRoutes = useNavigationState(
+    (state) => state.routes[state.index],
+  )
+  const routeCount = mainStackRoutes.state?.routes.length ?? 1
 
   useEffect(() => {
-    if (loginState !== LoginState.LoggedOut) {
+    if (loginState === LoginState.LoggedOut) {
+      if (routeCount <= 1) {
+        navigation.replace(SCREENS.SPLASH)
+      } else {
+        navigation.popToTop()
+      }
+    } else {
       navigation.navigate(SCREENS.HOME)
     }
   }, [loginState])
 
-  useEffect(() => {}, [user])
+  useEffect(() => {}, [apiUser])
 
   return (
     <Stack.Navigator
@@ -182,7 +195,7 @@ function MainStack({navigation}: Props) {
           headerRight: () => {
             if (
               loginState === LoginState.LoggedIn ||
-              (loginState === LoginState.LoggingIn && user !== undefined)
+              (loginState === LoginState.LoggingIn && apiUser !== undefined)
             ) {
               return (
                 <ButtonIcon
