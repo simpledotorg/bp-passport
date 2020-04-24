@@ -75,7 +75,7 @@ function Home({navigation}: Props) {
     // on first load refresh patient data if we have authParams we should refresh the api patient data
     if (authParams) {
       dispatch(getPatient()).catch((err) => {
-        console.log('todo error loading api patient: ', err)
+        console.log('error loading api patient: ', err)
       })
     }
   }, [authParams])
