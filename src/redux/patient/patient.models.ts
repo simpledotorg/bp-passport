@@ -1,4 +1,5 @@
 import {BloodPressure} from '../blood-pressure/blood-pressure.models'
+import {BloodSugar} from '../blood-sugar/blood-sugar.models'
 import {Medication} from '../medication/medication.models'
 
 interface Address {
@@ -18,6 +19,7 @@ export interface PatientResponseData {
   blood_pressures: BloodPressure[]
   medications: Medication[]
   address?: Address
+  blood_sugars: BloodSugar[]
 }
 
 export interface Patient {

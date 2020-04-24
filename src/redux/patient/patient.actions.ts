@@ -4,6 +4,7 @@ import {PatientResponseData, Patient} from './patient.models'
 import {AppThunk} from '../store'
 import {API_ENDPOINT} from '../../constants/api'
 import {mergeBloodPressures} from '../blood-pressure/blood-pressure.actions'
+import {mergeBloodSugars} from '../blood-sugar/blood-sugar.actions'
 import {mergeMedications} from '../medication/medication.actions'
 import {LoginState} from '../auth/auth.models'
 import {setLoginState, logout} from '../auth/auth.actions'
@@ -49,6 +50,10 @@ export const getPatient = (): AppThunk => async (dispatch, getState) => {
 
     if (patientResponseData.medications) {
       dispatch(mergeMedications([...patientResponseData.medications]))
+    }
+
+    if (patientResponseData.blood_sugars) {
+      dispatch(mergeBloodSugars([...patientResponseData.blood_sugars]))
     }
 
     dispatch(setLoginState(LoginState.LoggedIn))
