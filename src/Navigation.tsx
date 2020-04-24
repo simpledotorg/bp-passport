@@ -1,4 +1,5 @@
 import React, {useContext, useEffect} from 'react'
+import {Alert} from 'react-native'
 import {
   createStackNavigator,
   useHeaderHeight,
@@ -7,6 +8,7 @@ import {
 import {useNavigationState} from '@react-navigation/native'
 import {forFade} from './navigation/interpolators'
 import {useIntl} from 'react-intl'
+import {usePrevious} from './effects/use-previous.effect'
 
 import LaunchScreen from './screens/LaunchScreen'
 import SplashScreen from './screens/SplashScreen'
@@ -93,6 +95,7 @@ function MainStack({navigation}: Props) {
   const headerHeightIncludingSafeArea = useHeaderHeight()
 
   const loginState = loginStateSelector()
+  const prevLoginState = usePrevious(loginState)
   const apiUser = patientSelector()
 
   const mainStackRoutes = useNavigationState(
@@ -102,13 +105,31 @@ function MainStack({navigation}: Props) {
 
   useEffect(() => {
     if (loginState === LoginState.LoggedOut) {
-      if (routeCount <= 1) {
-        navigation.replace(SCREENS.SPLASH)
-      } else {
-        navigation.popToTop()
+      if (
+        prevLoginState === LoginState.LoggedIn ||
+        prevLoginState === LoginState.LoggingIn
+      ) {
+        Alert.alert(
+          'Signed out',
+          "Sorry, you've been signed out as your token expired.",
+          [
+            {
+              text: intl.formatMessage({id: 'general.ok'}),
+            },
+          ],
+          {cancelable: true},
+        )
+
+        if (routeCount <= 1) {
+          navigation.replace(SCREENS.SPLASH)
+        } else {
+          navigation.popToTop()
+        }
       }
     } else {
-      navigation.navigate(SCREENS.HOME)
+      if (prevLoginState === LoginState.LoggedOut) {
+        navigation.navigate(SCREENS.HOME)
+      }
     }
   }, [loginState])
 
