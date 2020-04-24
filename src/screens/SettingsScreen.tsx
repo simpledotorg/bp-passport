@@ -15,11 +15,10 @@ import {containerStyles, colors} from '../styles'
 import {BodyText, BodyHeader} from '../components'
 import {AVAILABLE_TRANSLATIONS} from '../constants/languages'
 import {useLocale} from '../effects/use-locale-messages.effect'
-import {Patient} from '../models'
+import {patientSelector} from '../redux/patient/patient.selectors'
 
 function SettingsScreen({navigation}: any) {
-  // todo:redux
-  const user: Patient | undefined = undefined
+  const apiUser = patientSelector()
 
   const intl = useIntl()
   const {locale, setLocale} = useLocale()
@@ -48,13 +47,17 @@ function SettingsScreen({navigation}: any) {
           </View>
 
           <View style={styles.item}>
-            <BodyHeader style={styles.itemText}>{user?.full_name}</BodyHeader>
+            <BodyHeader style={styles.itemText}>
+              {apiUser?.full_name}
+            </BodyHeader>
             <BodyText style={styles.itemLabel}>
               <FormattedMessage id="settings.name" />
             </BodyText>
           </View>
           <View style={styles.item}>
-            <BodyHeader style={styles.itemText}>Gujarat</BodyHeader>
+            <BodyHeader style={styles.itemText}>
+              {apiUser?.address?.state}
+            </BodyHeader>
             <BodyText style={styles.itemLabel}>
               <FormattedMessage id="settings.state" />
             </BodyText>

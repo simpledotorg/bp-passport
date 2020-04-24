@@ -31,13 +31,13 @@ export const getPatient = (): AppThunk => async (dispatch, getState) => {
       throw new Error('Invalid patient data')
     }
 
-    const {id, full_name, password_digest} = patientResponseData
+    const {id, full_name, address} = patientResponseData
 
     dispatch(
       setPatient({
         id,
         full_name,
-        password_digest,
+        address,
       }),
     )
 
