@@ -111,7 +111,6 @@ function MainStack({navigation}: Props) {
   return (
     <Stack.Navigator
       initialRouteName={
-        // todo:redux
         loginState === LoginState.LoggedOut ? SCREENS.SPLASH : SCREENS.HOME
       }
       screenOptions={{
