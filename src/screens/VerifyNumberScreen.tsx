@@ -9,8 +9,8 @@ import {containerStyles, colors} from '../styles'
 import {BodyText, Button, BodyHeader, LoadingOverlay} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-import {authActivate} from '../api'
-import {AuthContext} from '../providers/auth.provider'
+import {useThunkDispatch} from '../redux/store'
+import {setAuthParams, login} from '../redux/auth/auth.actions'
 
 type VerifyNumberRouteProp = RouteProp<
   RootStackParamList,
@@ -33,7 +33,8 @@ enum UIState {
 }
 
 function VerifyNumber({navigation, route}: Props) {
-  const {setAuthParams} = useContext(AuthContext)
+  const dispatch = useThunkDispatch()
+
   const intl = useIntl()
 
   const inputRef = useRef<any>(null)
@@ -44,19 +45,15 @@ function VerifyNumber({navigation, route}: Props) {
   const [input, setInput] = useState('')
 
   const {passport_id} = route.params
-  console.log('passport_id: ', passport_id)
 
   const verifyOTP = (otp: string) => {
     inputRef.current.blur()
     if (uiState === UIState.Normal) {
       setUIState(UIState.CallingAPI)
       setModalIsVisible(true)
-
-      return authActivate({passport_id, otp})
-        .then((authParams) => {
-          if (authParams) {
-            setAuthParams(authParams)
-          }
+      return dispatch(login(passport_id, otp))
+        .then(() => {
+          // all good the app will take care of the rest
         })
         .catch((error: Error) => {
           setError(error)

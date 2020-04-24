@@ -1,5 +1,50 @@
 # BP Passport
 
+## Version 0.4
+
+### Overview
+
+Big update! BP Passport now integreates with the live sandbox API. You'll need a valid BP test passport to login. All example user passports require OTP code 000000:
+
+https://trello.com/c/Sd5UVesd/88-patient-1
+https://trello.com/c/cZ9Bt3XB/89-patient-2
+https://trello.com/c/Cuz3oSC8/90-patient-3
+https://trello.com/c/3VRp1ajC/91-patient-4
+https://trello.com/c/rDr6NZbh/92-patient-5
+https://trello.com/c/gzW937RC/93-patient-6
+
+There's a known issue with the API whereby logging into a second device invalidates the API token on the first device. So, until this is resolved the app will elegantly auto-logout the user of the second device when it next attempts to pull/refresh the latest patient's data.
+
+### What's New
+
+- App now reads/writes from offline storage (from api) for Patient details, Blood Pressures and Medications - no internet connection is required for the home screen state to render on a relaunch
+- Medicines loaded in from api
+- App now points to live sandbox api (rather than mock api)
+- All BPs screen ui changes (separator lines, disclosure arrow etc)
+- Adding offline BPs
+- Viewing BP Detail
+- Deleting offline BPs
+- Home Screen loading animation
+- Setting Screen now displays patient's state/address from api
+- Blood Sugars loaded in from API and displayed on home screen
+- All Blood Sugar readings screen
+- Bloog Sugar detail screen
+- Add offline Blood Sugars
+- Delete offline Blood Sugars
+- GET /patient 401 response results in app autologout (we can change this as required)
+
+### Known API Issues
+
+- Logging into a second device invalidates the API token on the first device. So, until this is resolved the app will elegantly auto-logout the user of the second device when it next attempts to pull/refresh the latest patient's data.
+
+### Issues fixed
+
+- Bug - All My BP - Header is close to start of scroll list
+- Terms and conditions link going to the wrong URL
+- No blood pressure was showing no grey heart and information regarding no blood readings
+- Layout spacing on All BP screen
+- All BPs screen now scrolls if required
+
 ## Version 0.3
 
 ### Overview

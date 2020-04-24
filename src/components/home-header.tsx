@@ -1,29 +1,25 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {View, Text, StyleSheet} from 'react-native'
 import {containerStyles, navigation, colors} from '../styles'
-import {UserContext} from '../providers/user.provider'
-import {AuthContext, LoginState} from '../providers/auth.provider'
 import {FormattedMessage} from 'react-intl'
+import {LoginState} from '../redux/auth/auth.models'
+import {loginStateSelector} from '../redux/auth/auth.selectors'
+
+import {patientSelector} from '../redux/patient/patient.selectors'
+import {authParamsSelector} from '../redux/auth/auth.selectors'
 
 export const HomeHeaderTitle = () => {
-  const {loginState} = useContext(AuthContext)
-  switch (loginState) {
-    case LoginState.LoggingIn:
-      // show animation state
-      break
-    case LoginState.LoggedIn:
-      // show user profile
-      break
-    case LoginState.LoggedOut:
-      // n /a
-      break
-  }
+  const loginState = loginStateSelector()
+  const apiUser = patientSelector()
+  const authParams = authParamsSelector()
 
-  const showLoading = loginState === LoginState.LoggingIn
-  const {user} = useContext(UserContext)
+  const showLoading =
+    loginState === LoginState.LoggingIn && apiUser === undefined
 
-  const hasFullName = user?.full_name ? true : false
-  const hasPasswordDigest = user?.password_digest ? true : false
+  const hasFullName = apiUser?.full_name ? true : false
+  const hasPassportShortcode = authParams?.passport?.shortcode ? true : false
+
+  useEffect(() => {}, [apiUser, loginState])
 
   if (showLoading) {
     return (
@@ -46,12 +42,13 @@ export const HomeHeaderTitle = () => {
             marginHorizontal: 43,
           }}
           numberOfLines={1}>
-          {user?.full_name}
+          {apiUser?.full_name}
         </Text>
       )}
-      {hasPasswordDigest && (
+      {hasPassportShortcode && (
         <Text style={{...navigation.homeSubHeaderTitleStyle}} numberOfLines={1}>
-          <FormattedMessage id="general.bp-passport" /> {user?.password_digest}
+          <FormattedMessage id="general.bp-passport" />{' '}
+          {authParams?.passport?.shortcode}
         </Text>
       )}
     </View>

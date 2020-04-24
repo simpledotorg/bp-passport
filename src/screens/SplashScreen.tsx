@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {SafeAreaView, View, Image, StyleSheet} from 'react-native'
+import {SafeAreaView, View, Image, StyleSheet, ScrollView} from 'react-native'
 import {FormattedMessage, useIntl, IntlContext} from 'react-intl'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -25,56 +25,58 @@ function SplashScreen({navigation}: Props) {
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
       <View style={styles.content}>
-        <View style={styles.header}>
-          <Image source={iconSplash} style={{marginRight: 14}} />
-          <Image
-            source={bpLogo}
-            style={{height: 20, resizeMode: 'contain', marginTop: 5}}
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.header}>
+            <Image source={iconSplash} style={{marginRight: 14}} />
+            <Image
+              source={bpLogo}
+              style={{height: 20, resizeMode: 'contain', marginTop: 5}}
+            />
+          </View>
+
+          <BodyHeader>
+            <FormattedMessage id="splash.in-this-app" />
+          </BodyHeader>
+
+          <View>
+            <View
+              style={{
+                marginTop: 24,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
+              <Icon name="edit" size={24} color={colors.grey2} />
+              <BodyText style={styles.itemText}>
+                <FormattedMessage id="splash.record-and-track" />
+              </BodyText>
+            </View>
+            <View style={styles.item}>
+              <Icon name="record-voice-over" size={24} color={colors.grey2} />
+              <BodyText style={styles.itemText}>
+                <FormattedMessage id="splash.video-consult-bp" />
+              </BodyText>
+            </View>
+            <View style={styles.item}>
+              <Icon name="local-pharmacy" size={24} color={colors.grey2} />
+              <BodyText style={styles.itemText}>
+                <FormattedMessage id="splash.video-consult-medicine" />
+              </BodyText>
+            </View>
+            <View style={styles.item}>
+              <Icon name="alarm" size={24} color={colors.grey2} />
+              <BodyText style={styles.itemText}>
+                <FormattedMessage id="splash.get-reminders" />
+              </BodyText>
+            </View>
+          </View>
+          <Button
+            style={{marginTop: 24}}
+            title={intl.formatMessage({id: 'general.next'})}
+            onPress={() => {
+              navigation.navigate(SCREENS.CONSENT)
+            }}
           />
-        </View>
-
-        <BodyHeader>
-          <FormattedMessage id="splash.in-this-app" />
-        </BodyHeader>
-
-        <View>
-          <View
-            style={{
-              marginTop: 24,
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <Icon name="edit" size={24} color={colors.grey2} />
-            <BodyText style={styles.itemText}>
-              <FormattedMessage id="splash.record-and-track" />
-            </BodyText>
-          </View>
-          <View style={styles.item}>
-            <Icon name="record-voice-over" size={24} color={colors.grey2} />
-            <BodyText style={styles.itemText}>
-              <FormattedMessage id="splash.video-consult-bp" />
-            </BodyText>
-          </View>
-          <View style={styles.item}>
-            <Icon name="local-pharmacy" size={24} color={colors.grey2} />
-            <BodyText style={styles.itemText}>
-              <FormattedMessage id="splash.video-consult-medicine" />
-            </BodyText>
-          </View>
-          <View style={styles.item}>
-            <Icon name="alarm" size={24} color={colors.grey2} />
-            <BodyText style={styles.itemText}>
-              <FormattedMessage id="splash.get-reminders" />
-            </BodyText>
-          </View>
-        </View>
-        <Button
-          style={{marginTop: 24}}
-          title={intl.formatMessage({id: 'general.next'})}
-          onPress={() => {
-            navigation.navigate(SCREENS.CONSENT)
-          }}
-        />
+        </ScrollView>
       </View>
     </SafeAreaView>
   )
