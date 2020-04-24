@@ -2,10 +2,20 @@ import axios, {AxiosResponse} from 'axios'
 import {API_ENDPOINT} from '../../constants/api'
 import {AuthActionTypes} from './auth.types'
 import {AppThunk} from '../store'
+import {LoginState, AuthParams} from './auth.models'
 
 export const setAuthParams = (authParams: AuthParams) => ({
   type: AuthActionTypes.SET_AUTH_PARAMS,
   payload: authParams,
+})
+
+export const logout = () => ({
+  type: AuthActionTypes.LOG_OUT,
+})
+
+export const setLoginState = (loginState: LoginState) => ({
+  type: AuthActionTypes.SET_LOGIN_STATE,
+  payload: loginState,
 })
 
 export const activate = (

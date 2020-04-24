@@ -1,5 +1,6 @@
 import React from 'react'
 import {BloodPressureActionTypes} from './blood-pressure.types'
+import {AuthActionTypes} from '../auth/auth.types'
 import {BloodPressure} from './blood-pressure.models'
 import {isBefore} from 'date-fns'
 
@@ -66,7 +67,10 @@ const bloodPressureReducer = (state = INITIAL_STATE, action) => {
         ...state,
         bloodPressures: bloodPressuresFiltered,
       }
-
+    case AuthActionTypes.LOG_OUT:
+      return {
+        ...INITIAL_STATE,
+      }
     default:
       return state
   }
