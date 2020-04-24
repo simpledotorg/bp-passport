@@ -9,8 +9,10 @@ import {containerStyles, colors, navigation} from '../styles'
 import {BodyText, Button} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-import {BloodPressure} from '../models'
-import {UserContext} from '../providers/user.provider'
+
+import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
+import {useThunkDispatch} from '../redux/store'
+import {deleteBloodPressure} from '../redux/blood-pressure/blood-pressure.actions'
 
 type BpDetailsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -26,9 +28,8 @@ type Props = {
 
 function BpDetailsScreen({navigation, route}: Props) {
   const intl = useIntl()
-  const {bloodPressures, updatePatientBloodPressureData} = useContext(
-    UserContext,
-  )
+  const dispatch = useThunkDispatch()
+
   const {bp}: {bp: BloodPressure} = route.params
 
   const isBloodPressureHigh = (bpIn: BloodPressure) => {
@@ -119,15 +120,7 @@ function BpDetailsScreen({navigation, route}: Props) {
                     {
                       text: intl.formatMessage({id: 'general.ok'}),
                       onPress: () => {
-                        const updatedBloodPressures = (
-                          bloodPressures ?? []
-                        ).filter((filterBp) => {
-                          return filterBp !== bp
-                        })
-
-                        if (updatePatientBloodPressureData) {
-                          updatePatientBloodPressureData(updatedBloodPressures)
-                        }
+                        dispatch(deleteBloodPressure(bp))
                         navigation.goBack()
                       },
                     },

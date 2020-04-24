@@ -15,18 +15,58 @@ const sortedBloodPressures = (bloodPressures: BloodPressure[]) => {
   return pure
 }
 
+const uniqueKeyForBP = (bloodPressure: BloodPressure) => {
+  return (
+    bloodPressure.recorded_at +
+    '-' +
+    (bloodPressure.offline?.valueOf() ? 'online' : 'offline')
+  )
+}
+
+const mergeBloodPressures = (bloodPressures: BloodPressure[]) => {
+  const byUniqueKey: {[key: string]: BloodPressure} = {}
+  bloodPressures.map((bp) => {
+    const key = uniqueKeyForBP(bp)
+    byUniqueKey[key] = bp
+  })
+  return sortedBloodPressures(Object.values(byUniqueKey))
+}
+
 const bloodPressureReducer = (state = INITIAL_STATE, action) => {
-  let bloodPressures: BloodPressure[] = []
+  const bloodPressures: BloodPressure[] = state.bloodPressures ?? []
+  const newBloodPressures: BloodPressure[] = action.payload ?? []
+  const bloodPressure: BloodPressure = action.payload
   switch (action.type) {
     case BloodPressureActionTypes.MERGE_BLOOD_PRESSURES:
-      bloodPressures = action.payload
-
-      console.log('todo, merge blood pressures', action.payload)
-      // todo perform the merge...
       return {
         ...state,
-        bloodPressures: sortedBloodPressures(bloodPressures),
+        bloodPressures: mergeBloodPressures([
+          ...bloodPressures,
+          ...newBloodPressures,
+        ]),
       }
+    case BloodPressureActionTypes.ADD_BLOOD_PRESSURE:
+      return {
+        ...state,
+        bloodPressures: mergeBloodPressures([...bloodPressures, bloodPressure]),
+      }
+    case BloodPressureActionTypes.DELETE_BLOOD_PRESSURE:
+      const isOfflineBP = bloodPressure.offline ?? false
+      if (!isOfflineBP) {
+        // No deleting the online BPs!
+        return {
+          ...state,
+        }
+      }
+      const keyRemove = uniqueKeyForBP(bloodPressure)
+      const bloodPressuresFiltered = bloodPressures.filter((bp) => {
+        return uniqueKeyForBP(bp) !== keyRemove
+      })
+      return {
+        ...state,
+        bloodPressures: bloodPressuresFiltered,
+      }
+
     default:
       return state
   }

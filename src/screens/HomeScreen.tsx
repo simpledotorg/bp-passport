@@ -28,7 +28,7 @@ import {
   BpInformation,
   ContentLoadingSegment,
 } from '../components'
-import {BloodPressure, Medication} from '../models'
+
 import {ContentLoadingSegmentSize} from '../components/content-loading-segment'
 
 import {LoginState} from '../redux/auth/auth.models'
@@ -41,6 +41,7 @@ import {
 } from '../redux/auth/auth.selectors'
 import {patientSelector} from '../redux/patient/patient.selectors'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
+import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -77,7 +78,7 @@ function Home({navigation}: Props) {
     // on first load refresh patient data if we have authParams we should refresh the api patient data
     if (authParams) {
       dispatch(getPatient()).catch((err) => {
-        console.log('oops: ', err)
+        console.log('todo error loading api patient: ', err)
       })
     }
   }, [authParams])
