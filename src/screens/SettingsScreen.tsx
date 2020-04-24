@@ -1,18 +1,10 @@
 import React, {useContext, useState} from 'react'
-import {
-  SafeAreaView,
-  View,
-  StatusBar,
-  StyleSheet,
-  Linking,
-  Platform,
-} from 'react-native'
+import {SafeAreaView, View, StatusBar, StyleSheet, Linking} from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
-import Picker, {Item} from 'react-native-picker-select'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import {Item} from 'react-native-picker-select'
 
 import {containerStyles, colors} from '../styles'
-import {BodyText, BodyHeader} from '../components'
+import {BodyText, BodyHeader, Picker} from '../components'
 import {AVAILABLE_TRANSLATIONS} from '../constants/languages'
 import {useLocale} from '../effects/use-locale-messages.effect'
 import {patientSelector} from '../redux/patient/patient.selectors'
@@ -72,12 +64,6 @@ function SettingsScreen({navigation}: any) {
               onValueChange={(language: string) => setLocale(language)}
               items={locales}
               value={locale}
-              placeholder={{}}
-              useNativeAndroidPickerStyle={false}
-              style={pickerStyles}
-              Icon={() => (
-                <Icon name="expand-more" size={24} color={colors.black} />
-              )}
             />
           </View>
 
@@ -151,32 +137,5 @@ const styles = StyleSheet.create({
     lineHeight: 28,
     letterSpacing: 0.2,
     color: colors.blue2,
-  },
-})
-
-const pickerStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: colors.grey3,
-    borderRadius: 4,
-    color: 'black',
-    paddingRight: 30,
-  },
-  inputAndroid: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: colors.grey3,
-    borderRadius: 4,
-    color: 'black',
-    paddingRight: 30,
-  },
-  iconContainer: {
-    top: Platform.OS === 'ios' ? 10 : 15,
-    right: 12,
   },
 })

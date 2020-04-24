@@ -14,7 +14,7 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   // Whitelist (Save Specific Reducers)
-  whitelist: ['auth', 'patient', 'bloodPressure', 'medication'],
+  whitelist: ['auth', 'patient', 'bloodPressure', 'medication', 'bloodSugar'],
   // Blacklist (Don't Save Specific Reducers)
   blacklist: [],
 }
