@@ -97,6 +97,7 @@ function AddBpScreen({navigation, route}: Props) {
           <View style={{padding: 24, flex: 1}}>
             <View style={{flexDirection: 'row'}}>
               <TextInput
+                maxLength={6}
                 ref={systolicRef}
                 style={[styles.input, {marginRight: 4}]}
                 onChangeText={(text) => {
@@ -108,6 +109,7 @@ function AddBpScreen({navigation, route}: Props) {
                 keyboardType={'numeric'}
               />
               <TextInput
+                maxLength={6}
                 ref={diastolicRef}
                 style={[styles.input, {marginLeft: 4}]}
                 onChangeText={(text) => {
