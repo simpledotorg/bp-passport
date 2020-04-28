@@ -28,7 +28,7 @@ export const Button = (props: ButtonProps) => {
           backgroundColor: colors.blue2,
           alignItems: 'center',
           justifyContent: 'center',
-          shadowColor: 'rgba(0,0,0, 0.8)', // iOS box shadow
+          shadowColor: 'rgba(0,0,0, 0.32)', // iOS box shadow
           shadowOffset: {height: 1, width: 1}, // iOS box shadow
           shadowOpacity: 1, // iOS box shadow
           shadowRadius: 1, // iOS box shadow

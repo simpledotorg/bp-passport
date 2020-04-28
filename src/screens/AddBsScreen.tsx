@@ -1,4 +1,4 @@
-import React, {useState, useContext, useRef} from 'react'
+import React, {useState, useContext, useRef, useEffect} from 'react'
 import {
   SafeAreaView,
   View,
@@ -38,6 +38,12 @@ type Props = {
 interface PickerItemExtended extends Item {
   min: number
   max: number
+  type: string
+}
+
+enum INPUT_TYPES {
+  DECIMAL = 'DECIMAL',
+  PERCENTAGE = 'PERCENTAGE',
 }
 
 function AddBsScreen({navigation, route}: Props) {
@@ -51,43 +57,66 @@ function AddBsScreen({navigation, route}: Props) {
       value: BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
       min: 30,
       max: 1000,
+      type: INPUT_TYPES.DECIMAL,
     },
     {
       label: intl.formatMessage({id: 'bs.fasting-blood-sugar'}),
       value: BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR,
       min: 30,
       max: 1000,
+      type: INPUT_TYPES.DECIMAL,
     },
     {
       label: intl.formatMessage({id: 'bs.post-penial'}),
       value: BLOOD_SUGAR_TYPES.POST_PENIAL,
       min: 30,
       max: 1000,
+      type: INPUT_TYPES.DECIMAL,
     },
     {
       label: intl.formatMessage({id: 'bs.hemoglobic'}),
       value: BLOOD_SUGAR_TYPES.HEMOGLOBIC,
       min: 3,
       max: 25,
+      type: INPUT_TYPES.PERCENTAGE,
     },
   ]
 
   const [type, setType] = useState<string>(SUGAR_TYPES[0].value)
   const [reading, setReading] = useState<string>('')
+  const [errors, setErrors] = useState<null | string>(null)
   const inputRef = useRef<null | any>(null)
 
-  const isSaveDisabled = () => {
+  const getErrors = (input: string) => {
     const foundType = SUGAR_TYPES.find((sugarType) => {
       return sugarType.value === type
     })
 
     if (foundType) {
-      return !(
-        Number(reading) >= foundType.min && Number(reading) <= foundType.max
-      )
+      const isPercentage = foundType.type === INPUT_TYPES.PERCENTAGE
+
+      if (Number(input) < foundType.min) {
+        return intl.formatMessage(
+          {id: 'add-bs.bs-less-than-error'},
+          {value: `${foundType.min}${isPercentage ? '%' : ''}`},
+        )
+      } else if (Number(input) > foundType.max) {
+        return intl.formatMessage(
+          {id: 'add-bs.bs-more-than-error'},
+          {value: `${foundType.max}${isPercentage ? '%' : ''}`},
+        )
+      }
     }
 
-    return false
+    return null
+  }
+
+  useEffect(() => {
+    setErrors(getErrors(reading))
+  }, [type])
+
+  const isSaveDisabled = (): boolean => {
+    return !!(reading === '' || errors)
   }
 
   return (
@@ -116,8 +145,19 @@ function AddBsScreen({navigation, route}: Props) {
                 ref={inputRef}
                 placeholder={intl.formatMessage({id: 'bs.blood-sugar'})}
                 value={reading}
-                onChangeText={(text) => setReading(text)}
-                keyboardType={'numeric'}
+                onChangeText={(text) => {
+                  setReading(text)
+                  if (text === '') {
+                    setErrors(null)
+                  } else if (text !== '') {
+                    setErrors(getErrors(text))
+                  }
+                }}
+                keyboardType={
+                  type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
+                    ? 'numeric'
+                    : 'number-pad'
+                }
                 maxLength={6}
               />
               <BodyText
@@ -133,7 +173,9 @@ function AddBsScreen({navigation, route}: Props) {
             <Picker
               value={type}
               items={SUGAR_TYPES}
-              onValueChange={(value: string) => setType(value)}
+              onValueChange={(value: string) => {
+                setType(value)
+              }}
             />
             <Button
               title={intl.formatMessage({id: 'general.save'})}
@@ -154,14 +196,26 @@ function AddBsScreen({navigation, route}: Props) {
                 navigation.goBack()
               }}
             />
-            <BodyText
-              style={{
-                textAlign: 'center',
-                marginTop: 24,
-                color: colors.grey1,
-              }}>
-              <FormattedMessage id="bs.select-rbs-if-unsure" />
-            </BodyText>
+            {!errors && reading === '' && (
+              <BodyText
+                style={{
+                  textAlign: 'center',
+                  marginTop: 24,
+                  color: colors.grey1,
+                }}>
+                <FormattedMessage id="bs.select-rbs-if-unsure" />
+              </BodyText>
+            )}
+            {errors && (
+              <BodyText
+                style={{
+                  textAlign: 'center',
+                  marginTop: 24,
+                  color: colors.red1,
+                }}>
+                {errors}
+              </BodyText>
+            )}
           </View>
         </TouchableWithoutFeedback>
       </SafeAreaView>
