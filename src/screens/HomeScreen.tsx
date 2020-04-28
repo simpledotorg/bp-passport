@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Image,
+  TouchableOpacity,
 } from 'react-native'
 import {useIntl, FormattedMessage} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -218,7 +219,25 @@ function Home({navigation}: Props) {
                       return null
                     }
 
-                    return <BpInformation bp={bp} key={index} />
+                    return (
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate(SCREENS.BP_DETAILS, {bp})
+                        }}
+                        key={index}
+                        style={[
+                          {
+                            marginBottom: 12,
+                            paddingTop: 12,
+                          },
+                          styles.historyItem,
+                          index === bps.length - 1
+                            ? {borderBottomWidth: 0}
+                            : {},
+                        ]}>
+                        <BpInformation bp={bp} />
+                      </TouchableOpacity>
+                    )
                   })}
                 </>
               ) : (
@@ -243,7 +262,7 @@ function Home({navigation}: Props) {
                   </BodyText>
                 </View>
               )}
-              <View style={{marginTop: 15, flexDirection: 'row'}}>
+              <View style={{marginTop: 4, flexDirection: 'row'}}>
                 <Button
                   style={[
                     styles.bpButton,
@@ -287,7 +306,25 @@ function Home({navigation}: Props) {
                       return null
                     }
 
-                    return <BsInformation bs={bs} key={index} />
+                    return (
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate(SCREENS.BS_DETAILS, {bs})
+                        }}
+                        key={index}
+                        style={[
+                          {
+                            marginBottom: 12,
+                            paddingTop: 12,
+                          },
+                          styles.historyItem,
+                          index === bss.length - 1
+                            ? {borderBottomWidth: 0}
+                            : {},
+                        ]}>
+                        <BsInformation bs={bs} />
+                      </TouchableOpacity>
+                    )
                   })}
                 </>
               ) : (
@@ -392,6 +429,7 @@ const styles = StyleSheet.create({
   sectionHeader: {
     fontSize: 22,
     fontWeight: 'bold',
+    marginBottom: 16,
   },
   sectionText: {
     fontSize: 18,
@@ -405,5 +443,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.blue3,
     shadowColor: 'rgba(0, 117, 235, 0.3)',
     flex: 1,
+  },
+  historyItem: {
+    borderTopWidth: 1,
+    borderColor: colors.grey3,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 })

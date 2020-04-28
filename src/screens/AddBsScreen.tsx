@@ -88,6 +88,10 @@ function AddBsScreen({navigation, route}: Props) {
   const inputRef = useRef<null | any>(null)
 
   const getErrors = (input: string) => {
+    if (input === '') {
+      return null
+    }
+
     const foundType = SUGAR_TYPES.find((sugarType) => {
       return sugarType.value === type
     })

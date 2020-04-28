@@ -32,7 +32,7 @@ export const Button = (props: ButtonProps) => {
           shadowOffset: {height: 1, width: 1}, // iOS box shadow
           shadowOpacity: 1, // iOS box shadow
           shadowRadius: 1, // iOS box shadow
-          elevation: 2, // Android elevation
+          elevation: 2, // Android elevation,
         },
         props.disabled
           ? {
@@ -54,6 +54,7 @@ export const Button = (props: ButtonProps) => {
                 ? colors.grey2
                 : props.buttonColor || colors.white100,
               textTransform: 'uppercase',
+              textAlign: 'center',
             },
           ]}>
           {props.title}
