@@ -150,16 +150,6 @@ function Home({navigation}: Props) {
                   <BodyHeader style={[styles.sectionHeader]}>
                     <FormattedMessage id="home.my-medicines" />
                   </BodyHeader>
-                  <BodyText
-                    style={[
-                      {
-                        marginTop: 8,
-                        fontSize: 18,
-                        color: colors.grey1,
-                      },
-                    ]}>
-                    <FormattedMessage id={'home.no-medicines'} />
-                  </BodyText>
                   {meds.map((medicine, index) => (
                     <View
                       key={index}
@@ -184,6 +174,16 @@ function Home({navigation}: Props) {
                       </BodyText>
                     </View>
                   ))}
+                  <View style={{marginTop: 15, flexDirection: 'row'}}>
+                    <Button
+                      style={[styles.bpButton]}
+                      buttonColor={colors.blue2}
+                      title={intl.formatMessage({id: 'home.add-medicine'})}
+                      onPress={() => {
+                        navigation.navigate(SCREENS.ADD_MEDICINE)
+                      }}
+                    />
+                  </View>
                 </View>
                 <View style={[styles.homeContainer, {flexDirection: 'row'}]}>
                   <Image

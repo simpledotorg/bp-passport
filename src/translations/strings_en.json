@@ -33,6 +33,7 @@
   "home.my-bp": "My BP",
   "home.my-blood-sugar": "My blood sugar",
   "home.add-bs": "+ Add BS",
+  "home.add-medicine": "Add Medicine",
   "home.you-have-no-bs": "You have no blood sugar recorded",
   "all-bp.bp-history": "BP history",
   "all-bp.bp-trend": "BP trend",
@@ -67,6 +68,7 @@
   "page-titles.details": "Details",
   "page-titles.all-bs": "All BS",
   "page-titles.new-bs": "New BS",
+  "page-titles.add-medicine": "Add medicine",
   "general.add-bs": "Add BS",
   "general.save": "Save",
   "general.next": "Next",
@@ -120,5 +122,6 @@
   "bs.post-prenial-code": "PPBS",
   "bs.hemoglobic-code": "Hb A1C",
   "bs.delete-bs": "Delete blood sugar",
-  "bs.delete-bs-confirm": "Are you sure you want to delete this blood sugar?"
+  "bs.delete-bs-confirm": "Are you sure you want to delete this blood sugar?",
+  "medicine.enter-medicine-name": "Enter medicine name"
 }
