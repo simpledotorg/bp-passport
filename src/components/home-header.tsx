@@ -13,8 +13,7 @@ export const HomeHeaderTitle = () => {
   const apiUser = patientSelector()
   const authParams = authParamsSelector()
 
-  const showLoading =
-    loginState === LoginState.LoggingIn && apiUser === undefined
+  const showLoading = loginState === LoginState.LoggingIn
 
   const hasFullName = apiUser?.full_name ? true : false
   const hasPassportShortcode = authParams?.passport?.shortcode ? true : false

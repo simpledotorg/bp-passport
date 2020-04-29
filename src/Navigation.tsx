@@ -244,10 +244,7 @@ function MainStack({navigation}: Props) {
           headerTitleAlign: 'center',
           headerTitle: () => <HomeHeaderTitle />,
           headerRight: () => {
-            if (
-              loginState === LoginState.LoggedIn ||
-              (loginState === LoginState.LoggingIn && apiUser !== undefined)
-            ) {
+            if (loginState === LoginState.LoggedIn) {
               return (
                 <ButtonIcon
                   onPress={() => navigation.navigate(SCREENS.SETTINGS)}

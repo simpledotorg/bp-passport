@@ -73,8 +73,7 @@ function Home({navigation}: Props) {
   const medications = medicationsSelector()
   const intl = useIntl()
 
-  const showLoading =
-    loginState === LoginState.LoggingIn && bloodPressures === undefined
+  const showLoading = loginState === LoginState.LoggingIn
 
   useEffect(() => {
     // on first load refresh patient data if we have authParams we should refresh the api patient data
