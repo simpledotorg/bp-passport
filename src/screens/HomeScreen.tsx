@@ -38,7 +38,7 @@ import {getPatient} from '../redux/patient/patient.actions'
 
 import {
   loginStateSelector,
-  authParamsSelector,
+  dataIsLinkedWithApiSelector,
 } from '../redux/auth/auth.selectors'
 import {patientSelector} from '../redux/patient/patient.selectors'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
@@ -64,9 +64,7 @@ function Home({navigation}: Props) {
 
   const loginState = loginStateSelector()
   const apiUser = patientSelector()
-  const authParams = authParamsSelector()
-
-  // console.log('loginState', loginState)
+  const dataIsLinkedWithApi = dataIsLinkedWithApiSelector()
 
   const bloodPressures = bloodPressuresSelector()
   const bloodSugars = bloodSugarsSelector()
@@ -77,21 +75,18 @@ function Home({navigation}: Props) {
 
   useEffect(() => {
     // on first load refresh patient data if we have authParams we should refresh the api patient data
-    if (authParams) {
+    if (dataIsLinkedWithApi) {
       dispatch(getPatient()).catch((err) => {
         console.log('error loading api patient: ', err)
       })
     }
-  }, [authParams])
+  }, [dataIsLinkedWithApi])
 
   useEffect(() => {}, [loginState, apiUser, bloodPressures, medications])
 
   const bps: BloodPressure[] = bloodPressures ?? []
   const bss: BloodSugar[] = bloodSugars ?? []
-
   const meds: Medication[] = medications ?? []
-
-  const hasMedicines = meds.length > 0
 
   const medicationDisplayName = (medication: Medication) => {
     let ret = medication.name
@@ -149,65 +144,30 @@ function Home({navigation}: Props) {
               </BodyHeader>
               {meds.length > 0 && (
                 <>
-                  <View style={[styles.homeContainer]}>
-                    <BodyHeader style={[styles.sectionHeader]}>
-                      <FormattedMessage id="home.my-medicines" />
-                    </BodyHeader>
-                    <BodyText
+                  {meds.map((medicine, index) => (
+                    <View
+                      key={index}
                       style={[
                         {
-                          marginTop: 8,
-                          fontSize: 18,
-                          color: colors.grey1,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          marginTop: index === 0 ? 8 : 0,
                         },
                       ]}>
-                      <FormattedMessage id={'home.no-medicines'} />
-                    </BodyText>
-                    {meds.map((medicine, index) => (
-                      <View
-                        key={index}
-                        style={[
-                          {
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            marginTop: index === 0 ? 8 : 0,
-                          },
-                        ]}>
-                        <Image
-                          source={medicinePill}
-                          style={[styles.informationIcon]}
-                        />
-                        <BodyText
-                          style={{
-                            fontSize: 18,
-                            color: colors.grey0,
-                            fontWeight: '500',
-                          }}>
-                          {medicationDisplayName(medicine)}
-                        </BodyText>
-                      </View>
-                    ))}
-                  </View>
-                  <View style={[styles.homeContainer, {flexDirection: 'row'}]}>
-                    <Image
-                      source={medicineClock}
-                      style={[styles.informationIcon]}
-                    />
-                    <View style={[{flexShrink: 1}]}>
-                      <BodyText style={[styles.sectionText]}>
-                        <FormattedMessage id={'home.take-medicines'} />
-                      </BodyText>
+                      <Image
+                        source={medicinePill}
+                        style={[styles.informationIcon]}
+                      />
                       <BodyText
-                        style={[
-                          {
-                            fontSize: 18,
-                            color: colors.grey1,
-                          },
-                        ]}>
-                        <FormattedMessage id={'home.take-as-directed'} />
+                        style={{
+                          fontSize: 18,
+                          color: colors.grey0,
+                          fontWeight: '500',
+                        }}>
+                        {medicationDisplayName(medicine)}
                       </BodyText>
                     </View>
-                  </View>
+                  ))}
                 </>
               )}
               <View style={{marginTop: 15, flexDirection: 'row'}}>
@@ -225,23 +185,6 @@ function Home({navigation}: Props) {
                   }}
                 />
               </View>
-              {showBsHistoryButton && (
-                <Button
-                  style={[
-                    styles.bpButton,
-                    {
-                      marginLeft: 12,
-                    },
-                  ]}
-                  buttonColor={colors.blue2}
-                  title={intl.formatMessage({id: 'general.see-all'})}
-                  onPress={() => {
-                    navigation.navigate(SCREENS.BS_HISTORY, {
-                      bloodSugars: bss,
-                    })
-                  }}
-                />
-              )}
             </View>
             <View style={[styles.homeContainer]}>
               <BodyHeader style={[styles.sectionHeader]}>
