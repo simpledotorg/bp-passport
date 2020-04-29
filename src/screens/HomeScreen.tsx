@@ -182,7 +182,7 @@ function Home({navigation}: Props) {
                   buttonColor={colors.blue2}
                   title={intl.formatMessage({id: 'home.add-medicine'})}
                   onPress={() => {
-                    // todo
+                    navigation.navigate(SCREENS.ADD_MEDICINE)
                   }}
                 />
               </View>
