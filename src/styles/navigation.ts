@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
     color: colors.white100,
     opacity: 0.5,
+    marginTop: 8,
   },
 })
 
