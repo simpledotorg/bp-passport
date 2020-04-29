@@ -87,6 +87,8 @@ function AddBsScreen({navigation, route}: Props) {
   const [errors, setErrors] = useState<null | string>(null)
   const inputRef = useRef<null | any>(null)
 
+  const [showErrors, setShowErrors] = useState(false)
+
   const getErrors = (input: string) => {
     if (input === '') {
       return null
@@ -118,6 +120,18 @@ function AddBsScreen({navigation, route}: Props) {
   useEffect(() => {
     setErrors(getErrors(reading))
   }, [type])
+
+  useEffect(() => {
+    let errorShowTimeout: any = null
+    if (errors) {
+      errorShowTimeout = setTimeout(() => setShowErrors(true), 2000)
+    } else {
+      setShowErrors(false)
+    }
+    return () => {
+      clearTimeout(errorShowTimeout)
+    }
+  }, [errors])
 
   const isSaveDisabled = (): boolean => {
     return !!(reading === '' || errors || isNaN(Number(reading)))
@@ -200,7 +214,7 @@ function AddBsScreen({navigation, route}: Props) {
                 navigation.goBack()
               }}
             />
-            {!errors && reading === '' && (
+            {!errors && !showErrors && reading === '' && (
               <BodyText
                 style={{
                   textAlign: 'center',
@@ -210,7 +224,7 @@ function AddBsScreen({navigation, route}: Props) {
                 <FormattedMessage id="bs.select-rbs-if-unsure" />
               </BodyText>
             )}
-            {errors && (
+            {errors && showErrors && (
               <BodyText
                 style={{
                   textAlign: 'center',

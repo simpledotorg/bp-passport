@@ -1,4 +1,4 @@
-import React, {useState, useContext, useRef} from 'react'
+import React, {useState, useContext, useRef, useEffect} from 'react'
 import {
   SafeAreaView,
   View,
@@ -46,6 +46,8 @@ function AddBpScreen({navigation, route}: Props) {
   const [diastolic, setDiastolic] = useState('')
   const [errors, setErrors] = useState<null | string>(null)
 
+  const [showErrors, setShowErrors] = useState(false)
+
   const dispatch = useThunkDispatch()
 
   const isSaveDisabled = () => {
@@ -85,6 +87,18 @@ function AddBpScreen({navigation, route}: Props) {
 
     return null
   }
+
+  useEffect(() => {
+    let errorShowTimeout: any = null
+    if (errors) {
+      errorShowTimeout = setTimeout(() => setShowErrors(true), 2000)
+    } else {
+      setShowErrors(false)
+    }
+    return () => {
+      clearTimeout(errorShowTimeout)
+    }
+  }, [errors])
 
   return (
     <View style={{flex: 1}}>
@@ -146,7 +160,7 @@ function AddBpScreen({navigation, route}: Props) {
                 navigation.goBack()
               }}
             />
-            {errors && (
+            {errors && showErrors && (
               <BodyText
                 style={{
                   textAlign: 'center',
