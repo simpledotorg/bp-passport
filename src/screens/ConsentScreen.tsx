@@ -69,7 +69,7 @@ function Consent({navigation}: Props) {
         <Button
           title={intl.formatMessage({id: 'general.i-agree'})}
           onPress={() => {
-            navigation.navigate(SCREENS.LOGIN)
+            console.log('Nick Kuh todo - offline login')
           }}
         />
       </View>

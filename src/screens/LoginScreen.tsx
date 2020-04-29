@@ -3,12 +3,11 @@ import {
   SafeAreaView,
   View,
   Image,
-  Alert,
-  TouchableOpacity,
+  ScrollView,
   Linking,
+  StatusBar,
 } from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
-import Modal from 'react-native-modal'
 import {StackNavigationProp} from '@react-navigation/stack'
 
 import SCREENS from '../constants/screens'
@@ -27,76 +26,80 @@ type Props = {
 
 function Login({navigation}: Props) {
   const intl = useIntl()
-  const [showNoBpPassportModal, setShowNoBpPassportModal] = useState(false)
 
   return (
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.grey4}]}>
-        <View style={[containerStyles.fill, {marginTop: 40}]}>
-          <View style={[styles.loginContainer, {marginBottom: 10}]}>
-            <Image source={bpPassportImage} />
-            <PageHeader style={{textAlign: 'center', marginBottom: 22}}>
-              <FormattedMessage id="login.have-a-paper" />
-            </PageHeader>
+        <StatusBar barStyle="dark-content" />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={[{marginTop: 40}]}>
+            <View style={[styles.loginContainer, {marginBottom: 10}]}>
+              <Image source={bpPassportImage} />
+              <PageHeader style={{textAlign: 'center', marginBottom: 22}}>
+                <FormattedMessage id="login.have-a-paper" />
+              </PageHeader>
 
-            <Button
-              style={[styles.primaryButton]}
-              buttonColor={colors.blue2}
-              title={intl.formatMessage({id: 'login.scan-passport'})}
-              onPress={() => {
-                navigation.navigate(SCREENS.SCAN_BP_PASSPORT)
-              }}
-            />
-          </View>
+              <Button
+                style={[styles.primaryButton]}
+                buttonColor={colors.blue2}
+                title={intl.formatMessage({id: 'login.scan-passport'})}
+                onPress={() => {
+                  navigation.navigate(SCREENS.SCAN_BP_PASSPORT)
+                }}
+              />
+            </View>
 
-          <View style={[styles.loginContainer, {marginBottom: 18}]}>
-            <PageHeader style={{textAlign: 'center', marginBottom: 18}}>
-              <FormattedMessage id="login.no-bp-passport" />
-            </PageHeader>
-            <Button
-              style={{
-                backgroundColor: colors.green1,
-                width: '100%',
-              }}
-              title={intl.formatMessage({id: 'login.get-started'})}
-              onPress={() => {}}
-            />
-          </View>
+            <View style={[styles.loginContainer, {marginBottom: 18}]}>
+              <PageHeader style={{textAlign: 'center', marginBottom: 18}}>
+                <FormattedMessage id="login.no-bp-passport" />
+              </PageHeader>
+              <Button
+                style={{
+                  backgroundColor: colors.green1,
+                  width: '100%',
+                }}
+                title={intl.formatMessage({id: 'login.get-started'})}
+                onPress={() => {
+                  navigation.navigate(SCREENS.CONSENT)
+                }}
+              />
+            </View>
 
-          <View style={[{marginHorizontal: 24}]}>
-            <BodyText>
-              <FormattedMessage id="login.by-using-app" />{' '}
-              <BodyText style={{marginBottom: 24}}>
-                <BodyText
-                  style={{color: colors.blue2}}
-                  onPress={() => {
-                    Linking.openURL('https://simple.org/patient-privacy')
-                  }}>
-                  <FormattedMessage id="login.privacy-policy-link" />{' '}
+            <View style={[{marginHorizontal: 24}]}>
+              <BodyText>
+                <FormattedMessage id="login.by-using-app" />{' '}
+                <BodyText style={{marginBottom: 24}}>
+                  <BodyText
+                    style={{color: colors.blue2}}
+                    onPress={() => {
+                      Linking.openURL('https://simple.org/patient-privacy')
+                    }}>
+                    <FormattedMessage id="login.privacy-policy-link" />{' '}
+                  </BodyText>
+                  <BodyText>
+                    <FormattedMessage id="general.and" />{' '}
+                  </BodyText>
+                  <BodyText
+                    style={{color: colors.blue2}}
+                    onPress={() => {
+                      Linking.openURL('https://simple.org/digitalprinciples/')
+                    }}>
+                    <FormattedMessage id="login.terms-of-use-link" />
+                  </BodyText>
+                  <BodyText>.</BodyText>
                 </BodyText>
-                <BodyText>
-                  <FormattedMessage id="general.and" />{' '}
-                </BodyText>
-                <BodyText
-                  style={{color: colors.blue2}}
-                  onPress={() => {
-                    Linking.openURL('https://simple.org/digitalprinciples/')
-                  }}>
-                  <FormattedMessage id="login.terms-of-use-link" />
-                </BodyText>
-                <BodyText>.</BodyText>
               </BodyText>
-            </BodyText>
+            </View>
           </View>
-        </View>
-        <View
-          style={[
-            {
-              margin: 12,
-            },
-          ]}
-        />
+          <View
+            style={[
+              {
+                margin: 12,
+              },
+            ]}
+          />
+        </ScrollView>
       </SafeAreaView>
     </View>
   )

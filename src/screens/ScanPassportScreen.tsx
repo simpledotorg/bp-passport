@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {SafeAreaView, View, Image, Alert, ActivityIndicator} from 'react-native'
+import {SafeAreaView, View, Image, Alert, StatusBar} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 import Modal from 'react-native-modal'
 import {RNCamera, BarCodeType} from 'react-native-camera'
@@ -96,6 +96,7 @@ function ScanPassportScreen({navigation}: Props) {
   return (
     <>
       <SafeAreaView style={[containerStyles.fill]}>
+        <StatusBar barStyle="light-content" />
         <View style={[containerStyles.fill]}>
           <View
             style={[
