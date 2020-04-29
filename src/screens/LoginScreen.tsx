@@ -64,8 +64,8 @@ function Login({navigation}: Props) {
             />
           </View>
 
-          <View style={[{marginHorizontal: 24}]}>
-            <BodyText>
+          <View style={{marginHorizontal: 50}}>
+            <BodyText style={{textAlign: 'center'}}>
               <FormattedMessage id="login.by-using-app" />{' '}
               <BodyText style={{marginBottom: 24}}>
                 <BodyText
@@ -90,13 +90,6 @@ function Login({navigation}: Props) {
             </BodyText>
           </View>
         </View>
-        <View
-          style={[
-            {
-              margin: 12,
-            },
-          ]}
-        />
       </SafeAreaView>
     </View>
   )
