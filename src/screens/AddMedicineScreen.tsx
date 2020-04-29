@@ -63,7 +63,7 @@ function AddMedicineScreen({navigation, route}: Props) {
                 ref={inputRef}
                 autoFocus
                 placeholder={intl.formatMessage({
-                  id: 'medicine.enter-medicine-name',
+                  id: 'medicine.enter-name',
                 })}
                 value={input}
                 onChangeText={(text) => setInput(text)}
