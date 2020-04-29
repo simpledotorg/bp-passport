@@ -89,6 +89,8 @@ function AddBsScreen({navigation, route}: Props) {
 
   const [showErrors, setShowErrors] = useState(false)
 
+  const readingPrevious = useRef(reading)
+
   const getErrors = (input: string) => {
     if (input === '') {
       return null
@@ -123,15 +125,23 @@ function AddBsScreen({navigation, route}: Props) {
 
   useEffect(() => {
     let errorShowTimeout: any = null
+
+    if (reading !== readingPrevious.current) {
+      clearTimeout(errorShowTimeout)
+    }
+
     if (errors) {
       errorShowTimeout = setTimeout(() => setShowErrors(true), 2000)
     } else {
       setShowErrors(false)
     }
+
+    readingPrevious.current = reading
+
     return () => {
       clearTimeout(errorShowTimeout)
     }
-  }, [errors])
+  }, [errors, reading])
 
   const isSaveDisabled = (): boolean => {
     return !!(reading === '' || errors || isNaN(Number(reading)))

@@ -46,6 +46,8 @@ function AddBpScreen({navigation, route}: Props) {
   const [diastolic, setDiastolic] = useState('')
   const [errors, setErrors] = useState<null | string>(null)
 
+  const systolicPrevious = useRef(systolic)
+  const diastolicPrevious = useRef(diastolic)
   const [showErrors, setShowErrors] = useState(false)
 
   const dispatch = useThunkDispatch()
@@ -90,15 +92,27 @@ function AddBpScreen({navigation, route}: Props) {
 
   useEffect(() => {
     let errorShowTimeout: any = null
+
+    if (
+      systolic !== systolicPrevious.current ||
+      diastolic !== diastolicPrevious.current
+    ) {
+      clearTimeout(errorShowTimeout)
+    }
+
     if (errors) {
       errorShowTimeout = setTimeout(() => setShowErrors(true), 2000)
     } else {
       setShowErrors(false)
     }
+
+    systolicPrevious.current = systolic
+    diastolicPrevious.current = diastolic
+
     return () => {
       clearTimeout(errorShowTimeout)
     }
-  }, [errors])
+  }, [errors, systolic, diastolic])
 
   return (
     <View style={{flex: 1}}>
