@@ -27,7 +27,7 @@ function LaunchScreen({navigation}: Props) {
       style={[
         containerStyles.fill,
         containerStyles.centeredContent,
-        {backgroundColor: colors.black},
+        {backgroundColor: colors.blue0},
       ]}>
       <Image source={iconLaunch} />
       <View />

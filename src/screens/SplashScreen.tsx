@@ -1,5 +1,12 @@
 import React, {useEffect} from 'react'
-import {SafeAreaView, View, Image, StyleSheet, ScrollView} from 'react-native'
+import {
+  SafeAreaView,
+  View,
+  Image,
+  StyleSheet,
+  ScrollView,
+  StatusBar,
+} from 'react-native'
 import {FormattedMessage, useIntl, IntlContext} from 'react-intl'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -24,6 +31,7 @@ function SplashScreen({navigation}: Props) {
   return (
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
+      <StatusBar barStyle="dark-content" />
       <View style={styles.content}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.header}>
@@ -73,7 +81,7 @@ function SplashScreen({navigation}: Props) {
             style={{marginTop: 24}}
             title={intl.formatMessage({id: 'general.next'})}
             onPress={() => {
-              navigation.navigate(SCREENS.CONSENT)
+              navigation.navigate(SCREENS.LOGIN)
             }}
           />
         </ScrollView>
