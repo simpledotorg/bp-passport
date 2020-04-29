@@ -4,11 +4,11 @@ import {
   View,
   StyleSheet,
   TextInput,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   Image,
   FlatList,
 } from 'react-native'
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
+import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {useIntl} from 'react-intl'
@@ -64,30 +64,28 @@ function AddMedicineScreen({navigation, route}: Props) {
           maxLength={6}
         />
       </View>
-      <KeyboardAwareScrollView style={{flex: 1, backgroundColor: colors.grey4}}>
-        <TouchableWithoutFeedback
-          style={{flex: 1}}
-          onPress={() => {
-            if (inputRef?.current?.blur) {
-              inputRef?.current?.blur()
-            }
-          }}>
-          <View>
-            <View
-              style={{
-                paddingHorizontal: 8,
-              }}>
-              <FlatList
-                data={MEDICINES}
-                renderItem={({item}) => {
-                  if (
-                    !item.toLowerCase().includes(input.toLowerCase()) ||
-                    input === ''
-                  ) {
-                    return null
-                  }
+      <View style={{flex: 1, backgroundColor: colors.grey4}}>
+        <View>
+          <View
+            style={{
+              paddingHorizontal: 8,
+            }}>
+            <KeyboardAwareFlatList
+              keyboardShouldPersistTaps={'handled'}
+              data={MEDICINES}
+              renderItem={({item}) => {
+                if (
+                  !item.toLowerCase().includes(input.toLowerCase()) ||
+                  input === ''
+                ) {
+                  return null
+                }
 
-                  return (
+                return (
+                  <TouchableOpacity
+                    onPressOut={() => {
+                      console.log('onPress todo')
+                    }}>
                     <View
                       key={item}
                       style={[
@@ -111,13 +109,13 @@ function AddMedicineScreen({navigation, route}: Props) {
                       />
                       <BodyText style={[styles.medicineText]}>{item}</BodyText>
                     </View>
-                  )
-                }}
-              />
-            </View>
+                  </TouchableOpacity>
+                )
+              }}
+            />
           </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAwareScrollView>
+        </View>
+      </View>
     </SafeAreaView>
   )
 }
