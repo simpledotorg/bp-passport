@@ -120,7 +120,7 @@ function AddBsScreen({navigation, route}: Props) {
   }, [type])
 
   const isSaveDisabled = (): boolean => {
-    return !!(reading === '' || errors)
+    return !!(reading === '' || errors || isNaN(Number(reading)))
   }
 
   return (
