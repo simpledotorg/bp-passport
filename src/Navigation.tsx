@@ -139,6 +139,7 @@ function MainStack({navigation}: Props) {
     <Stack.Navigator
       initialRouteName={
         loginState === LoginState.LoggedOut ? SCREENS.SPLASH : SCREENS.HOME
+        // SCREENS.HOME
       }
       screenOptions={{
         ...navigationStyle,
@@ -161,10 +162,7 @@ function MainStack({navigation}: Props) {
       <Stack.Screen
         name={SCREENS.LOGIN}
         component={LoginScreen}
-        options={{
-          headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.login'}),
-        }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name={SCREENS.SCAN_BP_PASSPORT}
