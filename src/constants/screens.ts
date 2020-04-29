@@ -16,6 +16,7 @@ enum SCREENS {
   BS_HISTORY = 'BS_HISTORY',
   BS_DETAILS = 'BS_DETAILS',
   ADD_BS = 'ADD_BS',
+  ADD_MEDICINE = 'ADD_MEDICINE',
 }
 
 export default SCREENS

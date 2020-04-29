@@ -2,18 +2,18 @@ import React from 'react'
 import {View, StyleSheet, Image, ViewStyle} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 import {format} from 'date-fns'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {colors, redHeart} from '../styles'
-import {Button, BodyHeader, BodyText} from './'
-import {BloodPressure} from '../models'
+import {BodyText} from './'
+import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 
 type Props = {
   bp: BloodPressure
   style?: ViewStyle
-  compact?: boolean
 }
 
-export const BpInformation = ({bp, style = {}, compact = false}: Props) => {
+export const BpInformation = ({bp, style = {}}: Props) => {
   const isBloodPressureHigh = (bpIn: BloodPressure) => {
     // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
     // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
@@ -54,42 +54,46 @@ export const BpInformation = ({bp, style = {}, compact = false}: Props) => {
     <View
       style={{
         flexDirection: 'row',
-        marginTop: 24,
-        ...style,
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
       }}>
-      <Image source={redHeart} style={[styles.informationIcon]} />
-      <View>
-        <BodyText
-          style={{
-            fontSize: 18,
-            color: colors.grey0,
-            fontWeight: '500',
-          }}>
-          <>{`${bp.systolic} / ${bp.diastolic}`}</>
-          {compact && (
+      <View
+        style={{
+          flexDirection: 'row',
+          ...style,
+        }}>
+        <Image source={redHeart} style={[styles.informationIcon]} />
+        <View>
+          <BodyText
+            style={{
+              fontSize: 18,
+              color: colors.grey0,
+              fontWeight: '500',
+            }}>
+            <>{`${bp.systolic} / ${bp.diastolic}`}</>
+
             <>
-              {`, `}
+              {` `}
               {getBPText()}
             </>
-          )}
-        </BodyText>
-        <BodyText
-          style={{
-            fontSize: 16,
+          </BodyText>
+          <BodyText
+            style={{
+              fontSize: 16,
 
-            color: colors.grey1,
-          }}>
-          {displayDate(bp)}
-        </BodyText>
-      </View>
-      {!compact && (
-        <View
-          style={{
-            marginLeft: 'auto',
-          }}>
-          {getBPText()}
+              color: colors.grey1,
+            }}>
+            {displayDate(bp)}
+          </BodyText>
         </View>
-      )}
+      </View>
+      <Icon
+        name="chevron-right"
+        size={24}
+        style={{marginLeft: 'auto'}}
+        color={colors.grey3}
+      />
     </View>
   )
 }
