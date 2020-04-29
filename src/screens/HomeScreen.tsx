@@ -383,15 +383,6 @@ function Home({navigation}: Props) {
               </View>
             </View>
           </ScrollView>
-          <View style={styles.buttonContainer}>
-            <Button
-              style={{
-                backgroundColor: colors.green1,
-              }}
-              title={intl.formatMessage({id: 'general.contact-a-doctor'})}
-              onPress={() => {}}
-            />
-          </View>
         </>
       )}
     </SafeAreaView>
