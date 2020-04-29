@@ -57,9 +57,15 @@ export const login = (passportId: string, otp: string): AppThunk => async (
     }
 
     dispatch(setAuthParams(authParams))
+    setLoginState(LoginState.LoggingIn)
 
     return true
   } catch (err) {
     throw err
   }
 }
+
+export const loginNoApi = () => ({
+  type: AuthActionTypes.SET_LOGIN_STATE,
+  payload: LoginState.LoggedIn,
+})

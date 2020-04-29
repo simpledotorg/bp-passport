@@ -7,6 +7,8 @@ import {containerStyles, colors} from '../styles'
 import {Button, Link, BodyText} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
+import {loginNoApi} from '../redux/auth/auth.actions'
+import {useDispatch} from 'react-redux'
 
 type ConsentScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -19,6 +21,8 @@ type Props = {
 
 function Consent({navigation}: Props) {
   const intl = useIntl()
+
+  const dispatch = useDispatch()
 
   return (
     <SafeAreaView
@@ -69,7 +73,7 @@ function Consent({navigation}: Props) {
         <Button
           title={intl.formatMessage({id: 'general.i-agree'})}
           onPress={() => {
-            console.log('Nick Kuh todo - offline login')
+            dispatch(loginNoApi())
           }}
         />
       </View>
