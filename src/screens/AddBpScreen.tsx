@@ -49,7 +49,13 @@ function AddBpScreen({navigation, route}: Props) {
   const dispatch = useThunkDispatch()
 
   const isSaveDisabled = () => {
-    return !!(systolic === '' || diastolic === '' || errors)
+    return !!(
+      systolic === '' ||
+      diastolic === '' ||
+      errors ||
+      isNaN(Number(systolic)) ||
+      isNaN(Number(diastolic))
+    )
   }
 
   const getErrorGateway = (systolicInput: string, diastolicInput: string) => {
