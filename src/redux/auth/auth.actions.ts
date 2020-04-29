@@ -57,7 +57,7 @@ export const login = (passportId: string, otp: string): AppThunk => async (
     }
 
     dispatch(setAuthParams(authParams))
-    setLoginState(LoginState.LoggingIn)
+    dispatch(setLoginState(LoginState.LoggingIn))
 
     return true
   } catch (err) {

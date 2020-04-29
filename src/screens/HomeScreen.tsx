@@ -143,74 +143,111 @@ function Home({navigation}: Props) {
       {!showLoading && (
         <>
           <ScrollView contentContainerStyle={styles.scrollContent}>
-            {hasMedicines && (
-              <>
-                <View style={[styles.homeContainer]}>
-                  <BodyHeader style={[styles.sectionHeader]}>
-                    <FormattedMessage id="home.my-medicines" />
-                  </BodyHeader>
-                  <BodyText
-                    style={[
-                      {
-                        marginTop: 8,
-                        fontSize: 18,
-                        color: colors.grey1,
-                      },
-                    ]}>
-                    <FormattedMessage id={'home.no-medicines'} />
-                  </BodyText>
-                  {meds.map((medicine, index) => (
-                    <View
-                      key={index}
-                      style={[
-                        {
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          marginTop: index === 0 ? 8 : 0,
-                        },
-                      ]}>
-                      <Image
-                        source={medicinePill}
-                        style={[styles.informationIcon]}
-                      />
-                      <BodyText
-                        style={{
-                          fontSize: 18,
-                          color: colors.grey0,
-                          fontWeight: '500',
-                        }}>
-                        {medicationDisplayName(medicine)}
-                      </BodyText>
-                    </View>
-                  ))}
-                </View>
-                <View style={[styles.homeContainer, {flexDirection: 'row'}]}>
-                  <Image
-                    source={medicineClock}
-                    style={[styles.informationIcon]}
-                  />
-                  <View style={[{flexShrink: 1}]}>
-                    <BodyText style={[styles.sectionText]}>
-                      <FormattedMessage id={'home.take-medicines'} />
-                    </BodyText>
+            <View style={[styles.homeContainer]}>
+              <BodyHeader style={[styles.sectionHeader]}>
+                <FormattedMessage id="home.my-medicines" />
+              </BodyHeader>
+              {meds.length > 0 && (
+                <>
+                  <View style={[styles.homeContainer]}>
+                    <BodyHeader style={[styles.sectionHeader]}>
+                      <FormattedMessage id="home.my-medicines" />
+                    </BodyHeader>
                     <BodyText
                       style={[
                         {
+                          marginTop: 8,
                           fontSize: 18,
                           color: colors.grey1,
                         },
                       ]}>
-                      <FormattedMessage id={'home.take-as-directed'} />
+                      <FormattedMessage id={'home.no-medicines'} />
                     </BodyText>
+                    {meds.map((medicine, index) => (
+                      <View
+                        key={index}
+                        style={[
+                          {
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginTop: index === 0 ? 8 : 0,
+                          },
+                        ]}>
+                        <Image
+                          source={medicinePill}
+                          style={[styles.informationIcon]}
+                        />
+                        <BodyText
+                          style={{
+                            fontSize: 18,
+                            color: colors.grey0,
+                            fontWeight: '500',
+                          }}>
+                          {medicationDisplayName(medicine)}
+                        </BodyText>
+                      </View>
+                    ))}
                   </View>
-                </View>
-              </>
-            )}
+                  <View style={[styles.homeContainer, {flexDirection: 'row'}]}>
+                    <Image
+                      source={medicineClock}
+                      style={[styles.informationIcon]}
+                    />
+                    <View style={[{flexShrink: 1}]}>
+                      <BodyText style={[styles.sectionText]}>
+                        <FormattedMessage id={'home.take-medicines'} />
+                      </BodyText>
+                      <BodyText
+                        style={[
+                          {
+                            fontSize: 18,
+                            color: colors.grey1,
+                          },
+                        ]}>
+                        <FormattedMessage id={'home.take-as-directed'} />
+                      </BodyText>
+                    </View>
+                  </View>
+                </>
+              )}
+              <View style={{marginTop: 15, flexDirection: 'row'}}>
+                <Button
+                  style={[
+                    styles.bpButton,
+                    {
+                      marginRight: showBsHistoryButton ? 12 : 0,
+                    },
+                  ]}
+                  buttonColor={colors.blue2}
+                  title={intl.formatMessage({id: 'home.add-medicine'})}
+                  onPress={() => {
+                    // todo
+                  }}
+                />
+              </View>
+              {showBsHistoryButton && (
+                <Button
+                  style={[
+                    styles.bpButton,
+                    {
+                      marginLeft: 12,
+                    },
+                  ]}
+                  buttonColor={colors.blue2}
+                  title={intl.formatMessage({id: 'general.see-all'})}
+                  onPress={() => {
+                    navigation.navigate(SCREENS.BS_HISTORY, {
+                      bloodSugars: bss,
+                    })
+                  }}
+                />
+              )}
+            </View>
             <View style={[styles.homeContainer]}>
               <BodyHeader style={[styles.sectionHeader]}>
                 <FormattedMessage id="home.my-bp" />
               </BodyHeader>
-              {bps.length > 0 ? (
+              {bps.length > 0 && (
                 <>
                   {bps.map((bp, index) => {
                     if (index > HOME_PAGE_SHOW_LIMIT - 1) {
@@ -220,27 +257,6 @@ function Home({navigation}: Props) {
                     return <BpInformation bp={bp} key={index} />
                   })}
                 </>
-              ) : (
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <Image
-                    style={{
-                      marginTop: 32,
-                      marginBottom: 4,
-                    }}
-                    source={greyHeart}
-                  />
-                  <BodyText
-                    style={[
-                      styles.sectionText,
-                      {
-                        color: colors.grey1,
-                        marginBottom: 70,
-                        textAlign: 'center',
-                      },
-                    ]}>
-                    <FormattedMessage id={'home.you-have-no-bp'} />
-                  </BodyText>
-                </View>
               )}
               <View style={{marginTop: 15, flexDirection: 'row'}}>
                 <Button
@@ -279,7 +295,7 @@ function Home({navigation}: Props) {
               <BodyHeader style={[styles.sectionHeader]}>
                 <FormattedMessage id="home.my-blood-sugar" />
               </BodyHeader>
-              {bss.length > 0 ? (
+              {bss.length > 0 && (
                 <>
                   {bss.map((bs, index) => {
                     if (index > HOME_PAGE_SHOW_LIMIT - 1) {
@@ -289,27 +305,6 @@ function Home({navigation}: Props) {
                     return <BsInformation bs={bs} key={index} />
                   })}
                 </>
-              ) : (
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <Image
-                    style={{
-                      marginTop: 32,
-                      marginBottom: 4,
-                    }}
-                    source={grayDrop}
-                  />
-                  <BodyText
-                    style={[
-                      styles.sectionText,
-                      {
-                        color: colors.grey1,
-                        marginBottom: 70,
-                        textAlign: 'center',
-                      },
-                    ]}>
-                    <FormattedMessage id={'home.you-have-no-bs'} />
-                  </BodyText>
-                </View>
               )}
               <View style={{marginTop: 15, flexDirection: 'row'}}>
                 <Button
@@ -345,15 +340,6 @@ function Home({navigation}: Props) {
               </View>
             </View>
           </ScrollView>
-          <View style={styles.buttonContainer}>
-            <Button
-              style={{
-                backgroundColor: colors.green1,
-              }}
-              title={intl.formatMessage({id: 'general.contact-a-doctor'})}
-              onPress={() => {}}
-            />
-          </View>
         </>
       )}
     </SafeAreaView>
