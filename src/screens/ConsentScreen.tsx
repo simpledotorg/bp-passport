@@ -7,6 +7,8 @@ import {containerStyles, colors} from '../styles'
 import {Button, Link, BodyText} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
+import {loginNoApi} from '../redux/auth/auth.actions'
+import {useDispatch} from 'react-redux'
 
 type ConsentScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -20,10 +22,12 @@ type Props = {
 function Consent({navigation}: Props) {
   const intl = useIntl()
 
+  const dispatch = useDispatch()
+
   return (
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-      <StatusBar backgroundColor="blue" barStyle="light-content" />
+      <StatusBar backgroundColor={colors.blue1} barStyle="light-content" />
       <View
         style={[
           containerStyles.fill,
@@ -69,7 +73,7 @@ function Consent({navigation}: Props) {
         <Button
           title={intl.formatMessage({id: 'general.i-agree'})}
           onPress={() => {
-            navigation.navigate(SCREENS.LOGIN)
+            dispatch(loginNoApi())
           }}
         />
       </View>

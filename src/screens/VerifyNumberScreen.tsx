@@ -1,5 +1,5 @@
 import React, {useState, useContext, useRef} from 'react'
-import {SafeAreaView, View, TextInput, Alert} from 'react-native'
+import {SafeAreaView, View, TextInput, StatusBar} from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {RouteProp} from '@react-navigation/native'
@@ -69,6 +69,7 @@ function VerifyNumber({navigation, route}: Props) {
     <>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white}]}>
+        <StatusBar backgroundColor={colors.blue1} barStyle="light-content" />
         <View style={{margin: 24}}>
           <BodyText style={{textAlign: 'center'}}>
             <FormattedMessage id="verify-pin.please-verify" />

@@ -1,20 +1,23 @@
-import React, {useContext, useEffect} from 'react'
-import {View, Text, StyleSheet} from 'react-native'
-import {containerStyles, navigation, colors} from '../styles'
+import React, {useEffect} from 'react'
+import {View, Text, Image, StyleSheet} from 'react-native'
+import {containerStyles, navigation, colors, iconHomeHeader} from '../styles'
 import {FormattedMessage} from 'react-intl'
 import {LoginState} from '../redux/auth/auth.models'
 import {loginStateSelector} from '../redux/auth/auth.selectors'
 
 import {patientSelector} from '../redux/patient/patient.selectors'
-import {authParamsSelector} from '../redux/auth/auth.selectors'
+import {
+  authParamsSelector,
+  dataIsLinkedWithApiSelector,
+} from '../redux/auth/auth.selectors'
 
 export const HomeHeaderTitle = () => {
   const loginState = loginStateSelector()
   const apiUser = patientSelector()
   const authParams = authParamsSelector()
+  const dataIsLinkedWithApi = dataIsLinkedWithApiSelector()
 
-  const showLoading =
-    loginState === LoginState.LoggingIn && apiUser === undefined
+  const showLoading = loginState === LoginState.LoggingIn
 
   const hasFullName = apiUser?.full_name ? true : false
   const hasPassportShortcode = authParams?.passport?.shortcode ? true : false
@@ -29,6 +32,27 @@ export const HomeHeaderTitle = () => {
           <View />
           <View style={styles.loadingSubtitle} />
         </View>
+      </View>
+    )
+  }
+
+  if (!dataIsLinkedWithApi) {
+    return (
+      <View
+        style={[
+          containerStyles.fill,
+          containerStyles.centeredContent,
+          {flexDirection: 'row'},
+        ]}>
+        <Image source={iconHomeHeader} />
+        <Text
+          style={{
+            ...navigation.homeHeaderTitleStyle,
+            marginHorizontal: 11,
+          }}
+          numberOfLines={1}>
+          <FormattedMessage id="general.bp-passport" />
+        </Text>
       </View>
     )
   }

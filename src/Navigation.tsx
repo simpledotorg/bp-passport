@@ -163,10 +163,7 @@ function MainStack({navigation}: Props) {
       <Stack.Screen
         name={SCREENS.LOGIN}
         component={LoginScreen}
-        options={{
-          headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.login'}),
-        }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name={SCREENS.SCAN_BP_PASSPORT}
@@ -254,10 +251,7 @@ function MainStack({navigation}: Props) {
           headerTitleAlign: 'center',
           headerTitle: () => <HomeHeaderTitle />,
           headerRight: () => {
-            if (
-              loginState === LoginState.LoggedIn ||
-              (loginState === LoginState.LoggingIn && apiUser !== undefined)
-            ) {
+            if (loginState === LoginState.LoggedIn) {
               return (
                 <ButtonIcon
                   onPress={() => navigation.navigate(SCREENS.SETTINGS)}

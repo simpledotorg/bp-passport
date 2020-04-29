@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {View, Image} from 'react-native'
+import {View, Image, StatusBar} from 'react-native'
 import {StackNavigationProp} from '@react-navigation/stack'
 
 import {iconLaunch, containerStyles, colors} from '../styles'
@@ -27,8 +27,9 @@ function LaunchScreen({navigation}: Props) {
       style={[
         containerStyles.fill,
         containerStyles.centeredContent,
-        {backgroundColor: colors.black},
+        {backgroundColor: colors.blue1},
       ]}>
+      <StatusBar backgroundColor={colors.blue1} barStyle="light-content" />
       <Image source={iconLaunch} />
       <View />
     </View>

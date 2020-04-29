@@ -30,7 +30,7 @@
   "scan-bp-passport.hold-camera": "Hold camera over this symbol on BP Passport",
   "scan-bp-passport.cant-verify-account": "Can’t verify account",
   "scan-bp-passport.dont-have-phone-number": "We don’t have a phone number associated with your BP Passport. Please try again in a few weeks.",
-  "verify-pin.please-verify": "Please enter the 5 digit PIN\ncode we texted to you",
+  "verify-pin.please-verify": "Please enter the 6 digit PIN\ncode we texted to you",
   "verify-pin.code": "Code",
   "verify-pin.wrong-pin": "Please enter the correct PIN code",
   "verify-pin.no-pin": "Didn't receive a PIN?",

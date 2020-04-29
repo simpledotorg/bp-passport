@@ -1,5 +1,6 @@
 import React from 'react'
 import {PatientActionTypes} from './patient.types'
+import {AuthActionTypes} from '../auth/auth.types'
 import {Patient} from './patient.models'
 
 const INITIAL_STATE: {patient?: Patient} = {
@@ -12,6 +13,10 @@ const patientReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         patient: action.payload,
+      }
+    case AuthActionTypes.LOG_OUT:
+      return {
+        ...INITIAL_STATE,
       }
     default:
       return state

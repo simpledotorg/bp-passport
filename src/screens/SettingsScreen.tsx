@@ -36,7 +36,7 @@ function SettingsScreen({navigation}: any) {
   return (
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-      <StatusBar backgroundColor="blue" barStyle="light-content" />
+      <StatusBar barStyle="light-content" />
       <View style={[containerStyles.fill]}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.content}>
