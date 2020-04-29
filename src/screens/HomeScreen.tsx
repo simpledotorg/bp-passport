@@ -104,7 +104,7 @@ function Home({navigation}: Props) {
   return (
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-      <StatusBar backgroundColor="blue" barStyle="light-content" />
+      <StatusBar backgroundColor={colors.blue1} barStyle="light-content" />
       <View style={{position: 'absolute', marginTop: -1}}>
         <View style={{backgroundColor: colors.blue1, height: 30}} />
         <View

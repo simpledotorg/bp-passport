@@ -31,7 +31,7 @@ function SplashScreen({navigation}: Props) {
   return (
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar backgroundColor={colors.grey4} barStyle="dark-content" />
       <View style={styles.content}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.header}>

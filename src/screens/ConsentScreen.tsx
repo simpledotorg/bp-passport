@@ -27,7 +27,7 @@ function Consent({navigation}: Props) {
   return (
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-      <StatusBar backgroundColor="blue" barStyle="light-content" />
+      <StatusBar backgroundColor={colors.blue1} barStyle="light-content" />
       <View
         style={[
           containerStyles.fill,

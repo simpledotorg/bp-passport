@@ -44,7 +44,7 @@ static void InitializeFlipper(UIApplication *application) {
                                                    moduleName:@"BPPassport"
                                             initialProperties:nil];
 
-  rootView.backgroundColor = [UIColor blackColor];
+  rootView.backgroundColor = [UIColor colorWithRed:12.0f/255.0f green:57.0f/255.0f blue:102.0f/255.0f alpha:1];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
