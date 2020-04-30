@@ -1,18 +1,10 @@
 import React, {useEffect} from 'react'
-import {
-  SafeAreaView,
-  View,
-  Image,
-  StyleSheet,
-  ScrollView,
-  StatusBar,
-} from 'react-native'
-import {FormattedMessage, useIntl, IntlContext} from 'react-intl'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import {View, Image} from 'react-native'
+import {FormattedMessage, useIntl} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
 
 import {containerStyles, colors, splashImage} from '../styles'
-import {Button, PageHeader, BodyText} from '../components'
+import {Button, PageHeader} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 
