@@ -125,36 +125,36 @@ export const BpModal = ({bp, close}: Props) => {
             close()
           }}
         />
-        {/* {bp.offline && ( */}
-        <Button
-          style={{
-            backgroundColor: colors.white100,
-            flex: 1,
-          }}
-          buttonColor={colors.red1}
-          disableBoxShadow
-          title={intl.formatMessage({id: 'general.delete'})}
-          onPress={() => {
-            Alert.alert(
-              intl.formatMessage({id: 'general.delete'}),
-              intl.formatMessage({id: 'general.delete-bp-confirm'}),
-              [
-                {
-                  text: intl.formatMessage({id: 'general.cancel'}),
-                },
-                {
-                  text: intl.formatMessage({id: 'general.ok'}),
-                  onPress: () => {
-                    dispatch(deleteBloodPressure(bp))
-                    close()
+        {bp.offline && (
+          <Button
+            style={{
+              backgroundColor: colors.white100,
+              flex: 1,
+            }}
+            buttonColor={colors.red1}
+            disableBoxShadow
+            title={intl.formatMessage({id: 'general.delete'})}
+            onPress={() => {
+              Alert.alert(
+                intl.formatMessage({id: 'general.delete'}),
+                intl.formatMessage({id: 'general.delete-bp-confirm'}),
+                [
+                  {
+                    text: intl.formatMessage({id: 'general.cancel'}),
                   },
-                },
-              ],
-              {cancelable: true},
-            )
-          }}
-        />
-        {/* )} */}
+                  {
+                    text: intl.formatMessage({id: 'general.ok'}),
+                    onPress: () => {
+                      dispatch(deleteBloodPressure(bp))
+                      close()
+                    },
+                  },
+                ],
+                {cancelable: true},
+              )
+            }}
+          />
+        )}
       </View>
     </View>
   )

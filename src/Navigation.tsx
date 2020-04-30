@@ -49,11 +49,9 @@ export type RootStackParamList = {
   CONTACT_A_DOCTOR: undefined
   HOME: undefined
   BP_HISTORY: {bps: BloodPressure[]}
-  BP_DETAILS: {bp: BloodPressure}
   ADD_BP: undefined
   ADD_BS: undefined
   BS_HISTORY: {bloodSugars: BloodSugar[]}
-  BS_DETAILS: {bs: BloodSugar}
   ADD_MEDICINE: undefined
   DETAILS_MODAL_SCREEN: {bp?: BloodPressure; bs?: BloodSugar}
 }
@@ -219,14 +217,6 @@ function MainStack({navigation}: Props) {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.all-bs'}),
-        }}
-      />
-      <Stack.Screen
-        name={SCREENS.BS_DETAILS}
-        component={BsDetailsScreen}
-        options={{
-          headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.details'}),
         }}
       />
       <Stack.Screen

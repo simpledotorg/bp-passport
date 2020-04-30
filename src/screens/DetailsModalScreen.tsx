@@ -6,7 +6,7 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import {containerStyles, colors} from '../styles'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-import {BodyHeader, BodyText, BpModal} from '../components'
+import {BodyHeader, BodyText, BpModal, BsModal} from '../components'
 
 type DetailsModalScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -25,9 +25,6 @@ type Props = {
 
 function DetailsModalScreen({navigation, route}: Props) {
   const {bp, bs} = route.params
-
-  console.log(bp)
-  console.log(bs)
 
   return (
     <TouchableWithoutFeedback
@@ -49,7 +46,14 @@ function DetailsModalScreen({navigation, route}: Props) {
               }}
             />
           )}
-          {/* {bs && <BsModal bs={bs} />} */}
+          {bs && (
+            <BsModal
+              bs={bs}
+              close={() => {
+                navigation.goBack()
+              }}
+            />
+          )}
         </View>
       </View>
     </TouchableWithoutFeedback>
