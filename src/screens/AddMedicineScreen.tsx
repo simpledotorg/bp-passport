@@ -92,7 +92,9 @@ function AddMedicineScreen({navigation, route}: Props) {
                     ]}>
                     <TouchableOpacity
                       onPressOut={() => {
-                        console.log('onPress todo')
+                        navigation.push(SCREENS.MEDICATION_DETAILS, {
+                          medication: item,
+                        })
                       }}>
                       <View
                         style={{

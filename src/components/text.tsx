@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react'
 import {Text, StyleProp, TextStyle, TextProps} from 'react-native'
 
-import {colors} from '../styles'
+import {colors, typography} from '../styles'
 
 interface Props extends TextProps {
   children?: ReactNode
@@ -16,6 +16,7 @@ export const BodyText = (props: Props) => {
       style={[
         {
           fontSize: 16,
+          fontFamily: typography.FONT.base,
           fontWeight: 'normal',
           fontStyle: 'normal',
           lineHeight: 24,
@@ -34,9 +35,10 @@ export const BodyHeader = (props: Props) => {
       {...props}
       style={[
         {
-          fontSize: 18,
-          fontWeight: '500',
+          fontSize: 22,
+          fontFamily: typography.FONT.base,
           fontStyle: 'normal',
+          fontWeight: 'bold',
           lineHeight: 28,
           letterSpacing: 0,
           color: colors.grey0,

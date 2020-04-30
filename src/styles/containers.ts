@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native'
+import colors from './colors'
 
 const styles = StyleSheet.create({
   fill: {flex: 1},
@@ -9,6 +10,23 @@ const styles = StyleSheet.create({
   pageContainer: {
     padding: 12,
     textAlign: 'center',
+  },
+  containerSegment: {
+    backgroundColor: colors.white100,
+    borderRadius: 4,
+    marginHorizontal: 8,
+    marginBottom: 8,
+    flexShrink: 0,
+    padding: 24,
+
+    shadowColor: colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+    elevation: 5,
   },
 })
 

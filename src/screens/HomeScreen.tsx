@@ -139,7 +139,7 @@ function Home({navigation}: Props) {
       {!showLoading && (
         <>
           <ScrollView contentContainerStyle={styles.scrollContent}>
-            <View style={[styles.homeContainer]}>
+            <View style={[containerStyles.containerSegment]}>
               <BodyHeader style={[styles.sectionHeader]}>
                 <FormattedMessage id="home.my-medicines" />
               </BodyHeader>
@@ -187,7 +187,7 @@ function Home({navigation}: Props) {
                 />
               </View>
             </View>
-            <View style={[styles.homeContainer]}>
+            <View style={[containerStyles.containerSegment]}>
               <BodyHeader style={[styles.sectionHeader]}>
                 <FormattedMessage id="home.my-bp" />
               </BodyHeader>
@@ -253,7 +253,7 @@ function Home({navigation}: Props) {
                 )}
               </View>
             </View>
-            <View style={[styles.homeContainer]}>
+            <View style={[containerStyles.containerSegment]}>
               <BodyHeader style={[styles.sectionHeader]}>
                 <FormattedMessage id="home.my-blood-sugar" />
               </BodyHeader>
@@ -337,26 +337,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     backgroundColor: colors.green2,
   },
-  homeContainer: {
-    backgroundColor: colors.white100,
-    borderRadius: 4,
-    marginHorizontal: 8,
-    marginBottom: 8,
-    flexShrink: 0,
-    padding: 24,
-
-    shadowColor: colors.black,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.4,
-    shadowRadius: 4,
-    elevation: 5,
-  },
   sectionHeader: {
-    fontSize: 22,
-    fontWeight: 'bold',
     marginBottom: 16,
   },
   sectionText: {
