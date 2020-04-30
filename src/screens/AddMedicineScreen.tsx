@@ -15,11 +15,11 @@ import {useIntl} from 'react-intl'
 
 import {containerStyles, colors, medicinePill} from '../styles'
 import SCREENS from '../constants/screens'
-import {MEDICINES} from '../constants/medicines'
 import {RootStackParamList} from '../Navigation'
 
 import {useThunkDispatch} from '../redux/store'
 import {BodyText} from '../components'
+import {medicationsLibrarySelector} from '../redux/medication/medication.selectors'
 
 type AddMedicineScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -39,6 +39,11 @@ function AddMedicineScreen({navigation, route}: Props) {
 
   const [input, setInput] = useState<string>('')
   const inputRef = useRef<null | any>(null)
+
+  const medicines = medicationsLibrarySelector()
+  const medicinesFiltered = medicines.filter((item) => {
+    return input !== '' && item.name.toLowerCase().includes(input.toLowerCase())
+  })
 
   return (
     <SafeAreaView style={[containerStyles.fill]}>
@@ -72,44 +77,46 @@ function AddMedicineScreen({navigation, route}: Props) {
             }}>
             <KeyboardAwareFlatList
               keyboardShouldPersistTaps={'handled'}
-              data={MEDICINES}
+              data={medicinesFiltered}
+              keyExtractor={(item) => item.name}
               renderItem={({item}) => {
-                if (
-                  !item.toLowerCase().includes(input.toLowerCase()) ||
-                  input === ''
-                ) {
-                  return null
-                }
-
                 return (
-                  <TouchableOpacity
-                    onPressOut={() => {
-                      console.log('onPress todo')
-                    }}>
-                    <View
-                      key={item}
-                      style={[
-                        styles.card,
-                        {
+                  <View
+                    style={[
+                      styles.card,
+                      {
+                        marginTop: 8,
+                        backgroundColor: colors.white100,
+                        borderRadius: 4,
+                      },
+                    ]}>
+                    <TouchableOpacity
+                      onPressOut={() => {
+                        navigation.push(SCREENS.MEDICATION_DETAILS, {
+                          medication: item,
+                        })
+                      }}>
+                      <View
+                        style={{
+                          flex: 1,
                           flexDirection: 'row',
                           alignItems: 'center',
-                          marginTop: 8,
-                          backgroundColor: colors.white100,
-                          borderRadius: 4,
-                        },
-                      ]}>
-                      <Image
-                        source={medicinePill}
-                        style={{
-                          marginHorizontal: 8,
-                          flexShrink: 0,
-                          height: 40,
-                          width: 40,
-                        }}
-                      />
-                      <BodyText style={[styles.medicineText]}>{item}</BodyText>
-                    </View>
-                  </TouchableOpacity>
+                        }}>
+                        <Image
+                          source={medicinePill}
+                          style={{
+                            marginHorizontal: 8,
+                            flexShrink: 0,
+                            height: 40,
+                            width: 40,
+                          }}
+                        />
+                        <BodyText style={[styles.medicineText]}>
+                          {item.name}
+                        </BodyText>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
                 )
               }}
             />
