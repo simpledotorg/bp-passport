@@ -25,12 +25,14 @@ import BsDetailsScreen from './screens/BsDetailsScreen'
 import BsHistoryScreen from './screens/BsHistoryScreen'
 import AddBsScreen from './screens/AddBsScreen'
 import AddMedicineScreen from './screens/AddMedicineScreen'
+import MedicationDetailScreen from './screens/MedicationDetailScreen'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
 import {colors, navigation as navigationStyle} from './styles'
 import {BloodPressure} from './redux/blood-pressure/blood-pressure.models'
 import {BloodSugar} from './redux/blood-sugar/blood-sugar.models'
+import {Medication} from './redux/medication/medication.models'
 import {LoginState} from './redux/auth/auth.models'
 import {loginStateSelector} from './redux/auth/auth.selectors'
 import {patientSelector} from './redux/patient/patient.selectors'
@@ -54,6 +56,7 @@ export type RootStackParamList = {
   BS_HISTORY: {bloodSugars: BloodSugar[]}
   BS_DETAILS: {bs: BloodSugar}
   ADD_MEDICINE: undefined
+  MEDICATION_DETAILS: {medication: Medication}
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -237,6 +240,15 @@ function MainStack({navigation}: Props) {
           title: intl.formatMessage({id: 'page-titles.add-medicine'}),
         }}
       />
+      <Stack.Screen
+        name={SCREENS.MEDICATION_DETAILS}
+        component={MedicationDetailScreen}
+        options={({route}) => ({
+          headerBackTitle: ' ',
+          title: route.params.medication.name,
+        })}
+      />
+
       <Stack.Screen
         name={SCREENS.HOME}
         component={HomeScreen}

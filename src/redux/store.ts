@@ -10,16 +10,16 @@ import rootReducer from './root.reducer'
 const loggerMiddleware = createLogger()
 const middlewares = [thunkMiddleware, loggerMiddleware]
 
-const persistConfig = {
+const rootPersistConfig = {
   key: 'root',
   storage: AsyncStorage,
   // Whitelist (Save Specific Reducers)
-  whitelist: ['auth', 'patient', 'bloodPressure', 'medication', 'bloodSugar'],
+  whitelist: ['auth', 'patient', 'bloodPressure', 'bloodSugar'],
   // Blacklist (Don't Save Specific Reducers)
-  blacklist: [],
+  blacklist: ['medication'],
 }
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer(rootPersistConfig, rootReducer)
 const store = createStore(persistedReducer, applyMiddleware(...middlewares))
 const persistor = persistStore(store)
 
