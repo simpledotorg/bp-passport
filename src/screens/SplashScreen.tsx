@@ -21,7 +21,6 @@ function SplashScreen({navigation}: Props) {
   const intl = useIntl()
 
   return (
-<<<<<<< HEAD
     <View
       style={[
         containerStyles.fill,
@@ -53,20 +52,6 @@ function SplashScreen({navigation}: Props) {
             }}>
             <FormattedMessage id="splash.track-bp-bs-meds" />
           </PageHeader>
-=======
-    <SafeAreaView
-      style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-      <StatusBar backgroundColor={colors.grey4} barStyle="dark-content" />
-      <View style={styles.content}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.header}>
-            <Image source={iconSplash} style={{marginRight: 14}} />
-            <Image
-              source={bpLogo}
-              style={{height: 20, resizeMode: 'contain', marginTop: 5}}
-            />
-          </View>
->>>>>>> iteration-5
 
           <Button
             style={[styles.primaryButton]}
