@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "389888352999",
+    "firebase_url": "https://bp-passport.firebaseio.com",
+    "project_id": "bp-passport",
+    "storage_bucket": "bp-passport.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389888352999:android:cdfeb093b3cfa5e4a7b842",
+        "android_client_info": {
+          "package_name": "org.simple.bppassport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389888352999-dkp4cspc7thd23tn7svcl25bqc8s80sn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBt78w4FVBBuUTxwo8bkdq5YRRgOK2n3us"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "389888352999-dkp4cspc7thd23tn7svcl25bqc8s80sn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -11,6 +11,7 @@ import {RootStackParamList} from '../Navigation'
 import {useThunkDispatch} from '../redux/store'
 import {BodyText, BodyHeader} from '../components'
 import {medicationsLibrarySelector} from '../redux/medication/medication.selectors'
+import PushNotifications, {scheduleNotif} from '../notifications'
 
 type MedicationDetailsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -38,7 +39,22 @@ function MedicationDetailsScreen({navigation, route}: Props) {
     const enable = !remindersEnabled
     setRemindersEnabled(enable)
     if (enable) {
-      console.log('Todo - permissions!')
+      PushNotifications.requestPermissions((permissions) => {
+        console.log('Permissions completed: ', permissions)
+        console.log('Schedule it!')
+
+        scheduleNotif()
+        /*
+        PushNotifications.localNotification({
+          message: 'My Notification Message',
+        })
+      
+        PushNotifications.localNotificationSchedule({
+          // ... You can use all the options from localNotifications
+          message: 'My Notification Message', // (required)
+          date: new Date(Date.now() + 20 * 1000), // in 60 secs
+        }) */
+      })
     }
   }
   return (
