@@ -8,3 +8,9 @@ export const loginStateSelector = () => {
 export const authParamsSelector = () => {
   return useSelector((state: RootState) => state.auth.authParams)
 }
+
+export const dataIsLinkedWithApiSelector = () => {
+  return useSelector((state: RootState) =>
+    state.auth.authParams ? true : false,
+  )
+}

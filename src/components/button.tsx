@@ -28,11 +28,11 @@ export const Button = (props: ButtonProps) => {
           backgroundColor: colors.blue2,
           alignItems: 'center',
           justifyContent: 'center',
-          shadowColor: 'rgba(0,0,0, 0.8)', // iOS box shadow
+          shadowColor: 'rgba(0,0,0, 0.32)', // iOS box shadow
           shadowOffset: {height: 1, width: 1}, // iOS box shadow
           shadowOpacity: 1, // iOS box shadow
           shadowRadius: 1, // iOS box shadow
-          elevation: 2, // Android elevation
+          elevation: 2, // Android elevation,
         },
         props.disabled
           ? {
@@ -54,6 +54,7 @@ export const Button = (props: ButtonProps) => {
                 ? colors.grey2
                 : props.buttonColor || colors.white100,
               textTransform: 'uppercase',
+              textAlign: 'center',
             },
           ]}>
           {props.title}

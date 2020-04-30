@@ -1,9 +1,3 @@
-/*enum LoginState {
-  LoggedOut = 'LoggedOut',
-  LoggingIn = 'LoggingIn',
-  LoggedIn = 'LoggedIn',
-} */
-
 export enum LoginState {
   LoggedOut,
   LoggingIn,

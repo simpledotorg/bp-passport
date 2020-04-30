@@ -58,21 +58,7 @@ function BsHistoryScreen({navigation, route}: Props) {
                     ? {borderBottomWidth: 0}
                     : {},
                 ]}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <BsInformation compact bs={item} style={{marginTop: 0}} />
-                  <Icon
-                    name="chevron-right"
-                    size={24}
-                    style={{marginLeft: 'auto'}}
-                    color={colors.blue2}
-                  />
-                </View>
+                <BsInformation bs={item} style={{marginTop: 0}} />
               </TouchableOpacity>
             )}
             keyExtractor={(item, index) => {

@@ -96,7 +96,7 @@ function ScanPassportScreen({navigation}: Props) {
   return (
     <>
       <SafeAreaView style={[containerStyles.fill]}>
-        <StatusBar barStyle="light-content" />
+        <StatusBar backgroundColor={colors.blue1} barStyle="light-content" />
         <View style={[containerStyles.fill]}>
           <View
             style={[

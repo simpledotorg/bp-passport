@@ -24,6 +24,7 @@ import SettingsScreen from './screens/SettingsScreen'
 import BsDetailsScreen from './screens/BsDetailsScreen'
 import BsHistoryScreen from './screens/BsHistoryScreen'
 import AddBsScreen from './screens/AddBsScreen'
+import AddMedicineScreen from './screens/AddMedicineScreen'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
@@ -52,6 +53,7 @@ export type RootStackParamList = {
   ADD_BS: undefined
   BS_HISTORY: {bloodSugars: BloodSugar[]}
   BS_DETAILS: {bs: BloodSugar}
+  ADD_MEDICINE: undefined
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -228,6 +230,14 @@ function MainStack({navigation}: Props) {
         }}
       />
       <Stack.Screen
+        name={SCREENS.ADD_MEDICINE}
+        component={AddMedicineScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.add-medicine'}),
+        }}
+      />
+      <Stack.Screen
         name={SCREENS.HOME}
         component={HomeScreen}
         options={{
@@ -241,10 +251,7 @@ function MainStack({navigation}: Props) {
           headerTitleAlign: 'center',
           headerTitle: () => <HomeHeaderTitle />,
           headerRight: () => {
-            if (
-              loginState === LoginState.LoggedIn ||
-              (loginState === LoginState.LoggingIn && apiUser !== undefined)
-            ) {
+            if (loginState === LoginState.LoggedIn) {
               return (
                 <ButtonIcon
                   onPress={() => navigation.navigate(SCREENS.SETTINGS)}

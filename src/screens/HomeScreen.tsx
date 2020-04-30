@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Image,
+  TouchableOpacity,
 } from 'react-native'
 import {useIntl, FormattedMessage} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -38,7 +39,7 @@ import {getPatient} from '../redux/patient/patient.actions'
 
 import {
   loginStateSelector,
-  authParamsSelector,
+  dataIsLinkedWithApiSelector,
 } from '../redux/auth/auth.selectors'
 import {patientSelector} from '../redux/patient/patient.selectors'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
@@ -64,35 +65,29 @@ function Home({navigation}: Props) {
 
   const loginState = loginStateSelector()
   const apiUser = patientSelector()
-  const authParams = authParamsSelector()
-
-  // console.log('loginState', loginState)
+  const dataIsLinkedWithApi = dataIsLinkedWithApiSelector()
 
   const bloodPressures = bloodPressuresSelector()
   const bloodSugars = bloodSugarsSelector()
   const medications = medicationsSelector()
   const intl = useIntl()
 
-  const showLoading =
-    loginState === LoginState.LoggingIn && bloodPressures === undefined
+  const showLoading = loginState === LoginState.LoggingIn
 
   useEffect(() => {
     // on first load refresh patient data if we have authParams we should refresh the api patient data
-    if (authParams) {
+    if (dataIsLinkedWithApi) {
       dispatch(getPatient()).catch((err) => {
         console.log('error loading api patient: ', err)
       })
     }
-  }, [authParams])
+  }, [dataIsLinkedWithApi])
 
   useEffect(() => {}, [loginState, apiUser, bloodPressures, medications])
 
   const bps: BloodPressure[] = bloodPressures ?? []
   const bss: BloodSugar[] = bloodSugars ?? []
-
   const meds: Medication[] = medications ?? []
-
-  const hasMedicines = meds.length > 0
 
   const medicationDisplayName = (medication: Medication) => {
     let ret = medication.name
@@ -110,7 +105,7 @@ function Home({navigation}: Props) {
   return (
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-      <StatusBar backgroundColor="blue" barStyle="light-content" />
+      <StatusBar backgroundColor={colors.blue1} barStyle="light-content" />
       <View style={{position: 'absolute', marginTop: -1}}>
         <View style={{backgroundColor: colors.blue1, height: 30}} />
         <View
@@ -144,22 +139,12 @@ function Home({navigation}: Props) {
       {!showLoading && (
         <>
           <ScrollView contentContainerStyle={styles.scrollContent}>
-            {hasMedicines && (
-              <>
-                <View style={[styles.homeContainer]}>
-                  <BodyHeader style={[styles.sectionHeader]}>
-                    <FormattedMessage id="home.my-medicines" />
-                  </BodyHeader>
-                  <BodyText
-                    style={[
-                      {
-                        marginTop: 8,
-                        fontSize: 18,
-                        color: colors.grey1,
-                      },
-                    ]}>
-                    <FormattedMessage id={'home.no-medicines'} />
-                  </BodyText>
+            <View style={[styles.homeContainer]}>
+              <BodyHeader style={[styles.sectionHeader]}>
+                <FormattedMessage id="home.my-medicines" />
+              </BodyHeader>
+              {meds.length > 0 && (
+                <>
                   {meds.map((medicine, index) => (
                     <View
                       key={index}
@@ -184,66 +169,58 @@ function Home({navigation}: Props) {
                       </BodyText>
                     </View>
                   ))}
-                </View>
-                <View style={[styles.homeContainer, {flexDirection: 'row'}]}>
-                  <Image
-                    source={medicineClock}
-                    style={[styles.informationIcon]}
-                  />
-                  <View style={[{flexShrink: 1}]}>
-                    <BodyText style={[styles.sectionText]}>
-                      <FormattedMessage id={'home.take-medicines'} />
-                    </BodyText>
-                    <BodyText
-                      style={[
-                        {
-                          fontSize: 18,
-                          color: colors.grey1,
-                        },
-                      ]}>
-                      <FormattedMessage id={'home.take-as-directed'} />
-                    </BodyText>
-                  </View>
-                </View>
-              </>
-            )}
+                </>
+              )}
+              <View style={{marginTop: 15, flexDirection: 'row'}}>
+                <Button
+                  style={[
+                    styles.bpButton,
+                    {
+                      marginRight: showBsHistoryButton ? 12 : 0,
+                    },
+                  ]}
+                  buttonColor={colors.blue2}
+                  title={intl.formatMessage({id: 'home.add-medicine'})}
+                  onPress={() => {
+                    navigation.navigate(SCREENS.ADD_MEDICINE)
+                  }}
+                />
+              </View>
+            </View>
             <View style={[styles.homeContainer]}>
               <BodyHeader style={[styles.sectionHeader]}>
                 <FormattedMessage id="home.my-bp" />
               </BodyHeader>
-              {bps.length > 0 ? (
+              {bps.length > 0 && (
                 <>
                   {bps.map((bp, index) => {
                     if (index > HOME_PAGE_SHOW_LIMIT - 1) {
                       return null
                     }
 
-                    return <BpInformation bp={bp} key={index} />
+                    return (
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate(SCREENS.BP_DETAILS, {bp})
+                        }}
+                        key={index}
+                        style={[
+                          {
+                            marginBottom: 12,
+                            paddingTop: 12,
+                          },
+                          styles.historyItem,
+                          index === bps.length - 1
+                            ? {borderBottomWidth: 0}
+                            : {},
+                        ]}>
+                        <BpInformation bp={bp} />
+                      </TouchableOpacity>
+                    )
                   })}
                 </>
-              ) : (
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <Image
-                    style={{
-                      marginTop: 32,
-                      marginBottom: 4,
-                    }}
-                    source={greyHeart}
-                  />
-                  <BodyText
-                    style={[
-                      styles.sectionText,
-                      {
-                        color: colors.grey1,
-                        marginBottom: 70,
-                        textAlign: 'center',
-                      },
-                    ]}>
-                    <FormattedMessage id={'home.you-have-no-bp'} />
-                  </BodyText>
-                </View>
               )}
-              <View style={{marginTop: 15, flexDirection: 'row'}}>
+              <View style={{marginTop: 4, flexDirection: 'row'}}>
                 <Button
                   style={[
                     styles.bpButton,
@@ -280,37 +257,34 @@ function Home({navigation}: Props) {
               <BodyHeader style={[styles.sectionHeader]}>
                 <FormattedMessage id="home.my-blood-sugar" />
               </BodyHeader>
-              {bss.length > 0 ? (
+              {bss.length > 0 && (
                 <>
                   {bss.map((bs, index) => {
                     if (index > HOME_PAGE_SHOW_LIMIT - 1) {
                       return null
                     }
 
-                    return <BsInformation bs={bs} key={index} />
+                    return (
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate(SCREENS.BS_DETAILS, {bs})
+                        }}
+                        key={index}
+                        style={[
+                          {
+                            marginBottom: 12,
+                            paddingTop: 12,
+                          },
+                          styles.historyItem,
+                          index === bss.length - 1
+                            ? {borderBottomWidth: 0}
+                            : {},
+                        ]}>
+                        <BsInformation bs={bs} />
+                      </TouchableOpacity>
+                    )
                   })}
                 </>
-              ) : (
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <Image
-                    style={{
-                      marginTop: 32,
-                      marginBottom: 4,
-                    }}
-                    source={grayDrop}
-                  />
-                  <BodyText
-                    style={[
-                      styles.sectionText,
-                      {
-                        color: colors.grey1,
-                        marginBottom: 70,
-                        textAlign: 'center',
-                      },
-                    ]}>
-                    <FormattedMessage id={'home.you-have-no-bs'} />
-                  </BodyText>
-                </View>
               )}
               <View style={{marginTop: 15, flexDirection: 'row'}}>
                 <Button
@@ -346,15 +320,6 @@ function Home({navigation}: Props) {
               </View>
             </View>
           </ScrollView>
-          <View style={styles.buttonContainer}>
-            <Button
-              style={{
-                backgroundColor: colors.green1,
-              }}
-              title={intl.formatMessage({id: 'general.contact-a-doctor'})}
-              onPress={() => {}}
-            />
-          </View>
         </>
       )}
     </SafeAreaView>
@@ -392,6 +357,7 @@ const styles = StyleSheet.create({
   sectionHeader: {
     fontSize: 22,
     fontWeight: 'bold',
+    marginBottom: 16,
   },
   sectionText: {
     fontSize: 18,
@@ -405,5 +371,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.blue3,
     shadowColor: 'rgba(0, 117, 235, 0.3)',
     flex: 1,
+  },
+  historyItem: {
+    borderTopWidth: 1,
+    borderColor: colors.grey3,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 })

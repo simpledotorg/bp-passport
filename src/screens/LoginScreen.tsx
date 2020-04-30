@@ -29,6 +29,7 @@ function Login({navigation}: Props) {
 
   return (
     <View style={{flex: 1}}>
+      <StatusBar backgroundColor={colors.grey4} barStyle="dark-content" />
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.grey4}]}>
         <StatusBar barStyle="dark-content" />
