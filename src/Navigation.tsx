@@ -25,6 +25,7 @@ import BsDetailsScreen from './screens/BsDetailsScreen'
 import BsHistoryScreen from './screens/BsHistoryScreen'
 import AddBsScreen from './screens/AddBsScreen'
 import AddMedicineScreen from './screens/AddMedicineScreen'
+import DetailsModalScreen from './screens/DetailsModalScreen'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
@@ -54,6 +55,7 @@ export type RootStackParamList = {
   BS_HISTORY: {bloodSugars: BloodSugar[]}
   BS_DETAILS: {bs: BloodSugar}
   ADD_MEDICINE: undefined
+  DETAILS_MODAL_SCREEN: {bp?: BloodPressure; bs?: BloodSugar}
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -67,8 +69,14 @@ const Navigation = () => {
         mode="modal"
         screenOptions={{
           gestureEnabled: false,
+          cardStyle: {backgroundColor: 'rgba(47, 54, 61, 0.5)'},
+          animationEnabled: false,
         }}>
         <Stack.Screen name={SCREENS.LAUNCH} component={LaunchScreen} />
+        <Stack.Screen
+          name={SCREENS.DETAILS_MODAL_SCREEN}
+          component={DetailsModalScreen}
+        />
 
         <Stack.Screen
           name={SCREENS.MAIN_STACK}
@@ -187,14 +195,6 @@ function MainStack({navigation}: Props) {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.all-bp'}),
-        }}
-      />
-      <Stack.Screen
-        name={SCREENS.BP_DETAILS}
-        component={BpDetailsScreen}
-        options={{
-          headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.details'}),
         }}
       />
       <Stack.Screen

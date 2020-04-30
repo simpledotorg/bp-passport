@@ -48,7 +48,9 @@ function BpHistoryScreen({navigation, route}: Props) {
             renderItem={({item: bp, index}) => (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate(SCREENS.BP_DETAILS, {bp})
+                  navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+                    bp,
+                  })
                 }}
                 key={index}
                 style={[
