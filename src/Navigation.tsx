@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react'
-import {Alert} from 'react-native'
+import {Alert, Platform} from 'react-native'
 import {
   createStackNavigator,
   useHeaderHeight,
@@ -7,6 +7,7 @@ import {
 } from '@react-navigation/stack'
 import {useNavigationState, StackActions} from '@react-navigation/native'
 import {forFade} from './navigation/interpolators'
+import {CardStyleInterpolators} from '@react-navigation/stack'
 import {useIntl} from 'react-intl'
 import {usePrevious} from './effects/use-previous.effect'
 
@@ -68,13 +69,25 @@ const Navigation = () => {
         mode="modal"
         screenOptions={{
           gestureEnabled: false,
-          cardStyle: {backgroundColor: 'rgba(47, 54, 61, 0.5)'},
+          cardStyle: {backgroundColor: 'rgba(47, 54, 61, 0.0)'},
           animationEnabled: true,
         }}>
         <Stack.Screen name={SCREENS.LAUNCH} component={LaunchScreen} />
         <Stack.Screen
           name={SCREENS.DETAILS_MODAL_SCREEN}
           component={DetailsModalScreen}
+          options={
+            Platform.OS === 'ios'
+              ? {
+                  cardStyleInterpolator:
+                    CardStyleInterpolators.forModalPresentationIOS,
+                  cardOverlayEnabled: true,
+                }
+              : {
+                  cardStyleInterpolator:
+                    CardStyleInterpolators.forRevealFromBottomAndroid,
+                }
+          }
         />
 
         <Stack.Screen

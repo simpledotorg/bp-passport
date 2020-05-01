@@ -31,7 +31,11 @@ function DetailsModalScreen({navigation, route}: Props) {
       onPress={() => {
         navigation.goBack()
       }}>
-      <View style={[containerStyles.fill, {justifyContent: 'flex-end'}]}>
+      <View
+        style={[
+          containerStyles.fill,
+          {justifyContent: 'flex-end', backgroundColor: 'transparent'},
+        ]}>
         <View
           style={{
             backgroundColor: colors.white100,
