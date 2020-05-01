@@ -54,8 +54,7 @@ export const BsModal = ({bs, close}: Props) => {
   return (
     <View
       style={{
-        paddingVertical: 28,
-        paddingHorizontal: 24,
+        padding: 24,
         backgroundColor: colors.white100,
       }}>
       <BodyHeader

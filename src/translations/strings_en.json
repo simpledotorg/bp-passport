@@ -168,5 +168,7 @@
   "medicine.save-medicine": "Save medicine",
   "medicine.set-reminder-for": "Set reminder for",
   "medicine.delete-medicine": "Delete medicine",
-  "medicine.delete-confirm": "This will permanently delete the medicine. Are you sure?"
+  "medicine.delete-confirm": "This will permanently delete the medicine. Are you sure?",
+  "medicine.daily": "Daily",
+  "medicine.custom": "Custom"
 }
