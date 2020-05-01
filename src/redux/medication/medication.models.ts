@@ -5,4 +5,5 @@ export interface Medication {
   is_protocol_drug?: boolean
   offline?: boolean
   days?: {}
+  time?: Date
 }
