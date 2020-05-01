@@ -26,7 +26,7 @@ export const CheckBox = ({checked}: Props) => {
         <Icon
           name="check"
           size={16}
-          style={{position: 'absolute'}}
+          style={{position: 'relative', right: 1}}
           color={colors.white100}
         />
       )}
