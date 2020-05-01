@@ -40,11 +40,28 @@ function Row({children}: {children: ReactNode}) {
 function MedicationDetailsScreen({navigation, route}: Props) {
   const [remindersEnabled, setRemindersEnabled] = useState(false)
   const [recurringReminders, setRecurringReminders] = useState(false)
-
-  const {medication} = route.params
+  const [medication, setMedication] = useState(route.params.medication)
 
   const updateDays = (days: any) => {
-    medication.days = days
+    setMedication({...medication, days})
+  }
+
+  const getFrequencyText = () => {
+    if (!medication.days) {
+      return 'medicine.daily'
+    }
+
+    const onDays = (Object.keys(medication.days) ?? []).filter((day) => {
+      return medication.days[day].value
+    })
+
+    if (onDays.length === 7) {
+      return 'medicine.daily'
+    } else if (onDays.length === 1) {
+      return `general.${onDays[0].toLowerCase()}`
+    }
+
+    return 'medicine.custom'
   }
 
   useEffect(() => {
@@ -92,7 +109,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                   </BodyText>
                   <View style={{flexDirection: 'row'}}>
                     <BodyText style={{color: colors.blue2, marginRight: 16}}>
-                      Daily
+                      <FormattedMessage id={getFrequencyText()} />
                     </BodyText>
                     <Icon
                       name="chevron-right"
