@@ -26,45 +26,47 @@ function Consent({navigation}: Props) {
 
   return (
     <SafeAreaView
-      style={[containerStyles.fill, {backgroundColor: colors.white}]}>
+      style={[containerStyles.fill, {backgroundColor: colors.blue3}]}>
       <StatusBar backgroundColor={colors.blue1} barStyle="light-content" />
-      <View
-        style={[
-          containerStyles.fill,
-          containerStyles.centeredContent,
-          {margin: 24},
-        ]}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <BodyText style={{marginBottom: 24}}>
-            <FormattedMessage id="consent.using-this-app" />
-          </BodyText>
-          <BodyText style={{marginBottom: 24}}>
-            <FormattedMessage id="consent.any-data-stored" />
-          </BodyText>
-          <BodyText style={{marginBottom: 24}}>
-            <FormattedMessage id="consent.more-information" />{' '}
-            <BodyText
-              style={{color: colors.blue2}}
-              onPress={() => {
-                Linking.openURL('https://simple.org/patient-privacy')
-              }}>
-              <FormattedMessage id="consent.here-link" />
+      <View style={[containerStyles.fill, {backgroundColor: colors.white}]}>
+        <View
+          style={[
+            containerStyles.fill,
+            containerStyles.centeredContent,
+            {margin: 24, backgroundColor: colors.white},
+          ]}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <BodyText style={{marginBottom: 24}}>
+              <FormattedMessage id="consent.using-this-app" />
             </BodyText>
-            <BodyText>.</BodyText>
-          </BodyText>
-        </ScrollView>
-      </View>
-      <View
-        style={{
-          padding: 8,
-          backgroundColor: colors.blue3,
-        }}>
-        <Button
-          title={intl.formatMessage({id: 'general.i-agree'})}
-          onPress={() => {
-            dispatch(loginNoApi())
-          }}
-        />
+            <BodyText style={{marginBottom: 24}}>
+              <FormattedMessage id="consent.any-data-stored" />
+            </BodyText>
+            <BodyText style={{marginBottom: 24}}>
+              <FormattedMessage id="consent.more-information" />{' '}
+              <BodyText
+                style={{color: colors.blue2}}
+                onPress={() => {
+                  Linking.openURL('https://simple.org/patient-privacy')
+                }}>
+                <FormattedMessage id="consent.here-link" />
+              </BodyText>
+              <BodyText>.</BodyText>
+            </BodyText>
+          </ScrollView>
+        </View>
+        <View
+          style={{
+            padding: 8,
+            backgroundColor: colors.blue3,
+          }}>
+          <Button
+            title={intl.formatMessage({id: 'general.i-agree'})}
+            onPress={() => {
+              dispatch(loginNoApi())
+            }}
+          />
+        </View>
       </View>
     </SafeAreaView>
   )
