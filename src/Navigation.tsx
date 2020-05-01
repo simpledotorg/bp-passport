@@ -57,7 +57,7 @@ export type RootStackParamList = {
   ADD_MEDICINE: undefined
   DETAILS_MODAL_SCREEN: {bp?: BloodPressure; bs?: BloodSugar}
   MEDICATION_DETAILS: {medication: Medication}
-  MEDICATION_FREQUENCY: {medication: Medication}
+  MEDICATION_FREQUENCY: {updateDays: (days: {}) => void}
 }
 
 const Stack = createStackNavigator<RootStackParamList>()

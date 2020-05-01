@@ -6,7 +6,6 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  FlatList,
 } from 'react-native'
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view'
 import {RouteProp} from '@react-navigation/native'
@@ -35,7 +34,6 @@ type Props = {
 
 function AddMedicineScreen({navigation, route}: Props) {
   const intl = useIntl()
-  const dispatch = useThunkDispatch()
 
   const [input, setInput] = useState<string>('')
   const inputRef = useRef<null | any>(null)

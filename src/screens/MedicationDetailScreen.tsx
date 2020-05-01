@@ -9,17 +9,14 @@ import {
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import {useIntl, FormattedMessage} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {containerStyles, colors} from '../styles'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 
-import {useThunkDispatch} from '../redux/store'
 import {BodyText, BodyHeader, Button, Link} from '../components'
-import {medicationsLibrarySelector} from '../redux/medication/medication.selectors'
-import {Medication} from '../redux/medication/medication.models'
 
 type MedicationDetailsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -41,11 +38,14 @@ function Row({children}: {children: ReactNode}) {
 }
 
 function MedicationDetailsScreen({navigation, route}: Props) {
-  const dispatch = useThunkDispatch()
   const [remindersEnabled, setRemindersEnabled] = useState(false)
   const [recurringReminders, setRecurringReminders] = useState(false)
 
   const {medication} = route.params
+
+  const updateDays = (days: any) => {
+    medication.days = days
+  }
 
   useEffect(() => {
     if (remindersEnabled) {
@@ -70,28 +70,52 @@ function MedicationDetailsScreen({navigation, route}: Props) {
               value={remindersEnabled}
             />
           </Row>
-          {/* {remindersEnabled && ( */}
-          <>
-            <TouchableWithoutFeedback
-              onPress={() => {
-                console.log('on press')
-                navigation.navigate(SCREENS.MEDICATION_FREQUENCY, {medication})
-              }}>
+          {remindersEnabled && (
+            <>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  navigation.navigate(SCREENS.MEDICATION_FREQUENCY, {
+                    updateDays,
+                  })
+                }}>
+                <View
+                  style={[
+                    styles.row,
+                    {
+                      borderBottomWidth: 2,
+                      borderColor: colors.grey4,
+                      paddingVertical: 12,
+                    },
+                  ]}>
+                  <BodyText>
+                    <FormattedMessage id="medicine.frequency" />
+                  </BodyText>
+                  <View style={{flexDirection: 'row'}}>
+                    <BodyText style={{color: colors.blue2, marginRight: 16}}>
+                      Daily
+                    </BodyText>
+                    <Icon
+                      name="chevron-right"
+                      size={24}
+                      style={{marginLeft: 'auto'}}
+                      color={colors.blue2}
+                    />
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
               <View
                 style={[
                   styles.row,
                   {
-                    borderBottomWidth: 2,
-                    borderColor: colors.grey4,
-                    paddingVertical: 12,
+                    paddingTop: 12,
                   },
                 ]}>
                 <BodyText>
-                  <FormattedMessage id="medicine.frequency" />
+                  <FormattedMessage id="medicine.time" />
                 </BodyText>
                 <View style={{flexDirection: 'row'}}>
                   <BodyText style={{color: colors.blue2, marginRight: 16}}>
-                    Daily
+                    8:00AM
                   </BodyText>
                   <Icon
                     name="chevron-right"
@@ -101,31 +125,8 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                   />
                 </View>
               </View>
-            </TouchableWithoutFeedback>
-            <View
-              style={[
-                styles.row,
-                {
-                  paddingTop: 12,
-                },
-              ]}>
-              <BodyText>
-                <FormattedMessage id="medicine.time" />
-              </BodyText>
-              <View style={{flexDirection: 'row'}}>
-                <BodyText style={{color: colors.blue2, marginRight: 16}}>
-                  8:00AM
-                </BodyText>
-                <Icon
-                  name="chevron-right"
-                  size={24}
-                  style={{marginLeft: 'auto'}}
-                  color={colors.blue2}
-                />
-              </View>
-            </View>
-          </>
-          {/* )} */}
+            </>
+          )}
         </View>
         <View style={[containerStyles.containerSegment]}>
           <Row>
