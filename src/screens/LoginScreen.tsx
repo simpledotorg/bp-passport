@@ -33,13 +33,18 @@ function Login({navigation}: Props) {
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.grey4}]}>
         <StatusBar barStyle="dark-content" />
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingBottom: 30}}>
           <View style={[{marginTop: 40}]}>
             <View style={[styles.loginContainer, {marginBottom: 10}]}>
-              <Image source={bpPassportImage} />
-              <PageHeader style={{textAlign: 'center', marginBottom: 22}}>
+              <Image
+                source={bpPassportImage}
+                style={{marginTop: 20, marginBottom: 20}}
+              />
+              <BodyHeader style={{textAlign: 'center', marginBottom: 22}}>
                 <FormattedMessage id="login.have-a-paper" />
-              </PageHeader>
+              </BodyHeader>
 
               <Button
                 style={[styles.primaryButton]}
@@ -51,10 +56,14 @@ function Login({navigation}: Props) {
               />
             </View>
 
-            <View style={[styles.loginContainer, {marginBottom: 18}]}>
-              <PageHeader style={{textAlign: 'center', marginBottom: 18}}>
+            <View
+              style={[
+                styles.loginContainer,
+                {marginBottom: 18, paddingTop: 23, paddingBottom: 27},
+              ]}>
+              <BodyHeader style={{textAlign: 'center', marginBottom: 18}}>
                 <FormattedMessage id="login.no-bp-passport" />
-              </PageHeader>
+              </BodyHeader>
               <Button
                 style={{
                   backgroundColor: colors.green1,

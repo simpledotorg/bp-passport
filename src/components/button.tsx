@@ -9,7 +9,7 @@ import {
   StyleSheet,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import colors from '../styles/colors'
+import {colors, typography} from '../styles'
 
 interface ButtonProps extends NativeButtonProps {
   children?: ReactNode
@@ -44,7 +44,8 @@ export const Button = (props: ButtonProps) => {
           style={[
             {
               fontSize: 16,
-              fontWeight: '500',
+              fontWeight: 'bold',
+              fontFamily: typography.FONT.base,
               fontStyle: 'normal',
               lineHeight: 20,
               letterSpacing: 1.25,
