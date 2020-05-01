@@ -34,6 +34,9 @@ function MedicineTimeScreen({navigation, route}: Props) {
         mode={'time'}
         is24Hour={true}
         display="clock"
+        onTouchCancel={() => {
+          navigation.goBack()
+        }}
         onChange={(event, date) => {
           if (event.type === 'neutralButtonPressed') {
             setTime(date)
