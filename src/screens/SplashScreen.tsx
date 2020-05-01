@@ -30,8 +30,12 @@ function SplashScreen({navigation}: Props) {
 
   useEffect(() => {}, [bottomContentHeight, imageHeightToWidthRatio])
 
-  const imageHeight =
-    Dimensions.get('window').height - (bottomContentHeight - 32 + 92)
+  const maxImageHeight = 475
+  const maxImageWidth = maxImageHeight * imageHeightToWidthRatio
+  const imageHeight = Math.min(
+    Dimensions.get('window').height - (bottomContentHeight - 32 + 92),
+    maxImageHeight,
+  )
   const imageWidth = imageHeight * imageHeightToWidthRatio
 
   return (
