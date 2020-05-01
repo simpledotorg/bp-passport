@@ -1,5 +1,40 @@
 # BP Passport
 
+## Version 0.5
+
+### Overview
+
+Offline User Mode. Anyone can now use the BP Passport app.
+
+### What's New
+
+- New Offline user flow
+- New Home Screen empty states and offline user state
+- Patient Splash Screen design changes
+- Patient Login Screen design changes
+- Patient Launch Screen - background color change
+- New app icon
+- Consent Screen - content changes
+- BP details as an animated modal
+- Blood sugar details as an animated modal
+- Open a BP or Blood Sugar from the home screen
+- Add Medicine filter & choose medication
+- Medication Details screen - basic UI and styling
+- Set reminder days - UI only
+- BP helpful min/max errors info
+- Blood sugars helpful min/max errors info
+
+### What's In Progress
+
+- Saving a medication with reminders
+- Medication Reminder Push notifications
+
+### Issues fixed
+
+- Issues with text field selection when adding BPs on Android
+- Text and Button styling improvements
+- Lots of other fixes and improvements
+
 ## Version 0.4
 
 ### Overview
