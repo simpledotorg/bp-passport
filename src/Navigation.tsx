@@ -26,6 +26,7 @@ import AddBsScreen from './screens/AddBsScreen'
 import AddMedicineScreen from './screens/AddMedicineScreen'
 import DetailsModalScreen from './screens/DetailsModalScreen'
 import MedicationDetailScreen from './screens/MedicationDetailScreen'
+import MedicationFrequencyScreen from './screens/MedicineFrequencyScreen'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
@@ -56,6 +57,7 @@ export type RootStackParamList = {
   ADD_MEDICINE: undefined
   DETAILS_MODAL_SCREEN: {bp?: BloodPressure; bs?: BloodSugar}
   MEDICATION_DETAILS: {medication: Medication}
+  MEDICATION_FREQUENCY: {medication: Medication}
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -76,6 +78,22 @@ const Navigation = () => {
         <Stack.Screen
           name={SCREENS.DETAILS_MODAL_SCREEN}
           component={DetailsModalScreen}
+          options={
+            Platform.OS === 'ios'
+              ? {
+                  cardStyleInterpolator:
+                    CardStyleInterpolators.forModalPresentationIOS,
+                  cardOverlayEnabled: true,
+                }
+              : {
+                  cardStyleInterpolator:
+                    CardStyleInterpolators.forRevealFromBottomAndroid,
+                }
+          }
+        />
+        <Stack.Screen
+          name={SCREENS.MEDICATION_FREQUENCY}
+          component={MedicationFrequencyScreen}
           options={
             Platform.OS === 'ios'
               ? {
