@@ -5,7 +5,7 @@ import {
   useHeaderHeight,
   StackNavigationProp,
 } from '@react-navigation/stack'
-import {useNavigationState} from '@react-navigation/native'
+import {useNavigationState, StackActions} from '@react-navigation/native'
 import {forFade} from './navigation/interpolators'
 import {useIntl} from 'react-intl'
 import {usePrevious} from './effects/use-previous.effect'
@@ -69,7 +69,7 @@ const Navigation = () => {
         screenOptions={{
           gestureEnabled: false,
           cardStyle: {backgroundColor: 'rgba(47, 54, 61, 0.5)'},
-          animationEnabled: false,
+          animationEnabled: true,
         }}>
         <Stack.Screen name={SCREENS.LAUNCH} component={LaunchScreen} />
         <Stack.Screen
@@ -128,16 +128,17 @@ function MainStack({navigation}: Props) {
           ],
           {cancelable: true},
         )
-
-        if (routeCount <= 1) {
-          navigation.replace(SCREENS.SPLASH)
-        } else {
-          navigation.popToTop()
-        }
+        navigation.reset({
+          index: 0,
+          routes: [{name: SCREENS.SPLASH}],
+        })
       }
     } else {
       if (prevLoginState === LoginState.LoggedOut) {
-        navigation.navigate(SCREENS.HOME)
+        navigation.reset({
+          index: 0,
+          routes: [{name: SCREENS.HOME}],
+        })
       }
     }
   }, [loginState])
