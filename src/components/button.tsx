@@ -30,6 +30,8 @@ export const Button = (props: ButtonProps) => {
           backgroundColor: colors.blue2,
           alignItems: 'center',
           justifyContent: 'center',
+          borderBottomWidth: props.disableBoxShadow ? 0 : 2,
+          borderBottomColor: props.disableBoxShadow ? '' : colors.blue4,
         },
         props.disableBoxShadow ? {} : styles.shadowStyles,
         props.disabled
@@ -94,9 +96,9 @@ export const ButtonIcon = (props: ButtonIconProps) => {
 const styles = StyleSheet.create({
   shadowStyles: {
     shadowColor: 'rgba(0,0,0, 0.32)', // iOS box shadow
-    shadowOffset: {height: 1, width: 1}, // iOS box shadow
+    shadowOffset: {height: 2, width: 1}, // iOS box shadow
     shadowOpacity: 1, // iOS box shadow
     shadowRadius: 1, // iOS box shadow
-    elevation: 2, // Android elevation,
+    elevation: 5, // Android elevation,
   },
 })
