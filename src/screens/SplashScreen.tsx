@@ -1,18 +1,10 @@
 import React, {useEffect} from 'react'
-import {
-  SafeAreaView,
-  View,
-  Image,
-  StyleSheet,
-  ScrollView,
-  StatusBar,
-} from 'react-native'
-import {FormattedMessage, useIntl, IntlContext} from 'react-intl'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import {View, Image} from 'react-native'
+import {FormattedMessage, useIntl} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
 
-import {containerStyles, colors, iconSplash, bpLogo} from '../styles'
-import {Button, BodyHeader, BodyText} from '../components'
+import {containerStyles, colors, splashImage} from '../styles'
+import {Button, PageHeader} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 
@@ -29,79 +21,72 @@ function SplashScreen({navigation}: Props) {
   const intl = useIntl()
 
   return (
-    <SafeAreaView
-      style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-      <StatusBar backgroundColor={colors.grey4} barStyle="dark-content" />
-      <View style={styles.content}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.header}>
-            <Image source={iconSplash} style={{marginRight: 14}} />
-            <Image
-              source={bpLogo}
-              style={{height: 20, resizeMode: 'contain', marginTop: 5}}
-            />
-          </View>
+    <View
+      style={[
+        containerStyles.fill,
+        {
+          backgroundColor: colors.grey4,
+          justifyContent: 'flex-end',
+        },
+      ]}>
+      <View
+        style={[
+          styles.splashContainer,
+          {
+            position: 'relative',
+            height: '30%',
+            justifyContent: 'center',
+            flexDirection: 'row',
+          },
+        ]}>
+        <Image
+          source={splashImage}
+          style={{position: 'absolute', bottom: '90%'}}
+        />
+        <View>
+          <PageHeader
+            style={{
+              textAlign: 'center',
+              marginBottom: 18,
+              marginTop: '15%',
+            }}>
+            <FormattedMessage id="splash.track-bp-bs-meds" />
+          </PageHeader>
 
-          <BodyHeader>
-            <FormattedMessage id="splash.in-this-app" />
-          </BodyHeader>
-
-          <View>
-            <View
-              style={{
-                marginTop: 24,
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <Icon name="edit" size={24} color={colors.grey2} />
-              <BodyText style={styles.itemText}>
-                <FormattedMessage id="splash.record-and-track" />
-              </BodyText>
-            </View>
-            <View style={styles.item}>
-              <Icon name="record-voice-over" size={24} color={colors.grey2} />
-              <BodyText style={styles.itemText}>
-                <FormattedMessage id="splash.video-consult-bp" />
-              </BodyText>
-            </View>
-            <View style={styles.item}>
-              <Icon name="local-pharmacy" size={24} color={colors.grey2} />
-              <BodyText style={styles.itemText}>
-                <FormattedMessage id="splash.video-consult-medicine" />
-              </BodyText>
-            </View>
-            <View style={styles.item}>
-              <Icon name="alarm" size={24} color={colors.grey2} />
-              <BodyText style={styles.itemText}>
-                <FormattedMessage id="splash.get-reminders" />
-              </BodyText>
-            </View>
-          </View>
           <Button
-            style={{marginTop: 24}}
+            style={[styles.primaryButton]}
+            buttonColor={colors.blue2}
             title={intl.formatMessage({id: 'general.next'})}
             onPress={() => {
               navigation.navigate(SCREENS.LOGIN)
             }}
           />
-        </ScrollView>
+        </View>
       </View>
-    </SafeAreaView>
+    </View>
   )
 }
 
 export default SplashScreen
 
-const styles = StyleSheet.create({
-  content: {margin: 24},
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 24,
-    borderBottomColor: colors.grey3,
-    borderBottomWidth: 1,
-    marginBottom: 24,
+const styles = {
+  splashContainer: {
+    backgroundColor: colors.white100,
+    borderRadius: 4,
+    paddingHorizontal: 24,
+
+    shadowColor: colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+    elevation: 5,
   },
-  item: {marginTop: 24, flexDirection: 'row', alignItems: 'center'},
-  itemText: {marginLeft: 16, flex: 1},
-})
+  primaryButton: {
+    backgroundColor: colors.blue3,
+    shadowColor: 'rgba(0, 117, 235, 0.3)',
+    width: '100%',
+  },
+}
