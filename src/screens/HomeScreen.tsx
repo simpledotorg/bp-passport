@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
   },
   bpButton: {
     backgroundColor: colors.blue3,
-    shadowColor: 'rgba(0, 117, 235, 0.3)',
+
     flex: 1,
   },
   historyItem: {
