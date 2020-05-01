@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react'
-import {View, Image} from 'react-native'
+import React, {useEffect, useState} from 'react'
+import {View, Image, Dimensions} from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
 
 import {containerStyles, colors, splashImage} from '../styles'
-import {Button, PageHeader} from '../components'
+import {Button, BodyHeader} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 
@@ -20,38 +20,50 @@ type Props = {
 function SplashScreen({navigation}: Props) {
   const intl = useIntl()
 
+  const [bottomContentHeight, setBottomContentHeight] = useState(0)
+  const [imageHeightToWidthRatio, setImageHeightToWidthRatio] = useState(1)
+
+  useEffect(() => {
+    const image = Image.resolveAssetSource(splashImage)
+    setImageHeightToWidthRatio(image.width / image.height)
+  }, [])
+
+  useEffect(() => {}, [bottomContentHeight, imageHeightToWidthRatio])
+
+  const imageHeight =
+    Dimensions.get('window').height - (bottomContentHeight - 32 + 92)
+  const imageWidth = imageHeight * imageHeightToWidthRatio
+
   return (
     <View
       style={[
         containerStyles.fill,
         {
           backgroundColor: colors.grey4,
-          justifyContent: 'flex-end',
+          flexDirection: 'column-reverse',
         },
       ]}>
       <View
         style={[
           styles.splashContainer,
           {
-            position: 'relative',
-            height: '30%',
             justifyContent: 'center',
             flexDirection: 'row',
+            paddingTop: 68,
+            paddingBottom: 32,
           },
-        ]}>
-        <Image
-          source={splashImage}
-          style={{position: 'absolute', bottom: '90%'}}
-        />
+        ]}
+        onLayout={(event: any) => {
+          setBottomContentHeight(event.nativeEvent.layout.height)
+        }}>
         <View>
-          <PageHeader
+          <BodyHeader
             style={{
               textAlign: 'center',
-              marginBottom: 18,
-              marginTop: '15%',
+              marginBottom: 28,
             }}>
             <FormattedMessage id="splash.track-bp-bs-meds" />
-          </PageHeader>
+          </BodyHeader>
 
           <Button
             style={[styles.primaryButton]}
@@ -62,6 +74,16 @@ function SplashScreen({navigation}: Props) {
             }}
           />
         </View>
+        <Image
+          resizeMode={'stretch'}
+          source={splashImage}
+          style={{
+            position: 'absolute',
+            bottom: bottomContentHeight - 32,
+            height: imageHeight,
+            width: imageWidth,
+          }}
+        />
       </View>
     </View>
   )
