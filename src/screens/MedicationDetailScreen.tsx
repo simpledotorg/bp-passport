@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import {FormattedMessage} from 'react-intl'
+import {FormattedMessage, useIntl} from 'react-intl'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {format} from 'date-fns'
 
@@ -39,6 +39,7 @@ function Row({children}: {children: ReactNode}) {
 }
 
 function MedicationDetailsScreen({navigation, route}: Props) {
+  const intl = useIntl()
   const [remindersEnabled, setRemindersEnabled] = useState(false)
   const [recurringReminders, setRecurringReminders] = useState(false)
   const [medication, setMedication] = useState(route.params.medication)
@@ -179,7 +180,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
         </View>
         <Button
           style={{marginHorizontal: 8, marginTop: 'auto'}}
-          title={'hello'}
+          title={intl.formatMessage({id: 'general.save'})}
           onPress={() => {}}
         />
       </ScrollView>

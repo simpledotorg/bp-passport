@@ -35,8 +35,10 @@ function MedicineTimeScreen({navigation, route}: Props) {
         is24Hour={true}
         display="clock"
         onChange={(event, date) => {
-          setTime(date)
-          navigation.goBack()
+          if (event.type === 'neutralButtonPressed') {
+            setTime(date)
+            navigation.goBack()
+          }
         }}
       />
     )
