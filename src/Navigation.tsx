@@ -234,6 +234,7 @@ function MainStack({navigation}: Props) {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.new-bp'}),
+          gestureEnabled: false,
         }}
       />
       <Stack.Screen
@@ -242,6 +243,7 @@ function MainStack({navigation}: Props) {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.new-bs'}),
+          gestureEnabled: false,
         }}
       />
       <Stack.Screen

@@ -165,7 +165,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
         </View>
         <Button
           style={{marginHorizontal: 8, marginTop: 'auto'}}
-          title={'hello'}
+          title={'done'}
           onPress={() => {}}
         />
       </ScrollView>
