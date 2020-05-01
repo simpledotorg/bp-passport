@@ -7,6 +7,7 @@ import {containerStyles, colors, splashImage} from '../styles'
 import {Button, PageHeader} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 type SplashScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -21,14 +22,15 @@ function SplashScreen({navigation}: Props) {
   const intl = useIntl()
 
   return (
-    <View
+    <SafeAreaView
       style={[
         containerStyles.fill,
         {
-          backgroundColor: colors.grey4,
+          backgroundColor: colors.white,
           justifyContent: 'flex-end',
         },
       ]}>
+      <View style={{height: '70%', backgroundColor: colors.grey4}} />
       <View
         style={[
           styles.splashContainer,
@@ -63,7 +65,7 @@ function SplashScreen({navigation}: Props) {
           />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -74,15 +76,6 @@ const styles = {
     backgroundColor: colors.white100,
     borderRadius: 4,
     paddingHorizontal: 24,
-
-    shadowColor: colors.black,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.4,
-    shadowRadius: 4,
-    elevation: 5,
   },
   primaryButton: {
     backgroundColor: colors.blue3,
