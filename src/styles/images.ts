@@ -1,5 +1,7 @@
 const iconLaunch = require('../assets/images/icon-launch.png')
+const iconHomeHeader = require('../assets/images/icon-home-header.png')
 const bpPassportImage = require('../assets/images/bp-passport.png')
+const splashImage = require('../assets/images/splash.png')
 const qrImage = require('../assets/images/qr-code.png')
 const qrMaskImage = require('../assets/images/qr-mask.png')
 const iconSplash = require('../assets/images/icon-splash.png')
@@ -13,7 +15,9 @@ const purpleDrop = require('../assets/images/purple-drop.png')
 
 export {
   iconLaunch,
+  iconHomeHeader,
   bpPassportImage,
+  splashImage,
   iconSplash,
   bpLogo,
   qrImage,

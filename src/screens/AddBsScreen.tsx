@@ -1,4 +1,4 @@
-import React, {useState, useContext, useRef} from 'react'
+import React, {useState, useContext, useRef, useEffect} from 'react'
 import {
   SafeAreaView,
   View,
@@ -38,6 +38,12 @@ type Props = {
 interface PickerItemExtended extends Item {
   min: number
   max: number
+  type: string
+}
+
+enum INPUT_TYPES {
+  DECIMAL = 'DECIMAL',
+  PERCENTAGE = 'PERCENTAGE',
 }
 
 function AddBsScreen({navigation, route}: Props) {
@@ -51,109 +57,166 @@ function AddBsScreen({navigation, route}: Props) {
       value: BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
       min: 30,
       max: 1000,
+      type: INPUT_TYPES.DECIMAL,
     },
     {
       label: intl.formatMessage({id: 'bs.fasting-blood-sugar'}),
       value: BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR,
       min: 30,
       max: 1000,
+      type: INPUT_TYPES.DECIMAL,
     },
     {
       label: intl.formatMessage({id: 'bs.post-penial'}),
       value: BLOOD_SUGAR_TYPES.POST_PENIAL,
       min: 30,
       max: 1000,
+      type: INPUT_TYPES.DECIMAL,
     },
     {
       label: intl.formatMessage({id: 'bs.hemoglobic'}),
       value: BLOOD_SUGAR_TYPES.HEMOGLOBIC,
       min: 3,
       max: 25,
+      type: INPUT_TYPES.PERCENTAGE,
     },
   ]
 
   const [type, setType] = useState<string>(SUGAR_TYPES[0].value)
   const [reading, setReading] = useState<string>('')
+  const [errors, setErrors] = useState<null | string>(null)
   const inputRef = useRef<null | any>(null)
 
-  const isSaveDisabled = () => {
+  const [showErrors, setShowErrors] = useState(false)
+
+  const readingPrevious = useRef(reading)
+
+  const getErrors = (input: string) => {
+    if (input === '') {
+      return null
+    }
+
     const foundType = SUGAR_TYPES.find((sugarType) => {
       return sugarType.value === type
     })
 
     if (foundType) {
-      return !(
-        Number(reading) >= foundType.min && Number(reading) <= foundType.max
-      )
+      const isPercentage = foundType.type === INPUT_TYPES.PERCENTAGE
+
+      if (Number(input) < foundType.min) {
+        return intl.formatMessage(
+          {id: 'add-bs.bs-less-than-error'},
+          {value: `${foundType.min}${isPercentage ? '%' : ''}`},
+        )
+      } else if (Number(input) > foundType.max) {
+        return intl.formatMessage(
+          {id: 'add-bs.bs-more-than-error'},
+          {value: `${foundType.max}${isPercentage ? '%' : ''}`},
+        )
+      }
     }
 
-    return false
+    return null
+  }
+
+  useEffect(() => {
+    setErrors(getErrors(reading))
+  }, [type])
+
+  useEffect(() => {
+    let errorShowTimeout: any = null
+
+    if (reading !== readingPrevious.current) {
+      clearTimeout(errorShowTimeout)
+    }
+
+    if (errors) {
+      errorShowTimeout = setTimeout(() => setShowErrors(true), 2000)
+    } else {
+      setShowErrors(false)
+    }
+
+    readingPrevious.current = reading
+
+    return () => {
+      clearTimeout(errorShowTimeout)
+    }
+  }, [errors, reading])
+
+  const isSaveDisabled = (): boolean => {
+    return !!(reading === '' || errors || isNaN(Number(reading)))
   }
 
   return (
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white100}]}>
-        <TouchableWithoutFeedback
-          style={{flex: 1}}
-          onPress={() => {
-            if (inputRef?.current?.blur) {
-              inputRef?.current?.blur()
-            }
+        <View
+          style={{
+            flex: 1,
+            padding: 24,
           }}>
           <View
             style={{
-              flex: 1,
-              padding: 24,
+              position: 'relative',
+              marginBottom: 24,
             }}>
-            <View
-              style={{
-                position: 'relative',
-                marginBottom: 24,
-              }}>
-              <TextInput
-                style={[styles.input]}
-                ref={inputRef}
-                placeholder={intl.formatMessage({id: 'bs.blood-sugar'})}
-                value={reading}
-                onChangeText={(text) => setReading(text)}
-                keyboardType={'numeric'}
-                maxLength={6}
-              />
-              <BodyText
-                style={{
-                  position: 'absolute',
-                  right: 12,
-                  top: 14,
-                  color: colors.grey1,
-                }}>
-                <FormattedMessage id="bs.mgdl" />
-              </BodyText>
-            </View>
-            <Picker
-              value={type}
-              items={SUGAR_TYPES}
-              onValueChange={(value: string) => setType(value)}
-            />
-            <Button
-              title={intl.formatMessage({id: 'general.save'})}
-              disabled={isSaveDisabled()}
-              style={{
-                marginTop: 24,
-              }}
-              onPress={() => {
-                const newBloodSugar: BloodSugar = {
-                  blood_sugar_type: type,
-                  blood_sugar_value: reading,
-                  offline: true,
-                  recorded_at: new Date().toISOString(),
+            <TextInput
+              style={[styles.input]}
+              ref={inputRef}
+              autoFocus={true}
+              placeholder={intl.formatMessage({id: 'bs.blood-sugar'})}
+              value={reading}
+              onChangeText={(text) => {
+                setReading(text)
+                if (text === '') {
+                  setErrors(null)
+                } else if (text !== '') {
+                  setErrors(getErrors(text))
                 }
-
-                dispatch(addBloodSugar(newBloodSugar))
-
-                navigation.goBack()
               }}
+              keyboardType={
+                type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? 'numeric' : 'number-pad'
+              }
+              maxLength={6}
             />
+            <BodyText
+              style={{
+                position: 'absolute',
+                right: 12,
+                top: 14,
+                color: colors.grey1,
+              }}>
+              <FormattedMessage id="bs.mgdl" />
+            </BodyText>
+          </View>
+          <Picker
+            value={type}
+            items={SUGAR_TYPES}
+            onValueChange={(value: string) => {
+              setType(value)
+            }}
+          />
+          <Button
+            title={intl.formatMessage({id: 'general.save'})}
+            disabled={isSaveDisabled()}
+            style={{
+              marginTop: 24,
+            }}
+            onPress={() => {
+              const newBloodSugar: BloodSugar = {
+                blood_sugar_type: type,
+                blood_sugar_value: reading,
+                offline: true,
+                recorded_at: new Date().toISOString(),
+              }
+
+              dispatch(addBloodSugar(newBloodSugar))
+
+              navigation.goBack()
+            }}
+          />
+          {!errors && !showErrors && reading === '' && (
             <BodyText
               style={{
                 textAlign: 'center',
@@ -162,8 +225,18 @@ function AddBsScreen({navigation, route}: Props) {
               }}>
               <FormattedMessage id="bs.select-rbs-if-unsure" />
             </BodyText>
-          </View>
-        </TouchableWithoutFeedback>
+          )}
+          {errors && showErrors && (
+            <BodyText
+              style={{
+                textAlign: 'center',
+                marginTop: 24,
+                color: colors.red1,
+              }}>
+              {errors}
+            </BodyText>
+          )}
+        </View>
       </SafeAreaView>
     </View>
   )

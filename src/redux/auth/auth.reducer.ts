@@ -13,7 +13,6 @@ const authReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         authParams: action.payload,
-        loginState: LoginState.LoggingIn,
       }
     case AuthActionTypes.SET_LOGIN_STATE:
       const loginState: LoginState = action.payload

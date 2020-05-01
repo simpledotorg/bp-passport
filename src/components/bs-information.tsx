@@ -1,6 +1,7 @@
 import React from 'react'
 import {View, StyleSheet, Image, ViewStyle} from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {colors, purpleDrop} from '../styles'
 import {BodyText} from './'
@@ -14,10 +15,9 @@ import {
 type Props = {
   bs: BloodSugar
   style?: ViewStyle
-  compact?: boolean
 }
 
-export const BsInformation = ({bs, style = {}, compact = false}: Props) => {
+export const BsInformation = ({bs, style = {}}: Props) => {
   const intl = useIntl()
 
   const getBSText = () => {
@@ -53,42 +53,46 @@ export const BsInformation = ({bs, style = {}, compact = false}: Props) => {
     <View
       style={{
         flexDirection: 'row',
-        marginTop: 24,
-        ...style,
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
       }}>
-      <Image source={purpleDrop} style={[styles.informationIcon]} />
-      <View>
-        <BodyText
-          style={{
-            fontSize: 18,
-            color: colors.grey0,
-            fontWeight: '500',
-          }}>
-          {`${bs.blood_sugar_value} ${intl.formatMessage({id: 'bs.mgdl'})}`}
-          {compact && (
+      <View
+        style={{
+          flexDirection: 'row',
+          ...style,
+        }}>
+        <Image source={purpleDrop} style={[styles.informationIcon]} />
+        <View>
+          <BodyText
+            style={{
+              fontSize: 18,
+              color: colors.grey0,
+              fontWeight: '500',
+            }}>
+            {`${bs.blood_sugar_value} ${intl.formatMessage({id: 'bs.mgdl'})}`}
+
             <>
-              {`, `}
+              {` `}
               {getBSText()}
             </>
-          )}
-        </BodyText>
-        <BodyText
-          style={{
-            fontSize: 16,
+          </BodyText>
+          <BodyText
+            style={{
+              fontSize: 16,
 
-            color: colors.grey1,
-          }}>
-          {displayDate(bs)}
-        </BodyText>
-      </View>
-      {!compact && (
-        <View
-          style={{
-            marginLeft: 'auto',
-          }}>
-          {getBSText()}
+              color: colors.grey1,
+            }}>
+            {displayDate(bs)}
+          </BodyText>
         </View>
-      )}
+      </View>
+      <Icon
+        name="chevron-right"
+        size={24}
+        style={{marginLeft: 'auto'}}
+        color={colors.grey3}
+      />
     </View>
   )
 }

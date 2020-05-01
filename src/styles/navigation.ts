@@ -4,6 +4,7 @@ import colors from './colors'
 const styles = StyleSheet.create({
   headerStyle: {
     backgroundColor: colors.blue1,
+    shadowOffset: {height: 0, width: 0},
   },
   headerTitleStyle: {
     fontSize: 20,
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
     color: colors.white100,
     opacity: 0.5,
+    marginTop: 8,
   },
 })
 

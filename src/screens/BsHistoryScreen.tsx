@@ -49,7 +49,9 @@ function BsHistoryScreen({navigation, route}: Props) {
             renderItem={({item, index}) => (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate(SCREENS.BS_DETAILS, {bs: item})
+                  navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+                    bs: item,
+                  })
                 }}
                 style={[
                   {paddingRight: 24, marginTop: 12},
@@ -58,21 +60,7 @@ function BsHistoryScreen({navigation, route}: Props) {
                     ? {borderBottomWidth: 0}
                     : {},
                 ]}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <BsInformation compact bs={item} style={{marginTop: 0}} />
-                  <Icon
-                    name="chevron-right"
-                    size={24}
-                    style={{marginLeft: 'auto'}}
-                    color={colors.blue2}
-                  />
-                </View>
+                <BsInformation bs={item} style={{marginTop: 0}} />
               </TouchableOpacity>
             )}
             keyExtractor={(item, index) => {

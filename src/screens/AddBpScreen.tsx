@@ -1,4 +1,4 @@
-import React, {useState, useContext, useRef} from 'react'
+import React, {useState, useContext, useRef, useEffect} from 'react'
 import {
   SafeAreaView,
   View,
@@ -11,7 +11,7 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import {useIntl} from 'react-intl'
 
 import {containerStyles, colors} from '../styles'
-import {Button} from '../components'
+import {Button, BodyText} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 
@@ -44,98 +44,154 @@ function AddBpScreen({navigation, route}: Props) {
 
   const [systolic, setSystolic] = useState('')
   const [diastolic, setDiastolic] = useState('')
+  const [errors, setErrors] = useState<null | string>(null)
+
+  const systolicPrevious = useRef(systolic)
+  const diastolicPrevious = useRef(diastolic)
+  const [showErrors, setShowErrors] = useState(false)
 
   const dispatch = useThunkDispatch()
 
   const isSaveDisabled = () => {
-    return !(
-      Number(systolic) >= MIN_SYSTOLIC_BP &&
-      Number(systolic) <= MAX_SYSTOLIC_BP &&
-      Number(diastolic) >= MIN_DIASTOLIC_BP &&
-      Number(diastolic) <= MAX_SYSTOLIC_BP
+    return !!(
+      systolic === '' ||
+      diastolic === '' ||
+      errors ||
+      isNaN(Number(systolic)) ||
+      isNaN(Number(diastolic))
     )
   }
 
-  const getMinMax = (input: string, min: number, max: number) => {
-    if (!input) {
-      return input
-    }
-
-    const value = Number(input)
-
-    if (value < min) {
-      return `${min}`
-    } else if (value > max) {
-      return `${max}`
-    }
-
-    return value.toString()
+  const getErrorGateway = (systolicInput: string, diastolicInput: string) => {
+    setErrors(getErrors(systolicInput, diastolicInput))
   }
+
+  const getErrors = (systolicInput: string, diastolicInput: string) => {
+    if (systolicInput === '' && diastolicInput === '') {
+      return null
+    }
+
+    if (systolicInput !== '') {
+      if (Number(systolicInput) < MIN_SYSTOLIC_BP) {
+        return intl.formatMessage({id: 'add-bp.systolic-less-than-error'})
+      } else if (Number(systolicInput) > MAX_SYSTOLIC_BP) {
+        return intl.formatMessage({id: 'add-bp.systolic-greater-than-error'})
+      }
+    }
+
+    if (diastolicInput !== '') {
+      if (Number(diastolicInput) < MIN_DIASTOLIC_BP) {
+        return intl.formatMessage({id: 'add-bp.diastolic-less-than-error'})
+      } else if (Number(diastolicInput) > MAX_DIASTOLIC_BP) {
+        return intl.formatMessage({id: 'add-bp.diastolic-greater-than-error'})
+      }
+    }
+
+    return null
+  }
+
+  const save = () => {
+    const newBloodPressure: BloodPressure = {
+      diastolic: Number(diastolic),
+      systolic: Number(systolic),
+      offline: true,
+      recorded_at: new Date().toISOString(),
+    }
+
+    dispatch(addBloodPressure(newBloodPressure))
+
+    navigation.goBack()
+  }
+
+  useEffect(() => {
+    let errorShowTimeout: any = null
+
+    if (
+      systolic !== systolicPrevious.current ||
+      diastolic !== diastolicPrevious.current
+    ) {
+      clearTimeout(errorShowTimeout)
+    }
+
+    if (errors) {
+      errorShowTimeout = setTimeout(() => setShowErrors(true), 2000)
+    } else {
+      setShowErrors(false)
+    }
+
+    systolicPrevious.current = systolic
+    diastolicPrevious.current = diastolic
+
+    return () => {
+      clearTimeout(errorShowTimeout)
+    }
+  }, [errors, systolic, diastolic])
 
   return (
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white100}]}>
-        <TouchableWithoutFeedback
-          style={{flex: 1, backgroundColor: 'blue'}}
-          onPress={() => {
-            if (systolicRef?.current?.blur) {
-              systolicRef?.current?.blur()
-            }
-            if (diastolicRef?.current?.blur) {
-              diastolicRef?.current?.blur()
-            }
-          }}>
-          <View style={{padding: 24, flex: 1}}>
-            <View style={{flexDirection: 'row'}}>
-              <TextInput
-                ref={systolicRef}
-                style={[styles.input, {marginRight: 4}]}
-                onChangeText={(text) => setSystolic(text)}
-                onBlur={() => {
-                  setSystolic(
-                    getMinMax(systolic, MIN_SYSTOLIC_BP, MAX_SYSTOLIC_BP),
-                  )
-                }}
-                placeholder={intl.formatMessage({id: 'general.systolic'})}
-                value={systolic.toString()}
-                keyboardType={'numeric'}
-              />
-              <TextInput
-                ref={diastolicRef}
-                style={[styles.input, {marginLeft: 4}]}
-                onChangeText={(text) => setDiastolic(text)}
-                onBlur={() => {
-                  setDiastolic(
-                    getMinMax(diastolic, MIN_DIASTOLIC_BP, MAX_DIASTOLIC_BP),
-                  )
-                }}
-                placeholder={intl.formatMessage({id: 'general.diastolic'})}
-                value={diastolic.toString()}
-                keyboardType={'numeric'}
-              />
-            </View>
-            <Button
-              title={intl.formatMessage({id: 'general.save'})}
-              disabled={isSaveDisabled()}
-              style={{
-                marginTop: 24,
+        <View style={{padding: 24, flex: 1}}>
+          <View style={{flexDirection: 'row'}}>
+            <TextInput
+              maxLength={6}
+              autoFocus={true}
+              ref={systolicRef}
+              style={[styles.input, {marginRight: 4}]}
+              onChangeText={(text) => {
+                setSystolic(text)
+                getErrorGateway(text, diastolic)
               }}
-              onPress={() => {
-                const newBloodPressure: BloodPressure = {
-                  diastolic: Number(diastolic),
-                  systolic: Number(systolic),
-                  offline: true,
-                  recorded_at: new Date().toISOString(),
+              placeholder={intl.formatMessage({id: 'general.systolic'})}
+              value={systolic.toString()}
+              keyboardType={'numeric'}
+              onSubmitEditing={() => {
+                if (diastolic === '') {
+                  diastolicRef?.current?.focus()
+                } else if (!isSaveDisabled()) {
+                  save()
                 }
-
-                dispatch(addBloodPressure(newBloodPressure))
-
-                navigation.goBack()
+              }}
+            />
+            <TextInput
+              maxLength={6}
+              ref={diastolicRef}
+              style={[styles.input, {marginLeft: 4}]}
+              onChangeText={(text) => {
+                setDiastolic(text)
+                getErrorGateway(systolic, text)
+              }}
+              placeholder={intl.formatMessage({id: 'general.diastolic'})}
+              value={diastolic.toString()}
+              keyboardType={'numeric'}
+              onSubmitEditing={() => {
+                if (!isSaveDisabled()) {
+                  save()
+                }
               }}
             />
           </View>
-        </TouchableWithoutFeedback>
+          <Button
+            title={intl.formatMessage({id: 'general.save'})}
+            disabled={isSaveDisabled()}
+            style={{
+              marginTop: 24,
+            }}
+            onPress={() => {
+              save()
+            }}
+          />
+          {errors && showErrors && (
+            <BodyText
+              style={{
+                textAlign: 'center',
+                marginTop: 24,
+                color: colors.red1,
+              }}>
+              {errors}
+            </BodyText>
+          )}
+        </View>
       </SafeAreaView>
     </View>
   )

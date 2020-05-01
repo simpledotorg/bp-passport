@@ -1,12 +1,13 @@
 import React, {useContext, useEffect} from 'react'
-import {Alert} from 'react-native'
+import {Alert, Platform} from 'react-native'
 import {
   createStackNavigator,
   useHeaderHeight,
   StackNavigationProp,
 } from '@react-navigation/stack'
-import {useNavigationState} from '@react-navigation/native'
+import {useNavigationState, StackActions} from '@react-navigation/native'
 import {forFade} from './navigation/interpolators'
+import {CardStyleInterpolators} from '@react-navigation/stack'
 import {useIntl} from 'react-intl'
 import {usePrevious} from './effects/use-previous.effect'
 
@@ -19,17 +20,20 @@ import VerifyNumberScreen from './screens/VerifyNumberScreen'
 import HomeScreen from './screens/HomeScreen'
 import AddBpScreen from './screens/AddBpScreen'
 import BpHistoryScreen from './screens/BpHistoryScreen'
-import BpDetailsScreen from './screens/BpDetailsScreen'
 import SettingsScreen from './screens/SettingsScreen'
-import BsDetailsScreen from './screens/BsDetailsScreen'
 import BsHistoryScreen from './screens/BsHistoryScreen'
 import AddBsScreen from './screens/AddBsScreen'
+import AddMedicineScreen from './screens/AddMedicineScreen'
+import DetailsModalScreen from './screens/DetailsModalScreen'
+import MedicationDetailScreen from './screens/MedicationDetailScreen'
+import MedicationFrequencyScreen from './screens/MedicineFrequencyScreen'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
 import {colors, navigation as navigationStyle} from './styles'
 import {BloodPressure} from './redux/blood-pressure/blood-pressure.models'
 import {BloodSugar} from './redux/blood-sugar/blood-sugar.models'
+import {Medication} from './redux/medication/medication.models'
 import {LoginState} from './redux/auth/auth.models'
 import {loginStateSelector} from './redux/auth/auth.selectors'
 import {patientSelector} from './redux/patient/patient.selectors'
@@ -47,11 +51,13 @@ export type RootStackParamList = {
   CONTACT_A_DOCTOR: undefined
   HOME: undefined
   BP_HISTORY: {bps: BloodPressure[]}
-  BP_DETAILS: {bp: BloodPressure}
   ADD_BP: undefined
   ADD_BS: undefined
   BS_HISTORY: {bloodSugars: BloodSugar[]}
-  BS_DETAILS: {bs: BloodSugar}
+  ADD_MEDICINE: undefined
+  DETAILS_MODAL_SCREEN: {bp?: BloodPressure; bs?: BloodSugar}
+  MEDICATION_DETAILS: {medication: Medication}
+  MEDICATION_FREQUENCY: {updateDays: (days: {}) => void}
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -65,8 +71,42 @@ const Navigation = () => {
         mode="modal"
         screenOptions={{
           gestureEnabled: false,
+          cardStyle: {backgroundColor: 'rgba(47, 54, 61, 0.0)'},
+          animationEnabled: true,
         }}>
         <Stack.Screen name={SCREENS.LAUNCH} component={LaunchScreen} />
+        <Stack.Screen
+          name={SCREENS.DETAILS_MODAL_SCREEN}
+          component={DetailsModalScreen}
+          options={
+            Platform.OS === 'ios'
+              ? {
+                  cardStyleInterpolator:
+                    CardStyleInterpolators.forModalPresentationIOS,
+                  cardOverlayEnabled: true,
+                }
+              : {
+                  cardStyleInterpolator:
+                    CardStyleInterpolators.forRevealFromBottomAndroid,
+                }
+          }
+        />
+        <Stack.Screen
+          name={SCREENS.MEDICATION_FREQUENCY}
+          component={MedicationFrequencyScreen}
+          options={
+            Platform.OS === 'ios'
+              ? {
+                  cardStyleInterpolator:
+                    CardStyleInterpolators.forModalPresentationIOS,
+                  cardOverlayEnabled: true,
+                }
+              : {
+                  cardStyleInterpolator:
+                    CardStyleInterpolators.forRevealFromBottomAndroid,
+                }
+          }
+        />
 
         <Stack.Screen
           name={SCREENS.MAIN_STACK}
@@ -119,16 +159,17 @@ function MainStack({navigation}: Props) {
           ],
           {cancelable: true},
         )
-
-        if (routeCount <= 1) {
-          navigation.replace(SCREENS.SPLASH)
-        } else {
-          navigation.popToTop()
-        }
+        navigation.reset({
+          index: 0,
+          routes: [{name: SCREENS.SPLASH}],
+        })
       }
     } else {
       if (prevLoginState === LoginState.LoggedOut) {
-        navigation.navigate(SCREENS.HOME)
+        navigation.reset({
+          index: 0,
+          routes: [{name: SCREENS.HOME}],
+        })
       }
     }
   }, [loginState])
@@ -161,10 +202,7 @@ function MainStack({navigation}: Props) {
       <Stack.Screen
         name={SCREENS.LOGIN}
         component={LoginScreen}
-        options={{
-          headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.login'}),
-        }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name={SCREENS.SCAN_BP_PASSPORT}
@@ -191,19 +229,12 @@ function MainStack({navigation}: Props) {
         }}
       />
       <Stack.Screen
-        name={SCREENS.BP_DETAILS}
-        component={BpDetailsScreen}
-        options={{
-          headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.details'}),
-        }}
-      />
-      <Stack.Screen
         name={SCREENS.ADD_BP}
         component={AddBpScreen}
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.new-bp'}),
+          gestureEnabled: false,
         }}
       />
       <Stack.Screen
@@ -212,6 +243,7 @@ function MainStack({navigation}: Props) {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.new-bs'}),
+          gestureEnabled: false,
         }}
       />
       <Stack.Screen
@@ -223,13 +255,22 @@ function MainStack({navigation}: Props) {
         }}
       />
       <Stack.Screen
-        name={SCREENS.BS_DETAILS}
-        component={BsDetailsScreen}
+        name={SCREENS.ADD_MEDICINE}
+        component={AddMedicineScreen}
         options={{
           headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.details'}),
+          title: intl.formatMessage({id: 'page-titles.add-medicine'}),
         }}
       />
+      <Stack.Screen
+        name={SCREENS.MEDICATION_DETAILS}
+        component={MedicationDetailScreen}
+        options={({route}) => ({
+          headerBackTitle: ' ',
+          title: route.params.medication.name,
+        })}
+      />
+
       <Stack.Screen
         name={SCREENS.HOME}
         component={HomeScreen}
@@ -244,10 +285,7 @@ function MainStack({navigation}: Props) {
           headerTitleAlign: 'center',
           headerTitle: () => <HomeHeaderTitle />,
           headerRight: () => {
-            if (
-              loginState === LoginState.LoggedIn ||
-              (loginState === LoginState.LoggingIn && apiUser !== undefined)
-            ) {
+            if (loginState === LoginState.LoggedIn) {
               return (
                 <ButtonIcon
                   onPress={() => navigation.navigate(SCREENS.SETTINGS)}

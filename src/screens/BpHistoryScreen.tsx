@@ -8,7 +8,6 @@ import {
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {containerStyles, colors} from '../styles'
 import {BodyHeader, BpInformation} from '../components'
@@ -32,47 +31,38 @@ type Props = {
 }
 
 function BpHistoryScreen({navigation, route}: Props) {
-  const bloodPressures = bloodPressuresSelector()
+  const bps = bloodPressuresSelector()
 
   return (
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white}]}>
         <View style={{flex: 1, paddingTop: 24, paddingLeft: 24}}>
-          <View style={{marginBottom: 24}}>
+          <View style={{marginBottom: 16}}>
             <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
               BP History
             </BodyHeader>
           </View>
           <FlatList
-            data={bloodPressures}
-            renderItem={({item, index}) => (
+            data={bps}
+            renderItem={({item: bp, index}) => (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate(SCREENS.BP_DETAILS, {bp: item})
+                  navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+                    bp,
+                  })
                 }}
+                key={index}
                 style={[
-                  {paddingRight: 24, marginTop: 12},
+                  {
+                    marginRight: 24,
+                    marginBottom: 12,
+                    paddingTop: 12,
+                  },
                   styles.historyItem,
-                  index === bloodPressures.length - 1
-                    ? {borderBottomWidth: 0}
-                    : {},
+                  index === bps.length - 1 ? {borderBottomWidth: 0} : {},
                 ]}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <BpInformation compact bp={item} style={{marginTop: 0}} />
-                  <Icon
-                    name="chevron-right"
-                    size={24}
-                    style={{marginLeft: 'auto'}}
-                    color={colors.blue2}
-                  />
-                </View>
+                <BpInformation bp={bp} />
               </TouchableOpacity>
             )}
             keyExtractor={(item, index) => {
@@ -89,9 +79,8 @@ export default BpHistoryScreen
 
 const styles = StyleSheet.create({
   historyItem: {
+    borderTopWidth: 1,
     borderColor: colors.grey3,
-    borderBottomWidth: 1,
-    paddingBottom: 12,
     flexDirection: 'row',
     alignItems: 'center',
   },

@@ -2,10 +2,17 @@ import React from 'react'
 import {MedicationActionTypes} from './medication.types'
 import {AuthActionTypes} from '../auth/auth.types'
 import {Medication} from './medication.models'
-import {isBefore} from 'date-fns'
+import AsyncStorage from '@react-native-community/async-storage'
+import {persistReducer} from 'redux-persist'
 
-const INITIAL_STATE: {medications?: Medication[]} = {
+const ALL_MEDICINE_NAMES: Medication[] = require('../../assets/data/medicines.json')
+
+const INITIAL_STATE: {
+  medications?: Medication[]
+  medicationsLibrary: Medication[]
+} = {
   medications: undefined,
+  medicationsLibrary: ALL_MEDICINE_NAMES,
 }
 
 const sortedMedications = (medications: Medication[]) => {
@@ -71,4 +78,10 @@ const medicationReducer = (state = INITIAL_STATE, action) => {
   }
 }
 
-export default medicationReducer
+const persistConfig = {
+  key: 'medication',
+  storage: AsyncStorage,
+  blacklist: ['medicationsLibrary'],
+}
+
+export default persistReducer(persistConfig, medicationReducer)
