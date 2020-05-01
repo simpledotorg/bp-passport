@@ -151,101 +151,92 @@ function AddBsScreen({navigation, route}: Props) {
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white100}]}>
-        <TouchableWithoutFeedback
-          style={{flex: 1}}
-          onPress={() => {
-            if (inputRef?.current?.blur) {
-              inputRef?.current?.blur()
-            }
+        <View
+          style={{
+            flex: 1,
+            padding: 24,
           }}>
           <View
             style={{
-              flex: 1,
-              padding: 24,
+              position: 'relative',
+              marginBottom: 24,
             }}>
-            <View
+            <TextInput
+              style={[styles.input]}
+              ref={inputRef}
+              autoFocus={true}
+              placeholder={intl.formatMessage({id: 'bs.blood-sugar'})}
+              value={reading}
+              onChangeText={(text) => {
+                setReading(text)
+                if (text === '') {
+                  setErrors(null)
+                } else if (text !== '') {
+                  setErrors(getErrors(text))
+                }
+              }}
+              keyboardType={
+                type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? 'numeric' : 'number-pad'
+              }
+              maxLength={6}
+            />
+            <BodyText
               style={{
-                position: 'relative',
-                marginBottom: 24,
+                position: 'absolute',
+                right: 12,
+                top: 14,
+                color: colors.grey1,
               }}>
-              <TextInput
-                style={[styles.input]}
-                ref={inputRef}
-                placeholder={intl.formatMessage({id: 'bs.blood-sugar'})}
-                value={reading}
-                onChangeText={(text) => {
-                  setReading(text)
-                  if (text === '') {
-                    setErrors(null)
-                  } else if (text !== '') {
-                    setErrors(getErrors(text))
-                  }
-                }}
-                keyboardType={
-                  type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
-                    ? 'numeric'
-                    : 'number-pad'
-                }
-                maxLength={6}
-              />
-              <BodyText
-                style={{
-                  position: 'absolute',
-                  right: 12,
-                  top: 14,
-                  color: colors.grey1,
-                }}>
-                <FormattedMessage id="bs.mgdl" />
-              </BodyText>
-            </View>
-            <Picker
-              value={type}
-              items={SUGAR_TYPES}
-              onValueChange={(value: string) => {
-                setType(value)
-              }}
-            />
-            <Button
-              title={intl.formatMessage({id: 'general.save'})}
-              disabled={isSaveDisabled()}
-              style={{
-                marginTop: 24,
-              }}
-              onPress={() => {
-                const newBloodSugar: BloodSugar = {
-                  blood_sugar_type: type,
-                  blood_sugar_value: reading,
-                  offline: true,
-                  recorded_at: new Date().toISOString(),
-                }
-
-                dispatch(addBloodSugar(newBloodSugar))
-
-                navigation.goBack()
-              }}
-            />
-            {!errors && !showErrors && reading === '' && (
-              <BodyText
-                style={{
-                  textAlign: 'center',
-                  marginTop: 24,
-                  color: colors.grey1,
-                }}>
-                <FormattedMessage id="bs.select-rbs-if-unsure" />
-              </BodyText>
-            )}
-            {errors && showErrors && (
-              <BodyText
-                style={{
-                  textAlign: 'center',
-                  marginTop: 24,
-                  color: colors.red1,
-                }}>
-                {errors}
-              </BodyText>
-            )}
+              <FormattedMessage id="bs.mgdl" />
+            </BodyText>
           </View>
-        </TouchableWithoutFeedback>
+          <Picker
+            value={type}
+            items={SUGAR_TYPES}
+            onValueChange={(value: string) => {
+              setType(value)
+            }}
+          />
+          <Button
+            title={intl.formatMessage({id: 'general.save'})}
+            disabled={isSaveDisabled()}
+            style={{
+              marginTop: 24,
+            }}
+            onPress={() => {
+              const newBloodSugar: BloodSugar = {
+                blood_sugar_type: type,
+                blood_sugar_value: reading,
+                offline: true,
+                recorded_at: new Date().toISOString(),
+              }
+
+              dispatch(addBloodSugar(newBloodSugar))
+
+              navigation.goBack()
+            }}
+          />
+          {!errors && !showErrors && reading === '' && (
+            <BodyText
+              style={{
+                textAlign: 'center',
+                marginTop: 24,
+                color: colors.grey1,
+              }}>
+              <FormattedMessage id="bs.select-rbs-if-unsure" />
+            </BodyText>
+          )}
+          {errors && showErrors && (
+            <BodyText
+              style={{
+                textAlign: 'center',
+                marginTop: 24,
+                color: colors.red1,
+              }}>
+              {errors}
+            </BodyText>
+          )}
+        </View>
       </SafeAreaView>
     </View>
   )
