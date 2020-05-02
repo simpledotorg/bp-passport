@@ -5,16 +5,14 @@ import {Medication} from './medication.models'
 import AsyncStorage from '@react-native-community/async-storage'
 import {persistReducer} from 'redux-persist'
 
-const ALL_MEDICINE_NAMES: string[] = require('../../assets/data/medicines.json')
+const ALL_MEDICINE_NAMES: Medication[] = require('../../assets/data/medicines.json')
 
 const INITIAL_STATE: {
   medications?: Medication[]
   medicationsLibrary: Medication[]
 } = {
   medications: undefined,
-  medicationsLibrary: ALL_MEDICINE_NAMES.map((name) => {
-    return {name}
-  }),
+  medicationsLibrary: ALL_MEDICINE_NAMES,
 }
 
 const sortedMedications = (medications: Medication[]) => {

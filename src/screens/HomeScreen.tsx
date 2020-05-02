@@ -89,6 +89,8 @@ function Home({navigation}: Props) {
   const bss: BloodSugar[] = bloodSugars ?? []
   const meds: Medication[] = medications ?? []
 
+  console.log(bps)
+
   const medicationDisplayName = (medication: Medication) => {
     let ret = medication.name
     if (medication.dosage) {
@@ -201,7 +203,9 @@ function Home({navigation}: Props) {
                     return (
                       <TouchableOpacity
                         onPress={() => {
-                          navigation.navigate(SCREENS.BP_DETAILS, {bp})
+                          navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+                            bp,
+                          })
                         }}
                         key={index}
                         style={[
@@ -267,7 +271,9 @@ function Home({navigation}: Props) {
                     return (
                       <TouchableOpacity
                         onPress={() => {
-                          navigation.navigate(SCREENS.BS_DETAILS, {bs})
+                          navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+                            bs,
+                          })
                         }}
                         key={index}
                         style={[
@@ -350,7 +356,7 @@ const styles = StyleSheet.create({
   },
   bpButton: {
     backgroundColor: colors.blue3,
-    shadowColor: 'rgba(0, 117, 235, 0.3)',
+
     flex: 1,
   },
   historyItem: {

@@ -49,7 +49,9 @@ function BsHistoryScreen({navigation, route}: Props) {
             renderItem={({item, index}) => (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate(SCREENS.BS_DETAILS, {bs: item})
+                  navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+                    bs: item,
+                  })
                 }}
                 style={[
                   {paddingRight: 24, marginTop: 12},

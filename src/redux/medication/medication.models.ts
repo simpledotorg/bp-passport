@@ -4,4 +4,5 @@ export interface Medication {
   dosage?: string
   is_protocol_drug?: boolean
   offline?: boolean
+  days?: {}
 }

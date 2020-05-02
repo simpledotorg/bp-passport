@@ -1145,7 +1145,14 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/picker/-/picker-1.3.0.tgz#74be7dd93c54426677ddd68080ca253906a57e07"
   integrity sha512-ak4CU6IkpNmXeAt+A4stCr/GLAli/o+5NOREH2YxybBUY0Z8pyf+WPzDL5QQdl1DsyO8wsC5J1pnbrm9NAVKmQ==
 
-"@react-native-community/push-notification-ios@^1.0.1", "@react-native-community/push-notification-ios@^1.1.1":
+"@react-native-community/push-notification-ios@^1.0.1":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.2.0.tgz#3353598450a39c42d079603aad2d1c0f9c2c1729"
+  integrity sha512-B5qPb9P/6vvxGGQDePlK/q6NxoZPWSVFtKCQ9jlboP7gNZmf3AAyBhTzrb++s2NSXXogjkGi6vt9df1ipZiawQ==
+  dependencies:
+    invariant "^2.2.4"
+
+"@react-native-community/push-notification-ios@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.1.1.tgz#80d5684d05d211a832f88d78720d63e53119a027"
   integrity sha512-kgm8BKlru5OjwxxynReC1MM/JXwXZ/zOSGYORhbmnrBC8LTlogYA1ZMJ9HY9ltEpw6gDndQEsfFOkXHYeAPSCw==
@@ -6059,10 +6066,9 @@ react-native-picker-select@^7.0.0:
   dependencies:
     lodash.isequal "^4.5.0"
 
-react-native-push-notification@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-3.3.0.tgz#dc996f6b72fb8ad9b9590cbc4cc8e5cc5b44cb31"
-  integrity sha512-ioBNr7l4SOb9nRMmsER/mAt7VjE3Oy7TCruHOHmM0Y3P4kmTz3qbhRCO1nOA9lVbV0pPwpmnFKsv89xyyHgccA==
+"react-native-push-notification@https://github.com/nickkuh/react-native-push-notification":
+  version "3.3.1"
+  resolved "https://github.com/nickkuh/react-native-push-notification#e90f0148461e39e5b56af6411e5bce8934a96fb7"
   dependencies:
     "@react-native-community/push-notification-ios" "^1.0.1"
 

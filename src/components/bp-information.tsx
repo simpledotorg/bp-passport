@@ -69,7 +69,6 @@ export const BpInformation = ({bp, style = {}}: Props) => {
             style={{
               fontSize: 18,
               color: colors.grey0,
-              fontWeight: '500',
             }}>
             <>{`${bp.systolic} / ${bp.diastolic}`}</>
 
@@ -81,7 +80,6 @@ export const BpInformation = ({bp, style = {}}: Props) => {
           <BodyText
             style={{
               fontSize: 16,
-
               color: colors.grey1,
             }}>
             {displayDate(bp)}
