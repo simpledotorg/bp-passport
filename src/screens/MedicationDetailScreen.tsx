@@ -10,8 +10,9 @@ import {
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import {FormattedMessage} from 'react-intl'
+import {FormattedMessage, useIntl} from 'react-intl'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import {format} from 'date-fns'
 
 import {containerStyles, colors} from '../styles'
 import SCREENS from '../constants/screens'
@@ -42,6 +43,7 @@ function Row({children}: {children: ReactNode}) {
 }
 
 function MedicationDetailsScreen({navigation, route}: Props) {
+  const intl = useIntl()
   const [remindersEnabled, setRemindersEnabled] = useState(false)
   /*
   const toggleReminders = () => {
@@ -73,6 +75,10 @@ function MedicationDetailsScreen({navigation, route}: Props) {
 
   const updateDays = (days: any) => {
     setMedication({...medication, days})
+  }
+
+  const updateTime = (time: Date) => {
+    setMedication({...medication, time})
   }
 
   const getFrequencyText = () => {
@@ -130,6 +136,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                 onPress={() => {
                   navigation.navigate(SCREENS.MEDICATION_FREQUENCY, {
                     updateDays,
+                    medication,
                   })
                 }}>
                 <View
@@ -157,28 +164,36 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                   </View>
                 </View>
               </TouchableWithoutFeedback>
-              <View
-                style={[
-                  styles.row,
-                  {
-                    paddingTop: 12,
-                  },
-                ]}>
-                <BodyText>
-                  <FormattedMessage id="medicine.time" />
-                </BodyText>
-                <View style={{flexDirection: 'row'}}>
-                  <BodyText style={{color: colors.blue2, marginRight: 16}}>
-                    8:00AM
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  navigation.navigate(SCREENS.MEDICATION_TIME, {
+                    updateTime,
+                    medication,
+                  })
+                }}>
+                <View
+                  style={[
+                    styles.row,
+                    {
+                      paddingTop: 12,
+                    },
+                  ]}>
+                  <BodyText>
+                    <FormattedMessage id="medicine.time" />
                   </BodyText>
-                  <Icon
-                    name="chevron-right"
-                    size={24}
-                    style={{marginLeft: 'auto'}}
-                    color={colors.blue2}
-                  />
+                  <View style={{flexDirection: 'row'}}>
+                    <BodyText style={{color: colors.blue2, marginRight: 16}}>
+                      {format(medication.time ?? new Date(), 'HH:mm')}
+                    </BodyText>
+                    <Icon
+                      name="chevron-right"
+                      size={24}
+                      style={{marginLeft: 'auto'}}
+                      color={colors.blue2}
+                    />
+                  </View>
                 </View>
-              </View>
+              </TouchableWithoutFeedback>
             </>
           )}
         </View>
@@ -202,7 +217,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
         </View>
         <Button
           style={{marginHorizontal: 8, marginTop: 'auto'}}
-          title={'done'}
+          title={intl.formatMessage({id: 'general.save'})}
           onPress={() => {}}
         />
       </ScrollView>

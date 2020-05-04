@@ -24,46 +24,18 @@ type Props = {
   route: MedicineFrequencyScreen
 }
 
-const DAYS_DEFAULT = {
-  MONDAY: {
-    label: 'general.monday',
-    value: true,
-  },
-  TUESDAY: {
-    label: 'general.tuesday',
-    value: true,
-  },
-  WEDNESDAY: {
-    label: 'general.wednesday',
-    value: true,
-  },
-  THURSDAY: {
-    label: 'general.thursday',
-    value: true,
-  },
-  FRIDAY: {
-    label: 'general.friday',
-    value: true,
-  },
-  SATURDAY: {
-    label: 'general.saturday',
-    value: true,
-  },
-  SUNDAY: {
-    label: 'general.sunday',
-    value: true,
-  },
-}
-
 function MedicineFrequencyScreen({navigation, route}: Props) {
   const intl = useIntl()
-  const {updateDays} = route.params
-  const [days, setDays] = useState(DAYS_DEFAULT)
+  const {updateDays, medication} = route.params
+  const [days, setDays] = useState(medication.days)
 
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        navigation.goBack()
+        updateDays(days)
+        setTimeout(() => {
+          navigation.goBack()
+        }, 0)
       }}>
       <View
         style={[

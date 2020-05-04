@@ -15,6 +15,7 @@ import {useIntl} from 'react-intl'
 import {containerStyles, colors, medicinePill} from '../styles'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
+import {setHours, setMinutes} from 'date-fns'
 
 import {useThunkDispatch} from '../redux/store'
 import {BodyText} from '../components'
@@ -30,6 +31,37 @@ type AddMedicineScreen = RouteProp<RootStackParamList, SCREENS.ADD_MEDICINE>
 type Props = {
   navigation: AddMedicineScreenNavigationProp
   route: AddMedicineScreen
+}
+
+const DEFAULT_DAYS = {
+  MONDAY: {
+    label: 'general.monday',
+    value: true,
+  },
+  TUESDAY: {
+    label: 'general.tuesday',
+    value: true,
+  },
+  WEDNESDAY: {
+    label: 'general.wednesday',
+    value: true,
+  },
+  THURSDAY: {
+    label: 'general.thursday',
+    value: true,
+  },
+  FRIDAY: {
+    label: 'general.friday',
+    value: true,
+  },
+  SATURDAY: {
+    label: 'general.saturday',
+    value: true,
+  },
+  SUNDAY: {
+    label: 'general.sunday',
+    value: true,
+  },
 }
 
 function AddMedicineScreen({navigation, route}: Props) {
@@ -90,8 +122,13 @@ function AddMedicineScreen({navigation, route}: Props) {
                     ]}>
                     <TouchableOpacity
                       onPressOut={() => {
+                        inputRef.current.blur()
                         navigation.push(SCREENS.MEDICATION_DETAILS, {
-                          medication: item,
+                          medication: {
+                            ...item,
+                            days: DEFAULT_DAYS,
+                            time: setHours(setMinutes(new Date(), 0), 8),
+                          },
                         })
                       }}>
                       <View
