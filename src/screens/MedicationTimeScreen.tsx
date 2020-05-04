@@ -38,10 +38,13 @@ function MedicineTimeScreen({navigation, route}: Props) {
           navigation.goBack()
         }}
         onChange={(event, date) => {
-          if (event.type === 'neutralButtonPressed') {
-            setTime(date)
+          if (event.type === 'dismissed') {
             navigation.goBack()
-          } else if (event.type === 'set') {
+          } else {
+            if (date) {
+              updateTime(date)
+            }
+
             navigation.goBack()
           }
         }}
