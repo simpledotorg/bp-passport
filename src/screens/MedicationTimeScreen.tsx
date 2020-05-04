@@ -76,7 +76,7 @@ function MedicineTimeScreen({navigation, route}: Props) {
             }}>
             <View
               style={{
-                borderBottomWidth: 2,
+                borderBottomWidth: 1,
                 borderColor: colors.grey3,
               }}>
               <BodyHeader
@@ -88,15 +88,21 @@ function MedicineTimeScreen({navigation, route}: Props) {
                 <FormattedMessage id="medicine.set-reminder-for" />
               </BodyHeader>
             </View>
-            <DateTimePicker
-              value={time}
-              mode={'time'}
-              is24Hour={true}
-              display="clock"
-              onChange={(event, date) => {
-                setTime(date)
-              }}
-            />
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderColor: colors.grey3,
+              }}>
+              <DateTimePicker
+                value={time}
+                mode={'time'}
+                is24Hour={true}
+                display="clock"
+                onChange={(event, date) => {
+                  setTime(date)
+                }}
+              />
+            </View>
           </View>
           <Button
             style={{marginHorizontal: 16, marginBottom: 16}}

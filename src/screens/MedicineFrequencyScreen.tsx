@@ -32,7 +32,10 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        navigation.goBack()
+        updateDays(days)
+        setTimeout(() => {
+          navigation.goBack()
+        }, 0)
       }}>
       <View
         style={[
