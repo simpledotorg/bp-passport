@@ -90,6 +90,19 @@ function AddBpScreen({navigation, route}: Props) {
     return null
   }
 
+  const save = () => {
+    const newBloodPressure: BloodPressure = {
+      diastolic: Number(diastolic),
+      systolic: Number(systolic),
+      offline: true,
+      recorded_at: new Date().toISOString(),
+    }
+
+    dispatch(addBloodPressure(newBloodPressure))
+
+    navigation.goBack()
+  }
+
   useEffect(() => {
     let errorShowTimeout: any = null
 
@@ -118,74 +131,67 @@ function AddBpScreen({navigation, route}: Props) {
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white100}]}>
-        <TouchableWithoutFeedback
-          style={{flex: 1, backgroundColor: 'blue'}}
-          onPress={() => {
-            if (systolicRef?.current?.blur) {
-              systolicRef?.current?.blur()
-            }
-            if (diastolicRef?.current?.blur) {
-              diastolicRef?.current?.blur()
-            }
-          }}>
-          <View style={{padding: 24, flex: 1}}>
-            <View style={{flexDirection: 'row'}}>
-              <TextInput
-                maxLength={6}
-                ref={systolicRef}
-                style={[styles.input, {marginRight: 4}]}
-                onChangeText={(text) => {
-                  setSystolic(text)
-                  getErrorGateway(text, diastolic)
-                }}
-                placeholder={intl.formatMessage({id: 'general.systolic'})}
-                value={systolic.toString()}
-                keyboardType={'numeric'}
-              />
-              <TextInput
-                maxLength={6}
-                ref={diastolicRef}
-                style={[styles.input, {marginLeft: 4}]}
-                onChangeText={(text) => {
-                  setDiastolic(text)
-                  getErrorGateway(systolic, text)
-                }}
-                placeholder={intl.formatMessage({id: 'general.diastolic'})}
-                value={diastolic.toString()}
-                keyboardType={'numeric'}
-              />
-            </View>
-            <Button
-              title={intl.formatMessage({id: 'general.save'})}
-              disabled={isSaveDisabled()}
-              style={{
-                marginTop: 24,
+        <View style={{padding: 24, flex: 1}}>
+          <View style={{flexDirection: 'row'}}>
+            <TextInput
+              maxLength={6}
+              autoFocus={true}
+              ref={systolicRef}
+              style={[styles.input, {marginRight: 4}]}
+              onChangeText={(text) => {
+                setSystolic(text)
+                getErrorGateway(text, diastolic)
               }}
-              onPress={() => {
-                const newBloodPressure: BloodPressure = {
-                  diastolic: Number(diastolic),
-                  systolic: Number(systolic),
-                  offline: true,
-                  recorded_at: new Date().toISOString(),
+              placeholder={intl.formatMessage({id: 'general.systolic'})}
+              value={systolic.toString()}
+              keyboardType={'numeric'}
+              onSubmitEditing={() => {
+                if (diastolic === '') {
+                  diastolicRef?.current?.focus()
+                } else if (!isSaveDisabled()) {
+                  save()
                 }
-
-                dispatch(addBloodPressure(newBloodPressure))
-
-                navigation.goBack()
               }}
             />
-            {errors && showErrors && (
-              <BodyText
-                style={{
-                  textAlign: 'center',
-                  marginTop: 24,
-                  color: colors.red1,
-                }}>
-                {errors}
-              </BodyText>
-            )}
+            <TextInput
+              maxLength={6}
+              ref={diastolicRef}
+              style={[styles.input, {marginLeft: 4}]}
+              onChangeText={(text) => {
+                setDiastolic(text)
+                getErrorGateway(systolic, text)
+              }}
+              placeholder={intl.formatMessage({id: 'general.diastolic'})}
+              value={diastolic.toString()}
+              keyboardType={'numeric'}
+              onSubmitEditing={() => {
+                if (!isSaveDisabled()) {
+                  save()
+                }
+              }}
+            />
           </View>
-        </TouchableWithoutFeedback>
+          <Button
+            title={intl.formatMessage({id: 'general.save'})}
+            disabled={isSaveDisabled()}
+            style={{
+              marginTop: 24,
+            }}
+            onPress={() => {
+              save()
+            }}
+          />
+          {errors && showErrors && (
+            <BodyText
+              style={{
+                textAlign: 'center',
+                marginTop: 24,
+                color: colors.red1,
+              }}>
+              {errors}
+            </BodyText>
+          )}
+        </View>
       </SafeAreaView>
     </View>
   )
