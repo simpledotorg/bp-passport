@@ -69,22 +69,19 @@ export const MedsInformation = ({meds, style = {}}: Props) => {
             style={{
               fontSize: 18,
               color: colors.grey0,
-              flex: 1,
             }}>
             <>
               {meds.name} {meds.dosage && meds.dosage}
             </>
           </BodyText>
           {reminderText && (
-            <Text
+            <BodyText
               style={{
                 fontSize: 16,
                 color: colors.grey1,
-
-                flex: 1,
               }}>
               {reminderText}
-            </Text>
+            </BodyText>
           )}
         </View>
       </View>

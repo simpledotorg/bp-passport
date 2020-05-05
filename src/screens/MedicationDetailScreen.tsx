@@ -99,7 +99,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
 
   const saveOrUpdate = () => {
     const toSave = {...medication}
-    if (reminder) {
+    if (remindersEnabled) {
       toSave.reminder = reminder
     } else {
       delete toSave.reminder
