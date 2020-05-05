@@ -5,6 +5,7 @@ export interface Medication {
   is_protocol_drug?: boolean
   offline?: boolean
   reminder?: Reminder
+  updated_at?: string
 }
 
 export interface Reminder {

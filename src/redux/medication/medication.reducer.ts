@@ -17,25 +17,31 @@ const INITIAL_STATE: {
 
 const sortedMedications = (medications: Medication[]) => {
   const pure = [...medications]
-  /*
-    pure.sort((a: Medication, b: Medication) => {
-      return isBefore(new Date(a.recorded_at), new Date(b.recorded_at)) ? 1 : -1
-    })
-    */
   return pure
 }
 
-const uniqueKeyForBP = (medication: Medication) => {
-  return medication.name
+const uniqueKey = (medication: Medication) => {
+  let key = medication.name ?? ''
+  key += '-' + (medication.offline?.valueOf() ? 'online' : 'offline')
+  key += '-'
+  key += medication.reminder?.days ?? ''
+  key += '-'
+  key += medication.reminder?.dayOffset ?? ''
+
+  return key
 }
 
 const mergeMedications = (medications: Medication[]) => {
   const byUniqueKey: {[key: string]: Medication} = {}
+  const newArray: Medication[] = []
   medications.map((med) => {
-    const key = uniqueKeyForBP(med)
-    byUniqueKey[key] = med
+    const key = uniqueKey(med)
+    if (!byUniqueKey[key]) {
+      byUniqueKey[key] = med
+      newArray.push(med)
+    }
   })
-  return sortedMedications(Object.values(byUniqueKey))
+  return newArray
 }
 
 const medicationReducer = (state = INITIAL_STATE, action) => {
@@ -48,10 +54,19 @@ const medicationReducer = (state = INITIAL_STATE, action) => {
         ...state,
         medications: mergeMedications([...medications, ...newMedications]),
       }
-    case MedicationActionTypes.ADD_MEDICATION:
+    case MedicationActionTypes.ADD_OR_UPDATE_MEDICATION:
+      const updatedArray = [...medications]
+      const index = updatedArray.findIndex(
+        (element) => uniqueKey(element) === uniqueKey(medication),
+      )
+      if (index > -1) {
+        updatedArray.splice(index, 1, [medication])
+      } else {
+        updatedArray.push(medication)
+      }
       return {
         ...state,
-        medications: mergeMedications([...medications, medication]),
+        medications: updatedArray,
       }
     case MedicationActionTypes.DELETE_MEDICATION:
       const isOfflineBP = medication.offline ?? false
@@ -61,9 +76,9 @@ const medicationReducer = (state = INITIAL_STATE, action) => {
           ...state,
         }
       }
-      const keyRemove = uniqueKeyForBP(medication)
+      const keyRemove = uniqueKey(medication)
       const medicationsFiltered = medications.filter((med) => {
-        return uniqueKeyForBP(med) !== keyRemove
+        return uniqueKey(med) !== keyRemove
       })
       return {
         ...state,

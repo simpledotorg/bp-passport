@@ -19,6 +19,10 @@ import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 
 import {useThunkDispatch} from '../redux/store'
+import {
+  addOrUpdateMedication,
+  deleteMedication,
+} from '../redux/medication/medication.actions'
 import {BodyText, BodyHeader, Button} from '../components'
 import {medicationsLibrarySelector} from '../redux/medication/medication.selectors'
 import PushNotifications, {scheduleNotif} from '../notifications'
@@ -53,6 +57,8 @@ function Row({children}: {children: ReactNode}) {
 
 function MedicationDetailsScreen({navigation, route}: Props) {
   const intl = useIntl()
+  const dispatch = useThunkDispatch()
+
   const [remindersEnabled, setRemindersEnabled] = useState(
     route.params.medication.reminder !== undefined,
   )
@@ -86,6 +92,21 @@ function MedicationDetailsScreen({navigation, route}: Props) {
       }
     }
   }, [remindersEnabled])
+
+  const saveOrUpdate = () => {
+    const toSave = {...medication}
+    if (reminder) {
+      toSave.reminder = reminder
+    } else {
+      delete toSave.reminder
+    }
+
+    toSave.updated_at = new Date().toISOString()
+
+    dispatch(addOrUpdateMedication(toSave))
+
+    navigation.popToTop()
+  }
 
   return (
     <SafeAreaView style={[containerStyles.fill]}>
@@ -192,7 +213,9 @@ function MedicationDetailsScreen({navigation, route}: Props) {
         <Button
           style={{marginHorizontal: 8, marginTop: 'auto'}}
           title={intl.formatMessage({id: 'general.save'})}
-          onPress={() => {}}
+          onPress={() => {
+            saveOrUpdate()
+          }}
         />
       </ScrollView>
     </SafeAreaView>
