@@ -22,6 +22,14 @@ import {useThunkDispatch} from '../redux/store'
 import {BodyText, BodyHeader, Button} from '../components'
 import {medicationsLibrarySelector} from '../redux/medication/medication.selectors'
 import PushNotifications, {scheduleNotif} from '../notifications'
+import {
+  createAReminder,
+  DAILY,
+  WEEK_DAYS,
+  WEEKENDS,
+  Day,
+  frequencyText,
+} from '../redux/medication/medication.models'
 
 type MedicationDetailsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -44,60 +52,26 @@ function Row({children}: {children: ReactNode}) {
 
 function MedicationDetailsScreen({navigation, route}: Props) {
   const intl = useIntl()
-  const [remindersEnabled, setRemindersEnabled] = useState(false)
-  /*
-  const toggleReminders = () => {
-    const enable = !remindersEnabled
-    setRemindersEnabled(enable)
-    if (enable) {
-      PushNotifications.requestPermissions((permissions) => {
-        console.log('Permissions completed: ', permissions)
-        console.log('Schedule it!')
-
-        scheduleNotif()
-      
-        PushNotifications.localNotification({
-          message: 'My Notification Message',
-        })
-      
-        PushNotifications.localNotificationSchedule({
-          // ... You can use all the options from localNotifications
-          message: 'My Notification Message', // (required)
-          date: new Date(Date.now() + 20 * 1000), // in 60 secs
-        }) 
-      })
-    }
-  }
-  */
+  const [remindersEnabled, setRemindersEnabled] = useState(
+    route.params.medication.reminder !== undefined,
+  )
 
   const [recurringReminders, setRecurringReminders] = useState(false)
   const [medication, setMedication] = useState(route.params.medication)
+  const [reminder, setReminder] = useState(
+    route.params.medication.reminder ?? createAReminder(),
+  )
 
-  const updateDays = (days: any) => {
-    setMedication({...medication, days})
+  const updateDays = (days: string) => {
+    setReminder({...reminder, days})
   }
 
-  const updateTime = (time: Date) => {
-    setMedication({...medication, time})
+  const updateTime = (dayOffset: number) => {
+    setReminder({...reminder, dayOffset})
   }
 
-  const getFrequencyText = () => {
-    if (!medication.days) {
-      return 'medicine.daily'
-    }
-
-    const onDays = (Object.keys(medication.days) ?? []).filter((day) => {
-      return medication.days[day].value
-    })
-
-    if (onDays.length === 7) {
-      return 'medicine.daily'
-    } else if (onDays.length === 1) {
-      return `general.${onDays[0].toLowerCase()}`
-    }
-
-    return 'medicine.custom'
-  }
+  const midnight = new Date().setHours(0, 0, 0, 0)
+  const reminderTime = new Date(midnight + reminder.dayOffset * 1000)
 
   useEffect(() => {
     if (remindersEnabled) {
@@ -136,7 +110,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                 onPress={() => {
                   navigation.navigate(SCREENS.MEDICATION_FREQUENCY, {
                     updateDays,
-                    medication,
+                    reminder,
                   })
                 }}>
                 <View
@@ -153,7 +127,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                   </BodyText>
                   <View style={{flexDirection: 'row'}}>
                     <BodyText style={{color: colors.blue2, marginRight: 16}}>
-                      <FormattedMessage id={getFrequencyText()} />
+                      <FormattedMessage id={frequencyText(reminder.days)} />
                     </BodyText>
                     <Icon
                       name="chevron-right"
@@ -183,7 +157,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                   </BodyText>
                   <View style={{flexDirection: 'row'}}>
                     <BodyText style={{color: colors.blue2, marginRight: 16}}>
-                      {format(medication.time ?? new Date(), 'HH:mm')}
+                      {format(reminderTime, 'HH:mm')}
                     </BodyText>
                     <Icon
                       name="chevron-right"

@@ -27,14 +27,13 @@ import AddMedicineScreen from './screens/AddMedicineScreen'
 import DetailsModalScreen from './screens/DetailsModalScreen'
 import MedicationDetailScreen from './screens/MedicationDetailScreen'
 import MedicationFrequencyScreen from './screens/MedicineFrequencyScreen'
-import MedicationTimeScreen from './screens/MedicationTimeScreen'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
 import {colors, navigation as navigationStyle} from './styles'
 import {BloodPressure} from './redux/blood-pressure/blood-pressure.models'
 import {BloodSugar} from './redux/blood-sugar/blood-sugar.models'
-import {Medication} from './redux/medication/medication.models'
+import {Medication, Reminder} from './redux/medication/medication.models'
 import {LoginState} from './redux/auth/auth.models'
 import {loginStateSelector} from './redux/auth/auth.selectors'
 import {patientSelector} from './redux/patient/patient.selectors'
@@ -58,24 +57,15 @@ export type RootStackParamList = {
   ADD_MEDICINE: undefined
   DETAILS_MODAL_SCREEN: {bp?: BloodPressure; bs?: BloodSugar}
   MEDICATION_DETAILS: {medication: Medication}
-  MEDICATION_FREQUENCY: {updateDays: (days: {}) => void; medication: Medication}
-  MEDICATION_TIME: {updateTime: (time: Date) => void; medication: Medication}
+  MEDICATION_FREQUENCY: {
+    updateDays: (days: string) => void
+    reminder: Reminder
+  }
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
 
 const Navigation = () => {
-  const getModalOptions = () => {
-    return Platform.OS === 'ios'
-      ? {
-          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
-          cardOverlayEnabled: true,
-        }
-      : {
-          cardStyleInterpolator:
-            CardStyleInterpolators.forRevealFromBottomAndroid,
-        }
-  }
   return (
     <>
       <Stack.Navigator
@@ -91,18 +81,36 @@ const Navigation = () => {
         <Stack.Screen
           name={SCREENS.DETAILS_MODAL_SCREEN}
           component={DetailsModalScreen}
-          options={getModalOptions()}
+          options={
+            Platform.OS === 'ios'
+              ? {
+                  cardStyleInterpolator:
+                    CardStyleInterpolators.forModalPresentationIOS,
+                  cardOverlayEnabled: true,
+                }
+              : {
+                  cardStyleInterpolator:
+                    CardStyleInterpolators.forRevealFromBottomAndroid,
+                }
+          }
         />
         <Stack.Screen
           name={SCREENS.MEDICATION_FREQUENCY}
           component={MedicationFrequencyScreen}
-          options={getModalOptions()}
+          options={
+            Platform.OS === 'ios'
+              ? {
+                  cardStyleInterpolator:
+                    CardStyleInterpolators.forModalPresentationIOS,
+                  cardOverlayEnabled: true,
+                }
+              : {
+                  cardStyleInterpolator:
+                    CardStyleInterpolators.forRevealFromBottomAndroid,
+                }
+          }
         />
-        <Stack.Screen
-          name={SCREENS.MEDICATION_TIME}
-          component={MedicationTimeScreen}
-          options={getModalOptions()}
-        />
+
         <Stack.Screen
           name={SCREENS.MAIN_STACK}
           component={MainStack}

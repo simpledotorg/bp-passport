@@ -20,6 +20,7 @@ import {setHours, setMinutes} from 'date-fns'
 import {useThunkDispatch} from '../redux/store'
 import {BodyText} from '../components'
 import {medicationsLibrarySelector} from '../redux/medication/medication.selectors'
+import {createAMedicationWithReminder} from '../redux/medication/medication.models'
 
 type AddMedicineScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -31,37 +32,6 @@ type AddMedicineScreen = RouteProp<RootStackParamList, SCREENS.ADD_MEDICINE>
 type Props = {
   navigation: AddMedicineScreenNavigationProp
   route: AddMedicineScreen
-}
-
-const DEFAULT_DAYS = {
-  MONDAY: {
-    label: 'general.monday',
-    value: true,
-  },
-  TUESDAY: {
-    label: 'general.tuesday',
-    value: true,
-  },
-  WEDNESDAY: {
-    label: 'general.wednesday',
-    value: true,
-  },
-  THURSDAY: {
-    label: 'general.thursday',
-    value: true,
-  },
-  FRIDAY: {
-    label: 'general.friday',
-    value: true,
-  },
-  SATURDAY: {
-    label: 'general.saturday',
-    value: true,
-  },
-  SUNDAY: {
-    label: 'general.sunday',
-    value: true,
-  },
 }
 
 function AddMedicineScreen({navigation, route}: Props) {
@@ -124,11 +94,7 @@ function AddMedicineScreen({navigation, route}: Props) {
                       onPressOut={() => {
                         inputRef.current.blur()
                         navigation.push(SCREENS.MEDICATION_DETAILS, {
-                          medication: {
-                            ...item,
-                            days: DEFAULT_DAYS,
-                            time: setHours(setMinutes(new Date(), 0), 8),
-                          },
+                          medication: createAMedicationWithReminder(item.name),
                         })
                       }}>
                       <View
