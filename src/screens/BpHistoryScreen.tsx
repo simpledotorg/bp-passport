@@ -9,12 +9,11 @@ import {
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import {LineChart} from 'react-native-chart-kit'
 import {FormattedMessage} from 'react-intl'
-import {format} from 'date-fns'
+import {VictoryChart, VictoryTheme, VictoryLine} from 'victory-native'
 
 import {containerStyles, colors} from '../styles'
-import {BodyHeader, BpInformation} from '../components'
+import {BodyHeader, BpInformation, BpHistoryChart} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
@@ -38,12 +37,6 @@ type Props = {
 function BpHistoryScreen({navigation, route}: Props) {
   const bps = bloodPressuresSelector()
 
-  const isBloodPressureHigh = (bpIn: BloodPressure) => {
-    // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
-    // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
-    return bpIn.systolic >= 140 || bpIn.diastolic >= 90
-  }
-
   return (
     <View style={{flex: 1}}>
       <ScrollView contentContainerStyle={{paddingVertical: 8}}>
@@ -53,11 +46,7 @@ function BpHistoryScreen({navigation, route}: Props) {
             {paddingVertical: 22, paddingHorizontal: 24},
           ]}>
           <View style={[{flexShrink: 0}]}>
-            <View
-              style={{
-                borderBottomWidth: 1,
-                borderColor: colors.grey3,
-              }}>
+            <View>
               <BodyHeader
                 style={{
                   fontSize: 22,
@@ -68,50 +57,8 @@ function BpHistoryScreen({navigation, route}: Props) {
               </BodyHeader>
             </View>
           </View>
-          <View style={{overflow: 'hidden'}}>
-            <LineChart
-              data={{
-                labels: (bps ?? []).map(
-                  (bp) => `${bp.systolic}/${bp.diastolic}`,
-                ),
-                datasets: [
-                  {
-                    data: (bps ?? []).map((bp) => bp.diastolic),
-                    color: (opacity = 1) => `rgba(108,115,122, ${opacity})`,
-                  },
-                  {
-                    data: (bps ?? []).map((bp) => bp.systolic),
-                    color: (opacity = 1) => `rgba(108,115,122, ${opacity})`,
-                  },
-                ],
-              }}
-              width={Dimensions.get('window').width - 48} // from react-native
-              height={220}
-              chartConfig={{
-                backgroundGradientFrom: '#fff',
-                backgroundGradientTo: '#fff',
-                color: (opacity = 1) => `rgba(47,54,61, ${opacity})`,
-              }}
-              withShadow={false}
-              withHorizontalLabels={false}
-              style={{
-                marginTop: 16,
-                position: 'relative',
-                left: -24,
-              }}
-              getDotColor={(item, index) => {
-                return '#fff'
-              }}
-              getDotProps={(datapoint, index) => {
-                return {
-                  r: '4',
-                  strokeWidth: '2',
-                  stroke: isBloodPressureHigh((bps ?? [])[index])
-                    ? colors.red1
-                    : colors.green1,
-                }
-              }}
-            />
+          <View>
+            <BpHistoryChart bps={bps ?? []} />
           </View>
         </View>
         <View
