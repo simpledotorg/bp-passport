@@ -8,7 +8,7 @@ import {
 import {useNavigationState, StackActions} from '@react-navigation/native'
 import {forFade} from './navigation/interpolators'
 import {CardStyleInterpolators} from '@react-navigation/stack'
-import {useIntl} from 'react-intl'
+import {useIntl, FormattedMessage} from 'react-intl'
 import {usePrevious} from './effects/use-previous.effect'
 
 import LaunchScreen from './screens/LaunchScreen'
@@ -30,7 +30,13 @@ import MedicationFrequencyScreen from './screens/MedicineFrequencyScreen'
 import MedicationTimeScreen from './screens/MedicationTimeScreen'
 
 import SCREENS from './constants/screens'
-import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
+import {
+  HomeHeaderTitle,
+  ButtonIcon,
+  LoadingOverlay,
+  BodyHeader,
+  BodyText,
+} from './components'
 import {colors, navigation as navigationStyle} from './styles'
 import {BloodPressure} from './redux/blood-pressure/blood-pressure.models'
 import {BloodSugar} from './redux/blood-sugar/blood-sugar.models'
@@ -174,7 +180,8 @@ function MainStack({navigation}: Props) {
   return (
     <Stack.Navigator
       initialRouteName={
-        loginState === LoginState.LoggedOut ? SCREENS.SPLASH : SCREENS.HOME
+        // loginState === LoginState.LoggedOut ? SCREENS.SPLASH : SCREENS.HOME
+        SCREENS.SPLASH
       }
       screenOptions={{
         ...navigationStyle,
@@ -191,6 +198,7 @@ function MainStack({navigation}: Props) {
         component={ConsentScreen}
         options={{
           headerBackTitle: ' ',
+          headerTitleAlign: 'left',
           title: intl.formatMessage({id: 'page-titles.consent'}),
         }}
       />
