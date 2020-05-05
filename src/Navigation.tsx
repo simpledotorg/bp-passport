@@ -61,6 +61,10 @@ export type RootStackParamList = {
     updateDays: (days: string) => void
     reminder: Reminder
   }
+  MEDICATION_TIME: {
+    updateDayOffset: (dayOffset: number) => void
+    reminder: Reminder
+  }
 }
 
 const Stack = createStackNavigator<RootStackParamList>()

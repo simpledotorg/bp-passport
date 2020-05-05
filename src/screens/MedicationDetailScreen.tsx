@@ -29,6 +29,7 @@ import {
   WEEKENDS,
   Day,
   frequencyText,
+  dateForDayOffset,
 } from '../redux/medication/medication.models'
 
 type MedicationDetailsScreenNavigationProp = StackNavigationProp<
@@ -66,12 +67,11 @@ function MedicationDetailsScreen({navigation, route}: Props) {
     setReminder({...reminder, days})
   }
 
-  const updateTime = (dayOffset: number) => {
+  const updateDayOffset = (dayOffset: number) => {
     setReminder({...reminder, dayOffset})
   }
 
-  const midnight = new Date().setHours(0, 0, 0, 0)
-  const reminderTime = new Date(midnight + reminder.dayOffset * 1000)
+  const reminderDate = dateForDayOffset(reminder.dayOffset)
 
   useEffect(() => {
     if (remindersEnabled) {
@@ -141,8 +141,8 @@ function MedicationDetailsScreen({navigation, route}: Props) {
               <TouchableWithoutFeedback
                 onPress={() => {
                   navigation.navigate(SCREENS.MEDICATION_TIME, {
-                    updateTime,
-                    medication,
+                    updateDayOffset,
+                    reminder,
                   })
                 }}>
                 <View
@@ -157,7 +157,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                   </BodyText>
                   <View style={{flexDirection: 'row'}}>
                     <BodyText style={{color: colors.blue2, marginRight: 16}}>
-                      {format(reminderTime, 'HH:mm')}
+                      {format(reminderDate, 'HH:mm')}
                     </BodyText>
                     <Icon
                       name="chevron-right"

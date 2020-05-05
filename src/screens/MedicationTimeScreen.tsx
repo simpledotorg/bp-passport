@@ -9,6 +9,7 @@ import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {BodyHeader, BodyText, CheckBox, Button} from '../components'
 import {FormattedMessage, IntlContext, useIntl} from 'react-intl'
+import {dateForDayOffset} from '../redux/medication/medication.models'
 
 type MedicineTimeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -24,8 +25,10 @@ type Props = {
 
 function MedicineTimeScreen({navigation, route}: Props) {
   const intl = useIntl()
-  const {updateTime, medication} = route.params
-  const [time, setTime] = useState<Date>(medication.time ?? new Date())
+  const {updateDayOffset, reminder} = route.params
+  const [time, setTime] = useState<Date>(
+    dateForDayOffset(reminder.dayOffset) ?? new Date(),
+  )
 
   if (Platform.OS === 'android') {
     return (
@@ -33,6 +36,7 @@ function MedicineTimeScreen({navigation, route}: Props) {
         value={time}
         mode={'time'}
         is24Hour={true}
+        minuteInterval={5}
         display="clock"
         onTouchCancel={() => {
           navigation.goBack()
@@ -96,6 +100,7 @@ function MedicineTimeScreen({navigation, route}: Props) {
               <DateTimePicker
                 value={time}
                 mode={'time'}
+                minuteInterval={5}
                 is24Hour={true}
                 display="clock"
                 onChange={(event, date) => {

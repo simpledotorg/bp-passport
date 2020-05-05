@@ -124,3 +124,11 @@ export const dayToKeyString = (day: Day) => {
       return 'general.sunday'
   }
 }
+
+export const dateForDayOffset = (
+  dayOffset: number /* seconds since midnight*/,
+  day: Date = new Date(),
+) => {
+  const midnight = day.setHours(0, 0, 0, 0)
+  return new Date(midnight + dayOffset * 1000)
+}

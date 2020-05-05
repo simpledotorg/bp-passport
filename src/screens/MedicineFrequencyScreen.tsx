@@ -37,10 +37,6 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
     reminder.days.split('').map((s) => Number(s) as Day),
   )
 
-  console.log('reminder.days', reminder.days)
-  console.log('split', reminder.days.split(''))
-  console.log('days', days)
-
   return (
     <TouchableWithoutFeedback
       onPress={() => {
