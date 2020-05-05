@@ -44,8 +44,6 @@ import {Medication} from './redux/medication/medication.models'
 import {LoginState} from './redux/auth/auth.models'
 import {loginStateSelector} from './redux/auth/auth.selectors'
 import {patientSelector} from './redux/patient/patient.selectors'
-import {TouchableOpacity} from 'react-native-gesture-handler'
-import Icon from 'react-native-vector-icons/MaterialIcons'
 
 export type RootStackParamList = {
   LAUNCH: undefined
