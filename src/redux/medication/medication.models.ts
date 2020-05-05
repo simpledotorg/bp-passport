@@ -109,19 +109,19 @@ export const frequencyText = (days: string) => {
 export const dayToKeyString = (day: Day) => {
   switch (day) {
     case Day.Monday:
-      return 'general.monday'
+      return 'general.mondays'
     case Day.Tuesday:
-      return 'general.tuesday'
+      return 'general.tuesdays'
     case Day.Wednesday:
-      return 'general.wednesday'
+      return 'general.wednesdays'
     case Day.Thursday:
-      return 'general.thursday'
+      return 'general.thursdays'
     case Day.Friday:
-      return 'general.friday'
+      return 'general.fridays'
     case Day.Saturday:
-      return 'general.saturday'
+      return 'general.saturdays'
     case Day.Sunday:
-      return 'general.sunday'
+      return 'general.sundays'
   }
 }
 
