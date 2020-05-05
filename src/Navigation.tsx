@@ -44,6 +44,8 @@ import {Medication} from './redux/medication/medication.models'
 import {LoginState} from './redux/auth/auth.models'
 import {loginStateSelector} from './redux/auth/auth.selectors'
 import {patientSelector} from './redux/patient/patient.selectors'
+import {TouchableOpacity} from 'react-native-gesture-handler'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 export type RootStackParamList = {
   LAUNCH: undefined
@@ -182,6 +184,7 @@ function MainStack({navigation}: Props) {
       initialRouteName={
         // loginState === LoginState.LoggedOut ? SCREENS.SPLASH : SCREENS.HOME
         SCREENS.SPLASH
+        // SCREENS.HOME
       }
       screenOptions={{
         ...navigationStyle,
@@ -199,6 +202,15 @@ function MainStack({navigation}: Props) {
         options={{
           headerBackTitle: ' ',
           headerTitleAlign: 'left',
+          headerLeft: () => (
+            <ButtonIcon
+              iconName="arrow-back"
+              iconColor={colors.white}
+              onPress={() => {
+                navigation.goBack()
+              }}
+            />
+          ),
           title: intl.formatMessage({id: 'page-titles.consent'}),
         }}
       />
@@ -291,6 +303,7 @@ function MainStack({navigation}: Props) {
             if (loginState === LoginState.LoggedIn) {
               return (
                 <ButtonIcon
+                  iconName="settings"
                   onPress={() => navigation.navigate(SCREENS.SETTINGS)}
                 />
               )
