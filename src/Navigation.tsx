@@ -180,9 +180,7 @@ function MainStack({navigation}: Props) {
   return (
     <Stack.Navigator
       initialRouteName={
-        // loginState === LoginState.LoggedOut ? SCREENS.SPLASH : SCREENS.HOME
-        SCREENS.SPLASH
-        // SCREENS.HOME
+        loginState === LoginState.LoggedOut ? SCREENS.SPLASH : SCREENS.HOME
       }
       screenOptions={{
         ...navigationStyle,
