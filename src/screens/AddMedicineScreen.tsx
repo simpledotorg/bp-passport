@@ -65,8 +65,17 @@ function AddMedicineScreen({navigation, route}: Props) {
             id: 'medicine.enter-name',
           })}
           value={input}
+          returnKeyType="done"
+          autoCorrect={false}
           onChangeText={(text) => setInput(text)}
-          maxLength={6}
+          onSubmitEditing={() => {
+            if (input.trim().length) {
+              inputRef.current.blur()
+              navigation.push(SCREENS.MEDICATION_DETAILS, {
+                medication: createAMedicationWithReminder(input.trim()),
+              })
+            }
+          }}
         />
       </View>
       <View style={{flex: 1, backgroundColor: colors.grey4}}>
