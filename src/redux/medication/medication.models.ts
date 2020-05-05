@@ -109,22 +109,22 @@ export const frequencyText = (days: string) => {
   return 'medicine.custom'
 }
 
-export const dayToKeyString = (day: Day) => {
+export const dayToKeyString = (day: Day, singular = false) => {
   switch (day) {
     case Day.Monday:
-      return 'general.mondays'
+      return singular ? 'general.monday' : 'general.mondays'
     case Day.Tuesday:
-      return 'general.tuesdays'
+      return singular ? 'general.tuesday' : 'general.tuesdays'
     case Day.Wednesday:
-      return 'general.wednesdays'
+      return singular ? 'general.wednesday' : 'general.wednesdays'
     case Day.Thursday:
-      return 'general.thursdays'
+      return singular ? 'general.thursday' : 'general.thursdays'
     case Day.Friday:
-      return 'general.fridays'
+      return singular ? 'general.friday' : 'general.fridays'
     case Day.Saturday:
-      return 'general.saturdays'
+      return singular ? 'general.saturday' : 'general.saturdays'
     case Day.Sunday:
-      return 'general.sundays'
+      return singular ? 'general.sunday' : 'general.sundays'
   }
 }
 

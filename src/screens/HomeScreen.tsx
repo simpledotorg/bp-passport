@@ -6,8 +6,9 @@ import {
   StatusBar,
   ScrollView,
   StyleSheet,
-  Image,
+  AppState,
   TouchableOpacity,
+  Platform,
 } from 'react-native'
 import {useIntl, FormattedMessage} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -49,6 +50,7 @@ import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
 import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
 import {medicationsSelector} from '../redux/medication/medication.selectors'
 import {Medication} from '../redux/medication/medication.models'
+import {refreshAllLocalPushReminders} from '../redux/medication/medication.actions'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -86,6 +88,16 @@ function Home({navigation}: Props) {
 
   useEffect(() => {}, [loginState, apiUser, bloodPressures, medications])
 
+  const [appState, setAppState] = useState(AppState.currentState)
+
+  useEffect(() => {
+    const unsubscribe = AppState.addEventListener('change', (nextAppState) => {
+      setAppState(nextAppState)
+    })
+
+    return unsubscribe
+  }, [])
+
   const bps: BloodPressure[] = bloodPressures ?? []
   const bss: BloodSugar[] = bloodSugars ?? []
   const meds: Medication[] = medications ?? []
@@ -104,6 +116,18 @@ function Home({navigation}: Props) {
 
   const showBpHistoryButton = bps.length > HOME_PAGE_SHOW_LIMIT
   const showBsHistoryButton = bss.length > HOME_PAGE_SHOW_LIMIT
+
+  useEffect(() => {
+    if (
+      (Platform.OS === 'ios' && appState === 'active') ||
+      Platform.OS === 'android'
+    ) {
+      if (medications) {
+        //todo - optimise...
+        refreshAllLocalPushReminders(medications, intl)
+      }
+    }
+  }, [appState, medications])
 
   return (
     <SafeAreaView

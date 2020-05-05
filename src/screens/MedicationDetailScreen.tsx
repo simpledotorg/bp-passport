@@ -26,6 +26,7 @@ import {
   addMedication,
   updateMedication,
   deleteMedication,
+  refreshAllLocalPushReminders,
 } from '../redux/medication/medication.actions'
 import {BodyText, BodyHeader, Button} from '../components'
 import {medicationsLibrarySelector} from '../redux/medication/medication.selectors'
@@ -119,7 +120,10 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                   setPushNotificationPermission(Permission.PermissionPermitted),
                 )
               } else {
+                /*
                 setRemindersEnabled(false)
+                */
+                // should we allow a reminder to be 'on' when we can't push to the user?
                 dispatch(
                   setPushNotificationPermission(Permission.PermissionDenied),
                 )
@@ -154,6 +158,8 @@ function MedicationDetailsScreen({navigation, route}: Props) {
 
     navigation.popToTop()
   }
+
+  const debugPush = false
 
   return (
     <SafeAreaView style={[containerStyles.fill]}>
@@ -239,41 +245,26 @@ function MedicationDetailsScreen({navigation, route}: Props) {
             </>
           )}
         </View>
-        <View style={[containerStyles.containerSegment]}>
-          <Row>
-            <BodyHeader>
-              <FormattedMessage id="medicine.recurring-reminders" />
-            </BodyHeader>
-            <Switch
-              trackColor={{false: colors.grey4, true: colors.blue3}}
-              thumbColor={recurringReminders ? colors.blue2 : colors.grey3}
-              onValueChange={() => {
-                setRecurringReminders(!recurringReminders)
-              }}
-              value={recurringReminders}
-            />
-          </Row>
-          <BodyText style={{color: colors.grey1, fontSize: 16, marginTop: 18}}>
-            <FormattedMessage id="medicine.will-be-reminded" />
-          </BodyText>
-        </View>
-        <View style={[containerStyles.containerSegment]}>
-          <Row>
-            <BodyHeader style={{marginBottom: 15}}>Push Stuff</BodyHeader>
-          </Row>
-          <Row style={{marginBottom: 15}}>
-            <BodyText style={{flex: 1}}>Push permissions:</BodyText>
-            <BodyText>{pushPermission}</BodyText>
-          </Row>
-          <Row>
-            <BodyText style={{flex: 1}}>Device token:</BodyText>
-          </Row>
-          {devicePushToken && (
+        {debugPush && (
+          <View style={[containerStyles.containerSegment]}>
             <Row>
-              <BodyText style={{flex: 1}}>{devicePushToken}</BodyText>
+              <BodyHeader style={{marginBottom: 15}}>Push Stuff</BodyHeader>
             </Row>
-          )}
-        </View>
+            <Row style={{marginBottom: 15}}>
+              <BodyText style={{flex: 1}}>Push permissions:</BodyText>
+              <BodyText>{pushPermission}</BodyText>
+            </Row>
+            <Row>
+              <BodyText style={{flex: 1}}>Device token:</BodyText>
+            </Row>
+            {devicePushToken && (
+              <Row>
+                <BodyText style={{flex: 1}}>{devicePushToken}</BodyText>
+              </Row>
+            )}
+          </View>
+        )}
+
         {isEditing && medication.offline && (
           <Button
             style={{

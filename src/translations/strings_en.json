@@ -179,5 +179,6 @@
   "medicine.daily": "Daily",
   "medicine.weekdays": "Weekdays",
   "medicine.weekends": "Weekends",
-  "medicine.custom": "Custom"
+  "medicine.custom": "Custom",
+  "medicine.reminder-notification": "{value}, take your medicine"
 }
