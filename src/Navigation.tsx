@@ -1,5 +1,5 @@
-import React, {useContext, useEffect} from 'react'
-import {Alert, Platform} from 'react-native'
+import React, {useState, useEffect} from 'react'
+import {Alert, Platform, AppState} from 'react-native'
 import {
   createStackNavigator,
   useHeaderHeight,
@@ -38,6 +38,16 @@ import {Medication, Reminder} from './redux/medication/medication.models'
 import {LoginState} from './redux/auth/auth.models'
 import {loginStateSelector} from './redux/auth/auth.selectors'
 import {patientSelector} from './redux/patient/patient.selectors'
+
+import PushNotificationIOS from '@react-native-community/push-notification-ios'
+import PushNotificationAndroid from 'react-native-push-notification'
+import {useDispatch} from 'react-redux'
+import {
+  setPushNotificationPermission,
+  setDevicePushToken,
+} from './redux/notifications/notifications.actions'
+import {Permission} from './redux/notifications/notifications.models'
+import {pushNotificationPermissionSelector} from './redux/notifications/notifications.selectors'
 
 export type RootStackParamList = {
   LAUNCH: undefined
@@ -132,17 +142,71 @@ type Props = {
 
 function MainStack({navigation}: Props) {
   const intl = useIntl()
+  const [appState, setAppState] = useState(AppState.currentState)
+  const dispatch = useDispatch()
+  const pushNotificationPermission = pushNotificationPermissionSelector()
+
+  useEffect(() => {
+    const unsubscribe = AppState.addEventListener('change', (nextAppState) => {
+      setAppState(nextAppState)
+    })
+
+    return unsubscribe
+  }, [])
+
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      if (appState === 'active') {
+        // This will run everytime the ios app comes back into the foreground
+        PushNotificationIOS.checkPermissions((permissions) => {
+          if (permissions.alert === true) {
+            dispatch(
+              setPushNotificationPermission(Permission.PermissionPermitted),
+            )
+          } else {
+            if (pushNotificationPermission === Permission.PermissionPermitted) {
+              // User has switched of push notification access outside of the app
+              dispatch(
+                setPushNotificationPermission(Permission.PermissionDenied),
+              )
+            }
+          }
+        })
+      }
+    } else if (Platform.OS === 'android') {
+      dispatch(setPushNotificationPermission(Permission.PermissionPermitted))
+    }
+  }, [appState, dispatch, pushNotificationPermission])
+
+  useEffect(() => {
+    PushNotificationAndroid.configure({
+      onRegister({token}: {token?: string}) {
+        if (Platform.OS === 'android') {
+          onRegisteredAndroid(token)
+        }
+      },
+      requestPermissions: false,
+    })
+
+    PushNotificationIOS.addEventListener('register', onRegisteredIOS)
+    return () => {
+      PushNotificationIOS.removeEventListener('register', onRegisteredIOS)
+    }
+  })
+
+  const onRegisteredIOS = (deviceToken?: string) => {
+    dispatch(setDevicePushToken(deviceToken))
+  }
+
+  const onRegisteredAndroid = (deviceToken?: string) => {
+    dispatch(setDevicePushToken(deviceToken))
+  }
 
   const headerHeightIncludingSafeArea = useHeaderHeight()
 
   const loginState = loginStateSelector()
   const prevLoginState = usePrevious(loginState)
   const apiUser = patientSelector()
-
-  const mainStackRoutes = useNavigationState(
-    (state) => state.routes[state.index],
-  )
-  const routeCount = mainStackRoutes.state?.routes.length ?? 1
 
   useEffect(() => {
     if (loginState === LoginState.LoggedOut) {

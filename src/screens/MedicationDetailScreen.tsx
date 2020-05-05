@@ -8,13 +8,15 @@ import {
   TouchableWithoutFeedback,
   Platform,
   Alert,
+  Text,
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {FormattedMessage, useIntl} from 'react-intl'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import PushNotificationIOS from '@react-native-community/push-notification-ios'
+import PushNotificationAndroid from 'react-native-push-notification'
 import {format} from 'date-fns'
-
 import {containerStyles, colors} from '../styles'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
@@ -28,6 +30,8 @@ import {
 import {BodyText, BodyHeader, Button} from '../components'
 import {medicationsLibrarySelector} from '../redux/medication/medication.selectors'
 import PushNotifications, {scheduleNotif} from '../notifications'
+import {Permission} from '../redux/notifications/notifications.models'
+
 import {
   createAReminder,
   DAILY,
@@ -37,6 +41,11 @@ import {
   frequencyText,
   dateForDayOffset,
 } from '../redux/medication/medication.models'
+import {
+  devicePushTokenSelector,
+  pushNotificationPermissionSelector,
+} from '../redux/notifications/notifications.selectors'
+import {setPushNotificationPermission} from '../redux/notifications/notifications.actions'
 
 type MedicationDetailsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -53,8 +62,8 @@ type Props = {
   route: MedicationDetailsScreen
 }
 
-function Row({children}: {children: ReactNode}) {
-  return <View style={styles.row}>{children}</View>
+function Row({children, style}: {children: ReactNode; style?: any}) {
+  return <View style={[styles.row, {...style}]}>{children}</View>
 }
 
 function MedicationDetailsScreen({navigation, route}: Props) {
@@ -73,6 +82,19 @@ function MedicationDetailsScreen({navigation, route}: Props) {
     route.params.medication.reminder ?? createAReminder(),
   )
 
+  const devicePushToken = devicePushTokenSelector() ?? 'None'
+  const pushNotificationPermission = pushNotificationPermissionSelector()
+
+  let pushPermission = 'Not determined'
+  switch (pushNotificationPermission) {
+    case Permission.PermissionPermitted:
+      pushPermission = 'Granted'
+      break
+    case Permission.PermissionDenied:
+      pushPermission = 'Denied'
+      break
+  }
+
   const updateDays = (days: string) => {
     setReminder({...reminder, days})
   }
@@ -85,14 +107,33 @@ function MedicationDetailsScreen({navigation, route}: Props) {
 
   useEffect(() => {
     if (remindersEnabled) {
-      if (Platform.OS === 'ios') {
-        PushNotifications.requestPermissions((permissions) => {
-          console.log('Permissions completed on iOS: ', permissions)
-          scheduleNotif()
-        })
-      } else {
-        console.log('on android so no permissions required')
-        scheduleNotif()
+      if (
+        pushNotificationPermission === Permission.PermissionNotDetermined ||
+        devicePushToken === 'None'
+      ) {
+        if (Platform.OS === 'ios') {
+          PushNotificationIOS.requestPermissions().then(
+            (data) => {
+              if (data.alert) {
+                dispatch(
+                  setPushNotificationPermission(Permission.PermissionPermitted),
+                )
+              } else {
+                setRemindersEnabled(false)
+                dispatch(
+                  setPushNotificationPermission(Permission.PermissionDenied),
+                )
+              }
+            },
+            (data) => {
+              console.log('PushNotificationIOS.requestPermissions failed', data)
+            },
+          )
+        } else if (Platform.OS === 'android') {
+          if (devicePushToken === 'None') {
+            PushNotificationAndroid.requestPermissions()
+          }
+        }
       }
     }
   }, [remindersEnabled])
@@ -215,6 +256,23 @@ function MedicationDetailsScreen({navigation, route}: Props) {
           <BodyText style={{color: colors.grey1, fontSize: 16, marginTop: 18}}>
             <FormattedMessage id="medicine.will-be-reminded" />
           </BodyText>
+        </View>
+        <View style={[containerStyles.containerSegment]}>
+          <Row>
+            <BodyHeader style={{marginBottom: 15}}>Push Stuff</BodyHeader>
+          </Row>
+          <Row style={{marginBottom: 15}}>
+            <BodyText style={{flex: 1}}>Push permissions:</BodyText>
+            <BodyText>{pushPermission}</BodyText>
+          </Row>
+          <Row>
+            <BodyText style={{flex: 1}}>Device token:</BodyText>
+          </Row>
+          {devicePushToken && (
+            <Row>
+              <BodyText style={{flex: 1}}>{devicePushToken}</BodyText>
+            </Row>
+          )}
         </View>
         {isEditing && medication.offline && (
           <Button

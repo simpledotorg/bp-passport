@@ -24,6 +24,9 @@ DerivedData
 # Environment
 .env.development
 
+# Keys
+google-services.json
+
 # Android/IntelliJ
 #
 build/
