@@ -6,8 +6,13 @@ export const mergeMedications = (medications: Medication[]) => ({
   payload: medications,
 })
 
-export const addOrUpdateMedication = (medication: Medication) => ({
-  type: MedicationActionTypes.ADD_OR_UPDATE_MEDICATION,
+export const addMedication = (medication: Medication) => ({
+  type: MedicationActionTypes.ADD_MEDICATION,
+  payload: medication,
+})
+
+export const updateMedication = (medication: Medication) => ({
+  type: MedicationActionTypes.UPDATE_MEDICATION,
   payload: medication,
 })
 

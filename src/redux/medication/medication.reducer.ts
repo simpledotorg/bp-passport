@@ -24,9 +24,7 @@ const uniqueKey = (medication: Medication) => {
   let key = medication.name ?? ''
   key += '-' + (medication.offline?.valueOf() ? 'online' : 'offline')
   key += '-'
-  key += medication.reminder?.days ?? ''
-  key += '-'
-  key += medication.reminder?.dayOffset ?? ''
+  key += medication.updated_at ?? ''
 
   return key
 }
@@ -54,20 +52,27 @@ const medicationReducer = (state = INITIAL_STATE, action) => {
         ...state,
         medications: mergeMedications([...medications, ...newMedications]),
       }
-    case MedicationActionTypes.ADD_OR_UPDATE_MEDICATION:
+    case MedicationActionTypes.ADD_MEDICATION:
+      medication.updated_at = new Date().toISOString()
+
+      return {
+        ...state,
+        medications: [...medications, medication],
+      }
+    case MedicationActionTypes.UPDATE_MEDICATION:
       const updatedArray = [...medications]
       const index = updatedArray.findIndex(
         (element) => uniqueKey(element) === uniqueKey(medication),
       )
+      medication.updated_at = new Date().toISOString()
       if (index > -1) {
-        updatedArray.splice(index, 1, [medication])
-      } else {
-        updatedArray.push(medication)
+        updatedArray.splice(index, 1, medication)
       }
       return {
         ...state,
         medications: updatedArray,
       }
+
     case MedicationActionTypes.DELETE_MEDICATION:
       const isOfflineBP = medication.offline ?? false
       if (!isOfflineBP) {

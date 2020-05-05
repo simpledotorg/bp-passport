@@ -73,6 +73,7 @@ function AddMedicineScreen({navigation, route}: Props) {
               inputRef.current.blur()
               navigation.push(SCREENS.MEDICATION_DETAILS, {
                 medication: createAMedicationWithReminder(input.trim()),
+                isEditing: false,
               })
             }
           }}

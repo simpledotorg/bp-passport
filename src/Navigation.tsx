@@ -57,7 +57,7 @@ export type RootStackParamList = {
   BS_HISTORY: {bloodSugars: BloodSugar[]}
   ADD_MEDICINE: undefined
   DETAILS_MODAL_SCREEN: {bp?: BloodPressure; bs?: BloodSugar}
-  MEDICATION_DETAILS: {medication: Medication}
+  MEDICATION_DETAILS: {medication: Medication; isEditing: boolean}
   MEDICATION_FREQUENCY: {
     updateDays: (days: string) => void
     reminder: Reminder

@@ -7,6 +7,7 @@ import {
   Switch,
   TouchableWithoutFeedback,
   Platform,
+  Alert,
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -20,7 +21,8 @@ import {RootStackParamList} from '../Navigation'
 
 import {useThunkDispatch} from '../redux/store'
 import {
-  addOrUpdateMedication,
+  addMedication,
+  updateMedication,
   deleteMedication,
 } from '../redux/medication/medication.actions'
 import {BodyText, BodyHeader, Button} from '../components'
@@ -63,6 +65,8 @@ function MedicationDetailsScreen({navigation, route}: Props) {
     route.params.medication.reminder !== undefined,
   )
 
+  const {isEditing} = route.params
+
   const [recurringReminders, setRecurringReminders] = useState(false)
   const [medication, setMedication] = useState(route.params.medication)
   const [reminder, setReminder] = useState(
@@ -101,9 +105,11 @@ function MedicationDetailsScreen({navigation, route}: Props) {
       delete toSave.reminder
     }
 
-    toSave.updated_at = new Date().toISOString()
-
-    dispatch(addOrUpdateMedication(toSave))
+    if (isEditing) {
+      dispatch(updateMedication(toSave))
+    } else {
+      dispatch(addMedication(toSave))
+    }
 
     navigation.popToTop()
   }
@@ -210,6 +216,36 @@ function MedicationDetailsScreen({navigation, route}: Props) {
             <FormattedMessage id="medicine.will-be-reminded" />
           </BodyText>
         </View>
+        {isEditing && medication.offline && (
+          <Button
+            style={{
+              backgroundColor: colors.grey4,
+            }}
+            buttonColor={colors.red1}
+            disableBoxShadow
+            title={intl.formatMessage({id: 'medicine.delete-medicine'})}
+            onPress={() => {
+              Alert.alert(
+                intl.formatMessage({id: 'medicine.delete-medicine'}),
+                intl.formatMessage({id: 'medicine.delete-confirm'}),
+                [
+                  {
+                    text: intl.formatMessage({id: 'general.cancel'}),
+                  },
+                  {
+                    text: intl.formatMessage({id: 'general.delete'}),
+                    style: 'destructive',
+                    onPress: () => {
+                      dispatch(deleteMedication(medication))
+                      navigation.popToTop()
+                    },
+                  },
+                ],
+                {cancelable: true},
+              )
+            }}
+          />
+        )}
         <Button
           style={{marginHorizontal: 8, marginTop: 'auto'}}
           title={intl.formatMessage({id: 'general.save'})}

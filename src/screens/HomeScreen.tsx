@@ -27,6 +27,7 @@ import {
   BodyHeader,
   BodyText,
   BpInformation,
+  MedsInformation,
   ContentLoadingSegment,
   BsInformation,
 } from '../components'
@@ -147,30 +148,30 @@ function Home({navigation}: Props) {
               </BodyHeader>
               {meds.length > 0 && (
                 <>
-                  {meds.map((medicine, index) => (
-                    <View
-                      key={index}
-                      style={[
-                        {
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          marginTop: index === 0 ? 8 : 0,
-                        },
-                      ]}>
-                      <Image
-                        source={medicinePill}
-                        style={[styles.informationIcon]}
-                      />
-                      <BodyText
-                        style={{
-                          fontSize: 18,
-                          color: colors.grey0,
-                          fontWeight: '500',
-                        }}>
-                        {medicationDisplayName(medicine)}
-                      </BodyText>
-                    </View>
-                  ))}
+                  {meds.map((med, index) => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate(SCREENS.MEDICATION_DETAILS, {
+                            medication: med,
+                            isEditing: true,
+                          })
+                        }}
+                        key={index}
+                        style={[
+                          {
+                            marginBottom: 12,
+                            paddingTop: 12,
+                          },
+                          styles.historyItem,
+                          index === meds.length - 1
+                            ? {borderBottomWidth: 0}
+                            : {},
+                        ]}>
+                        <MedsInformation meds={med} />
+                      </TouchableOpacity>
+                    )
+                  })}
                 </>
               )}
               <View style={{marginTop: 15, flexDirection: 'row'}}>
