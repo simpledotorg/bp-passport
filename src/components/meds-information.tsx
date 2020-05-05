@@ -1,12 +1,19 @@
 import React from 'react'
-import {View, StyleSheet, Image, ViewStyle} from 'react-native'
+import {View, StyleSheet, Image, ViewStyle, Text} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 import {format} from 'date-fns'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import {useIntl} from 'react-intl'
 
 import {colors, medicinePill} from '../styles'
 import {BodyText} from './'
-import {Medication} from '../redux/medication/medication.models'
+import {
+  Medication,
+  frequencyText,
+  dateForDayOffset,
+  Day,
+  dayToKeyString,
+} from '../redux/medication/medication.models'
 
 type Props = {
   meds: Medication
@@ -14,32 +21,28 @@ type Props = {
 }
 
 export const MedsInformation = ({meds, style = {}}: Props) => {
-  /*
-  const getBPText = () => {
-    return isBloodPressureHigh(bp) ? (
-      <BodyText
-        style={[
-          styles.bpText,
-          {
-            color: colors.red1,
-          },
-        ]}>
-        <FormattedMessage id="general.high-bp" />
-      </BodyText>
-    ) : (
-      <BodyText
-        style={[
-          styles.bpText,
-          {
-            color: colors.green1,
-          },
-        ]}>
-        <FormattedMessage id="general.normal-bp" />
-      </BodyText>
-    )
-  } */
+  let reminderText: string | undefined
 
-  let reminderText: string | undefined = undefined
+  const intl = useIntl()
+
+  const reminder = meds.reminder
+  if (reminder) {
+    // medicine.custom
+    const translationKey = frequencyText(reminder.days)
+    if (translationKey === 'medicine.custom') {
+      reminderText = reminder.days
+        .split('')
+        .map((s) => {
+          return intl.formatMessage({id: dayToKeyString(Number(s) as Day)})
+        })
+        .join(', ')
+    } else {
+      reminderText = intl.formatMessage({id: translationKey})
+    }
+
+    const date = dateForDayOffset(reminder.dayOffset)
+    reminderText += ' ' + format(date, 'h:mm a')
+  }
 
   return (
     <View
@@ -52,27 +55,36 @@ export const MedsInformation = ({meds, style = {}}: Props) => {
       <View
         style={{
           flexDirection: 'row',
-          ...style,
+          flex: 1,
+          marginRight: 5,
+          alignItems: 'center',
         }}>
         <Image source={medicinePill} style={[styles.informationIcon]} />
-        <View style={{justifyContent: 'center'}}>
+        <View
+          style={{
+            justifyContent: 'center',
+            flex: 1,
+          }}>
           <BodyText
             style={{
               fontSize: 18,
               color: colors.grey0,
+              flex: 1,
             }}>
             <>
               {meds.name} {meds.dosage && meds.dosage}
             </>
           </BodyText>
           {reminderText && (
-            <BodyText
+            <Text
               style={{
                 fontSize: 16,
                 color: colors.grey1,
+
+                flex: 1,
               }}>
               {reminderText}
-            </BodyText>
+            </Text>
           )}
         </View>
       </View>
@@ -95,6 +107,5 @@ const styles = StyleSheet.create({
   },
   informationIcon: {
     marginRight: 16,
-    flexShrink: 0,
   },
 })
