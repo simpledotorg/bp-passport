@@ -23,7 +23,7 @@ export const createAMedicationWithReminder = (name: string): Medication => {
 export const createAReminder = (): Reminder => {
   return {
     days: DAILY,
-    dayOffset: 8 * 60 * 60 * 1000,
+    dayOffset: 8 * 60 * 60,
   }
 }
 
@@ -129,6 +129,13 @@ export const dateForDayOffset = (
   dayOffset: number /* seconds since midnight*/,
   day: Date = new Date(),
 ) => {
-  const midnight = day.setHours(0, 0, 0, 0)
-  return new Date(midnight + dayOffset * 1000)
+  const midnight = new Date(day.getTime())
+  midnight.setHours(0, 0, 0, 0)
+  return new Date(midnight.getTime() + dayOffset * 1000)
+}
+
+export const dayOffsetForDate = (date: Date) => {
+  const midnight = new Date(date.getTime())
+  midnight.setHours(0, 0, 0, 0)
+  return Math.round((date.getTime() - midnight.getTime()) / 1000)
 }

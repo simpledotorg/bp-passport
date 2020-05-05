@@ -157,7 +157,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                   </BodyText>
                   <View style={{flexDirection: 'row'}}>
                     <BodyText style={{color: colors.blue2, marginRight: 16}}>
-                      {format(reminderDate, 'HH:mm')}
+                      {format(reminderDate, 'h:mm a')}
                     </BodyText>
                     <Icon
                       name="chevron-right"

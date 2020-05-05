@@ -27,6 +27,7 @@ import AddMedicineScreen from './screens/AddMedicineScreen'
 import DetailsModalScreen from './screens/DetailsModalScreen'
 import MedicationDetailScreen from './screens/MedicationDetailScreen'
 import MedicationFrequencyScreen from './screens/MedicineFrequencyScreen'
+import MedicationTimeScreen from './screens/MedicationTimeScreen'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
@@ -70,6 +71,17 @@ export type RootStackParamList = {
 const Stack = createStackNavigator<RootStackParamList>()
 
 const Navigation = () => {
+  const getModalOptions = () => {
+    return Platform.OS === 'ios'
+      ? {
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+          cardOverlayEnabled: true,
+        }
+      : {
+          cardStyleInterpolator:
+            CardStyleInterpolators.forRevealFromBottomAndroid,
+        }
+  }
   return (
     <>
       <Stack.Navigator
@@ -85,36 +97,18 @@ const Navigation = () => {
         <Stack.Screen
           name={SCREENS.DETAILS_MODAL_SCREEN}
           component={DetailsModalScreen}
-          options={
-            Platform.OS === 'ios'
-              ? {
-                  cardStyleInterpolator:
-                    CardStyleInterpolators.forModalPresentationIOS,
-                  cardOverlayEnabled: true,
-                }
-              : {
-                  cardStyleInterpolator:
-                    CardStyleInterpolators.forRevealFromBottomAndroid,
-                }
-          }
+          options={getModalOptions()}
         />
         <Stack.Screen
           name={SCREENS.MEDICATION_FREQUENCY}
           component={MedicationFrequencyScreen}
-          options={
-            Platform.OS === 'ios'
-              ? {
-                  cardStyleInterpolator:
-                    CardStyleInterpolators.forModalPresentationIOS,
-                  cardOverlayEnabled: true,
-                }
-              : {
-                  cardStyleInterpolator:
-                    CardStyleInterpolators.forRevealFromBottomAndroid,
-                }
-          }
+          options={getModalOptions()}
         />
-
+        <Stack.Screen
+          name={SCREENS.MEDICATION_TIME}
+          component={MedicationTimeScreen}
+          options={getModalOptions()}
+        />
         <Stack.Screen
           name={SCREENS.MAIN_STACK}
           component={MainStack}

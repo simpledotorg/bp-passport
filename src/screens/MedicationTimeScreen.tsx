@@ -9,7 +9,10 @@ import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {BodyHeader, BodyText, CheckBox, Button} from '../components'
 import {FormattedMessage, IntlContext, useIntl} from 'react-intl'
-import {dateForDayOffset} from '../redux/medication/medication.models'
+import {
+  dateForDayOffset,
+  dayOffsetForDate,
+} from '../redux/medication/medication.models'
 
 type MedicineTimeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -26,14 +29,14 @@ type Props = {
 function MedicineTimeScreen({navigation, route}: Props) {
   const intl = useIntl()
   const {updateDayOffset, reminder} = route.params
-  const [time, setTime] = useState<Date>(
+  const [date, setDate] = useState<Date>(
     dateForDayOffset(reminder.dayOffset) ?? new Date(),
   )
 
   if (Platform.OS === 'android') {
     return (
       <DateTimePicker
-        value={time}
+        value={date}
         mode={'time'}
         is24Hour={true}
         minuteInterval={5}
@@ -41,12 +44,12 @@ function MedicineTimeScreen({navigation, route}: Props) {
         onTouchCancel={() => {
           navigation.goBack()
         }}
-        onChange={(event, date) => {
+        onChange={(event, dateIn) => {
           if (event.type === 'dismissed') {
             navigation.goBack()
           } else {
-            if (date) {
-              updateTime(date)
+            if (dateIn) {
+              updateDayOffset(dayOffsetForDate(dateIn))
             }
 
             navigation.goBack()
@@ -98,13 +101,15 @@ function MedicineTimeScreen({navigation, route}: Props) {
                 borderColor: colors.grey3,
               }}>
               <DateTimePicker
-                value={time}
+                value={date}
                 mode={'time'}
                 minuteInterval={5}
                 is24Hour={true}
                 display="clock"
-                onChange={(event, date) => {
-                  setTime(date)
+                onChange={(event, dateIn) => {
+                  if (dateIn) {
+                    setDate(dateIn)
+                  }
                 }}
               />
             </View>
@@ -112,7 +117,7 @@ function MedicineTimeScreen({navigation, route}: Props) {
           <Button
             style={{marginHorizontal: 16, marginBottom: 16}}
             onPress={() => {
-              updateTime(time)
+              updateDayOffset(dayOffsetForDate(date))
               setTimeout(() => {
                 navigation.goBack()
               }, 0)
