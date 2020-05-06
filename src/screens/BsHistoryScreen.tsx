@@ -1,17 +1,17 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {
-  SafeAreaView,
   View,
   FlatList,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import {FormattedMessage} from 'react-intl'
 
 import {containerStyles, colors} from '../styles'
-import {BodyHeader, BsInformation} from '../components'
+import {BodyHeader, BsInformation, BsHistoryChart} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
@@ -36,39 +36,69 @@ function BsHistoryScreen({navigation, route}: Props) {
 
   return (
     <View style={{flex: 1}}>
-      <SafeAreaView
-        style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-        <View style={{flex: 1, paddingTop: 24, paddingLeft: 24}}>
-          <View style={{marginBottom: 24}}>
-            <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
-              BS History
-            </BodyHeader>
+      <ScrollView contentContainerStyle={{paddingVertical: 8}}>
+        <View
+          style={[
+            containerStyles.containerSegment,
+            {paddingVertical: 22, paddingHorizontal: 24},
+          ]}>
+          <View style={[{flexShrink: 0}]}>
+            <View>
+              <BodyHeader
+                style={{
+                  fontSize: 22,
+                  fontWeight: 'bold',
+                  marginBottom: 14,
+                }}>
+                <FormattedMessage id="bs.bs-trend" />
+              </BodyHeader>
+            </View>
           </View>
-          <FlatList
-            data={bloodSugars}
-            renderItem={({item, index}) => (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
-                    bs: item,
-                  })
-                }}
-                style={[
-                  {paddingRight: 24, marginTop: 12},
-                  styles.historyItem,
-                  index === (bloodSugars ?? []).length - 1
-                    ? {borderBottomWidth: 0}
-                    : {},
-                ]}>
-                <BsInformation bs={item} style={{marginTop: 0}} />
-              </TouchableOpacity>
-            )}
-            keyExtractor={(item, index) => {
-              return `key-${index}`
-            }}
-          />
+          <View>
+            <BsHistoryChart bss={bloodSugars ?? []} />
+          </View>
         </View>
-      </SafeAreaView>
+        <View
+          style={[
+            containerStyles.containerSegment,
+            {paddingVertical: 22, paddingHorizontal: 24},
+          ]}>
+          <View style={[{flexShrink: 0}]}>
+            <BodyHeader
+              style={{fontSize: 22, fontWeight: 'bold', marginBottom: 14}}>
+              <FormattedMessage id="bs.all-bs" />
+            </BodyHeader>
+            <FlatList
+              data={bloodSugars}
+              renderItem={({item: bs, index}) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+                      bs,
+                    })
+                  }}
+                  key={index}
+                  style={[
+                    {
+                      marginRight: 24,
+                      marginBottom: 12,
+                      paddingTop: 12,
+                    },
+                    styles.historyItem,
+                    index === bloodSugars.length - 1
+                      ? {borderBottomWidth: 0}
+                      : {},
+                  ]}>
+                  <BsInformation bs={bs} />
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item, index) => {
+                return `key-${index}`
+              }}
+            />
+          </View>
+        </View>
+      </ScrollView>
     </View>
   )
 }
