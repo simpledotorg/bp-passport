@@ -162,7 +162,7 @@ export const BpHistoryChart = ({bps}: Props) => {
         /> */}
 
         <VictoryLine
-          data={bps.map((bp, index) => {
+          data={lowBps.map((bp, index) => {
             return {
               x: index + 1,
               y: bp.diastolic,
@@ -177,22 +177,7 @@ export const BpHistoryChart = ({bps}: Props) => {
           labelComponent={<VictoryTooltip />}
         />
         <VictoryLine
-          data={bps.map((bp, index) => {
-            return {
-              x: index + 1,
-              y: bp.systolic,
-              label: `${bp.systolic}/${bp.diastolic}`,
-            }
-          })}
-          style={{
-            data: {
-              stroke: colors.green1,
-            },
-          }}
-          labelComponent={<VictoryTooltip />}
-        />
-        <VictoryLine
-          data={bps.map((bp, index) => {
+          data={lowBps.map((bp, index) => {
             const previousBp = bps[index - 1]
             if (
               (previousBp && isBloodPressureHigh(previousBp)) ||
@@ -214,7 +199,22 @@ export const BpHistoryChart = ({bps}: Props) => {
           labelComponent={<VictoryTooltip />}
         />
         <VictoryLine
-          data={bps.map((bp, index) => {
+          data={highBps.map((bp, index) => {
+            return {
+              x: index + 1,
+              y: bp.systolic,
+              label: `${bp.systolic}/${bp.diastolic}`,
+            }
+          })}
+          style={{
+            data: {
+              stroke: colors.green1,
+            },
+          }}
+          labelComponent={<VictoryTooltip />}
+        />
+        <VictoryLine
+          data={highBps.map((bp, index) => {
             const previousBp = bps[index - 1]
             if (
               (previousBp && isBloodPressureHigh(previousBp)) ||
