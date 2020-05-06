@@ -14,7 +14,6 @@ import {BodyHeader, BpInformation} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
-import {ScrollView} from 'react-native-gesture-handler'
 import {FormattedMessage} from 'react-intl'
 
 type BpHistoryScreenNavigationProp = StackNavigationProp<
