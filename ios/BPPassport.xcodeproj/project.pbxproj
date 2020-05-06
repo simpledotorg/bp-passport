@@ -798,7 +798,7 @@
 				);
 				INFOPLIST_FILE = BPPassport/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 0.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -826,7 +826,7 @@
 				DEVELOPMENT_TEAM = DBJVYHVN4H;
 				INFOPLIST_FILE = BPPassport/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 0.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
