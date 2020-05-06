@@ -113,26 +113,48 @@ function MedicationDetailsScreen({navigation, route}: Props) {
         devicePushToken === 'None'
       ) {
         if (Platform.OS === 'ios') {
-          PushNotificationIOS.requestPermissions().then(
-            (data) => {
-              if (data.alert) {
-                dispatch(
-                  setPushNotificationPermission(Permission.PermissionPermitted),
+          const askForIosPermissions = () => {
+            PushNotificationIOS.requestPermissions().then(
+              (data) => {
+                if (data.alert) {
+                  dispatch(
+                    setPushNotificationPermission(
+                      Permission.PermissionPermitted,
+                    ),
+                  )
+                } else {
+                  /*
+                  setRemindersEnabled(false)
+                  */
+                  // should we allow a reminder to be 'on' when we can't push to the user?
+                  dispatch(
+                    setPushNotificationPermission(Permission.PermissionDenied),
+                  )
+                }
+              },
+              (data) => {
+                console.log(
+                  'PushNotificationIOS.requestPermissions failed',
+                  data,
                 )
-              } else {
-                /*
+              },
+            )
+          }
+
+          if (
+            pushNotificationPermission === Permission.PermissionNotDetermined
+          ) {
+            navigation.navigate(SCREENS.ALLOW_NOTIFICATIONS_MODAL_SCREEN, {
+              okCallback: () => {
+                askForIosPermissions()
+              },
+              cancelCallback: () => {
                 setRemindersEnabled(false)
-                */
-                // should we allow a reminder to be 'on' when we can't push to the user?
-                dispatch(
-                  setPushNotificationPermission(Permission.PermissionDenied),
-                )
-              }
-            },
-            (data) => {
-              console.log('PushNotificationIOS.requestPermissions failed', data)
-            },
-          )
+              },
+            })
+          } else {
+            askForIosPermissions()
+          }
         } else if (Platform.OS === 'android') {
           if (devicePushToken === 'None') {
             PushNotificationAndroid.requestPermissions()

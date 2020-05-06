@@ -58,11 +58,12 @@ export const refreshAllLocalPushReminders = (
 
         const day: Day = fireDate.getDay()
         const dayString = intl.formatMessage({id: dayToKeyString(day, true)})
-        const when = `${dayString} ${format(fireDate, 'h:mm a')}`
+        const whenDay = `${dayString}`
+        const whenTime = `${format(fireDate, 'h:mm a')}`
 
         const body = intl.formatMessage(
           {id: 'medicine.reminder-notification'},
-          {value: when},
+          {day: whenDay, time: whenTime},
         )
         if (Platform.OS === 'ios') {
           PushNotificationIOS.scheduleLocalNotification({

@@ -28,6 +28,7 @@ import DetailsModalScreen from './screens/DetailsModalScreen'
 import MedicationDetailScreen from './screens/MedicationDetailScreen'
 import MedicationFrequencyScreen from './screens/MedicineFrequencyScreen'
 import MedicationTimeScreen from './screens/MedicationTimeScreen'
+import AllowNotificationsModalScreen from './screens/AllowNotificationsModalScreen'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
@@ -76,6 +77,10 @@ export type RootStackParamList = {
     updateDayOffset: (dayOffset: number) => void
     reminder: Reminder
   }
+  ALLOW_NOTIFICATIONS_MODAL_SCREEN: {
+    okCallback: () => void
+    cancelCallback: () => void
+  }
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -108,6 +113,15 @@ const Navigation = () => {
           name={SCREENS.DETAILS_MODAL_SCREEN}
           component={DetailsModalScreen}
           options={getModalOptions()}
+        />
+        <Stack.Screen
+          name={SCREENS.ALLOW_NOTIFICATIONS_MODAL_SCREEN}
+          component={AllowNotificationsModalScreen}
+          options={{
+            cardStyleInterpolator:
+              CardStyleInterpolators.forModalPresentationIOS,
+            cardOverlayEnabled: true,
+          }}
         />
         <Stack.Screen
           name={SCREENS.MEDICATION_FREQUENCY}

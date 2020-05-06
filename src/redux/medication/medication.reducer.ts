@@ -1,9 +1,12 @@
 import React from 'react'
+import {Platform} from 'react-native'
 import {MedicationActionTypes} from './medication.types'
 import {AuthActionTypes} from '../auth/auth.types'
 import {Medication} from './medication.models'
 import AsyncStorage from '@react-native-community/async-storage'
 import {persistReducer} from 'redux-persist'
+import PushNotificationIOS from '@react-native-community/push-notification-ios'
+import PushNotificationAndroid from 'react-native-push-notification'
 
 const ALL_MEDICINE_NAMES: Medication[] = require('../../assets/data/medicines.json')
 
@@ -22,9 +25,13 @@ const sortedMedications = (medications: Medication[]) => {
 
 const uniqueKey = (medication: Medication) => {
   let key = medication.name ?? ''
-  key += '-' + (medication.offline?.valueOf() ? 'online' : 'offline')
-  key += '-'
-  key += medication.updated_at ?? ''
+  if (medication.offline) {
+    key += '-offline'
+    key += '-'
+    key += medication.updated_at ?? ''
+  } else {
+    key += '-online'
+  }
 
   return key
 }
@@ -90,6 +97,11 @@ const medicationReducer = (state = INITIAL_STATE, action) => {
         medications: medicationsFiltered,
       }
     case AuthActionTypes.LOG_OUT:
+      if (Platform.OS === 'ios') {
+        PushNotificationIOS.cancelAllLocalNotifications()
+      } else if (Platform.OS === 'android') {
+        PushNotificationAndroid.cancelAllLocalNotifications()
+      }
       return {
         ...INITIAL_STATE,
       }
