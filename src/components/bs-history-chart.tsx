@@ -13,6 +13,7 @@ import {
   VictoryAxis,
   VictoryTooltip,
 } from 'victory-native'
+import {format} from 'date-fns'
 
 import {
   BloodSugar,
@@ -98,8 +99,11 @@ export const BsHistoryChart = ({bss}: Props) => {
           scale={{x: 'linear'}}
           theme={VictoryTheme.material}>
           <VictoryAxis
-            tickCount={data.length > 5 ? data.length / 2 : data.length}
-            tickValues={data.map((bs, index) => bs.blood_sugar_value)}
+            tickCount={4}
+            tickValues={data.map((bs, index) => bs.recorded_at)}
+            tickFormat={(tick) => {
+              return format(new Date(tick), 'dd/MM/yy')
+            }}
             style={{
               grid: {stroke: colors.grey3, strokeDasharray: 8},
               axis: {stroke: colors.grey3, opacity: 0},

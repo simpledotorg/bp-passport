@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {View, Dimensions} from 'react-native'
-import {FormattedMessage} from 'react-intl'
+import {format} from 'date-fns'
 import {
   VictoryChart,
   VictoryTheme,
@@ -73,8 +73,11 @@ export const BpHistoryChart = ({bps}: Props) => {
         scale={{x: 'linear'}}
         theme={VictoryTheme.material}>
         <VictoryAxis
-          tickCount={bps.length > 5 ? bps.length / 2 : bps.length}
-          tickValues={bps.map((bp) => `${bp.systolic}/${bp.diastolic}`)}
+          tickCount={4}
+          tickValues={bps.map((bp) => bp.recorded_at)}
+          tickFormat={(tick) => {
+            return format(new Date(tick), 'dd/MM/yy')
+          }}
           style={{
             grid: {stroke: colors.grey3, strokeDasharray: 8},
             axis: {stroke: colors.grey3, opacity: 0},
