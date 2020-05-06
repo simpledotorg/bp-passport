@@ -19,6 +19,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* BPPassportTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* BPPassportTests.m */; };
 		3E6BFE1FAD164C7B11BC2106 /* libPods-BPPassport-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE9A9A57A03BB69B3C0E309D /* libPods-BPPassport-tvOSTests.a */; };
 		4844AEE8243639D8007893AC /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4844AEE7243639D8007893AC /* AppCenter-Config.plist */; };
+		48DBEBA024628C0B002DECE1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 48DBEB9F24628C0B002DECE1 /* GoogleService-Info.plist */; };
 		88601027D892E6BDA2BE6629 /* libPods-BPPassport-BPPassportTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F7EA508E8E6B9E2F36541CA /* libPods-BPPassport-BPPassportTests.a */; };
 		B7F7F9EDE1CB46E590054CEF /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5588719090F04F7F8F85D5C6 /* Roboto-Regular.ttf */; };
 		BD8AE594720AE3F9BEC40308 /* libPods-BPPassport-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6E982E9EEABF23C3C6311AC /* libPods-BPPassport-tvOS.a */; };
@@ -70,6 +71,7 @@
 		364FD615F73E45CFAEFF4501 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		48029A30245B18690039461C /* BP Passport.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "BP Passport.entitlements"; path = "BPPassport/BP Passport.entitlements"; sourceTree = "<group>"; };
 		4844AEE7243639D8007893AC /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "BPPassport/AppCenter-Config.plist"; sourceTree = "<group>"; };
+		48DBEB9F24628C0B002DECE1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "BPPassport/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5588719090F04F7F8F85D5C6 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../src/assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		63CD378839314FC9B67E55C9 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		644052F6E8264788B5CFAD1A /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 			children = (
 				48029A30245B18690039461C /* BP Passport.entitlements */,
 				4844AEE7243639D8007893AC /* AppCenter-Config.plist */,
+				48DBEB9F24628C0B002DECE1 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -397,6 +400,7 @@
 				4844AEE8243639D8007893AC /* AppCenter-Config.plist in Resources */,
 				1D2B934BB72B433C812BAD3F /* Roboto-Bold.ttf in Resources */,
 				B7F7F9EDE1CB46E590054CEF /* Roboto-Regular.ttf in Resources */,
+				48DBEBA024628C0B002DECE1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

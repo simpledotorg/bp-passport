@@ -27,6 +27,7 @@ DerivedData
 # Keys
 google-services.json
 GoogleService-Info.plist
+AppCenter-Config.plist
 
 # Android/IntelliJ
 #
