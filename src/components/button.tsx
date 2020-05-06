@@ -1,12 +1,13 @@
 import React, {ReactNode} from 'react'
 import {
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   Text,
   StyleProp,
   ViewStyle,
   ButtonProps as NativeButtonProps,
-  TouchableOpacityProps,
+  TouchableWithoutFeedbackProps,
   StyleSheet,
+  View,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {colors, typography} from '../styles'
@@ -21,49 +22,51 @@ interface ButtonProps extends NativeButtonProps {
 
 export const Button = (props: ButtonProps) => {
   return (
-    <TouchableOpacity
-      {...props}
-      style={[
-        {
-          height: 48,
-          borderRadius: 2,
-          backgroundColor: colors.blue2,
-          alignItems: 'center',
-          justifyContent: 'center',
-        },
-        props.disableBoxShadow ? {} : styles.shadowStyles,
-        props.disabled
-          ? {
-              backgroundColor: colors.grey3,
-            }
-          : {},
-        props.style,
-      ]}>
-      {props.title && (
-        <Text
-          style={[
-            {
-              fontSize: 16,
-              fontWeight: 'bold',
-              fontFamily: typography.FONT.base,
-              fontStyle: 'normal',
-              lineHeight: 20,
-              letterSpacing: 1.25,
-              color: props.disabled
-                ? colors.grey2
-                : props.buttonColor || colors.white100,
-              textTransform: 'uppercase',
-              textAlign: 'center',
-            },
-          ]}>
-          {props.title}
-        </Text>
-      )}
-    </TouchableOpacity>
+    <TouchableWithoutFeedback onPress={props.onPress}>
+      <View
+        {...props}
+        style={[
+          {
+            height: 48,
+            borderRadius: 2,
+            backgroundColor: colors.blue2,
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
+          props.disableBoxShadow ? {} : styles.shadowStyles,
+          props.disabled
+            ? {
+                backgroundColor: colors.grey3,
+              }
+            : {},
+          props.style,
+        ]}>
+        {props.title && (
+          <Text
+            style={[
+              {
+                fontSize: 16,
+                fontWeight: 'bold',
+                fontFamily: typography.FONT.base,
+                fontStyle: 'normal',
+                lineHeight: 20,
+                letterSpacing: 1.25,
+                color: props.disabled
+                  ? colors.grey2
+                  : props.buttonColor || colors.white100,
+                textTransform: 'uppercase',
+                textAlign: 'center',
+              },
+            ]}>
+            {props.title}
+          </Text>
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
 
-interface ButtonIconProps extends TouchableOpacityProps {
+interface ButtonIconProps extends TouchableWithoutFeedbackProps {
   style?: StyleProp<ViewStyle>
   iconColor?: string
   iconSize?: number
@@ -71,23 +74,24 @@ interface ButtonIconProps extends TouchableOpacityProps {
 
 export const ButtonIcon = (props: ButtonIconProps) => {
   return (
-    <TouchableOpacity
-      {...props}
-      style={[
-        {
-          width: 44,
-          height: 44,
-          alignItems: 'center',
-          justifyContent: 'center',
-        },
-        props.style,
-      ]}>
-      <Icon
-        name="settings"
-        size={props.iconSize ?? 24}
-        color={props.iconColor ?? colors.white72}
-      />
-    </TouchableOpacity>
+    <TouchableWithoutFeedback {...props}>
+      <View
+        style={[
+          {
+            width: 44,
+            height: 44,
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
+          props.style,
+        ]}>
+        <Icon
+          name="settings"
+          size={props.iconSize ?? 24}
+          color={props.iconColor ?? colors.white72}
+        />
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
 

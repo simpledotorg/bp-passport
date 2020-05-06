@@ -4,7 +4,7 @@ import {
   View,
   FlatList,
   StyleSheet,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -46,24 +46,26 @@ function BpHistoryScreen({navigation, route}: Props) {
           <FlatList
             data={bps}
             renderItem={({item: bp, index}) => (
-              <TouchableOpacity
+              <TouchableWithoutFeedback
                 onPress={() => {
                   navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
                     bp,
                   })
                 }}
-                key={index}
-                style={[
-                  {
-                    marginRight: 24,
-                    marginBottom: 12,
-                    paddingTop: 12,
-                  },
-                  styles.historyItem,
-                  index === bps.length - 1 ? {borderBottomWidth: 0} : {},
-                ]}>
-                <BpInformation bp={bp} />
-              </TouchableOpacity>
+                key={index}>
+                <View
+                  style={[
+                    {
+                      marginRight: 24,
+                      marginBottom: 12,
+                      paddingTop: 12,
+                    },
+                    styles.historyItem,
+                    index === bps.length - 1 ? {borderBottomWidth: 0} : {},
+                  ]}>
+                  <BpInformation bp={bp} />
+                </View>
+              </TouchableWithoutFeedback>
             )}
             keyExtractor={(item, index) => {
               return `key-${index}`

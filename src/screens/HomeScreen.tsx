@@ -7,7 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Image,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
 } from 'react-native'
 import {useIntl, FormattedMessage} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -201,25 +201,27 @@ function Home({navigation}: Props) {
                     }
 
                     return (
-                      <TouchableOpacity
+                      <TouchableWithoutFeedback
                         onPress={() => {
                           navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
                             bp,
                           })
                         }}
-                        key={index}
-                        style={[
-                          {
-                            marginBottom: 12,
-                            paddingTop: 12,
-                          },
-                          styles.historyItem,
-                          index === bps.length - 1
-                            ? {borderBottomWidth: 0}
-                            : {},
-                        ]}>
-                        <BpInformation bp={bp} />
-                      </TouchableOpacity>
+                        key={index}>
+                        <View
+                          style={[
+                            {
+                              marginBottom: 12,
+                              paddingTop: 12,
+                            },
+                            styles.historyItem,
+                            index === bps.length - 1
+                              ? {borderBottomWidth: 0}
+                              : {},
+                          ]}>
+                          <BpInformation bp={bp} />
+                        </View>
+                      </TouchableWithoutFeedback>
                     )
                   })}
                 </>
@@ -269,25 +271,27 @@ function Home({navigation}: Props) {
                     }
 
                     return (
-                      <TouchableOpacity
+                      <TouchableWithoutFeedback
                         onPress={() => {
                           navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
                             bs,
                           })
                         }}
-                        key={index}
-                        style={[
-                          {
-                            marginBottom: 12,
-                            paddingTop: 12,
-                          },
-                          styles.historyItem,
-                          index === bss.length - 1
-                            ? {borderBottomWidth: 0}
-                            : {},
-                        ]}>
-                        <BsInformation bs={bs} />
-                      </TouchableOpacity>
+                        key={index}>
+                        <View
+                          style={[
+                            {
+                              marginBottom: 12,
+                              paddingTop: 12,
+                            },
+                            styles.historyItem,
+                            index === bss.length - 1
+                              ? {borderBottomWidth: 0}
+                              : {},
+                          ]}>
+                          <BsInformation bs={bs} />
+                        </View>
+                      </TouchableWithoutFeedback>
                     )
                   })}
                 </>

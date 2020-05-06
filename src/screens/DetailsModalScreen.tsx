@@ -39,8 +39,10 @@ function DetailsModalScreen({navigation, route}: Props) {
         <View
           style={{
             backgroundColor: colors.white100,
-            padding: 16,
+            paddingBottom: 8,
             width: '100%',
+            borderTopRightRadius: 4,
+            borderTopLeftRadius: 4,
           }}>
           {bp && (
             <BpModal

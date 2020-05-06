@@ -4,7 +4,7 @@ import {
   View,
   StyleSheet,
   TextInput,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   Image,
 } from 'react-native'
 import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view'
@@ -120,7 +120,7 @@ function AddMedicineScreen({navigation, route}: Props) {
                         borderRadius: 4,
                       },
                     ]}>
-                    <TouchableOpacity
+                    <TouchableWithoutFeedback
                       onPressOut={() => {
                         inputRef.current.blur()
                         navigation.push(SCREENS.MEDICATION_DETAILS, {
@@ -150,7 +150,7 @@ function AddMedicineScreen({navigation, route}: Props) {
                           {item.name}
                         </BodyText>
                       </View>
-                    </TouchableOpacity>
+                    </TouchableWithoutFeedback>
                   </View>
                 )
               }}

@@ -60,6 +60,8 @@ export const BpModal = ({bp, close}: Props) => {
       style={{
         padding: 24,
         backgroundColor: colors.white100,
+        borderTopRightRadius: 4,
+        borderTopLeftRadius: 4,
       }}>
       <BodyHeader
         style={{
