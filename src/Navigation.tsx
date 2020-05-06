@@ -284,6 +284,7 @@ function MainStack({navigation}: Props) {
               return (
                 <ButtonIcon
                   onPress={() => navigation.navigate(SCREENS.SETTINGS)}
+                  style={{marginRight: 8}}
                 />
               )
             }
