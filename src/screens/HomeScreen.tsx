@@ -114,8 +114,8 @@ function Home({navigation}: Props) {
     return ret
   }
 
-  const showBpHistoryButton = bps.length > HOME_PAGE_SHOW_LIMIT
-  const showBsHistoryButton = bss.length > HOME_PAGE_SHOW_LIMIT
+  const showBpHistoryButton = bps.length >= HOME_PAGE_SHOW_LIMIT
+  const showBsHistoryButton = bss.length >= HOME_PAGE_SHOW_LIMIT
 
   useEffect(() => {
     if (
@@ -123,7 +123,7 @@ function Home({navigation}: Props) {
       Platform.OS === 'android'
     ) {
       if (medications) {
-        //todo - optimise...
+        // todo - optimise...
         refreshAllLocalPushReminders(medications, intl)
       }
     }

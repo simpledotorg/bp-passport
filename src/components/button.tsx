@@ -65,6 +65,7 @@ export const Button = (props: ButtonProps) => {
 
 interface ButtonIconProps extends TouchableOpacityProps {
   style?: StyleProp<ViewStyle>
+  iconName?: string
   iconColor?: string
   iconSize?: number
 }
@@ -83,7 +84,7 @@ export const ButtonIcon = (props: ButtonIconProps) => {
         props.style,
       ]}>
       <Icon
-        name="settings"
+        name={props.iconName ?? '?'}
         size={props.iconSize ?? 24}
         color={props.iconColor ?? colors.white72}
       />
