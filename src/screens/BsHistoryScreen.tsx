@@ -15,6 +15,7 @@ import {BodyHeader, BsInformation} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
+import {FormattedMessage} from 'react-intl'
 
 type BsHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -41,7 +42,7 @@ function BsHistoryScreen({navigation, route}: Props) {
         <View style={{flex: 1, paddingTop: 24, paddingLeft: 24}}>
           <View style={{marginBottom: 24}}>
             <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
-              BS History
+              <FormattedMessage id="page-titles.all-bs" />
             </BodyHeader>
           </View>
           <FlatList
