@@ -66,6 +66,10 @@ export const ordedDays = (arrayOfDays: Day[]): string => {
   return ordered.join('')
 }
 
+export const toDays = (daysString: string): Day[] => {
+  return daysString.split('').map((s) => Number(s) as Day)
+}
+
 export const ALL_DAYS_ORDERED = [
   Day.Monday,
   Day.Tuesday,

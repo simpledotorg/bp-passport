@@ -8,7 +8,7 @@ import {
 import {useNavigationState, StackActions} from '@react-navigation/native'
 import {forFade} from './navigation/interpolators'
 import {CardStyleInterpolators} from '@react-navigation/stack'
-import {useIntl} from 'react-intl'
+import {useIntl, FormattedMessage} from 'react-intl'
 import {usePrevious} from './effects/use-previous.effect'
 
 import LaunchScreen from './screens/LaunchScreen'
@@ -31,7 +31,13 @@ import MedicationTimeScreen from './screens/MedicationTimeScreen'
 import AllowNotificationsModalScreen from './screens/AllowNotificationsModalScreen'
 
 import SCREENS from './constants/screens'
-import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
+import {
+  HomeHeaderTitle,
+  ButtonIcon,
+  LoadingOverlay,
+  BodyHeader,
+  BodyText,
+} from './components'
 import {colors, navigation as navigationStyle} from './styles'
 import {BloodPressure} from './redux/blood-pressure/blood-pressure.models'
 import {BloodSugar} from './redux/blood-sugar/blood-sugar.models'
@@ -275,6 +281,16 @@ function MainStack({navigation}: Props) {
         component={ConsentScreen}
         options={{
           headerBackTitle: ' ',
+          headerTitleAlign: 'left',
+          headerLeft: () => (
+            <ButtonIcon
+              iconName="arrow-back"
+              iconColor={colors.white}
+              onPress={() => {
+                navigation.goBack()
+              }}
+            />
+          ),
           title: intl.formatMessage({id: 'page-titles.consent'}),
         }}
       />
@@ -367,6 +383,7 @@ function MainStack({navigation}: Props) {
             if (loginState === LoginState.LoggedIn) {
               return (
                 <ButtonIcon
+                  iconName="settings"
                   onPress={() => navigation.navigate(SCREENS.SETTINGS)}
                 />
               )
