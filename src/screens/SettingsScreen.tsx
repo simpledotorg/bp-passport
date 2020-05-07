@@ -40,32 +40,36 @@ function SettingsScreen({navigation}: any) {
       <View style={[containerStyles.fill]}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.content}>
-            <View style={styles.header}>
-              <BodyText style={styles.headerText}>
-                <FormattedMessage id="settings.profile" />
-              </BodyText>
-            </View>
+            {apiUser && (
+              <>
+                <View style={styles.header}>
+                  <BodyHeader style={styles.headerText}>
+                    <FormattedMessage id="settings.profile" />
+                  </BodyHeader>
+                </View>
+                <View style={styles.item}>
+                  <BodyHeader style={styles.itemText}>
+                    {apiUser?.full_name}
+                  </BodyHeader>
+                  <BodyText style={styles.itemLabel}>
+                    <FormattedMessage id="settings.name" />
+                  </BodyText>
+                </View>
+                <View style={styles.item}>
+                  <BodyHeader style={styles.itemText}>
+                    {apiUser?.address?.state}
+                  </BodyHeader>
+                  <BodyText style={styles.itemLabel}>
+                    <FormattedMessage id="settings.state" />
+                  </BodyText>
+                </View>
+              </>
+            )}
 
-            <View style={styles.item}>
-              <BodyHeader style={styles.itemText}>
-                {apiUser?.full_name}
-              </BodyHeader>
-              <BodyText style={styles.itemLabel}>
-                <FormattedMessage id="settings.name" />
-              </BodyText>
-            </View>
-            <View style={styles.item}>
-              <BodyHeader style={styles.itemText}>
-                {apiUser?.address?.state}
-              </BodyHeader>
-              <BodyText style={styles.itemLabel}>
-                <FormattedMessage id="settings.state" />
-              </BodyText>
-            </View>
             <View style={[styles.header, {marginTop: 24}]}>
-              <BodyText style={styles.headerText}>
+              <BodyHeader style={styles.headerText}>
                 <FormattedMessage id="settings.language" />
-              </BodyText>
+              </BodyHeader>
             </View>
             <View style={{marginBottom: 40}}>
               <Picker
@@ -76,9 +80,9 @@ function SettingsScreen({navigation}: any) {
             </View>
 
             <View style={styles.header}>
-              <BodyText style={styles.headerText}>
+              <BodyHeader style={styles.headerText}>
                 <FormattedMessage id="settings.about" />
-              </BodyText>
+              </BodyHeader>
             </View>
             <View style={styles.item}>
               <BodyText

@@ -4,7 +4,7 @@ import {AuthActionTypes} from './auth.types'
 import {AppThunk} from '../store'
 import {LoginState, AuthParams} from './auth.models'
 
-export const setAuthParams = (authParams: AuthParams) => ({
+export const setAuthParams = (authParams: AuthParams | undefined) => ({
   type: AuthActionTypes.SET_AUTH_PARAMS,
   payload: authParams,
 })
