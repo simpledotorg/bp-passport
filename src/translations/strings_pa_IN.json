@@ -180,5 +180,7 @@
   "medicine.weekdays": "Weekdays",
   "medicine.weekends": "Weekends",
   "medicine.custom": "Custom",
+  "medicine.allow-notifications-title": "Allow notifications",
+  "medicine.allow-notifications-body": "Allow notifications to receive medicine reminders",
   "medicine.reminder-notification": "{day} {time}, take your medicine"
 }
