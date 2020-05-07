@@ -10,6 +10,7 @@ import {BodyHeader, BodyText, CheckBox, Button} from '../components'
 import {FormattedMessage, IntlContext, useIntl} from 'react-intl'
 import {
   Day,
+  ALL_DAYS_ORDERED,
   dayToKeyString,
   ordedDays,
 } from '../redux/medication/medication.models'
@@ -36,22 +37,10 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
     reminder.days.split('').map((s) => Number(s) as Day),
   )
 
-  const allDays: Day[] = [
-    Day.Monday,
-    Day.Tuesday,
-    Day.Wednesday,
-    Day.Thursday,
-    Day.Friday,
-    Day.Saturday,
-    Day.Sunday,
-  ]
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        updateDays(days.join(''))
-        setTimeout(() => {
-          navigation.goBack()
-        }, 0)
+        navigation.goBack()
       }}>
       <View
         style={[
@@ -61,6 +50,7 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
         <View
           style={{
             backgroundColor: colors.white100,
+            width: '100%',
             padding: 16,
             flexShrink: 0,
           }}>
@@ -83,7 +73,7 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
                 <FormattedMessage id="medicine.set-reminder-for" />
               </BodyHeader>
             </View>
-            {allDays.map((day, index) => {
+            {ALL_DAYS_ORDERED.map((day, index) => {
               return (
                 <TouchableWithoutFeedback
                   key={day}
@@ -99,7 +89,8 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
                   }}>
                   <View
                     style={{
-                      borderBottomWidth: index === allDays.length - 1 ? 0 : 1,
+                      borderBottomWidth:
+                        index === ALL_DAYS_ORDERED.length - 1 ? 0 : 1,
                       borderColor: colors.grey3,
                       paddingVertical: 12,
                       flexDirection: 'row',
@@ -125,9 +116,7 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
             style={{marginHorizontal: 16, marginBottom: 16}}
             onPress={() => {
               updateDays(ordedDays(days))
-              setTimeout(() => {
-                navigation.goBack()
-              }, 0)
+              navigation.goBack()
             }}
             title={intl.formatMessage({id: 'general.save'})}
           />

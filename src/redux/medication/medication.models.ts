@@ -70,7 +70,7 @@ export const toDays = (daysString: string): Day[] => {
   return daysString.split('').map((s) => Number(s) as Day)
 }
 
-export const DAILY = [
+export const ALL_DAYS_ORDERED = [
   Day.Monday,
   Day.Tuesday,
   Day.Wednesday,
@@ -78,7 +78,9 @@ export const DAILY = [
   Day.Friday,
   Day.Saturday,
   Day.Sunday,
-].join('')
+]
+
+export const DAILY = ALL_DAYS_ORDERED.join('')
 
 export const WEEK_DAYS = [
   Day.Monday,
