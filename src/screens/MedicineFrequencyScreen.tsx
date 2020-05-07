@@ -40,10 +40,7 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        updateDays(days.join(''))
-        setTimeout(() => {
-          navigation.goBack()
-        }, 0)
+        navigation.goBack()
       }}>
       <View
         style={[
@@ -119,9 +116,7 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
             style={{marginHorizontal: 16, marginBottom: 16}}
             onPress={() => {
               updateDays(ordedDays(days))
-              setTimeout(() => {
-                navigation.goBack()
-              }, 0)
+              navigation.goBack()
             }}
             title={intl.formatMessage({id: 'general.save'})}
           />
