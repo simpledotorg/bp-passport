@@ -38,8 +38,8 @@ function BpHistoryScreen({navigation, route}: Props) {
   const bps = bloodPressuresSelector()
 
   return (
-    <View style={{flex: 1}}>
-      <ScrollView contentContainerStyle={{paddingVertical: 8}}>
+    <View style={{flex: 1, padding: 18}}>
+      {/* 
         <View
           style={[
             containerStyles.containerSegment,
@@ -60,46 +60,50 @@ function BpHistoryScreen({navigation, route}: Props) {
           <View>
             <BpHistoryChart bps={bps ?? []} />
           </View>
-        </View>
-        <View
-          style={[
-            containerStyles.containerSegment,
-            {paddingVertical: 22, paddingHorizontal: 24},
-          ]}>
-          <View style={[{flexShrink: 0}]}>
+        </View>*/}
+
+      <FlatList
+        data={bps}
+        ListHeaderComponent={
+          <View
+            style={[containerStyles.containerSegment, {paddingHorizontal: 0}]}>
             <BodyHeader
-              style={{fontSize: 22, fontWeight: 'bold', marginBottom: 14}}>
-              <FormattedMessage id="page-titles.all-bp" />
+              style={{
+                marginHorizontal: 8,
+                fontSize: 22,
+                fontWeight: 'bold',
+                marginBottom: 14,
+              }}>
+              <FormattedMessage id="all-bp.bp-trend" />
             </BodyHeader>
-            <FlatList
-              data={bps}
-              renderItem={({item: bp, index}) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
-                      bp,
-                    })
-                  }}
-                  key={index}
-                  style={[
-                    {
-                      marginRight: 24,
-                      marginBottom: 12,
-                      paddingTop: 12,
-                    },
-                    styles.historyItem,
-                    index === bps.length - 1 ? {borderBottomWidth: 0} : {},
-                  ]}>
-                  <BpInformation bp={bp} />
-                </TouchableOpacity>
-              )}
-              keyExtractor={(item, index) => {
-                return `key-${index}`
-              }}
-            />
+
+            <BpHistoryChart bps={bps ?? []} />
           </View>
-        </View>
-      </ScrollView>
+        }
+        renderItem={({item: bp, index}) => (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+                bp,
+              })
+            }}
+            key={index}
+            style={[
+              {
+                marginRight: 24,
+                marginBottom: 12,
+                paddingTop: 12,
+              },
+              styles.historyItem,
+              index === bps.length - 1 ? {borderBottomWidth: 0} : {},
+            ]}>
+            <BpInformation bp={bp} />
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item, index) => {
+          return `key-${index}`
+        }}
+      />
     </View>
   )
 }
