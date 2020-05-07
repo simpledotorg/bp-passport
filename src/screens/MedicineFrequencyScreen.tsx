@@ -37,6 +37,7 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
     reminder.days.split('').map((s) => Number(s) as Day),
   )
 
+  const allDays = [...ALL_DAYS_ORDERED]
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -76,7 +77,7 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
                 <FormattedMessage id="medicine.set-reminder-for" />
               </BodyHeader>
             </View>
-            {ALL_DAYS_ORDERED.map((day, index) => {
+            {allDays.map((day, index) => {
               return (
                 <TouchableWithoutFeedback
                   key={day}
@@ -92,8 +93,7 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
                   }}>
                   <View
                     style={{
-                      borderBottomWidth:
-                        index === ALL_DAYS_ORDERED.length - 1 ? 0 : 1,
+                      borderBottomWidth: index === allDays.length - 1 ? 0 : 1,
                       borderColor: colors.grey3,
                       paddingVertical: 12,
                       flexDirection: 'row',
