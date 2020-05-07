@@ -5,6 +5,7 @@ import patientReducer from './patient/patient.reducer'
 import bloodPressureReducer from './blood-pressure/blood-pressure.reducer'
 import bloodSugarReducer from './blood-sugar/blood-sugar.reducer'
 import medicationReducer from './medication/medication.reducer'
+import notificationReducer from './notifications/notifications.reducer'
 
 export default combineReducers({
   auth: authReducer,
@@ -12,4 +13,5 @@ export default combineReducers({
   bloodPressure: bloodPressureReducer,
   medication: medicationReducer,
   bloodSugar: bloodSugarReducer,
+  notifications: notificationReducer,
 })

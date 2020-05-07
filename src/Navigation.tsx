@@ -1,5 +1,5 @@
-import React, {useContext, useEffect} from 'react'
-import {Alert, Platform} from 'react-native'
+import React, {useState, useEffect} from 'react'
+import {Alert, Platform, AppState} from 'react-native'
 import {
   createStackNavigator,
   useHeaderHeight,
@@ -27,16 +27,28 @@ import AddMedicineScreen from './screens/AddMedicineScreen'
 import DetailsModalScreen from './screens/DetailsModalScreen'
 import MedicationDetailScreen from './screens/MedicationDetailScreen'
 import MedicationFrequencyScreen from './screens/MedicineFrequencyScreen'
+import MedicationTimeScreen from './screens/MedicationTimeScreen'
+import AllowNotificationsModalScreen from './screens/AllowNotificationsModalScreen'
 
 import SCREENS from './constants/screens'
 import {HomeHeaderTitle, ButtonIcon, LoadingOverlay} from './components'
 import {colors, navigation as navigationStyle} from './styles'
 import {BloodPressure} from './redux/blood-pressure/blood-pressure.models'
 import {BloodSugar} from './redux/blood-sugar/blood-sugar.models'
-import {Medication} from './redux/medication/medication.models'
+import {Medication, Reminder} from './redux/medication/medication.models'
 import {LoginState} from './redux/auth/auth.models'
 import {loginStateSelector} from './redux/auth/auth.selectors'
 import {patientSelector} from './redux/patient/patient.selectors'
+
+import PushNotificationIOS from '@react-native-community/push-notification-ios'
+import PushNotificationAndroid from 'react-native-push-notification'
+import {useDispatch} from 'react-redux'
+import {
+  setPushNotificationPermission,
+  setDevicePushToken,
+} from './redux/notifications/notifications.actions'
+import {Permission} from './redux/notifications/notifications.models'
+import {pushNotificationPermissionSelector} from './redux/notifications/notifications.selectors'
 
 export type RootStackParamList = {
   LAUNCH: undefined
@@ -56,13 +68,35 @@ export type RootStackParamList = {
   BS_HISTORY: {bloodSugars: BloodSugar[]}
   ADD_MEDICINE: undefined
   DETAILS_MODAL_SCREEN: {bp?: BloodPressure; bs?: BloodSugar}
-  MEDICATION_DETAILS: {medication: Medication}
-  MEDICATION_FREQUENCY: {updateDays: (days: {}) => void}
+  MEDICATION_DETAILS: {medication: Medication; isEditing: boolean}
+  MEDICATION_FREQUENCY: {
+    updateDays: (days: string) => void
+    reminder: Reminder
+  }
+  MEDICATION_TIME: {
+    updateDayOffset: (dayOffset: number) => void
+    reminder: Reminder
+  }
+  ALLOW_NOTIFICATIONS_MODAL_SCREEN: {
+    okCallback: () => void
+    cancelCallback: () => void
+  }
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
 
 const Navigation = () => {
+  const getModalOptions = () => {
+    return Platform.OS === 'ios'
+      ? {
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+          cardOverlayEnabled: true,
+        }
+      : {
+          cardStyleInterpolator:
+            CardStyleInterpolators.forRevealFromBottomAndroid,
+        }
+  }
   return (
     <>
       <Stack.Navigator
@@ -78,36 +112,27 @@ const Navigation = () => {
         <Stack.Screen
           name={SCREENS.DETAILS_MODAL_SCREEN}
           component={DetailsModalScreen}
-          options={
-            Platform.OS === 'ios'
-              ? {
-                  cardStyleInterpolator:
-                    CardStyleInterpolators.forModalPresentationIOS,
-                  cardOverlayEnabled: true,
-                }
-              : {
-                  cardStyleInterpolator:
-                    CardStyleInterpolators.forRevealFromBottomAndroid,
-                }
-          }
+          options={getModalOptions()}
+        />
+        <Stack.Screen
+          name={SCREENS.ALLOW_NOTIFICATIONS_MODAL_SCREEN}
+          component={AllowNotificationsModalScreen}
+          options={{
+            cardStyleInterpolator:
+              CardStyleInterpolators.forModalPresentationIOS,
+            cardOverlayEnabled: true,
+          }}
         />
         <Stack.Screen
           name={SCREENS.MEDICATION_FREQUENCY}
           component={MedicationFrequencyScreen}
-          options={
-            Platform.OS === 'ios'
-              ? {
-                  cardStyleInterpolator:
-                    CardStyleInterpolators.forModalPresentationIOS,
-                  cardOverlayEnabled: true,
-                }
-              : {
-                  cardStyleInterpolator:
-                    CardStyleInterpolators.forRevealFromBottomAndroid,
-                }
-          }
+          options={getModalOptions()}
         />
-
+        <Stack.Screen
+          name={SCREENS.MEDICATION_TIME}
+          component={MedicationTimeScreen}
+          options={getModalOptions()}
+        />
         <Stack.Screen
           name={SCREENS.MAIN_STACK}
           component={MainStack}
@@ -131,17 +156,71 @@ type Props = {
 
 function MainStack({navigation}: Props) {
   const intl = useIntl()
+  const [appState, setAppState] = useState(AppState.currentState)
+  const dispatch = useDispatch()
+  const pushNotificationPermission = pushNotificationPermissionSelector()
+
+  useEffect(() => {
+    const unsubscribe = AppState.addEventListener('change', (nextAppState) => {
+      setAppState(nextAppState)
+    })
+
+    return unsubscribe
+  }, [])
+
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      if (appState === 'active') {
+        // This will run everytime the ios app comes back into the foreground
+        PushNotificationIOS.checkPermissions((permissions) => {
+          if (permissions.alert === true) {
+            dispatch(
+              setPushNotificationPermission(Permission.PermissionPermitted),
+            )
+          } else {
+            if (pushNotificationPermission === Permission.PermissionPermitted) {
+              // User has switched of push notification access outside of the app
+              dispatch(
+                setPushNotificationPermission(Permission.PermissionDenied),
+              )
+            }
+          }
+        })
+      }
+    } else if (Platform.OS === 'android') {
+      dispatch(setPushNotificationPermission(Permission.PermissionPermitted))
+    }
+  }, [appState, dispatch, pushNotificationPermission])
+
+  useEffect(() => {
+    PushNotificationAndroid.configure({
+      onRegister({token}: {token?: string}) {
+        if (Platform.OS === 'android') {
+          onRegisteredAndroid(token)
+        }
+      },
+      requestPermissions: false,
+    })
+
+    PushNotificationIOS.addEventListener('register', onRegisteredIOS)
+    return () => {
+      PushNotificationIOS.removeEventListener('register', onRegisteredIOS)
+    }
+  })
+
+  const onRegisteredIOS = (deviceToken?: string) => {
+    dispatch(setDevicePushToken(deviceToken))
+  }
+
+  const onRegisteredAndroid = (deviceToken?: string) => {
+    dispatch(setDevicePushToken(deviceToken))
+  }
 
   const headerHeightIncludingSafeArea = useHeaderHeight()
 
   const loginState = loginStateSelector()
   const prevLoginState = usePrevious(loginState)
   const apiUser = patientSelector()
-
-  const mainStackRoutes = useNavigationState(
-    (state) => state.routes[state.index],
-  )
-  const routeCount = mainStackRoutes.state?.routes.length ?? 1
 
   useEffect(() => {
     if (loginState === LoginState.LoggedOut) {

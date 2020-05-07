@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.google.gms.google-services'
 
 import com.android.build.OutputFile
 
@@ -142,7 +143,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "0.5"
+        versionName "0.6"
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
     }
@@ -219,6 +220,10 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
     implementation 'com.android.support:multidex:1.0.3'
+
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+
+    implementation project(":react-native-push-notification")
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
