@@ -64,7 +64,6 @@ export const getPatient = (): AppThunk => async (dispatch, getState) => {
     if (response && response.status) {
       if (response.status === 401) {
         // auth params seem to now be invalid
-        console.log('REMOVE AUTH PARAMS!')
         dispatch(setAuthParams(undefined))
         // dispatch(logout())
       }
