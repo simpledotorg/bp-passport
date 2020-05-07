@@ -40,12 +40,14 @@ function BsHistoryScreen({navigation, route}: Props) {
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white}]}>
         <View style={{flex: 1, paddingTop: 24, paddingLeft: 24}}>
-          <View style={{marginBottom: 24}}>
-            <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
-              <FormattedMessage id="page-titles.all-bs" />
-            </BodyHeader>
-          </View>
           <FlatList
+            ListHeaderComponent={
+              <View style={{marginBottom: 16}}>
+                <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
+                  <FormattedMessage id="page-titles.all-bs" />
+                </BodyHeader>
+              </View>
+            }
             data={bloodSugars}
             renderItem={({item, index}) => (
               <TouchableOpacity
