@@ -10,7 +10,6 @@ import {BodyHeader, BodyText, CheckBox, Button} from '../components'
 import {FormattedMessage, IntlContext, useIntl} from 'react-intl'
 import {
   Day,
-  ALL_DAYS_ORDERED,
   dayToKeyString,
   ordedDays,
 } from '../redux/medication/medication.models'
@@ -37,7 +36,15 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
     reminder.days.split('').map((s) => Number(s) as Day),
   )
 
-  const allDays = [...ALL_DAYS_ORDERED]
+  const allDays: Day[] = [
+    Day.Monday,
+    Day.Tuesday,
+    Day.Wednesday,
+    Day.Thursday,
+    Day.Friday,
+    Day.Saturday,
+    Day.Sunday,
+  ]
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -54,7 +61,6 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
         <View
           style={{
             backgroundColor: colors.white100,
-            width: '100%',
             padding: 16,
             flexShrink: 0,
           }}>
