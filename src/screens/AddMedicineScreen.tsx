@@ -15,10 +15,12 @@ import {useIntl} from 'react-intl'
 import {containerStyles, colors, medicinePill} from '../styles'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
+import {setHours, setMinutes} from 'date-fns'
 
 import {useThunkDispatch} from '../redux/store'
 import {BodyText} from '../components'
 import {medicationsLibrarySelector} from '../redux/medication/medication.selectors'
+import {createAMedicationWithReminder} from '../redux/medication/medication.models'
 
 type AddMedicineScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -63,8 +65,18 @@ function AddMedicineScreen({navigation, route}: Props) {
             id: 'medicine.enter-name',
           })}
           value={input}
+          returnKeyType="done"
+          autoCorrect={false}
           onChangeText={(text) => setInput(text)}
-          maxLength={6}
+          onSubmitEditing={() => {
+            if (input.trim().length) {
+              inputRef.current.blur()
+              navigation.push(SCREENS.MEDICATION_DETAILS, {
+                medication: createAMedicationWithReminder(input.trim()),
+                isEditing: false,
+              })
+            }
+          }}
         />
       </View>
       <View style={{flex: 1, backgroundColor: colors.grey4}}>
@@ -90,8 +102,9 @@ function AddMedicineScreen({navigation, route}: Props) {
                     ]}>
                     <TouchableOpacity
                       onPressOut={() => {
+                        inputRef.current.blur()
                         navigation.push(SCREENS.MEDICATION_DETAILS, {
-                          medication: item,
+                          medication: createAMedicationWithReminder(item.name),
                         })
                       }}>
                       <View
