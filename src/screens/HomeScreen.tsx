@@ -6,8 +6,9 @@ import {
   StatusBar,
   ScrollView,
   StyleSheet,
-  Image,
+  AppState,
   TouchableOpacity,
+  Platform,
 } from 'react-native'
 import {useIntl, FormattedMessage} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -27,6 +28,7 @@ import {
   BodyHeader,
   BodyText,
   BpInformation,
+  MedsInformation,
   ContentLoadingSegment,
   BsInformation,
 } from '../components'
@@ -48,6 +50,7 @@ import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
 import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
 import {medicationsSelector} from '../redux/medication/medication.selectors'
 import {Medication} from '../redux/medication/medication.models'
+import {refreshAllLocalPushReminders} from '../redux/medication/medication.actions'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -85,6 +88,16 @@ function Home({navigation}: Props) {
 
   useEffect(() => {}, [loginState, apiUser, bloodPressures, medications])
 
+  const [appState, setAppState] = useState(AppState.currentState)
+
+  useEffect(() => {
+    const unsubscribe = AppState.addEventListener('change', (nextAppState) => {
+      setAppState(nextAppState)
+    })
+
+    return unsubscribe
+  }, [])
+
   const bps: BloodPressure[] = bloodPressures ?? []
   const bss: BloodSugar[] = bloodSugars ?? []
   const meds: Medication[] = medications ?? []
@@ -103,6 +116,18 @@ function Home({navigation}: Props) {
 
   const showBpHistoryButton = bps.length > HOME_PAGE_SHOW_LIMIT
   const showBsHistoryButton = bss.length > HOME_PAGE_SHOW_LIMIT
+
+  useEffect(() => {
+    if (
+      (Platform.OS === 'ios' && appState === 'active') ||
+      Platform.OS === 'android'
+    ) {
+      if (medications) {
+        //todo - optimise...
+        refreshAllLocalPushReminders(medications, intl)
+      }
+    }
+  }, [appState, medications])
 
   return (
     <SafeAreaView
@@ -147,30 +172,30 @@ function Home({navigation}: Props) {
               </BodyHeader>
               {meds.length > 0 && (
                 <>
-                  {meds.map((medicine, index) => (
-                    <View
-                      key={index}
-                      style={[
-                        {
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          marginTop: index === 0 ? 8 : 0,
-                        },
-                      ]}>
-                      <Image
-                        source={medicinePill}
-                        style={[styles.informationIcon]}
-                      />
-                      <BodyText
-                        style={{
-                          fontSize: 18,
-                          color: colors.grey0,
-                          fontWeight: '500',
-                        }}>
-                        {medicationDisplayName(medicine)}
-                      </BodyText>
-                    </View>
-                  ))}
+                  {meds.map((med, index) => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate(SCREENS.MEDICATION_DETAILS, {
+                            medication: med,
+                            isEditing: true,
+                          })
+                        }}
+                        key={index}
+                        style={[
+                          {
+                            marginBottom: 12,
+                            paddingTop: 12,
+                          },
+                          styles.historyItem,
+                          index === meds.length - 1
+                            ? {borderBottomWidth: 0}
+                            : {},
+                        ]}>
+                        <MedsInformation meds={med} />
+                      </TouchableOpacity>
+                    )
+                  })}
                 </>
               )}
               <View style={{marginTop: 15, flexDirection: 'row'}}>

@@ -1,5 +1,30 @@
 # BP Passport
 
+## Version 0.6
+
+### Overview
+
+Medication Reminders. Choose from a list or add your own!
+
+### What's New
+
+- Saving a medication with reminders
+- Medication Reminder Push notifications
+- Patient - Medicine Detail View - Delete Medicine
+- Add custom medications (Gummy bears?!)
+- App Prepped for French and Spanish translations
+- Offline user Settings state (no profile name and state)
+- App no longer signs authenticated BP Passport user out when the auth token expires
+
+### What's In Progress
+
+- BP history chart
+- Blood sugars history chart
+
+### Issues fixed
+
+- Lots of other fixes and improvements
+
 ## Version 0.5
 
 ### Overview

@@ -2,8 +2,17 @@ const ENGLISH = 'en'
 const HINDI = 'hi'
 const MARATHI = 'mr'
 const PUNJABI = 'pa'
+const FRENCH = 'fr'
+const SPANISH = 'es'
 
-const AVAILABLE_TRANSLATIONS = [ENGLISH, HINDI, MARATHI, PUNJABI]
+const AVAILABLE_TRANSLATIONS = [
+  ENGLISH,
+  HINDI,
+  MARATHI,
+  PUNJABI,
+  FRENCH,
+  SPANISH,
+]
 const DEFAULT_LANGUAGE = ENGLISH
 
 export {
@@ -11,6 +20,8 @@ export {
   HINDI,
   MARATHI,
   PUNJABI,
+  FRENCH,
+  SPANISH,
   AVAILABLE_TRANSLATIONS,
   DEFAULT_LANGUAGE,
 }

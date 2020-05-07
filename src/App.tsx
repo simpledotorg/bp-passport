@@ -10,15 +10,17 @@ import {
   LocaleContext,
 } from './effects/use-locale-messages.effect'
 import Navigation from './Navigation'
-import en from './translations/strings_en.json'
+import en from '../translations/master.json'
 import hi from './translations/strings_hi_IN.json'
 import mr from './translations/strings_mr_IN.json'
 import pa from './translations/strings_pa_IN.json'
+import fr from './translations/strings_fr.json'
+import es from './translations/strings_es.json'
 
 const App = () => {
   const languages: {
     [key: string]: {}
-  } = {en, hi, mr, pa}
+  } = {en, hi, mr, pa, fr, es}
 
   return (
     <Provider store={store}>
