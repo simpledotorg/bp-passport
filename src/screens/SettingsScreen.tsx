@@ -12,7 +12,10 @@ import {Item} from 'react-native-picker-select'
 
 import {containerStyles, colors} from '../styles'
 import {BodyText, BodyHeader, Picker} from '../components'
-import {AVAILABLE_TRANSLATIONS} from '../constants/languages'
+import {
+  AVAILABLE_TRANSLATIONS,
+  languageCodeToDisplayTitle,
+} from '../constants/languages'
 import {useLocale} from '../effects/use-locale-messages.effect'
 import {patientSelector} from '../redux/patient/patient.selectors'
 
@@ -24,12 +27,10 @@ function SettingsScreen({navigation}: any) {
 
   const locales: Item[] = []
 
-  AVAILABLE_TRANSLATIONS.forEach((language) => {
+  AVAILABLE_TRANSLATIONS.forEach((languageCode) => {
     locales.push({
-      label: intl.formatMessage({
-        id: `translation.${language}`,
-      }),
-      value: language,
+      label: languageCodeToDisplayTitle(languageCode),
+      value: languageCode,
     })
   })
 
