@@ -28,7 +28,7 @@
   "home.add-medicine": "Ajouter un médicament",
   "home.add-bs": "Ajouter la glycémie",
   "all-bp.bp-trend": "Tendance PA  ",
-  "all-bp.bp-details": "Détails de la pression artérielle ",
+  "all-bp.bp-details": "Détails PA ",
   "add-bp.systolic-less-than-error": "La pression artérielle systolique ne peut être moins de 70",
   "add-bp.systolic-greater-than-error": "La pression artérielle systolique ne peut être supérieure à 300",
   "add-bp.diastolic-less-than-error": "La pression artérielle diastolique ne peut être moins de 40",
