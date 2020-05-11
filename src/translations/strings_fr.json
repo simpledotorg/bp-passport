@@ -8,7 +8,7 @@
   "login.scan-passport": "Balayez votre Passport",
   "login.no-bp-passport": "Vous ne possédez pas de Passeport?",
   "login.get-started": "Commencer",
-  "login.by-using-app": "En utilisant notre app, vous acceptez notre {privacy} et {terms}",
+  "login.by-using-app": "En utilisant notre app, vous acceptez notre {politique de confidentialité} et {conditions d'utilisation}",
   "login.privacy-policy-link": "politique de confidentialité",
   "login.terms-of-use-link": "conditions d'utilisation",
   "login.camera-access": "Pour accéder à la caméra",
