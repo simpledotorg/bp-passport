@@ -11,19 +11,22 @@ import {FormattedMessage, useIntl} from 'react-intl'
 import {Item} from 'react-native-picker-select'
 
 import {containerStyles, colors} from '../styles'
-import {BodyText, BodyHeader, Picker} from '../components'
+import {BodyText, BodyHeader, Picker, Button} from '../components'
 import {
   AVAILABLE_TRANSLATIONS,
   languageCodeToDisplayTitle,
 } from '../constants/languages'
 import {useLocale} from '../effects/use-locale-messages.effect'
 import {patientSelector} from '../redux/patient/patient.selectors'
+import {dataIsLinkedWithApiSelector} from '../redux/auth/auth.selectors'
+import SCREENS from '../constants/screens'
 
 function SettingsScreen({navigation}: any) {
   const apiUser = patientSelector()
 
   const intl = useIntl()
   const {locale, setLocale} = useLocale()
+  const dataIsLinkedWithApi = dataIsLinkedWithApiSelector()
 
   const locales: Item[] = []
 
@@ -44,7 +47,7 @@ function SettingsScreen({navigation}: any) {
             {apiUser && (
               <>
                 <View style={styles.header}>
-                  <BodyHeader style={styles.headerText}>
+                  <BodyHeader>
                     <FormattedMessage id="settings.profile" />
                   </BodyHeader>
                 </View>
@@ -67,12 +70,12 @@ function SettingsScreen({navigation}: any) {
               </>
             )}
 
-            <View style={[styles.header, {marginTop: 24}]}>
-              <BodyHeader style={styles.headerText}>
+            <View style={[styles.header, apiUser ? {} : {paddingTop: 24}]}>
+              <BodyHeader>
                 <FormattedMessage id="settings.language" />
               </BodyHeader>
             </View>
-            <View style={{marginBottom: 40}}>
+            <View>
               <Picker
                 onValueChange={(language: string) => setLocale(language)}
                 items={locales}
@@ -81,7 +84,7 @@ function SettingsScreen({navigation}: any) {
             </View>
 
             <View style={styles.header}>
-              <BodyHeader style={styles.headerText}>
+              <BodyHeader>
                 <FormattedMessage id="settings.about" />
               </BodyHeader>
             </View>
@@ -103,7 +106,7 @@ function SettingsScreen({navigation}: any) {
                 <FormattedMessage id="settings.contact" />
               </BodyText>
             </View>
-            <View style={styles.item}>
+            <View style={styles.lastItem}>
               <BodyText
                 style={styles.linkText}
                 onPress={() => {
@@ -112,6 +115,30 @@ function SettingsScreen({navigation}: any) {
                 <FormattedMessage id="settings.about" />
               </BodyText>
             </View>
+            {!dataIsLinkedWithApi && (
+              <>
+                <View style={styles.header}>
+                  <BodyHeader>
+                    <FormattedMessage id="settings.connect" />
+                  </BodyHeader>
+                </View>
+                <View style={styles.item}>
+                  <BodyText>
+                    <FormattedMessage id="settings.have-a-passport" />
+                  </BodyText>
+                </View>
+                <View>
+                  <Button
+                    style={[styles.bpButton, {}]}
+                    buttonColor={colors.blue2}
+                    title={intl.formatMessage({id: 'login.scan-passport'})}
+                    onPress={() => {
+                      navigation.navigate(SCREENS.SCAN_BP_PASSPORT)
+                    }}
+                  />
+                </View>
+              </>
+            )}
           </View>
         </ScrollView>
       </View>
@@ -126,13 +153,11 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingTop: 40,
     marginBottom: 12,
   },
-  headerText: {
-    fontFamily: 'Roboto',
-    fontWeight: 'bold',
-  },
   item: {flexDirection: 'column', marginBottom: 16},
+  lastItem: {marginBottom: 0},
   itemText: {
     fontFamily: 'Roboto',
     fontWeight: 'normal',
@@ -151,5 +176,9 @@ const styles = StyleSheet.create({
     lineHeight: 28,
     letterSpacing: 0.2,
     color: colors.blue2,
+  },
+  bpButton: {
+    backgroundColor: colors.blue3,
+    flex: 1,
   },
 })
