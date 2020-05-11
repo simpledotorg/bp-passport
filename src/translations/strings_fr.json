@@ -20,7 +20,7 @@
   "verify-pin.code": "Code",
   "verify-pin.wrong-pin": "Svp introduire le code correct ",
   "verify-pin.no-pin": "Vous n'avez pas reçu de code?",
-  "verify-pin.resend-sms-link": "Envoyer un nouveau code par SMS",
+  "verify-pin.resend-sms-link": "Envoyer de nouveau par SMS",
   "home.my-medicines": "Mes médicaments",
   "home.add-bp": "Ajouter BP",
   "home.my-bp": "Ma pression artérielle",
