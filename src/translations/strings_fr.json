@@ -151,5 +151,5 @@
   "medicine.custom": "Personnalisé",
   "medicine.allow-notifications-title": "Autoriser les notifications",
   "medicine.allow-notifications-body": "Autoriser les notifications pour recevoir des rappels de médicaments ",
-  "medicine.reminder-notification": "{day} {time}, prenez votre médicament "
+  "medicine.reminder-notification": "{jour} {heure}, prenez votre médicament "
 }
