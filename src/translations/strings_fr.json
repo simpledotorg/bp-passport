@@ -35,7 +35,7 @@
   "add-bp.diastolic-greater-than-error": "La pression artérielle diastolique ne peut être supérieure à 180",
   "add-bp.please-enter-error": "Svp saisissez les valeurs de la pression artérielle",
   "add-bs.bs-less-than-error": "La valeur ne peut être moins de {value} ",
-  "add-bs.bs-more-than-error": "La valeur ne peut être supérieure à {value} ",
+  "add-bs.bs-more-than-error": "La valeur ne peut être supérieure à {valeur} ",
   "add-bs.please-enter-error": "Svp saisissez les valeurs de glycémie",
   "settings.profile": "Profil",
   "settings.name": "Nom",
