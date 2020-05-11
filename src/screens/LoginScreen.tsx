@@ -51,7 +51,7 @@ function Login({navigation}: Props) {
                 buttonColor={colors.blue2}
                 title={intl.formatMessage({id: 'login.scan-passport'})}
                 onPress={() => {
-                  navigation.navigate(SCREENS.SCAN_BP_PASSPORT)
+                  navigation.navigate(SCREENS.SCAN_STACK)
                 }}
               />
             </View>

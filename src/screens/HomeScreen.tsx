@@ -51,19 +51,25 @@ import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
 import {medicationsSelector} from '../redux/medication/medication.selectors'
 import {Medication} from '../redux/medication/medication.models'
 import {refreshAllLocalPushReminders} from '../redux/medication/medication.actions'
+import {RouteProp} from '@react-navigation/native'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   SCREENS.HOME
 >
 
+type HomeScreenRoute = RouteProp<RootStackParamList, SCREENS.HOME>
+
 type Props = {
   navigation: HomeScreenNavigationProp
+  route: HomeScreenRoute
 }
 
 const HOME_PAGE_SHOW_LIMIT = 3
 
-function Home({navigation}: Props) {
+function Home({navigation, route}: Props) {
+  console.log('Home Route:', route)
+  console.log('Home Nav State:', navigation)
   const dispatch = useThunkDispatch()
 
   const loginState = loginStateSelector()

@@ -6,6 +6,7 @@ import {
   StackNavigationProp,
 } from '@react-navigation/stack'
 import {useNavigationState, StackActions} from '@react-navigation/native'
+import {CommonActions} from '@react-navigation/native'
 import {forFade} from './navigation/interpolators'
 import {CardStyleInterpolators} from '@react-navigation/stack'
 import {useIntl, FormattedMessage} from 'react-intl'
@@ -59,6 +60,7 @@ import {pushNotificationPermissionSelector} from './redux/notifications/notifica
 export type RootStackParamList = {
   LAUNCH: undefined
   MAIN_STACK: undefined
+  SCAN_STACK: undefined
   SPLASH: undefined
   LOGIN: undefined
   CONSENT: undefined
@@ -92,6 +94,8 @@ export type RootStackParamList = {
 const Stack = createStackNavigator<RootStackParamList>()
 
 const Navigation = () => {
+  const intl = useIntl()
+
   const getModalOptions = () => {
     return Platform.OS === 'ios'
       ? {
@@ -144,6 +148,15 @@ const Navigation = () => {
           component={MainStack}
           options={{cardStyleInterpolator: forFade}}
         />
+        <Stack.Screen
+          name={SCREENS.SCAN_STACK}
+          component={ScanStack}
+          options={
+            {
+              /*cardStyleInterpolator: forFade,*/
+            }
+          }
+        />
       </Stack.Navigator>
     </>
   )
@@ -165,6 +178,8 @@ function MainStack({navigation}: Props) {
   const [appState, setAppState] = useState(AppState.currentState)
   const dispatch = useDispatch()
   const pushNotificationPermission = pushNotificationPermissionSelector()
+  const navigationState = useNavigationState((state) => state)
+  const routes = useNavigationState((state) => state.routes)
 
   useEffect(() => {
     const unsubscribe = AppState.addEventListener('change', (nextAppState) => {
@@ -229,6 +244,8 @@ function MainStack({navigation}: Props) {
   const apiUser = patientSelector()
 
   useEffect(() => {
+    console.log('loginState changed:', loginState)
+
     if (loginState === LoginState.LoggedOut) {
       if (
         prevLoginState === LoginState.LoggedIn ||
@@ -250,11 +267,21 @@ function MainStack({navigation}: Props) {
         })
       }
     } else {
-      if (prevLoginState === LoginState.LoggedOut) {
-        navigation.reset({
-          index: 0,
-          routes: [{name: SCREENS.HOME}],
-        })
+      /* Logging in or logged in... */
+      const homeAtRoot =
+        routes[0].state?.routes[0].name === SCREENS.HOME ?? false
+
+      const hasModalStack = routes.length > 1
+
+      console.log('homeAtRoot:', homeAtRoot)
+      console.log('hasModalStack:', hasModalStack)
+
+      if (!homeAtRoot) {
+        navigation.reset({index: 1, routes: [{name: SCREENS.HOME}]})
+      }
+
+      if (hasModalStack) {
+        navigation.goBack()
       }
     }
   }, [loginState])
@@ -298,22 +325,6 @@ function MainStack({navigation}: Props) {
         name={SCREENS.LOGIN}
         component={LoginScreen}
         options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name={SCREENS.SCAN_BP_PASSPORT}
-        component={ScanPassportScreen}
-        options={{
-          headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.scan-bp-passport'}),
-        }}
-      />
-      <Stack.Screen
-        name={SCREENS.VERIFY_YOUR_NUMBER}
-        component={VerifyNumberScreen}
-        options={{
-          headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.verify-pin'}),
-        }}
       />
       <Stack.Screen
         name={SCREENS.BP_HISTORY}
@@ -392,6 +403,8 @@ function MainStack({navigation}: Props) {
           },
           headerLeft: () => null,
           gestureEnabled: false,
+          /* cardStyleInterpolator: CardStyleInterpolators.forNoAnimation,*/
+          /*cardStyleInterpolator: forFade, */
         }}
       />
       <Stack.Screen
@@ -400,6 +413,44 @@ function MainStack({navigation}: Props) {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.settings'}),
+        }}
+      />
+    </Stack.Navigator>
+  )
+}
+
+function ScanStack({navigation}: Props) {
+  const intl = useIntl()
+  return (
+    <Stack.Navigator
+      initialRouteName={SCREENS.SCAN_BP_PASSPORT}
+      screenOptions={{
+        ...navigationStyle,
+        headerTintColor: colors.white100,
+        gestureEnabled: true,
+      }}>
+      <Stack.Screen
+        name={SCREENS.SCAN_BP_PASSPORT}
+        component={ScanPassportScreen}
+        options={{
+          title: intl.formatMessage({id: 'page-titles.scan-bp-passport'}),
+          headerLeft: () => {
+            return (
+              <ButtonIcon
+                iconName="close"
+                iconColor={colors.white100}
+                onPress={() => navigation.goBack()}
+              />
+            )
+          },
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.VERIFY_YOUR_NUMBER}
+        component={VerifyNumberScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.verify-pin'}),
         }}
       />
     </Stack.Navigator>
