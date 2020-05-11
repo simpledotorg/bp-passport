@@ -88,7 +88,7 @@ function SettingsScreen({navigation}: any) {
               <BodyText
                 style={styles.linkText}
                 onPress={() => {
-                  Linking.openURL('https://simple.org/patient-privacy')
+                  Linking.openURL('https://www.simple.org/patient-privacy')
                 }}>
                 <FormattedMessage id="settings.privacy-policy-link" />
               </BodyText>
@@ -97,16 +97,16 @@ function SettingsScreen({navigation}: any) {
               <BodyText
                 style={styles.linkText}
                 onPress={() => {
-                  Linking.openURL('https://simple.org/terms')
+                  Linking.openURL('https://www.simple.org/contact/')
                 }}>
-                <FormattedMessage id="settings.terms-link" />
+                <FormattedMessage id="settings.contact" />
               </BodyText>
             </View>
             <View style={styles.item}>
               <BodyText
                 style={styles.linkText}
                 onPress={() => {
-                  Linking.openURL('https://simple.org/')
+                  Linking.openURL('https://www.simple.org/bp-passport/')
                 }}>
                 <FormattedMessage id="settings.about" />
               </BodyText>
