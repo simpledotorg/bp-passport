@@ -4,7 +4,7 @@ import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk'
 import {useDispatch} from 'react-redux'
 import {createLogger} from 'redux-logger'
 import {persistStore, persistReducer} from 'redux-persist'
-import autoMerge from 'redux-persist/lib/stateReconciler/autoMergeLevel1'
+import autoMerge from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 
 import rootReducer from './root.reducer'
 
