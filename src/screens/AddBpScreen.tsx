@@ -127,8 +127,8 @@ function AddBpScreen({navigation, route}: Props) {
     }
   }, [errors, systolic, diastolic])
 
-  const validateInput = (systolic: boolean, input: string) => {
-    systolic
+  const validateInput = (inputType: string, input: string) => {
+    inputType === 'systolic'
       ? setSystolic(input.replace(/[^0-9]/g, ''))
       : setDiastolic(input.replace(/[^0-9]/g, ''))
   }
@@ -145,7 +145,7 @@ function AddBpScreen({navigation, route}: Props) {
               ref={systolicRef}
               style={[styles.input, {marginRight: 4}]}
               onChangeText={(text) => {
-                validateInput(true, text)
+                validateInput('systolic', text)
                 getErrorGateway(text, diastolic)
               }}
               placeholder={intl.formatMessage({id: 'general.systolic'})}
@@ -164,7 +164,7 @@ function AddBpScreen({navigation, route}: Props) {
               ref={diastolicRef}
               style={[styles.input, {marginLeft: 4}]}
               onChangeText={(text) => {
-                validateInput(false, text)
+                validateInput('diastolic', text)
                 getErrorGateway(systolic, text)
               }}
               placeholder={intl.formatMessage({id: 'general.diastolic'})}
