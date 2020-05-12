@@ -65,8 +65,6 @@ type Props = {
 const HOME_PAGE_SHOW_LIMIT = 3
 
 function Home({navigation, route}: Props) {
-  console.log('Home Route:', route)
-  console.log('Home Nav State:', navigation)
   const dispatch = useThunkDispatch()
 
   const apiUser = patientSelector()
@@ -80,7 +78,7 @@ function Home({navigation, route}: Props) {
   const hasPassportLinked =
     passportLinkedState === PassportLinkedState.Linking ||
     passportLinkedState === PassportLinkedState.Linked
-  console.log('Home showLoading', hasPassportLinked, apiUser)
+
   const showLoading = hasPassportLinked && !apiUser
 
   useEffect(() => {
@@ -115,8 +113,6 @@ function Home({navigation, route}: Props) {
   const bps: BloodPressure[] = bloodPressures ?? []
   const bss: BloodSugar[] = bloodSugars ?? []
   const meds: Medication[] = medications ?? []
-
-  console.log(bps)
 
   const medicationDisplayName = (medication: Medication) => {
     let ret = medication.name

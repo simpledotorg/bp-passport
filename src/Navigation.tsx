@@ -249,13 +249,12 @@ function MainStack({navigation}: Props) {
   const apiUser = patientSelector()
 
   useEffect(() => {
-    console.log('passportLinkedState changed:', passportLinkedState)
     if (
       passportLinkedState === PassportLinkedState.Linking ||
       passportLinkedState === PassportLinkedState.Linked
     ) {
       const hasModalStack = routes.length > 1
-      console.log('hasModalStack:', hasModalStack)
+
       if (hasModalStack) {
         navigation.goBack()
       }
@@ -263,15 +262,12 @@ function MainStack({navigation}: Props) {
   }, [passportLinkedState])
 
   useEffect(() => {
-    console.log('loginState changed:', loginState, prevLoginState)
     if (
       loginState === LoginState.LoggedIn &&
       prevLoginState === LoginState.LoggedOut
     ) {
       const homeAtRoot =
         routes[0].state?.routes[0].name === SCREENS.HOME ?? false
-
-      console.log('homeAtRoot:', homeAtRoot, routes[0].state?.routes[0].name)
 
       if (!homeAtRoot) {
         navigation.reset({index: 1, routes: [{name: SCREENS.HOME}]})
@@ -406,6 +402,7 @@ function MainStack({navigation}: Props) {
               return (
                 <ButtonIcon
                   iconName="settings"
+                  iconColor={colors.white100}
                   onPress={() => navigation.navigate(SCREENS.SETTINGS)}
                 />
               )

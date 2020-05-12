@@ -53,7 +53,7 @@ function SettingsScreen({navigation}: any) {
           <View style={styles.content}>
             {apiUser && (
               <>
-                <View style={styles.header}>
+                <View style={[styles.header, apiUser ? {paddingTop: 24} : {}]}>
                   <BodyHeader>
                     <FormattedMessage id="settings.profile" />
                   </BodyHeader>
