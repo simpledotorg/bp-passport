@@ -8,6 +8,7 @@ import {
   VictoryScatter,
   VictoryAxis,
   VictoryTooltip,
+  VictoryLabel,
 } from 'victory-native'
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
@@ -52,6 +53,25 @@ export const BpHistoryChart = ({bps}: Props) => {
     setLowBps(reduction.low)
   }, [bps])
 
+  const generateScatter = (
+    bps: BloodPressureChartPoint[],
+  ): BloodPressureChartPoint[] => {
+    return bps.flatMap((bp) => {
+      return [
+        {
+          x: bp.index + 1,
+          y: bp.diastolic,
+          label: `${bp.systolic}/${bp.diastolic}`,
+        },
+        {
+          x: bp.index + 1,
+          y: bp.systolic,
+          label: `${bp.systolic}/${bp.diastolic}`,
+        },
+      ]
+    })
+  }
+
   return (
     <View
       style={{
@@ -59,10 +79,12 @@ export const BpHistoryChart = ({bps}: Props) => {
         borderColor: colors.grey3,
         borderLeftWidth: 1,
         borderTopWidth: 1,
+        overflow: 'hidden',
       }}>
       <VictoryChart
         width={Dimensions.get('window').width - 24}
         height={300}
+        minDomain={{y: 40}}
         style={{
           parent: {
             position: 'relative',
@@ -73,10 +95,10 @@ export const BpHistoryChart = ({bps}: Props) => {
         scale={{x: 'linear'}}
         theme={VictoryTheme.material}>
         <VictoryAxis
-          tickCount={4}
-          tickValues={bps.map((bp) => bp.recorded_at)}
+          tickCount={3}
+          tickValues={bps.map((bp, index) => bp.recorded_at)}
           tickFormat={(tick) => {
-            return format(new Date(tick), 'dd/MM/yy')
+            return format(new Date(tick), 'd MMM yy')
           }}
           style={{
             grid: {stroke: colors.grey3, strokeDasharray: 8},
@@ -162,11 +184,38 @@ export const BpHistoryChart = ({bps}: Props) => {
         /> */}
 
         <VictoryLine
-          data={lowBps.map((bp, index) => {
+          data={bps.map((bp, index) => {
+            return {
+              x: index + 1,
+              y: bp.systolic,
+            }
+          })}
+          style={{
+            data: {
+              stroke: colors.red1,
+            },
+          }}
+        />
+
+        <VictoryLine
+          data={bps.map((bp, index) => {
             return {
               x: index + 1,
               y: bp.diastolic,
-              label: `${bp.systolic}/${bp.diastolic}`,
+            }
+          })}
+          style={{
+            data: {
+              stroke: colors.red1,
+            },
+          }}
+        />
+
+        <VictoryLine
+          data={lowBps.map((bp) => {
+            return {
+              x: bp.index + 1,
+              y: bp.systolic,
             }
           })}
           style={{
@@ -174,103 +223,24 @@ export const BpHistoryChart = ({bps}: Props) => {
               stroke: colors.green1,
             },
           }}
-          labelComponent={<VictoryTooltip />}
         />
+
         <VictoryLine
-          data={lowBps.map((bp, index) => {
-            const previousBp = bps[index - 1]
-            if (
-              (previousBp && isBloodPressureHigh(previousBp)) ||
-              isBloodPressureHigh(bp)
-            ) {
-              return {
-                x: index + 1,
-                y: bp.diastolic,
-                label: `${bp.systolic}/${bp.diastolic}`,
-              }
-            }
-            return null
-          })}
-          style={{
-            data: {
-              stroke: colors.red1,
-            },
-          }}
-          labelComponent={<VictoryTooltip />}
-        />
-        <VictoryLine
-          data={highBps.map((bp, index) => {
-            return {
-              x: index + 1,
-              y: bp.systolic,
-              label: `${bp.systolic}/${bp.diastolic}`,
-            }
-          })}
-          style={{
-            data: {
-              stroke: colors.green1,
-            },
-          }}
-          labelComponent={<VictoryTooltip />}
-        />
-        <VictoryLine
-          data={highBps.map((bp, index) => {
-            const previousBp = bps[index - 1]
-            if (
-              (previousBp && isBloodPressureHigh(previousBp)) ||
-              isBloodPressureHigh(bp)
-            ) {
-              return {
-                x: index + 1,
-                y: bp.systolic,
-                label: `${bp.systolic}/${bp.diastolic}`,
-              }
-            }
-            return null
-          })}
-          style={{
-            data: {
-              stroke: colors.red1,
-            },
-          }}
-          labelComponent={<VictoryTooltip />}
-        />
-        <VictoryScatter
-          data={highBps.map((bp) => {
-            return {
-              x: bp.index + 1,
-              y: bp.diastolic,
-              label: `${bp.systolic}/${bp.diastolic}`,
-            }
-          })}
-          size={5}
-          style={{
-            data: {fill: colors.white100, stroke: colors.red1, strokeWidth: 3},
-          }}
-          labelComponent={<VictoryTooltip />}
-        />
-        <VictoryScatter
-          data={highBps.map((bp) => {
-            return {
-              x: bp.index + 1,
-              y: bp.systolic,
-              label: `${bp.systolic}/${bp.diastolic}`,
-            }
-          })}
-          size={5}
-          style={{
-            data: {fill: colors.white100, stroke: colors.red1, strokeWidth: 3},
-          }}
-          labelComponent={<VictoryTooltip />}
-        />
-        <VictoryScatter
           data={lowBps.map((bp) => {
             return {
               x: bp.index + 1,
               y: bp.diastolic,
-              label: `${bp.systolic}/${bp.diastolic}`,
             }
           })}
+          style={{
+            data: {
+              stroke: colors.green1,
+            },
+          }}
+        />
+
+        <VictoryScatter
+          data={generateScatter(lowBps)}
           size={5}
           style={{
             data: {
@@ -279,25 +249,19 @@ export const BpHistoryChart = ({bps}: Props) => {
               strokeWidth: 3,
             },
           }}
-          labelComponent={<VictoryTooltip />}
+          labelComponent={<VictoryTooltip renderInPortal={false} />}
         />
         <VictoryScatter
-          data={lowBps.map((bp) => {
-            return {
-              x: bp.index + 1,
-              y: bp.systolic,
-              label: `${bp.systolic}/${bp.diastolic}`,
-            }
-          })}
+          data={generateScatter(highBps)}
           size={5}
           style={{
             data: {
               fill: colors.white100,
-              stroke: colors.green1,
+              stroke: colors.red1,
               strokeWidth: 3,
             },
           }}
-          labelComponent={<VictoryTooltip />}
+          labelComponent={<VictoryTooltip renderInPortal={false} />}
         />
       </VictoryChart>
     </View>

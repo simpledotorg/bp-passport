@@ -71,9 +71,8 @@ function BpHistoryScreen({navigation, route}: Props) {
               style={{fontSize: 22, fontWeight: 'bold', marginBottom: 14}}>
               <FormattedMessage id="page-titles.all-bp" />
             </BodyHeader>
-            <FlatList
-              data={bps}
-              renderItem={({item: bp, index}) => (
+            <View>
+              {bps?.map((bp, index) => (
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
@@ -83,7 +82,6 @@ function BpHistoryScreen({navigation, route}: Props) {
                   key={index}
                   style={[
                     {
-                      marginRight: 24,
                       marginBottom: 12,
                       paddingTop: 12,
                     },
@@ -92,11 +90,8 @@ function BpHistoryScreen({navigation, route}: Props) {
                   ]}>
                   <BpInformation bp={bp} />
                 </TouchableOpacity>
-              )}
-              keyExtractor={(item, index) => {
-                return `key-${index}`
-              }}
-            />
+              ))}
+            </View>
           </View>
         </View>
       </ScrollView>

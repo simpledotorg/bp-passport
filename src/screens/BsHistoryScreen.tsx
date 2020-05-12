@@ -68,9 +68,8 @@ function BsHistoryScreen({navigation, route}: Props) {
               style={{fontSize: 22, fontWeight: 'bold', marginBottom: 14}}>
               <FormattedMessage id="bs.all-bs" />
             </BodyHeader>
-            <FlatList
-              data={bloodSugars}
-              renderItem={({item: bs, index}) => (
+            <View>
+              {bloodSugars?.map((bs, index) => (
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
@@ -91,11 +90,8 @@ function BsHistoryScreen({navigation, route}: Props) {
                   ]}>
                   <BsInformation bs={bs} />
                 </TouchableOpacity>
-              )}
-              keyExtractor={(item, index) => {
-                return `key-${index}`
-              }}
-            />
+              ))}
+            </View>
           </View>
         </View>
       </ScrollView>
