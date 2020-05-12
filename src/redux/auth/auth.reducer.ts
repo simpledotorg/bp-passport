@@ -13,6 +13,7 @@ const INITIAL_STATE: {
 }
 
 const authReducer = (state = INITIAL_STATE, action) => {
+  console.log('authReducer update', state, action)
   switch (action.type) {
     case AuthActionTypes.SET_AUTH_PARAMS:
       return {
@@ -36,7 +37,11 @@ const authReducer = (state = INITIAL_STATE, action) => {
         ...INITIAL_STATE,
       }
     default:
-      return state
+      console.log('before: ', state.loginState)
+      console.log('after: ', Math.min(state.loginState, LoginState.LoggedIn))
+      return {
+        ...state,
+      }
   }
 }
 
