@@ -49,6 +49,13 @@ function BsHistoryScreen({navigation, route}: Props) {
               </View>
             }
             data={bloodSugars}
+            ListHeaderComponent={
+              <View style={{marginBottom: 16}}>
+                <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
+                  <FormattedMessage id="page-titles.all-bs" />
+                </BodyHeader>
+              </View>
+            }
             renderItem={({item, index}) => (
               <TouchableOpacity
                 onPress={() => {
