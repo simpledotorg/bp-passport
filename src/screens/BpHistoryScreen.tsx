@@ -14,6 +14,7 @@ import {BodyHeader, BpInformation} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
+import {FormattedMessage} from 'react-intl'
 
 type BpHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -38,39 +39,43 @@ function BpHistoryScreen({navigation, route}: Props) {
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white}]}>
         <View style={{flex: 1, paddingTop: 24, paddingLeft: 24}}>
-          <View style={{marginBottom: 16}}>
-            <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
-              BP History
-            </BodyHeader>
-          </View>
-          <FlatList
-            data={bps}
-            renderItem={({item: bp, index}) => (
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
-                    bp,
-                  })
-                }}
-                key={index}>
-                <View
-                  style={[
-                    {
-                      marginRight: 24,
-                      marginBottom: 12,
-                      paddingTop: 12,
-                    },
-                    styles.historyItem,
-                    index === bps.length - 1 ? {borderBottomWidth: 0} : {},
-                  ]}>
-                  <BpInformation bp={bp} />
+          <View>
+            <FlatList
+              data={bps}
+              ListHeaderComponent={
+                <View style={{marginBottom: 16}}>
+                  <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
+                    <FormattedMessage id="page-titles.all-bp" />
+                  </BodyHeader>
                 </View>
-              </TouchableWithoutFeedback>
-            )}
-            keyExtractor={(item, index) => {
-              return `key-${index}`
-            }}
-          />
+              }
+              renderItem={({item: bp, index}) => (
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+                      bp,
+                    })
+                  }}
+                  key={index}>
+                  <View
+                    style={[
+                      {
+                        marginRight: 24,
+                        marginBottom: 12,
+                        paddingTop: 12,
+                      },
+                      styles.historyItem,
+                      index === bps.length - 1 ? {borderBottomWidth: 0} : {},
+                    ]}>
+                    <BpInformation bp={bp} />
+                  </View>
+                </TouchableWithoutFeedback>
+              )}
+              keyExtractor={(item, index) => {
+                return `key-${index}`
+              }}
+            />
+          </View>
         </View>
       </SafeAreaView>
     </View>

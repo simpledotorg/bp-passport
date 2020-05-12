@@ -12,7 +12,10 @@ import {Item} from 'react-native-picker-select'
 
 import {containerStyles, colors} from '../styles'
 import {BodyText, BodyHeader, Picker} from '../components'
-import {AVAILABLE_TRANSLATIONS} from '../constants/languages'
+import {
+  AVAILABLE_TRANSLATIONS,
+  languageCodeToDisplayTitle,
+} from '../constants/languages'
 import {useLocale} from '../effects/use-locale-messages.effect'
 import {patientSelector} from '../redux/patient/patient.selectors'
 
@@ -24,12 +27,10 @@ function SettingsScreen({navigation}: any) {
 
   const locales: Item[] = []
 
-  AVAILABLE_TRANSLATIONS.forEach((language) => {
+  AVAILABLE_TRANSLATIONS.forEach((languageCode) => {
     locales.push({
-      label: intl.formatMessage({
-        id: `translation.${language}`,
-      }),
-      value: language,
+      label: languageCodeToDisplayTitle(languageCode),
+      value: languageCode,
     })
   })
 
@@ -40,32 +41,36 @@ function SettingsScreen({navigation}: any) {
       <View style={[containerStyles.fill]}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.content}>
-            <View style={styles.header}>
-              <BodyText style={styles.headerText}>
-                <FormattedMessage id="settings.profile" />
-              </BodyText>
-            </View>
+            {apiUser && (
+              <>
+                <View style={styles.header}>
+                  <BodyHeader style={styles.headerText}>
+                    <FormattedMessage id="settings.profile" />
+                  </BodyHeader>
+                </View>
+                <View style={styles.item}>
+                  <BodyHeader style={styles.itemText}>
+                    {apiUser?.full_name}
+                  </BodyHeader>
+                  <BodyText style={styles.itemLabel}>
+                    <FormattedMessage id="settings.name" />
+                  </BodyText>
+                </View>
+                <View style={styles.item}>
+                  <BodyHeader style={styles.itemText}>
+                    {apiUser?.address?.state}
+                  </BodyHeader>
+                  <BodyText style={styles.itemLabel}>
+                    <FormattedMessage id="settings.state" />
+                  </BodyText>
+                </View>
+              </>
+            )}
 
-            <View style={styles.item}>
-              <BodyHeader style={styles.itemText}>
-                {apiUser?.full_name}
-              </BodyHeader>
-              <BodyText style={styles.itemLabel}>
-                <FormattedMessage id="settings.name" />
-              </BodyText>
-            </View>
-            <View style={styles.item}>
-              <BodyHeader style={styles.itemText}>
-                {apiUser?.address?.state}
-              </BodyHeader>
-              <BodyText style={styles.itemLabel}>
-                <FormattedMessage id="settings.state" />
-              </BodyText>
-            </View>
             <View style={[styles.header, {marginTop: 24}]}>
-              <BodyText style={styles.headerText}>
+              <BodyHeader style={styles.headerText}>
                 <FormattedMessage id="settings.language" />
-              </BodyText>
+              </BodyHeader>
             </View>
             <View style={{marginBottom: 40}}>
               <Picker
@@ -76,15 +81,15 @@ function SettingsScreen({navigation}: any) {
             </View>
 
             <View style={styles.header}>
-              <BodyText style={styles.headerText}>
+              <BodyHeader style={styles.headerText}>
                 <FormattedMessage id="settings.about" />
-              </BodyText>
+              </BodyHeader>
             </View>
             <View style={styles.item}>
               <BodyText
                 style={styles.linkText}
                 onPress={() => {
-                  Linking.openURL('https://simple.org/patient-privacy')
+                  Linking.openURL('https://www.simple.org/patient-privacy')
                 }}>
                 <FormattedMessage id="settings.privacy-policy-link" />
               </BodyText>
@@ -93,16 +98,16 @@ function SettingsScreen({navigation}: any) {
               <BodyText
                 style={styles.linkText}
                 onPress={() => {
-                  Linking.openURL('https://simple.org/terms')
+                  Linking.openURL('https://www.simple.org/contact/')
                 }}>
-                <FormattedMessage id="settings.terms-link" />
+                <FormattedMessage id="settings.contact" />
               </BodyText>
             </View>
             <View style={styles.item}>
               <BodyText
                 style={styles.linkText}
                 onPress={() => {
-                  Linking.openURL('https://simple.org/')
+                  Linking.openURL('https://www.simple.org/bp-passport/')
                 }}>
                 <FormattedMessage id="settings.about" />
               </BodyText>

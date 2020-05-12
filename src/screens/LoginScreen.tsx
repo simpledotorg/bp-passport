@@ -77,28 +77,32 @@ function Login({navigation}: Props) {
             </View>
 
             <View style={[{marginHorizontal: 50}]}>
-              <BodyText style={{textAlign: 'center'}}>
-                <FormattedMessage id="login.by-using-app" />{' '}
-                <BodyText style={{marginBottom: 24}}>
-                  <BodyText
-                    style={{color: colors.blue2}}
-                    onPress={() => {
-                      Linking.openURL('https://simple.org/patient-privacy')
-                    }}>
-                    <FormattedMessage id="login.privacy-policy-link" />{' '}
-                  </BodyText>
-                  <BodyText>
-                    <FormattedMessage id="general.and" />{' '}
-                  </BodyText>
-                  <BodyText
-                    style={{color: colors.blue2}}
-                    onPress={() => {
-                      Linking.openURL('https://simple.org/digitalprinciples/')
-                    }}>
-                    <FormattedMessage id="login.terms-of-use-link" />
-                  </BodyText>
-                  <BodyText>.</BodyText>
-                </BodyText>
+              <BodyText style={{textAlign: 'center', marginBottom: 24}}>
+                <FormattedMessage
+                  id="login.by-using-app"
+                  values={{
+                    privacy: (
+                      <BodyText
+                        style={{color: colors.blue2}}
+                        onPress={() => {
+                          Linking.openURL('https://simple.org/patient-privacy')
+                        }}>
+                        <FormattedMessage id="login.privacy-policy-link" />
+                      </BodyText>
+                    ),
+                    terms: (
+                      <BodyText
+                        style={{color: colors.blue2}}
+                        onPress={() => {
+                          Linking.openURL(
+                            'https://simple.org/digitalprinciples/',
+                          )
+                        }}>
+                        <FormattedMessage id="login.terms-of-use-link" />
+                      </BodyText>
+                    ),
+                  }}
+                />
               </BodyText>
             </View>
           </View>
