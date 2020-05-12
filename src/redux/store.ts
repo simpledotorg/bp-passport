@@ -3,13 +3,33 @@ import {createStore, applyMiddleware, Action} from 'redux'
 import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk'
 import {useDispatch} from 'react-redux'
 import {createLogger} from 'redux-logger'
-import {persistStore, persistReducer} from 'redux-persist'
+import {
+  persistStore,
+  persistReducer,
+  createMigrate,
+  MigrationManifest,
+} from 'redux-persist'
 import autoMerge from 'redux-persist/lib/stateReconciler/autoMergeLevel1'
 
 import rootReducer from './root.reducer'
+import {LoginState} from './auth/auth.models'
+export type RootState = ReturnType<typeof rootReducer>
 
 const loggerMiddleware = createLogger()
 const middlewares = [thunkMiddleware, loggerMiddleware]
+
+const migrations: MigrationManifest = {
+  0: (state) => {
+    // migration clear out device state
+    return {
+      ...state,
+      auth: {
+        ...state.auth,
+        loginState: Math.min(state.auth.loginState, LoginState.LoggedIn),
+      },
+    }
+  },
+}
 
 const rootPersistConfig = {
   key: 'root',
@@ -19,6 +39,7 @@ const rootPersistConfig = {
   // Blacklist (Don't Save Specific Reducers)
   blacklist: ['medication'],
   stateReconciler: autoMerge,
+  migrate: createMigrate(migrations, {debug: false}),
 }
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer)
@@ -26,8 +47,6 @@ const store = createStore(persistedReducer, applyMiddleware(...middlewares))
 const persistor = persistStore(store)
 
 export {store, persistor}
-
-export type RootState = ReturnType<typeof rootReducer>
 
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
