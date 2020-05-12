@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
   ScrollView,
   View,
@@ -6,10 +6,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {FormattedMessage} from 'react-intl'
+import {useFocusEffect} from '@react-navigation/native'
 import {VictoryChart, VictoryTheme, VictoryLine} from 'victory-native'
 
 import {containerStyles, colors} from '../styles'
@@ -35,7 +37,19 @@ type Props = {
 }
 
 function BpHistoryScreen({navigation, route}: Props) {
-  const bps = bloodPressuresSelector()
+  const bpsAll = bloodPressuresSelector() ?? []
+  const [isAnimating, setIsAnimating] = useState(true)
+  const bps = /*bpsAll.slice(0, 5)*/ isAnimating
+    ? bpsAll.slice(0, 5)
+    : [...bpsAll]
+  const bpsChart = /*bpsAll.slice(0, 5)*/ isAnimating ? [] : [...bpsAll]
+
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log('didfocus!')
+      setIsAnimating(false)
+    }, []),
+  )
 
   return (
     <View style={{flex: 1}}>
@@ -57,10 +71,18 @@ function BpHistoryScreen({navigation, route}: Props) {
               </BodyHeader>
             </View>
           </View>
-          <View>
-            <BpHistoryChart bps={bps ?? []} />
+          <View style={{minHeight: 260}}>
+            {isAnimating ? (
+              <View
+                style={[containerStyles.fill, containerStyles.centeredContent]}>
+                <ActivityIndicator size="large" color={colors.blue1} />
+              </View>
+            ) : (
+              <BpHistoryChart bps={bpsChart} />
+            )}
           </View>
         </View>
+
         <View
           style={[
             containerStyles.containerSegment,
