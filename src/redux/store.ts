@@ -4,6 +4,7 @@ import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk'
 import {useDispatch} from 'react-redux'
 import {createLogger} from 'redux-logger'
 import {persistStore, persistReducer} from 'redux-persist'
+import autoMerge from 'redux-persist/lib/stateReconciler/autoMergeLevel1'
 
 import rootReducer from './root.reducer'
 
@@ -17,6 +18,7 @@ const rootPersistConfig = {
   whitelist: ['auth', 'patient', 'bloodPressure', 'bloodSugar'],
   // Blacklist (Don't Save Specific Reducers)
   blacklist: ['medication'],
+  stateReconciler: autoMerge,
 }
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer)

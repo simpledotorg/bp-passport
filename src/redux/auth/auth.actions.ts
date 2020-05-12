@@ -2,7 +2,7 @@ import axios, {AxiosResponse} from 'axios'
 import {API_ENDPOINT} from '../../constants/api'
 import {AuthActionTypes} from './auth.types'
 import {AppThunk} from '../store'
-import {LoginState, AuthParams} from './auth.models'
+import {LoginState, AuthParams, PassportLinkedState} from './auth.models'
 
 export const setAuthParams = (authParams: AuthParams | undefined) => ({
   type: AuthActionTypes.SET_AUTH_PARAMS,
@@ -16,6 +16,13 @@ export const logout = () => ({
 export const setLoginState = (loginState: LoginState) => ({
   type: AuthActionTypes.SET_LOGIN_STATE,
   payload: loginState,
+})
+
+export const setPassportLinkedState = (
+  passportLinkedState: PassportLinkedState,
+) => ({
+  type: AuthActionTypes.SET_LOGIN_STATE,
+  payload: passportLinkedState,
 })
 
 export const activate = (
@@ -57,7 +64,7 @@ export const login = (passportId: string, otp: string): AppThunk => async (
     }
 
     dispatch(setAuthParams(authParams))
-    dispatch(setLoginState(LoginState.LoggingIn))
+    dispatch(setPassportLinkedState(PassportLinkedState.Linking))
 
     return true
   } catch (err) {

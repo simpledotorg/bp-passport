@@ -35,14 +35,11 @@ import {
 
 import {ContentLoadingSegmentSize} from '../components/content-loading-segment'
 
-import {LoginState} from '../redux/auth/auth.models'
+import {LoginState, PassportLinkedState} from '../redux/auth/auth.models'
 import {useThunkDispatch} from '../redux/store'
 import {getPatient} from '../redux/patient/patient.actions'
 
-import {
-  loginStateSelector,
-  dataIsLinkedWithApiSelector,
-} from '../redux/auth/auth.selectors'
+import {passportLinkedStateSelector} from '../redux/auth/auth.selectors'
 import {patientSelector} from '../redux/patient/patient.selectors'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
@@ -72,27 +69,37 @@ function Home({navigation, route}: Props) {
   console.log('Home Nav State:', navigation)
   const dispatch = useThunkDispatch()
 
-  const loginState = loginStateSelector()
   const apiUser = patientSelector()
-  const dataIsLinkedWithApi = dataIsLinkedWithApiSelector()
+  const passportLinkedState = passportLinkedStateSelector()
 
   const bloodPressures = bloodPressuresSelector()
   const bloodSugars = bloodSugarsSelector()
   const medications = medicationsSelector()
   const intl = useIntl()
 
-  const showLoading = loginState === LoginState.LoggingIn
+  const hasPassportLinked =
+    passportLinkedState === PassportLinkedState.Linking ||
+    PassportLinkedState.Linked
+  const showLoading = hasPassportLinked && !apiUser
 
   useEffect(() => {
     // on first load refresh patient data if we have authParams we should refresh the api patient data
-    if (dataIsLinkedWithApi) {
+    if (
+      passportLinkedState === PassportLinkedState.Linking ||
+      passportLinkedState === PassportLinkedState.Linked
+    ) {
       dispatch(getPatient()).catch((err) => {
         console.log('error loading api patient: ', err)
       })
     }
-  }, [dataIsLinkedWithApi])
+  }, [])
 
-  useEffect(() => {}, [loginState, apiUser, bloodPressures, medications])
+  useEffect(() => {}, [
+    passportLinkedState,
+    apiUser,
+    bloodPressures,
+    medications,
+  ])
 
   const [appState, setAppState] = useState(AppState.currentState)
 

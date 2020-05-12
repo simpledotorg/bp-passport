@@ -43,8 +43,11 @@ import {colors, navigation as navigationStyle} from './styles'
 import {BloodPressure} from './redux/blood-pressure/blood-pressure.models'
 import {BloodSugar} from './redux/blood-sugar/blood-sugar.models'
 import {Medication, Reminder} from './redux/medication/medication.models'
-import {LoginState} from './redux/auth/auth.models'
-import {loginStateSelector} from './redux/auth/auth.selectors'
+import {LoginState, PassportLinkedState} from './redux/auth/auth.models'
+import {
+  loginStateSelector,
+  passportLinkedStateSelector,
+} from './redux/auth/auth.selectors'
 import {patientSelector} from './redux/patient/patient.selectors'
 
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
@@ -240,49 +243,48 @@ function MainStack({navigation}: Props) {
   const headerHeightIncludingSafeArea = useHeaderHeight()
 
   const loginState = loginStateSelector()
-  const prevLoginState = usePrevious(loginState)
+  const passportLinkedState = passportLinkedStateSelector()
+
+  // const prevLoginState = usePrevious(loginState)
   const apiUser = patientSelector()
 
   useEffect(() => {
-    console.log('loginState changed:', loginState)
-
-    if (loginState === LoginState.LoggedOut) {
-      if (
-        prevLoginState === LoginState.LoggedIn ||
-        prevLoginState === LoginState.LoggingIn
-      ) {
-        Alert.alert(
-          'Signed out',
-          "Sorry, you've been signed out as your token expired.",
-          [
-            {
-              text: intl.formatMessage({id: 'general.ok'}),
-            },
-          ],
-          {cancelable: true},
-        )
-        navigation.reset({
-          index: 0,
-          routes: [{name: SCREENS.SPLASH}],
-        })
+    console.log('passportLinkedState changed:', passportLinkedState)
+    if (passportLinkedState === PassportLinkedState.Linked) {
+      const hasModalStack = routes.length > 1
+      console.log('hasModalStack:', hasModalStack)
+      if (hasModalStack) {
+        navigation.goBack()
       }
-    } else {
-      /* Logging in or logged in... */
+    }
+  }, [passportLinkedState])
+
+  useEffect(() => {
+    console.log('loginState changed:', loginState)
+    if (loginState === LoginState.LoggedIn) {
       const homeAtRoot =
         routes[0].state?.routes[0].name === SCREENS.HOME ?? false
 
-      const hasModalStack = routes.length > 1
-
       console.log('homeAtRoot:', homeAtRoot)
-      console.log('hasModalStack:', hasModalStack)
 
       if (!homeAtRoot) {
         navigation.reset({index: 1, routes: [{name: SCREENS.HOME}]})
       }
-
-      if (hasModalStack) {
-        navigation.goBack()
-      }
+    } else if (loginState === LoginState.LoggedOut) {
+      Alert.alert(
+        'Signed out',
+        "Sorry, you've been signed out as your token expired.",
+        [
+          {
+            text: intl.formatMessage({id: 'general.ok'}),
+          },
+        ],
+        {cancelable: true},
+      )
+      navigation.reset({
+        index: 0,
+        routes: [{name: SCREENS.SPLASH}],
+      })
     }
   }, [loginState])
 
@@ -391,7 +393,7 @@ function MainStack({navigation}: Props) {
           headerTitleAlign: 'center',
           headerTitle: () => <HomeHeaderTitle />,
           headerRight: () => {
-            if (loginState === LoginState.LoggedIn) {
+            if (passportLinkedState !== PassportLinkedState.Linking) {
               return (
                 <ButtonIcon
                   iconName="settings"

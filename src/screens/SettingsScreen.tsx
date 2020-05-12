@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useEffect} from 'react'
 import {
   SafeAreaView,
   View,
@@ -18,15 +18,22 @@ import {
 } from '../constants/languages'
 import {useLocale} from '../effects/use-locale-messages.effect'
 import {patientSelector} from '../redux/patient/patient.selectors'
-import {dataIsLinkedWithApiSelector} from '../redux/auth/auth.selectors'
 import SCREENS from '../constants/screens'
+
+import {PassportLinkedState} from '../redux/auth/auth.models'
+import {passportLinkedStateSelector} from '../redux/auth/auth.selectors'
 
 function SettingsScreen({navigation}: any) {
   const apiUser = patientSelector()
 
   const intl = useIntl()
   const {locale, setLocale} = useLocale()
-  const dataIsLinkedWithApi = dataIsLinkedWithApiSelector()
+  const passportLinkedState = passportLinkedStateSelector()
+  const hasPassportLinked =
+    passportLinkedState === PassportLinkedState.Linking ||
+    PassportLinkedState.Linked
+
+  useEffect(() => {}, [passportLinkedState, apiUser])
 
   const locales: Item[] = []
 
@@ -115,7 +122,7 @@ function SettingsScreen({navigation}: any) {
                 <FormattedMessage id="settings.about" />
               </BodyText>
             </View>
-            {!dataIsLinkedWithApi && (
+            {!hasPassportLinked && (
               <>
                 <View style={styles.header}>
                   <BodyHeader>
