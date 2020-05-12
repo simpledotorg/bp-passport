@@ -8,6 +8,7 @@ const INITIAL_STATE: {loginState: LoginState; authParams?: AuthParams} = {
 }
 
 const authReducer = (state = INITIAL_STATE, action) => {
+  console.log('authReducer update', state, action)
   switch (action.type) {
     case AuthActionTypes.SET_AUTH_PARAMS:
       return {
