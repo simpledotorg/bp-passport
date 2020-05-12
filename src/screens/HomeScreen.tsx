@@ -79,7 +79,8 @@ function Home({navigation, route}: Props) {
 
   const hasPassportLinked =
     passportLinkedState === PassportLinkedState.Linking ||
-    PassportLinkedState.Linked
+    passportLinkedState === PassportLinkedState.Linked
+  console.log('Home showLoading', hasPassportLinked, apiUser)
   const showLoading = hasPassportLinked && !apiUser
 
   useEffect(() => {

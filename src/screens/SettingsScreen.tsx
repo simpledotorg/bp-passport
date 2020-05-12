@@ -31,7 +31,7 @@ function SettingsScreen({navigation}: any) {
   const passportLinkedState = passportLinkedStateSelector()
   const hasPassportLinked =
     passportLinkedState === PassportLinkedState.Linking ||
-    PassportLinkedState.Linked
+    passportLinkedState === PassportLinkedState.Linked
 
   useEffect(() => {}, [passportLinkedState, apiUser])
 
