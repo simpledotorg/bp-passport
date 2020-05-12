@@ -19,8 +19,9 @@ const loggerMiddleware = createLogger()
 const middlewares = [thunkMiddleware, loggerMiddleware]
 
 const migrations: MigrationManifest = {
-  0: (state) => {
+  1: (state) => {
     // migration clear out device state
+    console.log('Do migration!')
     return {
       ...state,
       auth: {
@@ -33,6 +34,7 @@ const migrations: MigrationManifest = {
 
 const rootPersistConfig = {
   key: 'root',
+  version: 1,
   storage: AsyncStorage,
   // Whitelist (Save Specific Reducers)
   whitelist: ['auth', 'patient', 'bloodPressure', 'bloodSugar'],
