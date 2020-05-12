@@ -83,7 +83,7 @@ function ScanPassportScreen({navigation}: Props) {
   }, [error, uiState, modalIsVisible])
 
   // test a working/not working code in the simulator
-  /*
+
   useEffect(() => {
     const good = '0f8ce338-c3b4-4640-a68a-8d64f8ffbb1a'
     const bad = 'fdsfds'
@@ -92,7 +92,7 @@ function ScanPassportScreen({navigation}: Props) {
       type: RNCamera.Constants.BarCodeType.qr,
     })
   }, [])
-*/
+
   return (
     <>
       <SafeAreaView style={[containerStyles.fill]}>

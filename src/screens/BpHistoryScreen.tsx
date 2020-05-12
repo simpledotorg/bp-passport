@@ -71,7 +71,7 @@ function BpHistoryScreen({navigation, route}: Props) {
               style={{fontSize: 22, fontWeight: 'bold', marginBottom: 14}}>
               <FormattedMessage id="page-titles.all-bp" />
             </BodyHeader>
-            <View>
+            {/* <View>
               {bps?.map((bp, index) => (
                 <TouchableOpacity
                   onPress={() => {
@@ -91,7 +91,7 @@ function BpHistoryScreen({navigation, route}: Props) {
                   <BpInformation bp={bp} />
                 </TouchableOpacity>
               ))}
-            </View>
+            </View> */}
           </View>
         </View>
       </ScrollView>
