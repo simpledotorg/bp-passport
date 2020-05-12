@@ -37,11 +37,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
         ...INITIAL_STATE,
       }
     default:
-      console.log('before: ', state.loginState)
-      console.log('after: ', Math.min(state.loginState, LoginState.LoggedIn))
-      return {
-        ...state,
-      }
+      return state
   }
 }
 
