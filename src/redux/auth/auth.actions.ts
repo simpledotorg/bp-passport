@@ -3,6 +3,7 @@ import {API_ENDPOINT} from '../../constants/api'
 import {AuthActionTypes} from './auth.types'
 import {AppThunk} from '../store'
 import {LoginState, AuthParams, PassportLinkedState} from './auth.models'
+import {getPatient} from '../patient/patient.actions'
 
 export const setAuthParams = (authParams: AuthParams | undefined) => ({
   type: AuthActionTypes.SET_AUTH_PARAMS,
@@ -64,7 +65,9 @@ export const login = (passportId: string, otp: string): AppThunk => async (
     }
 
     dispatch(setAuthParams(authParams))
+    dispatch(setLoginState(LoginState.LoggedIn))
     dispatch(setPassportLinkedState(PassportLinkedState.Linking))
+    dispatch(getPatient())
 
     return true
   } catch (err) {

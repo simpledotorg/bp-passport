@@ -245,12 +245,15 @@ function MainStack({navigation}: Props) {
   const loginState = loginStateSelector()
   const passportLinkedState = passportLinkedStateSelector()
 
-  // const prevLoginState = usePrevious(loginState)
+  const prevLoginState = usePrevious(loginState)
   const apiUser = patientSelector()
 
   useEffect(() => {
     console.log('passportLinkedState changed:', passportLinkedState)
-    if (passportLinkedState === PassportLinkedState.Linked) {
+    if (
+      passportLinkedState === PassportLinkedState.Linking ||
+      passportLinkedState === PassportLinkedState.Linked
+    ) {
       const hasModalStack = routes.length > 1
       console.log('hasModalStack:', hasModalStack)
       if (hasModalStack) {
@@ -260,17 +263,23 @@ function MainStack({navigation}: Props) {
   }, [passportLinkedState])
 
   useEffect(() => {
-    console.log('loginState changed:', loginState)
-    if (loginState === LoginState.LoggedIn) {
+    console.log('loginState changed:', loginState, prevLoginState)
+    if (
+      loginState === LoginState.LoggedIn &&
+      prevLoginState === LoginState.LoggedOut
+    ) {
       const homeAtRoot =
         routes[0].state?.routes[0].name === SCREENS.HOME ?? false
 
-      console.log('homeAtRoot:', homeAtRoot)
+      console.log('homeAtRoot:', homeAtRoot, routes[0].state?.routes[0].name)
 
       if (!homeAtRoot) {
         navigation.reset({index: 1, routes: [{name: SCREENS.HOME}]})
       }
-    } else if (loginState === LoginState.LoggedOut) {
+    } else if (
+      loginState === LoginState.LoggedOut &&
+      prevLoginState === LoginState.LoggedIn
+    ) {
       Alert.alert(
         'Signed out',
         "Sorry, you've been signed out as your token expired.",
