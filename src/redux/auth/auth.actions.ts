@@ -2,9 +2,10 @@ import axios, {AxiosResponse} from 'axios'
 import {API_ENDPOINT} from '../../constants/api'
 import {AuthActionTypes} from './auth.types'
 import {AppThunk} from '../store'
-import {LoginState, AuthParams} from './auth.models'
+import {LoginState, AuthParams, PassportLinkedState} from './auth.models'
+import {getPatient} from '../patient/patient.actions'
 
-export const setAuthParams = (authParams: AuthParams) => ({
+export const setAuthParams = (authParams: AuthParams | undefined) => ({
   type: AuthActionTypes.SET_AUTH_PARAMS,
   payload: authParams,
 })
@@ -16,6 +17,13 @@ export const logout = () => ({
 export const setLoginState = (loginState: LoginState) => ({
   type: AuthActionTypes.SET_LOGIN_STATE,
   payload: loginState,
+})
+
+export const setPassportLinkedState = (
+  passportLinkedState: PassportLinkedState,
+) => ({
+  type: AuthActionTypes.SET_PASSPORT_LINKED_STATE,
+  payload: passportLinkedState,
 })
 
 export const activate = (
@@ -57,7 +65,9 @@ export const login = (passportId: string, otp: string): AppThunk => async (
     }
 
     dispatch(setAuthParams(authParams))
-    dispatch(setLoginState(LoginState.LoggingIn))
+    dispatch(setLoginState(LoginState.LoggedIn))
+    dispatch(setPassportLinkedState(PassportLinkedState.Linking))
+    dispatch(getPatient())
 
     return true
   } catch (err) {

@@ -1,9 +1,13 @@
 import React from 'react'
+import {Platform} from 'react-native'
 import {MedicationActionTypes} from './medication.types'
 import {AuthActionTypes} from '../auth/auth.types'
 import {Medication} from './medication.models'
 import AsyncStorage from '@react-native-community/async-storage'
 import {persistReducer} from 'redux-persist'
+import autoMerge from 'redux-persist/lib/stateReconciler/autoMergeLevel1'
+import PushNotificationIOS from '@react-native-community/push-notification-ios'
+import PushNotificationAndroid from 'react-native-push-notification'
 
 const ALL_MEDICINE_NAMES: Medication[] = require('../../assets/data/medicines.json')
 
@@ -17,25 +21,33 @@ const INITIAL_STATE: {
 
 const sortedMedications = (medications: Medication[]) => {
   const pure = [...medications]
-  /*
-    pure.sort((a: Medication, b: Medication) => {
-      return isBefore(new Date(a.recorded_at), new Date(b.recorded_at)) ? 1 : -1
-    })
-    */
   return pure
 }
 
-const uniqueKeyForBP = (medication: Medication) => {
-  return medication.name
+const uniqueKey = (medication: Medication) => {
+  let key = medication.name ?? ''
+  if (medication.offline) {
+    key += '-offline'
+    key += '-'
+    key += medication.updated_at ?? ''
+  } else {
+    key += '-online'
+  }
+
+  return key
 }
 
 const mergeMedications = (medications: Medication[]) => {
   const byUniqueKey: {[key: string]: Medication} = {}
+  const newArray: Medication[] = []
   medications.map((med) => {
-    const key = uniqueKeyForBP(med)
-    byUniqueKey[key] = med
+    const key = uniqueKey(med)
+    if (!byUniqueKey[key]) {
+      byUniqueKey[key] = med
+      newArray.push(med)
+    }
   })
-  return sortedMedications(Object.values(byUniqueKey))
+  return newArray
 }
 
 const medicationReducer = (state = INITIAL_STATE, action) => {
@@ -49,10 +61,26 @@ const medicationReducer = (state = INITIAL_STATE, action) => {
         medications: mergeMedications([...medications, ...newMedications]),
       }
     case MedicationActionTypes.ADD_MEDICATION:
+      medication.updated_at = new Date().toISOString()
+
       return {
         ...state,
-        medications: mergeMedications([...medications, medication]),
+        medications: [...medications, medication],
       }
+    case MedicationActionTypes.UPDATE_MEDICATION:
+      const updatedArray = [...medications]
+      const index = updatedArray.findIndex(
+        (element) => uniqueKey(element) === uniqueKey(medication),
+      )
+      medication.updated_at = new Date().toISOString()
+      if (index > -1) {
+        updatedArray.splice(index, 1, medication)
+      }
+      return {
+        ...state,
+        medications: updatedArray,
+      }
+
     case MedicationActionTypes.DELETE_MEDICATION:
       const isOfflineBP = medication.offline ?? false
       if (!isOfflineBP) {
@@ -61,15 +89,20 @@ const medicationReducer = (state = INITIAL_STATE, action) => {
           ...state,
         }
       }
-      const keyRemove = uniqueKeyForBP(medication)
+      const keyRemove = uniqueKey(medication)
       const medicationsFiltered = medications.filter((med) => {
-        return uniqueKeyForBP(med) !== keyRemove
+        return uniqueKey(med) !== keyRemove
       })
       return {
         ...state,
         medications: medicationsFiltered,
       }
     case AuthActionTypes.LOG_OUT:
+      if (Platform.OS === 'ios') {
+        PushNotificationIOS.cancelAllLocalNotifications()
+      } else if (Platform.OS === 'android') {
+        PushNotificationAndroid.cancelAllLocalNotifications()
+      }
       return {
         ...INITIAL_STATE,
       }
@@ -82,6 +115,7 @@ const persistConfig = {
   key: 'medication',
   storage: AsyncStorage,
   blacklist: ['medicationsLibrary'],
+  stateReconciler: autoMerge,
 }
 
 export default persistReducer(persistConfig, medicationReducer)
