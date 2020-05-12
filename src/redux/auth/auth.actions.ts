@@ -21,7 +21,7 @@ export const setLoginState = (loginState: LoginState) => ({
 export const setPassportLinkedState = (
   passportLinkedState: PassportLinkedState,
 ) => ({
-  type: AuthActionTypes.SET_LOGIN_STATE,
+  type: AuthActionTypes.SET_PASSPORT_LINKED_STATE,
   payload: passportLinkedState,
 })
 
