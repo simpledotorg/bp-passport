@@ -176,26 +176,28 @@ function Home({navigation}: Props) {
                 <>
                   {meds.map((med, index) => {
                     return (
-                      <TouchableOpacity
+                      <TouchableWithoutFeedback
                         onPress={() => {
                           navigation.navigate(SCREENS.MEDICATION_DETAILS, {
                             medication: med,
                             isEditing: true,
                           })
                         }}
-                        key={index}
-                        style={[
-                          {
-                            marginBottom: 12,
-                            paddingTop: 12,
-                          },
-                          styles.historyItem,
-                          index === meds.length - 1
-                            ? {borderBottomWidth: 0}
-                            : {},
-                        ]}>
-                        <MedsInformation meds={med} />
-                      </TouchableOpacity>
+                        key={index}>
+                        <View
+                          style={[
+                            {
+                              marginBottom: 12,
+                              paddingTop: 12,
+                            },
+                            styles.historyItem,
+                            index === meds.length - 1
+                              ? {borderBottomWidth: 0}
+                              : {},
+                          ]}>
+                          <MedsInformation meds={med} />
+                        </View>
+                      </TouchableWithoutFeedback>
                     )
                   })}
                 </>
