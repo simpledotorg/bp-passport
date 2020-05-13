@@ -405,3 +405,104 @@ function MainStack({navigation}: Props) {
     </Stack.Navigator>
   )
 }
+
+function ScanStack({navigation}: Props) {
+  const intl = useIntl()
+  return (
+    <Stack.Navigator
+      initialRouteName={SCREENS.SCAN_BP_PASSPORT}
+      screenOptions={{
+        ...navigationStyle,
+        headerTintColor: colors.white100,
+        gestureEnabled: true,
+      }}>
+      <Stack.Screen
+        name={SCREENS.SCAN_BP_PASSPORT}
+        component={ScanPassportScreen}
+        options={{
+          title: intl.formatMessage({id: 'page-titles.scan-bp-passport'}),
+          headerLeft: () => {
+            return (
+              <ButtonIcon
+                iconName="close"
+                iconColor={colors.white100}
+                onPress={() => navigation.goBack()}
+              />
+            )
+          },
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.VERIFY_YOUR_NUMBER}
+        component={VerifyNumberScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.verify-pin'}),
+        }}
+      />
+    </Stack.Navigator>
+  )
+}
+
+function AddBPStack({navigation}: Props) {
+  const intl = useIntl()
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        ...navigationStyle,
+        headerTintColor: colors.white100,
+        gestureEnabled: true,
+      }}>
+      <Stack.Screen
+        name={SCREENS.ADD_BP}
+        component={AddBpScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.new-bp'}),
+          headerLeft: () => {
+            return (
+              <ButtonIcon
+                iconName="close"
+                iconColor={colors.white100}
+                onPress={() => navigation.goBack()}
+              />
+            )
+          },
+          gestureEnabled: false,
+        }}
+      />
+    </Stack.Navigator>
+  )
+}
+
+function AddBSStack({navigation}: Props) {
+  console.log('add')
+  const intl = useIntl()
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        ...navigationStyle,
+        headerTintColor: colors.white100,
+        gestureEnabled: true,
+      }}>
+      <Stack.Screen
+        name={SCREENS.ADD_BS}
+        component={AddBsScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.new-bs'}),
+          headerLeft: () => {
+            return (
+              <ButtonIcon
+                iconName="close"
+                iconColor={colors.white100}
+                onPress={() => navigation.goBack()}
+              />
+            )
+          },
+          gestureEnabled: false,
+        }}
+      />
+    </Stack.Navigator>
+  )
+}
