@@ -196,7 +196,11 @@ function AddBsScreen({navigation, route}: Props) {
                 top: 14,
                 color: colors.grey1,
               }}>
-              <FormattedMessage id="bs.mgdl" />
+              {type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
+                '%'
+              ) : (
+                <FormattedMessage id="bs.mgdl" />
+              )}
             </BodyText>
           </View>
           <Picker

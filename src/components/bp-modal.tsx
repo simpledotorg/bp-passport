@@ -1,5 +1,11 @@
 import React from 'react'
-import {View, StyleSheet, Image, Alert, ShadowPropTypesIOS} from 'react-native'
+import {
+  View,
+  StyleSheet,
+  Image,
+  Alert,
+  TouchableWithoutFeedback,
+} from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
 import {format} from 'date-fns'
 
@@ -56,106 +62,112 @@ export const BpModal = ({bp, close}: Props) => {
   }
 
   return (
-    <View
-      style={{
-        padding: 24,
-        backgroundColor: colors.white100,
+    <TouchableWithoutFeedback
+      onPress={(e) => {
+        e.stopPropagation()
+        e.preventDefault()
       }}>
-      <BodyHeader
+      <View
         style={{
-          fontWeight: 'bold',
-          fontSize: 22,
-          marginBottom: 16,
+          padding: 24,
+          backgroundColor: colors.white100,
         }}>
-        <FormattedMessage id="all-bp.bp-details" />
-      </BodyHeader>
-      <View style={{flexDirection: 'row'}}>
-        <Image source={redHeart} />
-        <View style={{paddingLeft: 16}}>
-          <BodyText
-            style={{
-              lineHeight: 26,
-              paddingTop: 12,
-              fontSize: 18,
-              color: colors.grey0,
-            }}>
-            <>{`${bp.systolic} / ${bp.diastolic}`}</>
+        <BodyHeader
+          style={{
+            fontWeight: 'bold',
+            fontSize: 22,
+            marginBottom: 16,
+          }}>
+          <FormattedMessage id="all-bp.bp-details" />
+        </BodyHeader>
+        <View style={{flexDirection: 'row'}}>
+          <Image source={redHeart} />
+          <View style={{paddingLeft: 16}}>
+            <BodyText
+              style={{
+                lineHeight: 26,
+                paddingTop: 12,
+                fontSize: 18,
+                color: colors.grey0,
+              }}>
+              <>{`${bp.systolic} / ${bp.diastolic}`}</>
 
-            <>
-              {` `}
-              {getBPText()}
-            </>
-          </BodyText>
-
-          <BodyText
-            style={{
-              lineHeight: 26,
-              paddingTop: 12,
-              fontSize: 16,
-              color: colors.grey1,
-            }}>
-            {displayDate(bp)}
-          </BodyText>
-
-          {bp.facility && (
-            <BodyText style={{lineHeight: 26, paddingTop: 12}}>
-              <FormattedMessage
-                id="general.recorded_at"
-                values={{
-                  location: bp.facility?.name,
-                }}
-              />
+              <>
+                {` `}
+                {getBPText()}
+              </>
             </BodyText>
+
+            <BodyText
+              style={{
+                lineHeight: 26,
+                paddingTop: 12,
+                fontSize: 16,
+                color: colors.grey1,
+              }}>
+              {displayDate(bp)}
+            </BodyText>
+
+            {bp.facility && (
+              <BodyText style={{lineHeight: 26, paddingTop: 12}}>
+                <FormattedMessage
+                  id="general.recorded_at"
+                  values={{
+                    location: bp.facility?.name,
+                  }}
+                />
+              </BodyText>
+            )}
+          </View>
+        </View>
+        <View style={{marginTop: 24, flexDirection: 'row'}}>
+          <Button
+            style={[
+              {
+                backgroundColor: colors.blue3,
+                shadowColor: 'rgba(0, 117, 235, 0.3)',
+                flex: 1,
+              },
+            ]}
+            buttonColor={colors.blue2}
+            title={intl.formatMessage({id: 'general.close'})}
+            onPress={() => {
+              close()
+            }}
+          />
+          {bp.offline && (
+            <Button
+              style={{
+                backgroundColor: colors.white100,
+                flex: 1,
+              }}
+              buttonColor={colors.red1}
+              disableBoxShadow
+              title={intl.formatMessage({id: 'general.delete'})}
+              onPress={() => {
+                Alert.alert(
+                  intl.formatMessage({id: 'general.delete'}),
+                  intl.formatMessage({id: 'general.delete-bp-confirm'}),
+                  [
+                    {
+                      text: intl.formatMessage({id: 'general.cancel'}),
+                    },
+                    {
+                      text: intl.formatMessage({id: 'general.ok'}),
+                      onPress: () => {
+                        dispatch(deleteBloodPressure(bp))
+                        close()
+                      },
+                    },
+                  ],
+                  {cancelable: true},
+                )
+              }}
+            />
           )}
         </View>
       </View>
-      <View style={{marginTop: 24, flexDirection: 'row'}}>
-        <Button
-          style={[
-            {
-              backgroundColor: colors.blue3,
-              shadowColor: 'rgba(0, 117, 235, 0.3)',
-              flex: 1,
-            },
-          ]}
-          buttonColor={colors.blue2}
-          title={intl.formatMessage({id: 'general.close'})}
-          onPress={() => {
-            close()
-          }}
-        />
-        {bp.offline && (
-          <Button
-            style={{
-              backgroundColor: colors.white100,
-              flex: 1,
-            }}
-            buttonColor={colors.red1}
-            disableBoxShadow
-            title={intl.formatMessage({id: 'general.delete'})}
-            onPress={() => {
-              Alert.alert(
-                intl.formatMessage({id: 'general.delete'}),
-                intl.formatMessage({id: 'general.delete-bp-confirm'}),
-                [
-                  {
-                    text: intl.formatMessage({id: 'general.cancel'}),
-                  },
-                  {
-                    text: intl.formatMessage({id: 'general.ok'}),
-                    onPress: () => {
-                      dispatch(deleteBloodPressure(bp))
-                      close()
-                    },
-                  },
-                ],
-                {cancelable: true},
-              )
-            }}
-          />
-        )}
-      </View>
-    </View>
+    </TouchableWithoutFeedback>
   )
 }
 

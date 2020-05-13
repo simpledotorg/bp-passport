@@ -1,20 +1,25 @@
-import React, {useContext} from 'react'
+import React, {useState} from 'react'
 import {
-  SafeAreaView,
+  ScrollView,
   View,
   FlatList,
   StyleSheet,
   TouchableOpacity,
+  Dimensions,
+  ActivityIndicator,
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
+import {FormattedMessage} from 'react-intl'
+import {useFocusEffect} from '@react-navigation/native'
+import {VictoryChart, VictoryTheme, VictoryLine} from 'victory-native'
 
 import {containerStyles, colors} from '../styles'
-import {BodyHeader, BpInformation} from '../components'
+import {BodyHeader, BpInformation, BpHistoryChart} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
-import {FormattedMessage} from 'react-intl'
+import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 
 type BpHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -32,24 +37,64 @@ type Props = {
 }
 
 function BpHistoryScreen({navigation, route}: Props) {
-  const bps = bloodPressuresSelector()
+  const bpsAll = bloodPressuresSelector() ?? []
+  const [isAnimating, setIsAnimating] = useState(true)
+  const bps = /*bpsAll.slice(0, 5)*/ isAnimating
+    ? bpsAll.slice(0, 5)
+    : [...bpsAll]
+  const bpsChart = /*bpsAll.slice(0, 5)*/ isAnimating ? [] : [...bpsAll]
+
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log('didfocus!')
+      setIsAnimating(false)
+    }, []),
+  )
 
   return (
     <View style={{flex: 1}}>
-      <SafeAreaView
-        style={[containerStyles.fill, {backgroundColor: colors.white}]}>
-        <View style={{flex: 1, paddingTop: 24, paddingLeft: 24}}>
-          <View>
-            <FlatList
-              data={bps}
-              ListHeaderComponent={
-                <View style={{marginBottom: 16}}>
-                  <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
-                    <FormattedMessage id="page-titles.all-bp" />
-                  </BodyHeader>
-                </View>
-              }
-              renderItem={({item: bp, index}) => (
+      <ScrollView contentContainerStyle={{paddingVertical: 8}}>
+        <View
+          style={[
+            containerStyles.containerSegment,
+            {paddingVertical: 22, paddingHorizontal: 24},
+          ]}>
+          <View style={[{flexShrink: 0}]}>
+            <View>
+              <BodyHeader
+                style={{
+                  fontSize: 22,
+                  fontWeight: 'bold',
+                  marginBottom: 14,
+                }}>
+                <FormattedMessage id="all-bp.bp-trend" />
+              </BodyHeader>
+            </View>
+          </View>
+          <View style={{minHeight: 260}}>
+            {isAnimating ? (
+              <View
+                style={[containerStyles.fill, containerStyles.centeredContent]}>
+                <ActivityIndicator size="large" color={colors.blue1} />
+              </View>
+            ) : (
+              <BpHistoryChart bps={bpsChart} />
+            )}
+          </View>
+        </View>
+
+        <View
+          style={[
+            containerStyles.containerSegment,
+            {paddingVertical: 22, paddingHorizontal: 24},
+          ]}>
+          <View style={[{flexShrink: 0}]}>
+            <BodyHeader
+              style={{fontSize: 22, fontWeight: 'bold', marginBottom: 14}}>
+              <FormattedMessage id="page-titles.all-bp" />
+            </BodyHeader>
+            <View>
+              {bps?.map((bp, index) => (
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
@@ -59,7 +104,6 @@ function BpHistoryScreen({navigation, route}: Props) {
                   key={index}
                   style={[
                     {
-                      marginRight: 24,
                       marginBottom: 12,
                       paddingTop: 12,
                     },
@@ -68,14 +112,11 @@ function BpHistoryScreen({navigation, route}: Props) {
                   ]}>
                   <BpInformation bp={bp} />
                 </TouchableOpacity>
-              )}
-              keyExtractor={(item, index) => {
-                return `key-${index}`
-              }}
-            />
+              ))}
+            </View>
           </View>
         </View>
-      </SafeAreaView>
+      </ScrollView>
     </View>
   )
 }
