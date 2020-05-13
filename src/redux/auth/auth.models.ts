@@ -1,11 +1,6 @@
-export enum PassportLinkedState {
-  NotLinked,
-  Linking,
-  Linked,
-}
-
 export enum LoginState {
-  LoggedOut = 0,
+  LoggedOut,
+  LoggingIn,
   LoggedIn,
 }
 

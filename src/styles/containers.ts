@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   containerSegment: {
     backgroundColor: colors.white100,
     borderRadius: 4,
-    marginHorizontal: 18,
+    marginHorizontal: 8,
     marginBottom: 8,
     flexShrink: 0,
     padding: 24,

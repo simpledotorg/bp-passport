@@ -35,11 +35,14 @@ import {
 
 import {ContentLoadingSegmentSize} from '../components/content-loading-segment'
 
-import {LoginState, PassportLinkedState} from '../redux/auth/auth.models'
+import {LoginState} from '../redux/auth/auth.models'
 import {useThunkDispatch} from '../redux/store'
 import {getPatient} from '../redux/patient/patient.actions'
 
-import {passportLinkedStateSelector} from '../redux/auth/auth.selectors'
+import {
+  loginStateSelector,
+  dataIsLinkedWithApiSelector,
+} from '../redux/auth/auth.selectors'
 import {patientSelector} from '../redux/patient/patient.selectors'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
@@ -48,57 +51,42 @@ import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
 import {medicationsSelector} from '../redux/medication/medication.selectors'
 import {Medication} from '../redux/medication/medication.models'
 import {refreshAllLocalPushReminders} from '../redux/medication/medication.actions'
-import {RouteProp} from '@react-navigation/native'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   SCREENS.HOME
 >
 
-type HomeScreenRoute = RouteProp<RootStackParamList, SCREENS.HOME>
-
 type Props = {
   navigation: HomeScreenNavigationProp
-  route: HomeScreenRoute
 }
 
 const HOME_PAGE_SHOW_LIMIT = 3
 
-function Home({navigation, route}: Props) {
+function Home({navigation}: Props) {
   const dispatch = useThunkDispatch()
 
+  const loginState = loginStateSelector()
   const apiUser = patientSelector()
-  const passportLinkedState = passportLinkedStateSelector()
+  const dataIsLinkedWithApi = dataIsLinkedWithApiSelector()
 
   const bloodPressures = bloodPressuresSelector()
   const bloodSugars = bloodSugarsSelector()
   const medications = medicationsSelector()
   const intl = useIntl()
 
-  const hasPassportLinked =
-    passportLinkedState === PassportLinkedState.Linking ||
-    passportLinkedState === PassportLinkedState.Linked
-
-  const showLoading = hasPassportLinked && !apiUser
+  const showLoading = loginState === LoginState.LoggingIn
 
   useEffect(() => {
     // on first load refresh patient data if we have authParams we should refresh the api patient data
-    if (
-      passportLinkedState === PassportLinkedState.Linking ||
-      passportLinkedState === PassportLinkedState.Linked
-    ) {
+    if (dataIsLinkedWithApi) {
       dispatch(getPatient()).catch((err) => {
         console.log('error loading api patient: ', err)
       })
     }
-  }, [])
+  }, [dataIsLinkedWithApi])
 
-  useEffect(() => {}, [
-    passportLinkedState,
-    apiUser,
-    bloodPressures,
-    medications,
-  ])
+  useEffect(() => {}, [loginState, apiUser, bloodPressures, medications])
 
   const [appState, setAppState] = useState(AppState.currentState)
 
@@ -113,6 +101,8 @@ function Home({navigation, route}: Props) {
   const bps: BloodPressure[] = bloodPressures ?? []
   const bss: BloodSugar[] = bloodSugars ?? []
   const meds: Medication[] = medications ?? []
+
+  console.log(bps)
 
   const medicationDisplayName = (medication: Medication) => {
     let ret = medication.name
@@ -268,9 +258,7 @@ function Home({navigation, route}: Props) {
                     },
                   ]}
                   buttonColor={colors.blue2}
-                  title={intl.formatMessage({
-                    id: showBpHistoryButton ? 'home.add' : 'home.add-bp',
-                  })}
+                  title={intl.formatMessage({id: 'home.add-bp'})}
                   onPress={() => {
                     navigation.navigate(SCREENS.ADD_BP)
                   }}
@@ -338,9 +326,7 @@ function Home({navigation, route}: Props) {
                     },
                   ]}
                   buttonColor={colors.blue2}
-                  title={intl.formatMessage({
-                    id: showBsHistoryButton ? 'home.add' : 'home.add-bs',
-                  })}
+                  title={intl.formatMessage({id: 'home.add-bs'})}
                   onPress={() => {
                     navigation.navigate(SCREENS.ADD_BS)
                   }}
