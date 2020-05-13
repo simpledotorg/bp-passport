@@ -28,10 +28,10 @@ export const getBloodSugarDetails: (
         languageTypeCode: 'bs.fasting-code',
       }
     }
-    case BLOOD_SUGAR_TYPES.POST_PENIAL: {
+    case BLOOD_SUGAR_TYPES.POST_PRANDIAL: {
       return {
         high: 200,
-        languageKey: 'bs.post-penial',
+        languageKey: 'bs.post-prandial',
         languageTypeCode: 'bs.post-prenial-code',
       }
     }
