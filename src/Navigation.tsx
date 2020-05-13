@@ -404,6 +404,7 @@ function MainStack({navigation}: Props) {
                   iconName="settings"
                   iconColor={colors.white100}
                   onPress={() => navigation.navigate(SCREENS.SETTINGS)}
+                  style={{marginRight: 8}}
                 />
               )
             }
