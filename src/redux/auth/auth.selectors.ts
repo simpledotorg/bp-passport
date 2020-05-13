@@ -5,12 +5,10 @@ export const loginStateSelector = () => {
   return useSelector((state: RootState) => state.auth.loginState)
 }
 
-export const authParamsSelector = () => {
-  return useSelector((state: RootState) => state.auth.authParams)
+export const passportLinkedStateSelector = () => {
+  return useSelector((state: RootState) => state.auth.passportLinkedState)
 }
 
-export const dataIsLinkedWithApiSelector = () => {
-  return useSelector((state: RootState) =>
-    state.auth.authParams ? true : false,
-  )
+export const authParamsSelector = () => {
+  return useSelector((state: RootState) => state.auth.authParams)
 }

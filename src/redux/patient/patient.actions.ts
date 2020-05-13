@@ -6,8 +6,8 @@ import {API_ENDPOINT} from '../../constants/api'
 import {mergeBloodPressures} from '../blood-pressure/blood-pressure.actions'
 import {mergeBloodSugars} from '../blood-sugar/blood-sugar.actions'
 import {mergeMedications} from '../medication/medication.actions'
-import {LoginState} from '../auth/auth.models'
-import {setLoginState, logout, setAuthParams} from '../auth/auth.actions'
+import {PassportLinkedState} from '../auth/auth.models'
+import {setAuthParams, setPassportLinkedState} from '../auth/auth.actions'
 
 export const setPatient = (patient: Patient) => ({
   type: PatientActionTypes.SET_PATIENT,
@@ -56,7 +56,7 @@ export const getPatient = (): AppThunk => async (dispatch, getState) => {
       dispatch(mergeBloodSugars([...patientResponseData.blood_sugars]))
     }
 
-    dispatch(setLoginState(LoginState.LoggedIn))
+    dispatch(setPassportLinkedState(PassportLinkedState.Linked))
 
     return true
   } catch (err) {
@@ -65,7 +65,7 @@ export const getPatient = (): AppThunk => async (dispatch, getState) => {
       if (response.status === 401) {
         // auth params seem to now be invalid
         dispatch(setAuthParams(undefined))
-        // dispatch(logout())
+        dispatch(setPassportLinkedState(PassportLinkedState.NotLinked))
       }
     }
 
