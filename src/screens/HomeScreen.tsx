@@ -31,6 +31,7 @@ import {
   MedsInformation,
   ContentLoadingSegment,
   BsInformation,
+  ButtonType,
 } from '../components'
 
 import {ContentLoadingSegmentSize} from '../components/content-loading-segment'
@@ -211,11 +212,11 @@ function Home({navigation, route}: Props) {
               <View style={{marginTop: 15, flexDirection: 'row'}}>
                 <Button
                   style={[
-                    styles.bpButton,
                     {
                       marginRight: showBsHistoryButton ? 12 : 0,
                     },
                   ]}
+                  buttonType={ButtonType.Light}
                   buttonColor={colors.blue2}
                   title={intl.formatMessage({id: 'home.add-medicine'})}
                   onPress={() => {
@@ -394,8 +395,6 @@ const styles = StyleSheet.create({
     flexShrink: 0,
   },
   bpButton: {
-    backgroundColor: colors.blue3,
-
     flex: 1,
   },
   historyItem: {

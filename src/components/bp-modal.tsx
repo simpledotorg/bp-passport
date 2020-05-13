@@ -4,7 +4,7 @@ import {FormattedMessage, useIntl} from 'react-intl'
 import {format} from 'date-fns'
 
 import {colors, redHeart} from '../styles'
-import {BodyText, BodyHeader, Button} from './'
+import {BodyText, BodyHeader, Button, ButtonType} from './'
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {useThunkDispatch} from '../redux/store'
@@ -131,7 +131,7 @@ export const BpModal = ({bp, close}: Props) => {
               flex: 1,
             }}
             buttonColor={colors.red1}
-            disableBoxShadow
+            buttonType={ButtonType.NoBackground}
             title={intl.formatMessage({id: 'general.delete'})}
             onPress={() => {
               Alert.alert(

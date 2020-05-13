@@ -28,7 +28,7 @@ import {
   deleteMedication,
   refreshAllLocalPushReminders,
 } from '../redux/medication/medication.actions'
-import {BodyText, BodyHeader, Button} from '../components'
+import {BodyText, BodyHeader, Button, ButtonType} from '../components'
 import {medicationsLibrarySelector} from '../redux/medication/medication.selectors'
 import PushNotifications, {scheduleNotif} from '../notifications'
 import {Permission} from '../redux/notifications/notifications.models'
@@ -293,7 +293,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
               backgroundColor: colors.grey4,
             }}
             buttonColor={colors.red1}
-            disableBoxShadow
+            buttonType={ButtonType.NoBackground}
             title={intl.formatMessage({id: 'medicine.delete-medicine'})}
             onPress={() => {
               Alert.alert(

@@ -12,6 +12,7 @@ import {
 } from '../utils/blood-sugars'
 import {useThunkDispatch} from '../redux/store'
 import {deleteBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
+import {ButtonType} from './button'
 
 type Props = {
   bs: BloodSugar
@@ -127,7 +128,7 @@ export const BsModal = ({bs, close}: Props) => {
               flex: 1,
             }}
             buttonColor={colors.red1}
-            disableBoxShadow
+            buttonType={ButtonType.NoBackground}
             title={intl.formatMessage({id: 'general.delete'})}
             onPress={() => {
               Alert.alert(
