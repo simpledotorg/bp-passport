@@ -7,10 +7,14 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
+import {format} from 'date-fns'
 
 import {colors, purpleDrop} from '../styles'
 import {BodyHeader, BodyText, Button} from './'
-import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
+import {
+  BloodSugar,
+  BLOOD_SUGAR_TYPES,
+} from '../redux/blood-sugar/blood-sugar.models'
 import {
   displayDate,
   isHighBloodSugar,
@@ -86,7 +90,15 @@ export const BsModal = ({bs, close}: Props) => {
                 fontSize: 18,
                 color: colors.grey0,
               }}>
-              {`${bs.blood_sugar_value} ${intl.formatMessage({id: 'bs.mgdl'})}`}
+              {`${bs.blood_sugar_value}`}
+              {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
+                '%'
+              ) : (
+                <>
+                  {' '}
+                  <FormattedMessage id="bs.mgdl" />
+                </>
+              )}
 
               <>
                 {` `}

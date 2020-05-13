@@ -37,7 +37,7 @@ function BsHistoryScreen({navigation, route}: Props) {
   return (
     <View style={{flex: 1}}>
       <ScrollView contentContainerStyle={{paddingVertical: 8}}>
-        <View
+        {/* <View
           style={[
             containerStyles.containerSegment,
             {paddingVertical: 22, paddingHorizontal: 24},
@@ -57,7 +57,7 @@ function BsHistoryScreen({navigation, route}: Props) {
           <View>
             <BsHistoryChart bss={bloodSugars ?? []} />
           </View>
-        </View>
+        </View> */}
         <View
           style={[
             containerStyles.containerSegment,
