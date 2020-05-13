@@ -99,6 +99,8 @@ const Stack = createStackNavigator<RootStackParamList>()
 const Navigation = () => {
   const intl = useIntl()
 
+  console.log('revert')
+
   const getModalOptions = () => {
     return Platform.OS === 'ios'
       ? {
