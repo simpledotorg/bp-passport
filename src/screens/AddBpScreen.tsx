@@ -127,6 +127,12 @@ function AddBpScreen({navigation, route}: Props) {
     }
   }, [errors, systolic, diastolic])
 
+  const validateInput = (inputType: string, input: string) => {
+    inputType === 'systolic'
+      ? setSystolic(input.replace(/[^0-9]/g, ''))
+      : setDiastolic(input.replace(/[^0-9]/g, ''))
+  }
+
   return (
     <View style={{flex: 1}}>
       <SafeAreaView
@@ -139,12 +145,12 @@ function AddBpScreen({navigation, route}: Props) {
               ref={systolicRef}
               style={[styles.input, {marginRight: 4}]}
               onChangeText={(text) => {
-                setSystolic(text)
+                validateInput('systolic', text)
                 getErrorGateway(text, diastolic)
               }}
               placeholder={intl.formatMessage({id: 'general.systolic'})}
               value={systolic.toString()}
-              keyboardType={'numeric'}
+              keyboardType={'number-pad'}
               onSubmitEditing={() => {
                 if (diastolic === '') {
                   diastolicRef?.current?.focus()
@@ -158,7 +164,7 @@ function AddBpScreen({navigation, route}: Props) {
               ref={diastolicRef}
               style={[styles.input, {marginLeft: 4}]}
               onChangeText={(text) => {
-                setDiastolic(text)
+                validateInput('diastolic', text)
                 getErrorGateway(systolic, text)
               }}
               placeholder={intl.formatMessage({id: 'general.diastolic'})}
