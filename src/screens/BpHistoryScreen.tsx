@@ -96,6 +96,7 @@ function BpHistoryScreen({navigation, route}: Props) {
             <View>
               {bps?.map((bp, index) => (
                 <TouchableOpacity
+                  activeOpacity={0.8}
                   onPress={() => {
                     navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
                       bp,
