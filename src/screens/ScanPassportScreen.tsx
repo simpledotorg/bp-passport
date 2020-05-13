@@ -49,7 +49,7 @@ function ScanPassportScreen({navigation}: Props) {
       const passport_id = event.data
       return dispatch(activate(passport_id))
         .then(() => {
-          navigation.replace(SCREENS.VERIFY_YOUR_NUMBER, {passport_id})
+          navigation.navigate(SCREENS.VERIFY_YOUR_NUMBER, {passport_id})
         })
         .catch((err: Error) => {
           setError(err)
@@ -93,6 +93,7 @@ function ScanPassportScreen({navigation}: Props) {
     })
   }, [])
 */
+
   return (
     <>
       <SafeAreaView style={[containerStyles.fill]}>
