@@ -66,7 +66,7 @@ function BsHistoryScreen({navigation, route}: Props) {
           <View style={[{flexShrink: 0}]}>
             <BodyHeader
               style={{fontSize: 22, fontWeight: 'bold', marginBottom: 14}}>
-              <FormattedMessage id="bs.all-bs" />
+              <FormattedMessage id="page-titles.all-bs" />
             </BodyHeader>
             <View>
               {bloodSugars?.map((bs, index) => (
