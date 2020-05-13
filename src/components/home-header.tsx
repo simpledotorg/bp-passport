@@ -2,27 +2,23 @@ import React, {useEffect} from 'react'
 import {View, Text, Image, StyleSheet} from 'react-native'
 import {containerStyles, navigation, colors, iconHomeHeader} from '../styles'
 import {FormattedMessage} from 'react-intl'
-import {LoginState} from '../redux/auth/auth.models'
-import {loginStateSelector} from '../redux/auth/auth.selectors'
+import {PassportLinkedState} from '../redux/auth/auth.models'
+import {passportLinkedStateSelector} from '../redux/auth/auth.selectors'
 
 import {patientSelector} from '../redux/patient/patient.selectors'
-import {
-  authParamsSelector,
-  dataIsLinkedWithApiSelector,
-} from '../redux/auth/auth.selectors'
+import {authParamsSelector} from '../redux/auth/auth.selectors'
 
 export const HomeHeaderTitle = () => {
-  const loginState = loginStateSelector()
+  const passportLinkedState = passportLinkedStateSelector()
   const apiUser = patientSelector()
   const authParams = authParamsSelector()
-  const dataIsLinkedWithApi = dataIsLinkedWithApiSelector()
 
-  const showLoading = loginState === LoginState.LoggingIn
+  const showLoading = passportLinkedState === PassportLinkedState.Linking
 
   const hasFullName = apiUser?.full_name ? true : false
   const hasPassportShortcode = authParams?.passport?.shortcode ? true : false
 
-  useEffect(() => {}, [apiUser, loginState])
+  useEffect(() => {}, [apiUser, passportLinkedState])
 
   if (showLoading) {
     return (
@@ -36,7 +32,7 @@ export const HomeHeaderTitle = () => {
     )
   }
 
-  if (!dataIsLinkedWithApi) {
+  if (!apiUser) {
     return (
       <View
         style={[

@@ -43,15 +43,20 @@ function Consent({navigation}: Props) {
               <FormattedMessage id="consent.any-data-stored" />
             </BodyText>
             <BodyText style={{marginBottom: 24}}>
-              <FormattedMessage id="consent.more-information" />{' '}
-              <BodyText
-                style={{color: colors.blue2}}
-                onPress={() => {
-                  Linking.openURL('https://simple.org/patient-privacy')
-                }}>
-                <FormattedMessage id="consent.here-link" />
-              </BodyText>
-              <BodyText>.</BodyText>
+              <FormattedMessage
+                id="consent.more-information"
+                values={{
+                  here: (
+                    <BodyText
+                      style={{color: colors.blue2}}
+                      onPress={() => {
+                        Linking.openURL('https://simple.org/patient-privacy')
+                      }}>
+                      <FormattedMessage id="consent.here-link" />
+                    </BodyText>
+                  ),
+                }}
+              />
             </BodyText>
           </ScrollView>
         </View>

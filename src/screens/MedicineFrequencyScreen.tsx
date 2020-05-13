@@ -8,6 +8,12 @@ import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {BodyHeader, BodyText, CheckBox, Button} from '../components'
 import {FormattedMessage, IntlContext, useIntl} from 'react-intl'
+import {
+  Day,
+  ALL_DAYS_ORDERED,
+  dayToKeyString,
+  ordedDays,
+} from '../redux/medication/medication.models'
 
 type MedicineFrequencyScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -24,41 +30,12 @@ type Props = {
   route: MedicineFrequencyScreen
 }
 
-const DAYS_DEFAULT = {
-  MONDAY: {
-    label: 'general.monday',
-    value: true,
-  },
-  TUESDAY: {
-    label: 'general.tuesday',
-    value: true,
-  },
-  WEDNESDAY: {
-    label: 'general.wednesday',
-    value: true,
-  },
-  THURSDAY: {
-    label: 'general.thursday',
-    value: true,
-  },
-  FRIDAY: {
-    label: 'general.friday',
-    value: true,
-  },
-  SATURDAY: {
-    label: 'general.saturday',
-    value: true,
-  },
-  SUNDAY: {
-    label: 'general.sunday',
-    value: true,
-  },
-}
-
 function MedicineFrequencyScreen({navigation, route}: Props) {
   const intl = useIntl()
-  const {updateDays} = route.params
-  const [days, setDays] = useState(DAYS_DEFAULT)
+  const {updateDays, reminder} = route.params
+  const [days, setDays] = useState(
+    reminder.days.split('').map((s) => Number(s) as Day),
+  )
 
   return (
     <TouchableWithoutFeedback
@@ -96,26 +73,30 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
                 <FormattedMessage id="medicine.set-reminder-for" />
               </BodyHeader>
             </View>
-            {Object.keys(days).map((day, index) => {
+            {ALL_DAYS_ORDERED.map((day, index) => {
               return (
                 <TouchableWithoutFeedback
                   key={day}
                   onPress={() => {
-                    const clone = {...days}
-                    clone[day].value = !days[day].value
-
+                    const clone = [...days]
+                    const wasSelected = clone.includes(day)
+                    if (wasSelected) {
+                      clone.splice(days.indexOf(day), 1)
+                    } else {
+                      clone.push(day)
+                    }
                     setDays(clone)
                   }}>
                   <View
                     style={{
                       borderBottomWidth:
-                        index === Object.keys(days).length - 1 ? 0 : 1,
+                        index === ALL_DAYS_ORDERED.length - 1 ? 0 : 1,
                       borderColor: colors.grey3,
                       paddingVertical: 12,
                       flexDirection: 'row',
                       alignItems: 'center',
                     }}>
-                    <CheckBox checked={days[day].value} />
+                    <CheckBox checked={days.includes(day)} />
                     <BodyText
                       style={{
                         fontSize: 16,
@@ -124,7 +105,7 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
                         color: colors.grey1,
                         marginLeft: 12,
                       }}>
-                      <FormattedMessage id={days[day].label} />
+                      <FormattedMessage id={dayToKeyString(day)} />
                     </BodyText>
                   </View>
                 </TouchableWithoutFeedback>
@@ -134,10 +115,8 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
           <Button
             style={{marginHorizontal: 16, marginBottom: 16}}
             onPress={() => {
-              updateDays(days)
-              setTimeout(() => {
-                navigation.goBack()
-              }, 0)
+              updateDays(ordedDays(days))
+              navigation.goBack()
             }}
             title={intl.formatMessage({id: 'general.save'})}
           />
