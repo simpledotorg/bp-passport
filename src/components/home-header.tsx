@@ -40,7 +40,7 @@ export const HomeHeaderTitle = () => {
           containerStyles.centeredContent,
           {flexDirection: 'row'},
         ]}>
-        <Image source={iconHomeHeader} />
+        <Image source={iconHomeHeader} style={{width: 30, height: 30}} />
         <Text
           style={{
             ...navigation.homeHeaderTitleStyle,
