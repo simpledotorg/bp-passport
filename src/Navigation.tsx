@@ -151,15 +151,9 @@ const Navigation = () => {
           component={MainStack}
           options={{cardStyleInterpolator: forFade}}
         />
-        <Stack.Screen
-          name={SCREENS.SCAN_STACK}
-          component={ScanStack}
-          options={
-            {
-              /*cardStyleInterpolator: forFade,*/
-            }
-          }
-        />
+        <Stack.Screen name={SCREENS.SCAN_STACK} component={ScanStack} />
+        <Stack.Screen name={SCREENS.ADD_BP} component={AddBPStack} />
+        <Stack.Screen name={SCREENS.ADD_BS} component={AddBSStack} />
       </Stack.Navigator>
     </>
   )
@@ -342,24 +336,6 @@ function MainStack({navigation}: Props) {
         }}
       />
       <Stack.Screen
-        name={SCREENS.ADD_BP}
-        component={AddBpScreen}
-        options={{
-          headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.new-bp'}),
-          gestureEnabled: false,
-        }}
-      />
-      <Stack.Screen
-        name={SCREENS.ADD_BS}
-        component={AddBsScreen}
-        options={{
-          headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.new-bs'}),
-          gestureEnabled: false,
-        }}
-      />
-      <Stack.Screen
         name={SCREENS.BS_HISTORY}
         component={BsHistoryScreen}
         options={{
@@ -404,6 +380,7 @@ function MainStack({navigation}: Props) {
                   iconName="settings"
                   iconColor={colors.white100}
                   onPress={() => navigation.navigate(SCREENS.SETTINGS)}
+                  style={{marginRight: 8}}
                 />
               )
             }
@@ -411,8 +388,6 @@ function MainStack({navigation}: Props) {
           },
           headerLeft: () => null,
           gestureEnabled: false,
-          /* cardStyleInterpolator: CardStyleInterpolators.forNoAnimation,*/
-          /*cardStyleInterpolator: forFade, */
         }}
       />
       <Stack.Screen
@@ -459,6 +434,68 @@ function ScanStack({navigation}: Props) {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.verify-pin'}),
+        }}
+      />
+    </Stack.Navigator>
+  )
+}
+
+function AddBPStack({navigation}: Props) {
+  const intl = useIntl()
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        ...navigationStyle,
+        headerTintColor: colors.white100,
+        gestureEnabled: true,
+      }}>
+      <Stack.Screen
+        name={SCREENS.ADD_BP}
+        component={AddBpScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.new-bp'}),
+          headerLeft: () => {
+            return (
+              <ButtonIcon
+                iconName="close"
+                iconColor={colors.white100}
+                onPress={() => navigation.goBack()}
+              />
+            )
+          },
+          gestureEnabled: false,
+        }}
+      />
+    </Stack.Navigator>
+  )
+}
+
+function AddBSStack({navigation}: Props) {
+  const intl = useIntl()
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        ...navigationStyle,
+        headerTintColor: colors.white100,
+        gestureEnabled: true,
+      }}>
+      <Stack.Screen
+        name={SCREENS.ADD_BS}
+        component={AddBsScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.new-bs'}),
+          headerLeft: () => {
+            return (
+              <ButtonIcon
+                iconName="close"
+                iconColor={colors.white100}
+                onPress={() => navigation.goBack()}
+              />
+            )
+          },
+          gestureEnabled: false,
         }}
       />
     </Stack.Navigator>

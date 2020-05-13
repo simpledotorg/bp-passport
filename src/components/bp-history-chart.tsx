@@ -138,7 +138,7 @@ export const BpHistoryChart = ({bps}: Props) => {
         overflow: 'hidden',
       }}>
       <VictoryChart
-        width={Dimensions.get('window').width - 24}
+        width={Dimensions.get('window').width - 44}
         height={300}
         minDomain={{y: 40}}
         style={{
