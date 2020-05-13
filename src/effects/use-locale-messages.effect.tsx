@@ -1,13 +1,10 @@
 import React, {createContext, useContext, useState, ReactNode} from 'react'
 import * as RNLocalize from 'react-native-localize'
 
-import {
-  AVAILABLE_TRANSLATIONS,
-  DEFAULT_LANGUAGE_CODE,
-} from '../constants/languages'
+import {AVAILABLE_TRANSLATIONS, ENGLISH} from '../constants/languages'
 
 export const LocaleContext = createContext({
-  locale: DEFAULT_LANGUAGE_CODE,
+  locale: ENGLISH,
   setLocale: () => {},
 } as any)
 
@@ -22,7 +19,7 @@ export const useLocale = () => {
 export const LocaleProvider = ({children}: any) => {
   const [locale, setLocale] = useState(
     RNLocalize.findBestAvailableLanguage(AVAILABLE_TRANSLATIONS)?.languageTag ||
-      DEFAULT_LANGUAGE_CODE,
+      ENGLISH,
   )
 
   return (

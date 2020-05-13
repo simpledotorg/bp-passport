@@ -5,7 +5,6 @@ import {AuthActionTypes} from '../auth/auth.types'
 import {Medication} from './medication.models'
 import AsyncStorage from '@react-native-community/async-storage'
 import {persistReducer} from 'redux-persist'
-import autoMerge from 'redux-persist/lib/stateReconciler/autoMergeLevel1'
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
 import PushNotificationAndroid from 'react-native-push-notification'
 
@@ -115,7 +114,6 @@ const persistConfig = {
   key: 'medication',
   storage: AsyncStorage,
   blacklist: ['medicationsLibrary'],
-  stateReconciler: autoMerge,
 }
 
 export default persistReducer(persistConfig, medicationReducer)

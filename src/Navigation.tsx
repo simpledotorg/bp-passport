@@ -6,7 +6,6 @@ import {
   StackNavigationProp,
 } from '@react-navigation/stack'
 import {useNavigationState, StackActions} from '@react-navigation/native'
-import {CommonActions} from '@react-navigation/native'
 import {forFade} from './navigation/interpolators'
 import {CardStyleInterpolators} from '@react-navigation/stack'
 import {useIntl, FormattedMessage} from 'react-intl'
@@ -43,11 +42,8 @@ import {colors, navigation as navigationStyle} from './styles'
 import {BloodPressure} from './redux/blood-pressure/blood-pressure.models'
 import {BloodSugar} from './redux/blood-sugar/blood-sugar.models'
 import {Medication, Reminder} from './redux/medication/medication.models'
-import {LoginState, PassportLinkedState} from './redux/auth/auth.models'
-import {
-  loginStateSelector,
-  passportLinkedStateSelector,
-} from './redux/auth/auth.selectors'
+import {LoginState} from './redux/auth/auth.models'
+import {loginStateSelector} from './redux/auth/auth.selectors'
 import {patientSelector} from './redux/patient/patient.selectors'
 
 import PushNotificationIOS from '@react-native-community/push-notification-ios'
@@ -63,7 +59,6 @@ import {pushNotificationPermissionSelector} from './redux/notifications/notifica
 export type RootStackParamList = {
   LAUNCH: undefined
   MAIN_STACK: undefined
-  SCAN_STACK: undefined
   SPLASH: undefined
   LOGIN: undefined
   CONSENT: undefined
@@ -97,8 +92,6 @@ export type RootStackParamList = {
 const Stack = createStackNavigator<RootStackParamList>()
 
 const Navigation = () => {
-  const intl = useIntl()
-
   const getModalOptions = () => {
     return Platform.OS === 'ios'
       ? {
@@ -151,9 +144,6 @@ const Navigation = () => {
           component={MainStack}
           options={{cardStyleInterpolator: forFade}}
         />
-        <Stack.Screen name={SCREENS.SCAN_STACK} component={ScanStack} />
-        <Stack.Screen name={SCREENS.ADD_BP} component={AddBPStack} />
-        <Stack.Screen name={SCREENS.ADD_BS} component={AddBSStack} />
       </Stack.Navigator>
     </>
   )
@@ -175,8 +165,6 @@ function MainStack({navigation}: Props) {
   const [appState, setAppState] = useState(AppState.currentState)
   const dispatch = useDispatch()
   const pushNotificationPermission = pushNotificationPermissionSelector()
-  const navigationState = useNavigationState((state) => state)
-  const routes = useNavigationState((state) => state.routes)
 
   useEffect(() => {
     const unsubscribe = AppState.addEventListener('change', (nextAppState) => {
@@ -237,53 +225,37 @@ function MainStack({navigation}: Props) {
   const headerHeightIncludingSafeArea = useHeaderHeight()
 
   const loginState = loginStateSelector()
-  const passportLinkedState = passportLinkedStateSelector()
-
   const prevLoginState = usePrevious(loginState)
   const apiUser = patientSelector()
 
   useEffect(() => {
-    if (
-      passportLinkedState === PassportLinkedState.Linking ||
-      passportLinkedState === PassportLinkedState.Linked
-    ) {
-      const hasModalStack = routes.length > 1
-
-      if (hasModalStack) {
-        navigation.goBack()
+    if (loginState === LoginState.LoggedOut) {
+      if (
+        prevLoginState === LoginState.LoggedIn ||
+        prevLoginState === LoginState.LoggingIn
+      ) {
+        Alert.alert(
+          'Signed out',
+          "Sorry, you've been signed out as your token expired.",
+          [
+            {
+              text: intl.formatMessage({id: 'general.ok'}),
+            },
+          ],
+          {cancelable: true},
+        )
+        navigation.reset({
+          index: 0,
+          routes: [{name: SCREENS.SPLASH}],
+        })
       }
-    }
-  }, [passportLinkedState])
-
-  useEffect(() => {
-    if (
-      loginState === LoginState.LoggedIn &&
-      prevLoginState === LoginState.LoggedOut
-    ) {
-      const homeAtRoot =
-        routes[0].state?.routes[0].name === SCREENS.HOME ?? false
-
-      if (!homeAtRoot) {
-        navigation.reset({index: 1, routes: [{name: SCREENS.HOME}]})
+    } else {
+      if (prevLoginState === LoginState.LoggedOut) {
+        navigation.reset({
+          index: 0,
+          routes: [{name: SCREENS.HOME}],
+        })
       }
-    } else if (
-      loginState === LoginState.LoggedOut &&
-      prevLoginState === LoginState.LoggedIn
-    ) {
-      Alert.alert(
-        'Signed out',
-        "Sorry, you've been signed out as your token expired.",
-        [
-          {
-            text: intl.formatMessage({id: 'general.ok'}),
-          },
-        ],
-        {cancelable: true},
-      )
-      navigation.reset({
-        index: 0,
-        routes: [{name: SCREENS.SPLASH}],
-      })
     }
   }, [loginState])
 
@@ -328,11 +300,45 @@ function MainStack({navigation}: Props) {
         options={{headerShown: false}}
       />
       <Stack.Screen
+        name={SCREENS.SCAN_BP_PASSPORT}
+        component={ScanPassportScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.scan-bp-passport'}),
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.VERIFY_YOUR_NUMBER}
+        component={VerifyNumberScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.verify-pin'}),
+        }}
+      />
+      <Stack.Screen
         name={SCREENS.BP_HISTORY}
         component={BpHistoryScreen}
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.all-bp'}),
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.ADD_BP}
+        component={AddBpScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.new-bp'}),
+          gestureEnabled: false,
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.ADD_BS}
+        component={AddBsScreen}
+        options={{
+          headerBackTitle: ' ',
+          title: intl.formatMessage({id: 'page-titles.new-bs'}),
+          gestureEnabled: false,
         }}
       />
       <Stack.Screen
@@ -374,13 +380,11 @@ function MainStack({navigation}: Props) {
           headerTitleAlign: 'center',
           headerTitle: () => <HomeHeaderTitle />,
           headerRight: () => {
-            if (passportLinkedState !== PassportLinkedState.Linking) {
+            if (loginState === LoginState.LoggedIn) {
               return (
                 <ButtonIcon
                   iconName="settings"
-                  iconColor={colors.white100}
                   onPress={() => navigation.navigate(SCREENS.SETTINGS)}
-                  style={{marginRight: 8}}
                 />
               )
             }
@@ -396,106 +400,6 @@ function MainStack({navigation}: Props) {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.settings'}),
-        }}
-      />
-    </Stack.Navigator>
-  )
-}
-
-function ScanStack({navigation}: Props) {
-  const intl = useIntl()
-  return (
-    <Stack.Navigator
-      initialRouteName={SCREENS.SCAN_BP_PASSPORT}
-      screenOptions={{
-        ...navigationStyle,
-        headerTintColor: colors.white100,
-        gestureEnabled: true,
-      }}>
-      <Stack.Screen
-        name={SCREENS.SCAN_BP_PASSPORT}
-        component={ScanPassportScreen}
-        options={{
-          title: intl.formatMessage({id: 'page-titles.scan-bp-passport'}),
-          headerLeft: () => {
-            return (
-              <ButtonIcon
-                iconName="close"
-                iconColor={colors.white100}
-                onPress={() => navigation.goBack()}
-              />
-            )
-          },
-        }}
-      />
-      <Stack.Screen
-        name={SCREENS.VERIFY_YOUR_NUMBER}
-        component={VerifyNumberScreen}
-        options={{
-          headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.verify-pin'}),
-        }}
-      />
-    </Stack.Navigator>
-  )
-}
-
-function AddBPStack({navigation}: Props) {
-  const intl = useIntl()
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        ...navigationStyle,
-        headerTintColor: colors.white100,
-        gestureEnabled: true,
-      }}>
-      <Stack.Screen
-        name={SCREENS.ADD_BP}
-        component={AddBpScreen}
-        options={{
-          headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.new-bp'}),
-          headerLeft: () => {
-            return (
-              <ButtonIcon
-                iconName="close"
-                iconColor={colors.white100}
-                onPress={() => navigation.goBack()}
-              />
-            )
-          },
-          gestureEnabled: false,
-        }}
-      />
-    </Stack.Navigator>
-  )
-}
-
-function AddBSStack({navigation}: Props) {
-  const intl = useIntl()
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        ...navigationStyle,
-        headerTintColor: colors.white100,
-        gestureEnabled: true,
-      }}>
-      <Stack.Screen
-        name={SCREENS.ADD_BS}
-        component={AddBsScreen}
-        options={{
-          headerBackTitle: ' ',
-          title: intl.formatMessage({id: 'page-titles.new-bs'}),
-          headerLeft: () => {
-            return (
-              <ButtonIcon
-                iconName="close"
-                iconColor={colors.white100}
-                onPress={() => navigation.goBack()}
-              />
-            )
-          },
-          gestureEnabled: false,
         }}
       />
     </Stack.Navigator>
