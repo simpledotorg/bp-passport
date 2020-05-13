@@ -472,6 +472,7 @@ function AddBPStack({navigation}: Props) {
 }
 
 function AddBSStack({navigation}: Props) {
+  console.log('add')
   const intl = useIntl()
   return (
     <Stack.Navigator
