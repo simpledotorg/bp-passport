@@ -101,6 +101,7 @@ function AddMedicineScreen({navigation, route}: Props) {
                       },
                     ]}>
                     <TouchableOpacity
+                      activeOpacity={0.8}
                       onPressOut={() => {
                         inputRef.current.blur()
                         navigation.push(SCREENS.MEDICATION_DETAILS, {

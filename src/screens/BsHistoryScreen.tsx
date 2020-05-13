@@ -71,6 +71,7 @@ function BsHistoryScreen({navigation, route}: Props) {
             <View>
               {bloodSugars?.map((bs, index) => (
                 <TouchableOpacity
+                  activeOpacity={0.8}
                   onPress={() => {
                     navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
                       bs,
