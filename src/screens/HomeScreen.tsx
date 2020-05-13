@@ -268,7 +268,9 @@ function Home({navigation, route}: Props) {
                     },
                   ]}
                   buttonColor={colors.blue2}
-                  title={intl.formatMessage({id: 'home.add-bp'})}
+                  title={intl.formatMessage({
+                    id: showBpHistoryButton ? 'home.add' : 'home.add-bp',
+                  })}
                   onPress={() => {
                     navigation.navigate(SCREENS.ADD_BP)
                   }}
@@ -336,7 +338,9 @@ function Home({navigation, route}: Props) {
                     },
                   ]}
                   buttonColor={colors.blue2}
-                  title={intl.formatMessage({id: 'home.add-bs'})}
+                  title={intl.formatMessage({
+                    id: showBsHistoryButton ? 'home.add' : 'home.add-bs',
+                  })}
                   onPress={() => {
                     navigation.navigate(SCREENS.ADD_BS)
                   }}
