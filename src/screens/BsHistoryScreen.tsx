@@ -41,6 +41,13 @@ function BsHistoryScreen({navigation, route}: Props) {
         style={[containerStyles.fill, {backgroundColor: colors.white}]}>
         <View style={{flex: 1, paddingTop: 24, paddingLeft: 24}}>
           <FlatList
+            ListHeaderComponent={
+              <View style={{marginBottom: 16}}>
+                <BodyHeader style={{fontSize: 22, fontWeight: 'bold'}}>
+                  <FormattedMessage id="page-titles.all-bs" />
+                </BodyHeader>
+              </View>
+            }
             data={bloodSugars}
             ListHeaderComponent={
               <View style={{marginBottom: 16}}>
