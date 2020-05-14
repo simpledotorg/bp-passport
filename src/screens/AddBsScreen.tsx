@@ -67,8 +67,8 @@ function AddBsScreen({navigation, route}: Props) {
       type: INPUT_TYPES.DECIMAL,
     },
     {
-      label: intl.formatMessage({id: 'bs.post-penial'}),
-      value: BLOOD_SUGAR_TYPES.POST_PENIAL,
+      label: intl.formatMessage({id: 'bs.post-prandial'}),
+      value: BLOOD_SUGAR_TYPES.POST_PRANDIAL,
       min: 30,
       max: 1000,
       type: INPUT_TYPES.DECIMAL,
@@ -196,7 +196,11 @@ function AddBsScreen({navigation, route}: Props) {
                 top: 14,
                 color: colors.grey1,
               }}>
-              <FormattedMessage id="bs.mgdl" />
+              {type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
+                '%'
+              ) : (
+                <FormattedMessage id="bs.mgdl" />
+              )}
             </BodyText>
           </View>
           <Picker

@@ -22,6 +22,7 @@ interface ButtonProps extends NativeButtonProps {
 export const Button = (props: ButtonProps) => {
   return (
     <TouchableOpacity
+      activeOpacity={0.8}
       {...props}
       style={[
         {
@@ -73,6 +74,7 @@ interface ButtonIconProps extends TouchableOpacityProps {
 export const ButtonIcon = (props: ButtonIconProps) => {
   return (
     <TouchableOpacity
+      activeOpacity={0.8}
       {...props}
       style={[
         {

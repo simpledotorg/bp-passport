@@ -1,5 +1,25 @@
 # BP Passport
 
+## Version 0.65
+
+### Overview
+
+User Testing Release
+
+### What's New
+
+- Non BP Passport Holder - Settings - Connect BP Passport - complete
+- BP Chart history
+- Latest Translations
+
+### What's In Progress
+
+- Blood sugars history chart
+
+### Many bugs quashed & change requests as per the complete column here:
+
+https://trello.com/b/39A9Sj8R/simple-for-patients
+
 ## Version 0.6
 
 ### Overview

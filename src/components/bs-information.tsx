@@ -5,7 +5,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {colors, purpleDrop} from '../styles'
 import {BodyText} from './'
-import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
+import {
+  BloodSugar,
+  BLOOD_SUGAR_TYPES,
+} from '../redux/blood-sugar/blood-sugar.models'
 import {
   displayDate,
   isHighBloodSugar,
@@ -70,8 +73,15 @@ export const BsInformation = ({bs, style = {}}: Props) => {
               color: colors.grey0,
               fontWeight: '500',
             }}>
-            {`${bs.blood_sugar_value} ${intl.formatMessage({id: 'bs.mgdl'})}`}
-
+            {`${bs.blood_sugar_value}`}
+            {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
+              '%'
+            ) : (
+              <>
+                {' '}
+                <FormattedMessage id="bs.mgdl" />
+              </>
+            )}
             <>
               {` `}
               {getBSText()}
