@@ -1,4 +1,4 @@
-import React, {useState, useEffect, memo} from 'react'
+import React, {useState, useEffect} from 'react'
 import {View, Dimensions} from 'react-native'
 import {format, addMonths, isWithinInterval} from 'date-fns'
 import {
@@ -14,12 +14,6 @@ import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {colors} from '../styles'
 import {generateChartData} from '../utils/data-transform'
 import {DateRange} from '../utils/dates'
-
-interface BloodPressureChartPoint {
-  interval: {start: Date; end: Date}
-  list: BloodPressure[]
-  averaged: {diastolic: number; systolic: number}
-}
 
 type Props = {
   bps: BloodPressure[]
@@ -59,8 +53,8 @@ export const BpHistoryChart = ({bps}: Props) => {
     setChartData(generateChartData(bps, averageList, isBloodPressureHigh))
   }, [bps])
 
-  const generateScatter = (bps: DateRange[]): BloodPressureChartPoint[] => {
-    return bps.flatMap((bp: DateRange) => {
+  const generateScatter = (list: DateRange[]): any[] => {
+    return list.flatMap((bp: DateRange) => {
       return [
         {
           x: bp.index,

@@ -26,106 +26,66 @@ import {
   getBloodSugarDetails,
 } from '../utils/blood-sugars'
 import {BodyHeader, BodyText} from './text'
-import {getChartDateRange} from '../utils/dates'
-
-interface BloodSugarChartPoint {
-  interval: {start: Date; end: Date}
-  list: BloodSugar[]
-  averaged: number
-}
+import {DateRange} from '../utils/dates'
+import {generateChartData} from '../utils/data-transform'
 
 type Props = {
   bss: BloodSugar[]
 }
 
 export const BsHistoryChart = ({bss}: Props) => {
-  const [isPercentage, setIsPercentage] = useState(false)
-  const [highBps, setHighBps] = useState<BloodSugarChartPoint[] | null>(null)
-  const [lowBps, setLowBps] = useState<BloodSugarChartPoint[] | null>(null)
-  const dates: BloodSugarChartPoint[] = getChartDateRange()
+  // const [isPercentage, setIsPercentage] = useState(false)
+  const [shownSugarType, setShownSugarType] = useState<BLOOD_SUGAR_TYPES>(
+    BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
+  )
+  const [chartData, setChartData] = useState<{
+    dates: DateRange[]
+    low: DateRange[]
+    high: DateRange[]
+  } | null>(null)
 
-  const getIndexFromBP = (bp: BloodSugar) => {
-    let index = 0
+  const averageList = (value: DateRange) => {
+    const valuesAccumulator = value.list.reduce(
+      (memo: number, current: any) => {
+        return (memo += Number(current.blood_sugar_value))
+      },
+      0,
+    )
 
-    const found = dates.find((date, i) => {
-      index = i
-      return isWithinInterval(new Date(bp.recorded_at), date.interval)
-    })
-
-    if (found) {
-      return index
-    } else {
-      return 0
-    }
+    return valuesAccumulator / value.list.length
   }
 
-  // useEffect(() => {
-  //   const filteredValues = bss.filter((bs) => {
-  //     if (isPercentage) {
-  //       return bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
-  //     }
+  useEffect(() => {
+    const filteredValues = bss.filter((bs) => {
+      if (shownSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
+        return bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
+      } else if (shownSugarType === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR) {
+        return bs.blood_sugar_type === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
+      } else {
+        return (
+          bs.blood_sugar_type !== BLOOD_SUGAR_TYPES.HEMOGLOBIC &&
+          bs.blood_sugar_type !== BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
+        )
+      }
+    })
 
-  //     return bs.blood_sugar_type !== BLOOD_SUGAR_TYPES.HEMOGLOBIC
-  //   })
+    setChartData(
+      generateChartData(filteredValues, averageList, (value) => {
+        return isHighBloodSugar({
+          blood_sugar_value: value,
+          blood_sugar_type: shownSugarType,
+        } as BloodSugar)
+      }),
+    )
+  }, [bss, shownSugarType])
 
-  //   filteredValues.forEach((bs) => {
-  //     const index = getIndexFromBP(bs)
-  //     if (dates[index]) {
-  //       dates[index].list.push(bs)
-  //     }
-  //   })
-
-  //   const reduction = dates.reduce(
-  //     (
-  //       memo: {high: BloodSugarChartPoint[]; low: BloodSugarChartPoint[]},
-  //       current: BloodSugarChartPoint,
-  //     ) => {
-  //       if (current.list.length) {
-  //         const valuesAccumulator = current.list.reduce(
-  //           (memoAcc: number, currentAcc: BloodSugar) => {
-  //             return (memoAcc += Number(currentAcc.blood_sugar_value))
-  //           },
-  //           0,
-  //         )
-
-  //         const average = valuesAccumulator / current.list.length
-
-  //         current.averaged = average
-
-  //         if (isHighBloodSugar({blood_sugar_type: , } as BloodSugar)) {
-  //           memo.high.push({...current, averaged: average})
-  //         } else {
-  //           memo.low.push({...current, averaged: average})
-  //         }
-
-  //         console.log(current)
-  //       }
-  //       return memo
-  //     },
-  //     {high: [], low: []},
-  //   )
-
-  //   setHighBps(reduction.high)
-  //   setLowBps(reduction.low)
-  // }, [bss, isPercentage])
-
-  const generateScatter = (
-    bps: BloodSugarChartPoint[],
-  ): BloodSugarChartPoint[] => {
-    return bps.flatMap((bp: BloodSugarChartPoint) => {
-      const index = getIndexFromBP(bp.list[0])
-
-      return [
-        {
-          x: index + 1,
-          y: bp.averaged,
-          label: bp.averaged,
-        },
-      ]
+  const generateScatter = (bss: DateRange[]): any[] => {
+    return bss.map((bs: DateRange) => {
+      return {x: bs.index, y: bs.averaged, label: bs.averaged}
     })
   }
 
-  if (!highBps || !lowBps) {
+  if (!chartData) {
     return <></>
   }
 
@@ -134,24 +94,68 @@ export const BsHistoryChart = ({bss}: Props) => {
       <View style={{flexDirection: 'row'}}>
         <TouchableWithoutFeedback
           onPress={() => {
-            setIsPercentage(false)
+            setShownSugarType(BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR)
           }}>
-          <View style={[styles.pill, isPercentage ? {} : styles.pillActive]}>
+          <View
+            style={[
+              styles.pill,
+              shownSugarType === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR
+                ? styles.pillActive
+                : {},
+            ]}>
             <BodyText
-              style={{color: isPercentage ? colors.blue2 : colors.white100}}>
+              style={{
+                color:
+                  shownSugarType === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR
+                    ? colors.white100
+                    : colors.blue2,
+              }}>
               <FormattedMessage id="bs.random-blood-code" />/
-              <FormattedMessage id="bs.fasting-code" />/
               <FormattedMessage id="bs.post-prenial-code" />
             </BodyText>
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback
           onPress={() => {
-            setIsPercentage(true)
+            setShownSugarType(BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR)
           }}>
-          <View style={[styles.pill, isPercentage ? styles.pillActive : {}]}>
+          <View
+            style={[
+              styles.pill,
+              shownSugarType === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
+                ? styles.pillActive
+                : {},
+            ]}>
             <BodyText
-              style={{color: isPercentage ? colors.white100 : colors.blue2}}>
+              style={{
+                color:
+                  shownSugarType === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
+                    ? colors.white100
+                    : colors.blue2,
+              }}>
+              <FormattedMessage id="bs.fasting-code" />
+            </BodyText>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            // setIsPercentage(true)
+            setShownSugarType(BLOOD_SUGAR_TYPES.HEMOGLOBIC)
+          }}>
+          <View
+            style={[
+              styles.pill,
+              shownSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC
+                ? styles.pillActive
+                : {},
+            ]}>
+            <BodyText
+              style={{
+                color:
+                  shownSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC
+                    ? colors.white100
+                    : colors.blue2,
+              }}>
               <FormattedMessage id="bs.hemoglobic-code" />
             </BodyText>
           </View>
@@ -180,11 +184,11 @@ export const BsHistoryChart = ({bss}: Props) => {
             tickCount={5}
             tickFormat={(tick) => {
               return format(
-                addMonths(dates[0].interval.start, tick / 4),
+                addMonths(chartData.dates[0].interval.start, tick / 4),
                 'MMM-yy',
               )
             }}
-            tickValues={dates.map((date, index) => index)}
+            tickValues={chartData.dates.map((date, index) => index)}
             style={{
               grid: {stroke: colors.grey3, strokeDasharray: 8},
               axis: {stroke: colors.grey3, opacity: 0},
@@ -195,12 +199,16 @@ export const BsHistoryChart = ({bss}: Props) => {
             orientation="right"
             dependentAxis
             tickFormat={(tick) => {
-              if (isPercentage) {
+              if (shownSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
                 return `${tick}%`
               }
               return tick
             }}
-            tickValues={isPercentage ? [7] : [126, 200]}
+            tickValues={
+              shownSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC
+                ? [3, 7, 25]
+                : [126, 200]
+            }
             style={{
               grid: {stroke: colors.grey2, strokeDasharray: 8},
               axis: {stroke: colors.grey3, strokeWidth: 0},
@@ -208,51 +216,8 @@ export const BsHistoryChart = ({bss}: Props) => {
             }}
           />
 
-          {/* <VictoryScatter
-            data={data.map((bs, index) => {
-              if (!isHighBloodSugar(bs)) {
-                return {
-                  x: index + 1,
-                  y: Number(bs.blood_sugar_value),
-                  label: bs.blood_sugar_value,
-                }
-              }
-              return null
-            })}
-            size={5}
-            style={{
-              data: {
-                fill: colors.white100,
-                stroke: colors.green1,
-                strokeWidth: 3,
-              },
-            }}
-            labelComponent={<VictoryTooltip />}
-          />
           <VictoryScatter
-            data={data.map((bs, index) => {
-              if (isHighBloodSugar(bs)) {
-                return {
-                  x: index + 1,
-                  y: Number(bs.blood_sugar_value),
-                  label: bs.blood_sugar_value,
-                }
-              }
-              return null
-            })}
-            size={5}
-            style={{
-              data: {
-                fill: colors.white100,
-                stroke: colors.red1,
-                strokeWidth: 3,
-              },
-            }}
-            labelComponent={<VictoryTooltip />}
-          /> */}
-
-          <VictoryScatter
-            data={generateScatter(lowBps)}
+            data={generateScatter(chartData.low)}
             size={5}
             style={{
               data: {
@@ -264,7 +229,7 @@ export const BsHistoryChart = ({bss}: Props) => {
             labelComponent={<VictoryTooltip renderInPortal={false} />}
           />
           <VictoryScatter
-            data={generateScatter(highBps)}
+            data={generateScatter(chartData.high)}
             size={5}
             style={{
               data: {
