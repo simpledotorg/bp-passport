@@ -24,7 +24,6 @@ export const BsInformation = ({bs, style = {}}: Props) => {
   const intl = useIntl()
 
   const getBSText = () => {
-    const details = getBloodSugarDetails(bs)
     return isHighBloodSugar(bs) ? (
       <BodyText
         style={[
