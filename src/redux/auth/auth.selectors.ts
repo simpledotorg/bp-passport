@@ -12,3 +12,7 @@ export const passportLinkedStateSelector = () => {
 export const authParamsSelector = () => {
   return useSelector((state: RootState) => state.auth.authParams)
 }
+
+export const passportSelector = () => {
+  return useSelector((state: RootState) => state.auth.passport)
+}
