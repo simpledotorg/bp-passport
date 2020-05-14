@@ -12,5 +12,10 @@ export enum LoginState {
 export interface AuthParams {
   access_token: string
   id: string /* patient id */
-  passport: {id: string /* passport id */; shortcode: string}
+  passport: Passport
+}
+
+export interface Passport {
+  id: string /* passport id */
+  shortcode: string
 }

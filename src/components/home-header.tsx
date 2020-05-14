@@ -6,17 +6,17 @@ import {PassportLinkedState} from '../redux/auth/auth.models'
 import {passportLinkedStateSelector} from '../redux/auth/auth.selectors'
 
 import {patientSelector} from '../redux/patient/patient.selectors'
-import {authParamsSelector} from '../redux/auth/auth.selectors'
+import {passportSelector} from '../redux/auth/auth.selectors'
 
 export const HomeHeaderTitle = () => {
   const passportLinkedState = passportLinkedStateSelector()
   const apiUser = patientSelector()
-  const authParams = authParamsSelector()
+  const passport = passportSelector()
 
   const showLoading = passportLinkedState === PassportLinkedState.Linking
 
   const hasFullName = apiUser?.full_name ? true : false
-  const hasPassportShortcode = authParams?.passport?.shortcode ? true : false
+  const hasPassportShortcode = passport?.shortcode ? true : false
 
   useEffect(() => {}, [apiUser, passportLinkedState])
 
@@ -40,14 +40,14 @@ export const HomeHeaderTitle = () => {
           containerStyles.centeredContent,
           {flexDirection: 'row'},
         ]}>
-        <Image source={iconHomeHeader} style={{width: 30, height: 30}} />
+        <Image source={iconHomeHeader} />
         <Text
           style={{
             ...navigation.homeHeaderTitleStyle,
             marginHorizontal: 11,
           }}
           numberOfLines={1}>
-          <FormattedMessage id="general.bp-passport" />
+          BP Passport
         </Text>
       </View>
     )
@@ -67,8 +67,7 @@ export const HomeHeaderTitle = () => {
       )}
       {hasPassportShortcode && (
         <Text style={{...navigation.homeSubHeaderTitleStyle}} numberOfLines={1}>
-          <FormattedMessage id="general.bp-passport" />{' '}
-          {authParams?.passport?.shortcode}
+          <FormattedMessage id="general.bp-passport" /> {passport?.shortcode}
         </Text>
       )}
     </View>
