@@ -61,6 +61,7 @@ function AddMedicineScreen({navigation, route}: Props) {
           style={[styles.input]}
           ref={inputRef}
           autoFocus
+          placeholderTextColor={'#6C737A'}
           placeholder={intl.formatMessage({
             id: 'medicine.enter-name',
           })}
