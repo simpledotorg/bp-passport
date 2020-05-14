@@ -61,6 +61,7 @@ function AddMedicineScreen({navigation, route}: Props) {
           style={[styles.input]}
           ref={inputRef}
           autoFocus
+          placeholderTextColor={'#6C737A'}
           placeholder={intl.formatMessage({
             id: 'medicine.enter-name',
           })}
@@ -102,7 +103,7 @@ function AddMedicineScreen({navigation, route}: Props) {
                     ]}>
                     <TouchableOpacity
                       activeOpacity={0.8}
-                      onPressOut={() => {
+                      onPress={() => {
                         inputRef.current.blur()
                         navigation.push(SCREENS.MEDICATION_DETAILS, {
                           medication: createAMedicationWithReminder(item.name),
