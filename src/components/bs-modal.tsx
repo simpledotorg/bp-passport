@@ -70,7 +70,6 @@ export const BsModal = ({bs, close}: Props) => {
       <View
         style={{
           padding: 24,
-          backgroundColor: colors.white100,
         }}>
         <BodyHeader
           style={{

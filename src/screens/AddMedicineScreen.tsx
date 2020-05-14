@@ -102,7 +102,7 @@ function AddMedicineScreen({navigation, route}: Props) {
                     ]}>
                     <TouchableOpacity
                       activeOpacity={0.8}
-                      onPressOut={() => {
+                      onPress={() => {
                         inputRef.current.blur()
                         navigation.push(SCREENS.MEDICATION_DETAILS, {
                           medication: createAMedicationWithReminder(item.name),

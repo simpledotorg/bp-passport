@@ -34,12 +34,16 @@ function DetailsModalScreen({navigation, route}: Props) {
       <View
         style={[
           containerStyles.fill,
-          {justifyContent: 'flex-end', backgroundColor: 'transparent'},
+          {
+            justifyContent: 'flex-end',
+            backgroundColor: 'rgba(47, 54, 61, 0.5)',
+          },
         ]}>
         <View
           style={{
             backgroundColor: colors.white100,
-            padding: 16,
+            borderTopRightRadius: 4,
+            borderTopLeftRadius: 4,
             width: '100%',
           }}>
           {bp && (
