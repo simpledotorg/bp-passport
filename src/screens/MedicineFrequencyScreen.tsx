@@ -114,6 +114,7 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
           </View>
           <Button
             style={{marginHorizontal: 16, marginBottom: 16}}
+            disabled={!days.length}
             onPress={() => {
               updateDays(ordedDays(days))
               navigation.goBack()

@@ -8,6 +8,15 @@ import {
   addWeeks,
   endOfDay,
 } from 'date-fns'
+import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
+import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
+
+export interface DateRange {
+  interval: {start: Date; end: Date}
+  list: (BloodPressure | BloodSugar)[]
+  averaged: any
+  index: number
+}
 
 export const getChartDateRange = () => {
   const today = new Date()
@@ -26,6 +35,7 @@ export const getChartDateRange = () => {
         },
         list: [],
         averaged: {},
+        index: currentCount * 4 + 0,
       },
       {
         interval: {
@@ -34,6 +44,7 @@ export const getChartDateRange = () => {
         },
         list: [],
         averaged: {},
+        index: currentCount * 4 + 1,
       },
       {
         interval: {
@@ -42,6 +53,7 @@ export const getChartDateRange = () => {
         },
         list: [],
         averaged: {},
+        index: currentCount * 4 + 2,
       },
       {
         interval: {
@@ -50,6 +62,7 @@ export const getChartDateRange = () => {
         },
         list: [],
         averaged: {},
+        index: currentCount * 4 + 3,
       },
     ]
     response.push(month)

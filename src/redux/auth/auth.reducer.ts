@@ -1,15 +1,22 @@
 import React from 'react'
 import {AuthActionTypes} from './auth.types'
-import {AuthParams, LoginState, PassportLinkedState} from './auth.models'
+import {
+  AuthParams,
+  LoginState,
+  PassportLinkedState,
+  Passport,
+} from './auth.models'
 
 const INITIAL_STATE: {
   loginState: LoginState
   passportLinkedState: PassportLinkedState
   authParams?: AuthParams
+  passport?: Passport
 } = {
   loginState: LoginState.LoggedOut,
   passportLinkedState: PassportLinkedState.NotLinked,
   authParams: undefined,
+  passport: undefined,
 }
 
 const authReducer = (state = INITIAL_STATE, action) => {
@@ -19,6 +26,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         authParams: action.payload,
+        passport: action.payload.passport,
       }
     case AuthActionTypes.SET_LOGIN_STATE:
       const loginState: LoginState = action.payload
