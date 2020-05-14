@@ -789,7 +789,7 @@
 				CODE_SIGN_ENTITLEMENTS = "BPPassport/BP Passport.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 145;
 				DEVELOPMENT_TEAM = DBJVYHVN4H;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -822,7 +822,7 @@
 				CODE_SIGN_ENTITLEMENTS = "BPPassport/BP Passport.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 145;
 				DEVELOPMENT_TEAM = DBJVYHVN4H;
 				INFOPLIST_FILE = BPPassport/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
