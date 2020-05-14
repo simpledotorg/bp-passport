@@ -126,7 +126,7 @@
   "bs.random-blood-code": "GA",
   "bs.fasting-blood-sugar": "Glycémie à jeun (GJ)",
   "bs.fasting-code": "GJ",
-  "bs.post-penial": "Glycémie post prandiale (GPP)",
+  "bs.post-prandial": "Glycémie post prandiale (GPP)",
   "bs.post-prenial-code": "GPP",
   "bs.hemoglobic": "Hémoglobinique A1C (HbA1C) ",
   "bs.hemoglobic-code": "HbA1C",

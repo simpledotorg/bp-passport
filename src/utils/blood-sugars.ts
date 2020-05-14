@@ -7,7 +7,7 @@ import {
 
 export const displayDate = (bsIn: BloodSugar) => {
   return bsIn.recorded_at
-    ? format(new Date(bsIn.recorded_at), 'dd-MMM-yyy')
+    ? format(new Date(bsIn.recorded_at), `dd-MMM-yyy '-' HH:mm`)
     : null
 }
 
@@ -28,10 +28,10 @@ export const getBloodSugarDetails: (
         languageTypeCode: 'bs.fasting-code',
       }
     }
-    case BLOOD_SUGAR_TYPES.POST_PENIAL: {
+    case BLOOD_SUGAR_TYPES.POST_PRANDIAL: {
       return {
         high: 200,
-        languageKey: 'bs.post-penial',
+        languageKey: 'bs.post-prandial',
         languageTypeCode: 'bs.post-prenial-code',
       }
     }
