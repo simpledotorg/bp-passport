@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Alert, Platform, AppState} from 'react-native'
+import {Alert, Platform, AppState, View} from 'react-native'
 import {
   createStackNavigator,
   useHeaderHeight,
@@ -7,7 +7,11 @@ import {
 } from '@react-navigation/stack'
 import {useNavigationState, StackActions} from '@react-navigation/native'
 import {CommonActions} from '@react-navigation/native'
-import {forFade} from './navigation/interpolators'
+import {
+  forFade,
+  forModalPresentationIOS,
+  forRevealFromBottomAndroid,
+} from './navigation/interpolators'
 import {CardStyleInterpolators} from '@react-navigation/stack'
 import {useIntl, FormattedMessage} from 'react-intl'
 import {usePrevious} from './effects/use-previous.effect'
@@ -100,15 +104,19 @@ const Navigation = () => {
   const intl = useIntl()
 
   const getModalOptions = () => {
+    return {
+      cardStyleInterpolator: forModalPresentationIOS,
+      cardOverlayEnabled: true,
+    }
+    /*
     return Platform.OS === 'ios'
       ? {
-          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+          cardStyleInterpolator: forModalPresentationIOS,
           cardOverlayEnabled: true,
         }
       : {
-          cardStyleInterpolator:
-            CardStyleInterpolators.forRevealFromBottomAndroid,
-        }
+          cardStyleInterpolator: forRevealFromBottomAndroid,
+        } */
   }
   return (
     <>
