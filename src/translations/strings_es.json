@@ -126,7 +126,7 @@
   "bs.random-blood-code": "GA",
   "bs.fasting-blood-sugar": "Glucosa en ayunas (GEA)",
   "bs.fasting-code": "GEA",
-  "bs.post-penial": "Glucosa posprandial (GP)",
+  "bs.post-prandial": "Glucosa posprandial (GP)",
   "bs.post-prenial-code": "GP",
   "bs.hemoglobic": "Hemoglobina A1C (HbA1C)",
   "bs.hemoglobic-code": "HbA1C",
