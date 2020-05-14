@@ -67,8 +67,8 @@ function AddBsScreen({navigation, route}: Props) {
       type: INPUT_TYPES.DECIMAL,
     },
     {
-      label: intl.formatMessage({id: 'bs.post-penial'}),
-      value: BLOOD_SUGAR_TYPES.POST_PENIAL,
+      label: intl.formatMessage({id: 'bs.post-prandial'}),
+      value: BLOOD_SUGAR_TYPES.POST_PRANDIAL,
       min: 30,
       max: 1000,
       type: INPUT_TYPES.DECIMAL,
@@ -147,6 +147,13 @@ function AddBsScreen({navigation, route}: Props) {
     return !!(reading === '' || errors || isNaN(Number(reading)))
   }
 
+  const cleanText = (input: string) => {
+    if (type === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
+      return input.replace(/[^0-9.]/g, '')
+    }
+    return input.replace(/[^0-9]/g, '')
+  }
+
   return (
     <View style={{flex: 1}}>
       <SafeAreaView
@@ -167,7 +174,9 @@ function AddBsScreen({navigation, route}: Props) {
               autoFocus={true}
               placeholder={intl.formatMessage({id: 'bs.blood-sugar'})}
               value={reading}
-              onChangeText={(text) => {
+              onChangeText={(textIn) => {
+                const text = cleanText(textIn)
+
                 setReading(text)
                 if (text === '') {
                   setErrors(null)
@@ -187,7 +196,11 @@ function AddBsScreen({navigation, route}: Props) {
                 top: 14,
                 color: colors.grey1,
               }}>
-              <FormattedMessage id="bs.mgdl" />
+              {type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
+                '%'
+              ) : (
+                <FormattedMessage id="bs.mgdl" />
+              )}
             </BodyText>
           </View>
           <Picker

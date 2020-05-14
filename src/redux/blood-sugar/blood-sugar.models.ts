@@ -1,7 +1,7 @@
 export enum BLOOD_SUGAR_TYPES {
   RANDOM_BLOOD_SUGAR = 'random',
   FASTING_BLOOD_SUGAR = 'fasting',
-  POST_PENIAL = 'penial',
+  POST_PRANDIAL = 'prandial',
   HEMOGLOBIC = 'hemoglobic',
 }
 

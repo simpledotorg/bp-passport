@@ -185,6 +185,7 @@ function Home({navigation, route}: Props) {
                   {meds.map((med, index) => {
                     return (
                       <TouchableOpacity
+                        activeOpacity={0.8}
                         onPress={() => {
                           navigation.navigate(SCREENS.MEDICATION_DETAILS, {
                             medication: med,
@@ -237,6 +238,7 @@ function Home({navigation, route}: Props) {
 
                     return (
                       <TouchableOpacity
+                        activeOpacity={0.8}
                         onPress={() => {
                           navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
                             bp,
@@ -307,6 +309,7 @@ function Home({navigation, route}: Props) {
 
                     return (
                       <TouchableOpacity
+                        activeOpacity={0.8}
                         onPress={() => {
                           navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
                             bs,
