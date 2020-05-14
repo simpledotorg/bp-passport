@@ -103,7 +103,7 @@ function MedicineTimeScreen({navigation, route}: Props) {
               <DateTimePicker
                 value={date}
                 mode={'time'}
-                minuteInterval={5}
+                minuteInterval={1}
                 is24Hour={true}
                 display="clock"
                 textColor="black"
