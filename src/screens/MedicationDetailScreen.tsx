@@ -290,7 +290,8 @@ function MedicationDetailsScreen({navigation, route}: Props) {
         {isEditing && medication.offline && (
           <Button
             style={{
-              backgroundColor: colors.grey4,
+              backgroundColor: 'transparent',
+              marginTop: 22,
             }}
             buttonColor={colors.red1}
             disableBoxShadow
