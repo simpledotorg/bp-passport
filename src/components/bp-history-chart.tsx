@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, memo} from 'react'
 import {View, Dimensions} from 'react-native'
 import {format, addMonths, isWithinInterval} from 'date-fns'
 import {
@@ -12,7 +12,8 @@ import {
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {colors} from '../styles'
-import {getChartDateRange} from '../utils/dates'
+import {generateChartData} from '../utils/data-transform'
+import {DateRange} from '../utils/dates'
 
 interface BloodPressureChartPoint {
   interval: {start: Date; end: Date}
@@ -25,98 +26,49 @@ type Props = {
 }
 
 export const BpHistoryChart = ({bps}: Props) => {
-  const [highBps, setHighBps] = useState<BloodPressureChartPoint[] | null>(null)
-  const [lowBps, setLowBps] = useState<BloodPressureChartPoint[] | null>(null)
-
-  const dates: BloodPressureChartPoint[] = getChartDateRange()
-
   const isBloodPressureHigh = (bpIn: BloodPressure) => {
     // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
     // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
     return bpIn.systolic >= 140 || bpIn.diastolic >= 90
   }
 
-  const getIndexFromBP = (bp: BloodPressure) => {
-    let index = 0
+  const [chartData, setChartData] = useState<{
+    dates: DateRange[]
+    low: DateRange[]
+    high: DateRange[]
+  } | null>(null)
 
-    const found = dates.find((date, i) => {
-      index = i
-      return isWithinInterval(new Date(bp.recorded_at), date.interval)
-    })
+  const averageList = (value: DateRange) => {
+    const valuesAccumulator = value.list.reduce(
+      (memo: {diastolic: number; systolic: number}, current: any) => {
+        return {
+          diastolic: memo.diastolic + current.diastolic,
+          systolic: memo.systolic + current.systolic,
+        }
+      },
+      {diastolic: 0, systolic: 0} as BloodPressure,
+    )
 
-    if (found) {
-      return index
-    } else {
-      return 0
+    return {
+      diastolic: valuesAccumulator.diastolic / value.list.length,
+      systolic: valuesAccumulator.systolic / value.list.length,
     }
   }
 
   useEffect(() => {
-    bps.forEach((bp) => {
-      const index = getIndexFromBP(bp)
-      if (dates[index]) {
-        dates[index].list.push(bp)
-      }
-    })
-
-    const reduction = dates.reduce(
-      (
-        memo: {high: BloodPressureChartPoint[]; low: BloodPressureChartPoint[]},
-        current,
-      ) => {
-        if (current.list.length) {
-          const valuesAccumulator = current.list.reduce(
-            (
-              memoAcc: {diastolic: number; systolic: number},
-              currentAcc: BloodPressure,
-            ) => {
-              return {
-                diastolic: memoAcc.diastolic + currentAcc.diastolic,
-                systolic: memoAcc.systolic + currentAcc.systolic,
-              }
-            },
-            {diastolic: 0, systolic: 0},
-          )
-
-          const average: {
-            diastolic: number
-            systolic: number
-          } = {
-            diastolic: valuesAccumulator.diastolic / current.list.length,
-            systolic: valuesAccumulator.systolic / current.list.length,
-          }
-
-          current.averaged = average
-
-          if (isBloodPressureHigh(average as BloodPressure)) {
-            memo.high.push({...current, averaged: average})
-          } else {
-            memo.low.push({...current, averaged: average})
-          }
-        }
-        return memo
-      },
-      {high: [], low: []},
-    )
-
-    setHighBps(reduction.high)
-    setLowBps(reduction.low)
+    setChartData(generateChartData(bps, averageList, isBloodPressureHigh))
   }, [bps])
 
-  const generateScatter = (
-    bps: BloodPressureChartPoint[],
-  ): BloodPressureChartPoint[] => {
-    return bps.flatMap((bp: BloodPressureChartPoint) => {
-      const index = getIndexFromBP(bp.list[0])
-
+  const generateScatter = (bps: DateRange[]): BloodPressureChartPoint[] => {
+    return bps.flatMap((bp: DateRange) => {
       return [
         {
-          x: index + 1,
+          x: bp.index,
           y: bp.averaged.diastolic,
           label: `${bp.averaged.systolic}/${bp.averaged.diastolic}`,
         },
         {
-          x: index + 1,
+          x: bp.index,
           y: bp.averaged.systolic,
           label: `${bp.averaged.systolic}/${bp.averaged.diastolic}`,
         },
@@ -124,8 +76,8 @@ export const BpHistoryChart = ({bps}: Props) => {
     })
   }
 
-  if (!highBps || !lowBps) {
-    return <></>
+  if (!chartData) {
+    return null
   }
 
   return (
@@ -154,11 +106,11 @@ export const BpHistoryChart = ({bps}: Props) => {
           tickCount={5}
           tickFormat={(tick) => {
             return format(
-              addMonths(dates[0].interval.start, tick / 4),
+              addMonths(chartData.dates[0].interval.start, tick / 4),
               'MMM-yy',
             )
           }}
-          tickValues={dates.map((date, index) => index)}
+          tickValues={chartData.dates.map((date, index) => index)}
           style={{
             grid: {stroke: colors.grey3, strokeDasharray: 8},
             axis: {stroke: colors.grey3, opacity: 0},
@@ -177,12 +129,10 @@ export const BpHistoryChart = ({bps}: Props) => {
         />
 
         <VictoryLine
-          data={[...lowBps, ...highBps].map((bp) => {
+          data={[...chartData.low, ...chartData.high].map((bp) => {
             if (bp.list.length) {
-              const index = getIndexFromBP(bp.list[0])
-
               return {
-                x: index + 1,
+                x: bp.index,
                 y: bp.averaged.systolic,
               }
             }
@@ -196,12 +146,10 @@ export const BpHistoryChart = ({bps}: Props) => {
         />
 
         <VictoryLine
-          data={[...lowBps, ...highBps].map((bp) => {
+          data={[...chartData.low, ...chartData.high].map((bp) => {
             if (bp.list.length) {
-              const index = getIndexFromBP(bp.list[0])
-
               return {
-                x: index + 1,
+                x: bp.index,
                 y: bp.averaged.diastolic,
               }
             }
@@ -215,12 +163,10 @@ export const BpHistoryChart = ({bps}: Props) => {
         />
 
         <VictoryLine
-          data={lowBps.map((bp) => {
+          data={chartData.low.map((bp) => {
             if (bp.list.length) {
-              const index = getIndexFromBP(bp.list[0])
-
               return {
-                x: index + 1,
+                x: bp.index,
                 y: bp.averaged.systolic,
               }
             }
@@ -234,12 +180,10 @@ export const BpHistoryChart = ({bps}: Props) => {
         />
 
         <VictoryLine
-          data={lowBps.map((bp) => {
+          data={chartData.low.map((bp) => {
             if (bp.list.length) {
-              const index = getIndexFromBP(bp.list[0])
-
               return {
-                x: index + 1,
+                x: bp.index,
                 y: bp.averaged.diastolic,
               }
             }
@@ -253,7 +197,7 @@ export const BpHistoryChart = ({bps}: Props) => {
         />
 
         <VictoryScatter
-          data={generateScatter(lowBps)}
+          data={generateScatter(chartData.low)}
           size={5}
           style={{
             data: {
@@ -264,8 +208,9 @@ export const BpHistoryChart = ({bps}: Props) => {
           }}
           labelComponent={<VictoryTooltip renderInPortal={false} />}
         />
+
         <VictoryScatter
-          data={generateScatter(highBps)}
+          data={generateScatter(chartData.high)}
           size={5}
           style={{
             data: {
