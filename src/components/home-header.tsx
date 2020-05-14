@@ -47,7 +47,7 @@ export const HomeHeaderTitle = () => {
             marginHorizontal: 11,
           }}
           numberOfLines={1}>
-          <FormattedMessage id="general.bp-passport" />
+          BP Passport
         </Text>
       </View>
     )
