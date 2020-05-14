@@ -33,9 +33,7 @@ export const BsInformation = ({bs, style = {}}: Props) => {
             color: colors.red1,
           },
         ]}>
-        {`${intl.formatMessage({id: 'bs.high'})} ${intl.formatMessage({
-          id: details.languageTypeCode,
-        })}`}
+        <FormattedMessage id="bs.high" />
       </BodyText>
     ) : (
       <BodyText
@@ -45,12 +43,12 @@ export const BsInformation = ({bs, style = {}}: Props) => {
             color: colors.green1,
           },
         ]}>
-        {`${intl.formatMessage({id: 'bs.normal'})} ${intl.formatMessage({
-          id: details.languageTypeCode,
-        })}`}
+        <FormattedMessage id="bs.normal" />
       </BodyText>
     )
   }
+
+  const details = getBloodSugarDetails(bs)
 
   return (
     <View
@@ -75,11 +73,15 @@ export const BsInformation = ({bs, style = {}}: Props) => {
             }}>
             {`${bs.blood_sugar_value}`}
             {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
-              '%'
+              <>
+                <BodyText>%</BodyText>{' '}
+                <FormattedMessage id={details.languageTypeCode} />
+              </>
             ) : (
               <>
                 {' '}
-                <FormattedMessage id="bs.mgdl" />
+                <FormattedMessage id="bs.mgdl" />{' '}
+                <FormattedMessage id={details.languageTypeCode} />
               </>
             )}
             <>
