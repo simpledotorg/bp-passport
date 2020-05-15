@@ -9,6 +9,7 @@ import {
   AppState,
   TouchableOpacity,
   Platform,
+  TouchableHighlight,
 } from 'react-native'
 import {useIntl, FormattedMessage} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -184,8 +185,8 @@ function Home({navigation, route}: Props) {
                 <>
                   {meds.map((med, index) => {
                     return (
-                      <TouchableOpacity
-                        activeOpacity={0.8}
+                      <TouchableHighlight
+                        underlayColor={colors.grey4}
                         onPress={() => {
                           navigation.navigate(SCREENS.MEDICATION_DETAILS, {
                             medication: med,
@@ -195,8 +196,7 @@ function Home({navigation, route}: Props) {
                         key={index}
                         style={[
                           {
-                            marginBottom: 12,
-                            paddingTop: 12,
+                            paddingVertical: 12,
                           },
                           styles.historyItem,
                           index === meds.length - 1
@@ -204,7 +204,7 @@ function Home({navigation, route}: Props) {
                             : {},
                         ]}>
                         <MedsInformation meds={med} />
-                      </TouchableOpacity>
+                      </TouchableHighlight>
                     )
                   })}
                 </>
@@ -237,8 +237,8 @@ function Home({navigation, route}: Props) {
                     }
 
                     return (
-                      <TouchableOpacity
-                        activeOpacity={0.8}
+                      <TouchableHighlight
+                        underlayColor={colors.grey4}
                         onPress={() => {
                           navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
                             bp,
@@ -247,8 +247,7 @@ function Home({navigation, route}: Props) {
                         key={index}
                         style={[
                           {
-                            marginBottom: 12,
-                            paddingTop: 12,
+                            paddingVertical: 12,
                           },
                           styles.historyItem,
                           index === bps.length - 1
@@ -256,7 +255,7 @@ function Home({navigation, route}: Props) {
                             : {},
                         ]}>
                         <BpInformation bp={bp} />
-                      </TouchableOpacity>
+                      </TouchableHighlight>
                     )
                   })}
                 </>
@@ -308,8 +307,8 @@ function Home({navigation, route}: Props) {
                     }
 
                     return (
-                      <TouchableOpacity
-                        activeOpacity={0.8}
+                      <TouchableHighlight
+                        underlayColor={colors.grey4}
                         onPress={() => {
                           navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
                             bs,
@@ -318,8 +317,7 @@ function Home({navigation, route}: Props) {
                         key={index}
                         style={[
                           {
-                            marginBottom: 12,
-                            paddingTop: 12,
+                            paddingVertical: 12,
                           },
                           styles.historyItem,
                           index === bss.length - 1
@@ -327,7 +325,7 @@ function Home({navigation, route}: Props) {
                             : {},
                         ]}>
                         <BsInformation bs={bs} />
-                      </TouchableOpacity>
+                      </TouchableHighlight>
                     )
                   })}
                 </>
