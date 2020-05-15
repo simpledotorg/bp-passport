@@ -59,6 +59,8 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
             width: '100%',
             padding: 16,
             flexShrink: 0,
+            borderTopLeftRadius: 4,
+            borderTopRightRadius: 4,
           }}>
           <View
             style={{

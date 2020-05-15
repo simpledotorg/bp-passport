@@ -96,10 +96,13 @@ export const ButtonIcon = (props: ButtonIconProps) => {
 
 const styles = StyleSheet.create({
   shadowStyles: {
-    shadowColor: 'rgba(0,0,0, 0.32)', // iOS box shadow
-    shadowOffset: {height: 1, width: 1}, // iOS box shadow
-    shadowOpacity: 1, // iOS box shadow
-    shadowRadius: 1, // iOS box shadow
+    shadowColor: colors.black, // iOS box shadow
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.16,
+    shadowRadius: 1,
     elevation: 2, // Android elevation,
   },
 })
