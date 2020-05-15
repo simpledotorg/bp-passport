@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react'
-import {View, Image, StatusBar, TouchableWithoutFeedback} from 'react-native'
+import {
+  View,
+  Image,
+  StatusBar,
+  TouchableWithoutFeedback,
+  TouchableHighlight,
+} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 
@@ -75,7 +81,8 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
             </View>
             {ALL_DAYS_ORDERED.map((day, index) => {
               return (
-                <TouchableWithoutFeedback
+                <TouchableHighlight
+                  underlayColor={colors.grey4}
                   key={day}
                   onPress={() => {
                     const clone = [...days]
@@ -108,7 +115,7 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
                       <FormattedMessage id={dayToKeyString(day)} />
                     </BodyText>
                   </View>
-                </TouchableWithoutFeedback>
+                </TouchableHighlight>
               )
             })}
           </View>

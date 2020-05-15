@@ -32,7 +32,7 @@ export const BsInformation = ({bs, style = {}}: Props) => {
             color: colors.red1,
           },
         ]}>
-        <FormattedMessage id="bs.high" />
+        <FormattedMessage id="general.high" />
       </BodyText>
     ) : (
       <BodyText
@@ -42,7 +42,7 @@ export const BsInformation = ({bs, style = {}}: Props) => {
             color: colors.green1,
           },
         ]}>
-        <FormattedMessage id="bs.normal" />
+        <FormattedMessage id="general.normal" />
       </BodyText>
     )
   }
@@ -64,30 +64,37 @@ export const BsInformation = ({bs, style = {}}: Props) => {
         }}>
         <Image source={purpleDrop} style={[styles.informationIcon]} />
         <View>
-          <BodyText
-            style={{
-              fontSize: 18,
-              color: colors.grey0,
-              fontWeight: '500',
-            }}>
-            {`${bs.blood_sugar_value}`}
-            {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
-              <>
-                <BodyText>%</BodyText>{' '}
-                <FormattedMessage id={details.languageTypeCode} />
-              </>
-            ) : (
-              <>
-                {' '}
-                <FormattedMessage id="bs.mgdl" />{' '}
-                <FormattedMessage id={details.languageTypeCode} />
-              </>
-            )}
-            <>
-              {` `}
+          <View style={{flexDirection: 'row'}}>
+            <BodyText
+              style={{
+                fontSize: 18,
+                color: colors.grey0,
+                fontWeight: '500',
+              }}>
+              {`${bs.blood_sugar_value}`}
+              {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
+                <>
+                  <BodyText>%</BodyText>{' '}
+                  <FormattedMessage id={details.languageTypeCode} />
+                </>
+              ) : (
+                <>
+                  {' '}
+                  <FormattedMessage id="bs.mgdl" />{' '}
+                  <FormattedMessage id={details.languageTypeCode} />
+                </>
+              )}
+            </BodyText>
+            <BodyText
+              style={{
+                fontSize: 18,
+                color: colors.grey0,
+                fontWeight: '500',
+                marginLeft: 8,
+              }}>
               {getBSText()}
-            </>
-          </BodyText>
+            </BodyText>
+          </View>
           <BodyText
             style={{
               fontSize: 16,

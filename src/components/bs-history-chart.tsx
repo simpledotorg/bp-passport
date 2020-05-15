@@ -161,7 +161,7 @@ export const BsHistoryChart = ({bss}: Props) => {
         style={[
           containerStyles.fill,
           containerStyles.centeredContent,
-          {height: 300},
+          {height: 260},
         ]}>
         <ActivityIndicator size="large" color={colors.blue1} />
       </View>
@@ -175,7 +175,7 @@ export const BsHistoryChart = ({bss}: Props) => {
           <TouchableWithoutFeedback
             onPress={() => {
               setShownSugarType(BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR)
-              setChartData(null)
+              // setChartData(null)
             }}>
             <View
               style={[
@@ -201,7 +201,7 @@ export const BsHistoryChart = ({bss}: Props) => {
           <TouchableWithoutFeedback
             onPress={() => {
               setShownSugarType(BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR)
-              setChartData(null)
+              //  setChartData(null)
             }}>
             <View
               style={[
@@ -226,7 +226,7 @@ export const BsHistoryChart = ({bss}: Props) => {
           <TouchableWithoutFeedback
             onPress={() => {
               setShownSugarType(BLOOD_SUGAR_TYPES.HEMOGLOBIC)
-              setChartData(null)
+              //  setChartData(null)
             }}>
             <View
               style={[

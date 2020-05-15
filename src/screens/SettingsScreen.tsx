@@ -18,16 +18,21 @@ import {
 } from '../constants/languages'
 import {useLocale} from '../effects/use-locale-messages.effect'
 import {patientSelector} from '../redux/patient/patient.selectors'
+import {setLanguage} from '../redux/patient/patient.actions'
 import SCREENS from '../constants/screens'
 
 import {PassportLinkedState} from '../redux/auth/auth.models'
 import {passportLinkedStateSelector} from '../redux/auth/auth.selectors'
+import {localeSelector} from '../redux/patient/patient.selectors'
+import {useThunkDispatch} from '../redux/store'
 
 function SettingsScreen({navigation}: any) {
   const apiUser = patientSelector()
 
   const intl = useIntl()
-  const {locale, setLocale} = useLocale()
+  const dispatch = useThunkDispatch()
+
+  const locale = localeSelector()
   const passportLinkedState = passportLinkedStateSelector()
   const hasPassportLinked =
     passportLinkedState === PassportLinkedState.Linking ||
@@ -84,7 +89,9 @@ function SettingsScreen({navigation}: any) {
             </View>
             <View>
               <Picker
-                onValueChange={(language: string) => setLocale(language)}
+                onValueChange={(language: string) => {
+                  dispatch(setLanguage(language))
+                }}
                 items={locales}
                 value={locale}
               />
@@ -156,7 +163,7 @@ function SettingsScreen({navigation}: any) {
 export default SettingsScreen
 
 const styles = StyleSheet.create({
-  content: {margin: 24},
+  content: {marginHorizontal: 24, marginBottom: 24},
   header: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -7,8 +7,8 @@ import {
   ScrollView,
   StyleSheet,
   AppState,
-  TouchableOpacity,
   Platform,
+  TouchableHighlight,
 } from 'react-native'
 import {useIntl, FormattedMessage} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -25,6 +25,7 @@ import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {
   Button,
+  Line,
   BodyHeader,
   BodyText,
   BpInformation,
@@ -110,8 +111,9 @@ function Home({navigation, route}: Props) {
     return unsubscribe
   }, [])
 
-  const bps: BloodPressure[] = bloodPressures ?? []
-  const bss: BloodSugar[] = bloodSugars ?? []
+  const bps: BloodPressure[] =
+    bloodPressures?.slice(0, HOME_PAGE_SHOW_LIMIT) ?? []
+  const bss: BloodSugar[] = bloodSugars?.slice(0, HOME_PAGE_SHOW_LIMIT) ?? []
   const meds: Medication[] = medications ?? []
 
   const medicationDisplayName = (medication: Medication) => {
@@ -141,7 +143,7 @@ function Home({navigation, route}: Props) {
 
   return (
     <SafeAreaView
-      style={[containerStyles.fill, {backgroundColor: colors.white}]}>
+      style={[containerStyles.fill, {backgroundColor: colors.grey4}]}>
       <StatusBar backgroundColor={colors.blue1} barStyle="light-content" />
       <View style={{position: 'absolute', marginTop: -1}}>
         <View style={{backgroundColor: colors.blue1, height: 30}} />
@@ -177,39 +179,46 @@ function Home({navigation, route}: Props) {
         <>
           <ScrollView contentContainerStyle={styles.scrollContent}>
             <View style={[containerStyles.containerSegment]}>
-              <BodyHeader style={[styles.sectionHeader]}>
+              <BodyHeader
+                style={[
+                  styles.sectionHeader,
+                  !meds.length ? {marginBottom: 8} : {},
+                ]}>
                 <FormattedMessage id="home.my-medicines" />
               </BodyHeader>
               {meds.length > 0 && (
                 <>
                   {meds.map((med, index) => {
                     return (
-                      <TouchableOpacity
-                        activeOpacity={0.8}
-                        onPress={() => {
-                          navigation.navigate(SCREENS.MEDICATION_DETAILS, {
-                            medication: med,
-                            isEditing: true,
-                          })
-                        }}
-                        key={index}
-                        style={[
-                          {
-                            marginBottom: 12,
-                            paddingTop: 12,
-                          },
-                          styles.historyItem,
-                          index === meds.length - 1
-                            ? {borderBottomWidth: 0}
-                            : {},
-                        ]}>
-                        <MedsInformation meds={med} />
-                      </TouchableOpacity>
+                      <>
+                        <TouchableHighlight
+                          underlayColor={colors.grey4}
+                          onPress={() => {
+                            navigation.navigate(SCREENS.MEDICATION_DETAILS, {
+                              medication: med,
+                              isEditing: true,
+                            })
+                          }}
+                          key={index}
+                          style={[
+                            {
+                              paddingVertical: 12,
+                              marginHorizontal: -24,
+                              paddingHorizontal: 24,
+                            },
+                            styles.historyItem,
+                          ]}>
+                          <MedsInformation meds={med} />
+                        </TouchableHighlight>
+                        {index < meds.length - 1 && (
+                          <Line key={'line' + index} />
+                        )}
+                      </>
                     )
                   })}
                 </>
               )}
-              <View style={{marginTop: 15, flexDirection: 'row'}}>
+              <View style={{marginTop: 16, flexDirection: 'row'}}>
                 <Button
                   style={[
                     styles.bpButton,
@@ -226,47 +235,51 @@ function Home({navigation, route}: Props) {
               </View>
             </View>
             <View style={[containerStyles.containerSegment]}>
-              <BodyHeader style={[styles.sectionHeader]}>
+              <BodyHeader
+                style={[
+                  styles.sectionHeader,
+                  !bps.length ? {marginBottom: 8} : {},
+                ]}>
                 <FormattedMessage id="home.my-bp" />
               </BodyHeader>
               {bps.length > 0 && (
                 <>
                   {bps.map((bp, index) => {
-                    if (index > HOME_PAGE_SHOW_LIMIT - 1) {
-                      return null
-                    }
-
                     return (
-                      <TouchableOpacity
-                        activeOpacity={0.8}
-                        onPress={() => {
-                          navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
-                            bp,
-                          })
-                        }}
-                        key={index}
-                        style={[
-                          {
-                            marginBottom: 12,
-                            paddingTop: 12,
-                          },
-                          styles.historyItem,
-                          index === bps.length - 1
-                            ? {borderBottomWidth: 0}
-                            : {},
-                        ]}>
-                        <BpInformation bp={bp} />
-                      </TouchableOpacity>
+                      <>
+                        <TouchableHighlight
+                          underlayColor={colors.grey4}
+                          onPress={() => {
+                            navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+                              bp,
+                            })
+                          }}
+                          key={index}
+                          style={[
+                            {
+                              paddingVertical: 12,
+                              marginHorizontal: -24,
+                              paddingHorizontal: 24,
+                            },
+                            styles.historyItem,
+                          ]}>
+                          <BpInformation bp={bp} />
+                        </TouchableHighlight>
+                        {index < bps.length - 1 &&
+                          index < HOME_PAGE_SHOW_LIMIT - 1 && (
+                            <Line key={'line' + index} />
+                          )}
+                      </>
                     )
                   })}
                 </>
               )}
-              <View style={{marginTop: 4, flexDirection: 'row'}}>
+              <View style={{marginTop: 16, flexDirection: 'row'}}>
                 <Button
                   style={[
                     styles.bpButton,
                     {
-                      marginRight: showBpHistoryButton ? 12 : 0,
+                      marginRight: showBpHistoryButton ? 6 : 0,
                     },
                   ]}
                   buttonColor={colors.blue2}
@@ -282,7 +295,7 @@ function Home({navigation, route}: Props) {
                     style={[
                       styles.bpButton,
                       {
-                        marginLeft: 12,
+                        marginLeft: 6,
                       },
                     ]}
                     buttonColor={colors.blue2}
@@ -297,47 +310,54 @@ function Home({navigation, route}: Props) {
               </View>
             </View>
             <View style={[containerStyles.containerSegment]}>
-              <BodyHeader style={[styles.sectionHeader]}>
+              <BodyHeader
+                style={[
+                  styles.sectionHeader,
+                  !bss.length ? {marginBottom: 8} : {},
+                ]}>
                 <FormattedMessage id="home.my-blood-sugar" />
               </BodyHeader>
               {bss.length > 0 && (
                 <>
                   {bss.map((bs, index) => {
-                    if (index > HOME_PAGE_SHOW_LIMIT - 1) {
-                      return null
-                    }
-
                     return (
-                      <TouchableOpacity
-                        activeOpacity={0.8}
-                        onPress={() => {
-                          navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
-                            bs,
-                          })
-                        }}
-                        key={index}
-                        style={[
-                          {
-                            marginBottom: 12,
-                            paddingTop: 12,
-                          },
-                          styles.historyItem,
-                          index === bss.length - 1
-                            ? {borderBottomWidth: 0}
-                            : {},
-                        ]}>
-                        <BsInformation bs={bs} />
-                      </TouchableOpacity>
+                      <>
+                        <TouchableHighlight
+                          underlayColor={colors.grey4}
+                          onPress={() => {
+                            navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+                              bs,
+                            })
+                          }}
+                          key={index}
+                          style={[
+                            {
+                              paddingVertical: 12,
+                              marginHorizontal: -24,
+                              paddingHorizontal: 24,
+                            },
+                            styles.historyItem,
+                            index === bss.length - 1
+                              ? {borderBottomWidth: 0}
+                              : {},
+                          ]}>
+                          <BsInformation bs={bs} />
+                        </TouchableHighlight>
+                        {index < bss.length - 1 &&
+                          index < HOME_PAGE_SHOW_LIMIT - 1 && (
+                            <Line key={'line' + index} />
+                          )}
+                      </>
                     )
                   })}
                 </>
               )}
-              <View style={{marginTop: 15, flexDirection: 'row'}}>
+              <View style={{marginTop: 16, flexDirection: 'row'}}>
                 <Button
                   style={[
                     styles.bpButton,
                     {
-                      marginRight: showBsHistoryButton ? 12 : 0,
+                      marginRight: showBsHistoryButton ? 6 : 0,
                     },
                   ]}
                   buttonColor={colors.blue2}
@@ -353,7 +373,7 @@ function Home({navigation, route}: Props) {
                     style={[
                       styles.bpButton,
                       {
-                        marginLeft: 12,
+                        marginLeft: 6,
                       },
                     ]}
                     buttonColor={colors.blue2}
@@ -402,8 +422,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   historyItem: {
+    /*
     borderTopWidth: 1,
-    borderColor: colors.grey3,
+    borderColor: colors.grey3,*/
     flexDirection: 'row',
     alignItems: 'center',
   },
