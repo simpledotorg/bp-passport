@@ -209,7 +209,7 @@ function Home({navigation, route}: Props) {
                   })}
                 </>
               )}
-              <View style={{marginTop: 15, flexDirection: 'row'}}>
+              <View style={{marginTop: 16, flexDirection: 'row'}}>
                 <Button
                   style={[
                     styles.bpButton,
@@ -260,7 +260,7 @@ function Home({navigation, route}: Props) {
                   })}
                 </>
               )}
-              <View style={{marginTop: 4, flexDirection: 'row'}}>
+              <View style={{marginTop: 16, flexDirection: 'row'}}>
                 <Button
                   style={[
                     styles.bpButton,
@@ -330,7 +330,7 @@ function Home({navigation, route}: Props) {
                   })}
                 </>
               )}
-              <View style={{marginTop: 15, flexDirection: 'row'}}>
+              <View style={{marginTop: 16, flexDirection: 'row'}}>
                 <Button
                   style={[
                     styles.bpButton,
