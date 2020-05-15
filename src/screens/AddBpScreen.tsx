@@ -18,6 +18,7 @@ import {RootStackParamList} from '../Navigation'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {useThunkDispatch} from '../redux/store'
 import {addBloodPressure} from '../redux/blood-pressure/blood-pressure.actions'
+import {ScrollView} from 'react-native-gesture-handler'
 
 type AddBpScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -137,7 +138,7 @@ function AddBpScreen({navigation, route}: Props) {
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white100}]}>
-        <View style={{padding: 24, flex: 1}}>
+        <ScrollView style={{padding: 24, flex: 1}}>
           <View style={{flexDirection: 'row'}}>
             <TextInput
               maxLength={6}
@@ -217,7 +218,7 @@ function AddBpScreen({navigation, route}: Props) {
               {errors}
             </BodyText>
           )}
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </View>
   )
