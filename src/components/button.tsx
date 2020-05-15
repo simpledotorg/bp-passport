@@ -23,12 +23,14 @@ interface ButtonProps extends NativeButtonProps {
 
 export const Button = (props: ButtonProps) => {
   let underlayColour: string | undefined = '#0063C8'
+  let shadowInset = {}
   if (props.buttonUnderlayColor) {
     underlayColour = props.buttonUnderlayColor
   } else if (props.disableBoxShadow) {
     underlayColour = undefined
   } else if (props.buttonColor) {
     underlayColour = '#CBE5FF'
+    shadowInset = styles.shadowInset
   }
   return (
     <TouchableHighlight
@@ -42,7 +44,7 @@ export const Button = (props: ButtonProps) => {
           alignItems: 'center',
           justifyContent: 'center',
         },
-        props.disableBoxShadow ? {} : styles.shadowStyles,
+        props.disableBoxShadow ? {} : {...styles.shadowStyles, ...shadowInset},
         props.disabled
           ? {
               backgroundColor: colors.grey3,
@@ -114,6 +116,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.16,
     shadowRadius: 1,
     elevation: 2, // Android elevation,
+  },
+  shadowInset: {
     borderBottomColor: 'rgba(0, 117, 235, 0.3)',
     borderBottomWidth: 2,
   },
