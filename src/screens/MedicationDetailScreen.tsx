@@ -28,7 +28,7 @@ import {
   deleteMedication,
   refreshAllLocalPushReminders,
 } from '../redux/medication/medication.actions'
-import {BodyText, BodyHeader, Button} from '../components'
+import {BodyText, BodyHeader, Button, Line} from '../components'
 import {medicationsLibrarySelector} from '../redux/medication/medication.selectors'
 import PushNotifications, {scheduleNotif} from '../notifications'
 import {Permission} from '../redux/notifications/notifications.models'
@@ -218,13 +218,12 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                     updateDays,
                     reminder,
                   })
-                }}>
+                }}
+                style={{marginHorizontal: -24, paddingHorizontal: 24}}>
                 <View
                   style={[
                     styles.row,
                     {
-                      borderBottomWidth: 2,
-                      borderColor: colors.grey4,
                       height: 48,
                       alignItems: 'center',
                     },
@@ -245,6 +244,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                   </View>
                 </View>
               </TouchableHighlight>
+              <Line />
               <TouchableHighlight
                 underlayColor={colors.grey4}
                 onPress={() => {
@@ -252,7 +252,8 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                     updateDayOffset,
                     reminder,
                   })
-                }}>
+                }}
+                style={{marginHorizontal: -24, paddingHorizontal: 24}}>
                 <View
                   style={[
                     styles.row,

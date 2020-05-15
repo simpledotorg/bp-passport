@@ -2,9 +2,8 @@ import React, {useState} from 'react'
 import {
   ScrollView,
   View,
-  FlatList,
   StyleSheet,
-  TouchableOpacity,
+  TouchableHighlight,
   Dimensions,
   ActivityIndicator,
 } from 'react-native'
@@ -15,7 +14,7 @@ import {useFocusEffect} from '@react-navigation/native'
 import {VictoryChart, VictoryTheme, VictoryLine} from 'victory-native'
 
 import {containerStyles, colors} from '../styles'
-import {BodyHeader, BpInformation, BpHistoryChart} from '../components'
+import {BodyHeader, BpInformation, BpHistoryChart, Line} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
@@ -93,26 +92,31 @@ function BpHistoryScreen({navigation, route}: Props) {
               style={{fontSize: 22, fontWeight: 'bold', marginBottom: 14}}>
               <FormattedMessage id="page-titles.all-bp" />
             </BodyHeader>
+            <Line />
             <View>
               {bps?.map((bp, index) => (
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={() => {
-                    navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
-                      bp,
-                    })
-                  }}
-                  key={index}
-                  style={[
-                    {
-                      marginBottom: 12,
-                      paddingTop: 12,
-                    },
-                    styles.historyItem,
-                    index === bps.length - 1 ? {borderBottomWidth: 0} : {},
-                  ]}>
-                  <BpInformation bp={bp} />
-                </TouchableOpacity>
+                <>
+                  <TouchableHighlight
+                    underlayColor={colors.grey4}
+                    onPress={() => {
+                      navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+                        bp,
+                      })
+                    }}
+                    key={index}
+                    style={[
+                      {
+                        paddingBottom: 12,
+                        paddingTop: 12,
+                        marginHorizontal: -24,
+                        paddingHorizontal: 24,
+                      },
+                      styles.historyItem,
+                    ]}>
+                    <BpInformation bp={bp} />
+                  </TouchableHighlight>
+                  {index < bps.length - 1 && <Line key={'line' + index} />}
+                </>
               ))}
             </View>
           </View>
@@ -126,8 +130,6 @@ export default BpHistoryScreen
 
 const styles = StyleSheet.create({
   historyItem: {
-    borderTopWidth: 1,
-    borderColor: colors.grey3,
     flexDirection: 'row',
     alignItems: 'center',
   },

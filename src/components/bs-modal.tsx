@@ -41,7 +41,7 @@ export const BsModal = ({bs, close}: Props) => {
             color: colors.red1,
           },
         ]}>
-        <FormattedMessage id="bs.high" />
+        <FormattedMessage id="general.high" />
       </BodyText>
     ) : (
       <BodyText
@@ -51,7 +51,7 @@ export const BsModal = ({bs, close}: Props) => {
             color: colors.green1,
           },
         ]}>
-        <FormattedMessage id="bs.normal" />
+        <FormattedMessage id="general.normal" />
       </BodyText>
     )
   }
