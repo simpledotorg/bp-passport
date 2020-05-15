@@ -27,7 +27,7 @@
   "home.my-bp": "Mi presión arterial",
   "home.my-blood-sugar": "Mi glucosa",
   "home.add-medicine": "Agregar medicina",
-  "home.add-bs": "Agregar presión",
+  "home.add-bs": "Agregar glucosa",
   "all-bp.bp-trend": "Tendencia arterial",
   "all-bp.bp-details": "Detalles de presión arterial",
   "add-bp.systolic-less-than-error": "Medida sistólica no puede ser menor de 70",
