@@ -265,7 +265,7 @@ function Home({navigation, route}: Props) {
                   style={[
                     styles.bpButton,
                     {
-                      marginRight: showBpHistoryButton ? 12 : 0,
+                      marginRight: showBpHistoryButton ? 6 : 0,
                     },
                   ]}
                   buttonColor={colors.blue2}
@@ -281,7 +281,7 @@ function Home({navigation, route}: Props) {
                     style={[
                       styles.bpButton,
                       {
-                        marginLeft: 12,
+                        marginLeft: 6,
                       },
                     ]}
                     buttonColor={colors.blue2}
@@ -335,7 +335,7 @@ function Home({navigation, route}: Props) {
                   style={[
                     styles.bpButton,
                     {
-                      marginRight: showBsHistoryButton ? 12 : 0,
+                      marginRight: showBsHistoryButton ? 6 : 0,
                     },
                   ]}
                   buttonColor={colors.blue2}
@@ -351,7 +351,7 @@ function Home({navigation, route}: Props) {
                     style={[
                       styles.bpButton,
                       {
-                        marginLeft: 12,
+                        marginLeft: 6,
                       },
                     ]}
                     buttonColor={colors.blue2}
