@@ -93,6 +93,7 @@ function VerifyNumber({navigation, route}: Props) {
               marginTop: 36,
             }}
             placeholder={intl.formatMessage({id: 'verify-pin.code'})}
+            placeholderTextColor={colors.grey1}
             onChangeText={(text) => setInput(text)}
             value={input}
             keyboardType={'numeric'}

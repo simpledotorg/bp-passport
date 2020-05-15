@@ -141,6 +141,7 @@ function AddBpScreen({navigation, route}: Props) {
           <View style={{flexDirection: 'row'}}>
             <TextInput
               maxLength={6}
+              placeholderTextColor={colors.grey1}
               autoFocus={true}
               ref={systolicRef}
               style={[styles.input, {marginRight: 4}]}

@@ -173,6 +173,7 @@ function AddBsScreen({navigation, route}: Props) {
               ref={inputRef}
               autoFocus={true}
               placeholder={intl.formatMessage({id: 'bs.blood-sugar'})}
+              placeholderTextColor={colors.grey1}
               value={reading}
               onChangeText={(textIn) => {
                 const text = cleanText(textIn)
