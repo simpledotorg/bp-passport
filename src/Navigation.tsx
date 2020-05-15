@@ -386,7 +386,7 @@ function MainStack({navigation}: Props) {
               return (
                 <ButtonIcon
                   iconName="settings"
-                  iconColor={colors.white100}
+                  iconColor={colors.grey3}
                   onPress={() => navigation.navigate(SCREENS.SETTINGS)}
                   style={{marginRight: 8}}
                 />
