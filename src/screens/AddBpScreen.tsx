@@ -114,7 +114,7 @@ function AddBpScreen({navigation, route}: Props) {
     }
 
     if (errors) {
-      errorShowTimeout = setTimeout(() => setShowErrors(true), 2000)
+      errorShowTimeout = setTimeout(() => setShowErrors(true), 1500)
     } else {
       setShowErrors(false)
     }
@@ -143,6 +143,16 @@ function AddBpScreen({navigation, route}: Props) {
               maxLength={6}
               autoFocus={true}
               ref={systolicRef}
+              onFocus={() => {
+                systolicRef.current.setNativeProps({
+                  borderColor: colors.blue2,
+                })
+              }}
+              onBlur={() => {
+                systolicRef.current.setNativeProps({
+                  borderColor: colors.grey2,
+                })
+              }}
               style={[styles.input, {marginRight: 4}]}
               onChangeText={(text) => {
                 validateInput('systolic', text)
@@ -162,6 +172,16 @@ function AddBpScreen({navigation, route}: Props) {
             <TextInput
               maxLength={6}
               ref={diastolicRef}
+              onFocus={() => {
+                diastolicRef.current.setNativeProps({
+                  borderColor: colors.blue2,
+                })
+              }}
+              onBlur={() => {
+                diastolicRef.current.setNativeProps({
+                  borderColor: colors.grey2,
+                })
+              }}
               style={[styles.input, {marginLeft: 4}]}
               onChangeText={(text) => {
                 validateInput('diastolic', text)
