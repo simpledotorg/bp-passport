@@ -171,6 +171,16 @@ function AddBsScreen({navigation, route}: Props) {
             <TextInput
               style={[styles.input]}
               ref={inputRef}
+              onFocus={() => {
+                inputRef.current.setNativeProps({
+                  borderColor: colors.blue2,
+                })
+              }}
+              onBlur={() => {
+                inputRef.current.setNativeProps({
+                  borderColor: colors.grey2,
+                })
+              }}
               autoFocus={true}
               placeholder={intl.formatMessage({id: 'bs.blood-sugar'})}
               placeholderTextColor={colors.grey1}
