@@ -162,6 +162,7 @@ function AddBpScreen({navigation, route}: Props) {
             />
             <TextInput
               maxLength={6}
+              placeholderTextColor={colors.grey1}
               ref={diastolicRef}
               style={[styles.input, {marginLeft: 4}]}
               onChangeText={(text) => {
