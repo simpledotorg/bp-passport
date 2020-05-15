@@ -4,22 +4,18 @@ import {IntlProvider} from 'react-intl'
 import {PersistGate} from 'redux-persist/es/integration/react'
 import {Provider} from 'react-redux'
 import {store, persistor} from './redux/store'
+import * as RNLocalize from 'react-native-localize'
 
 import Navigation from './Navigation'
-import en from '../translations/master.json'
-import hi from './translations/strings_hi_IN.json'
-import mr from './translations/strings_mr_IN.json'
-import pa from './translations/strings_pa_IN.json'
-import fr from './translations/strings_fr.json'
-import es from './translations/strings_es.json'
+
 import {localeSelector} from './redux/patient/patient.selectors'
-import {DEFAULT_LANGUAGE_CODE} from './constants/languages'
+import {
+  DEFAULT_LANGUAGE_CODE,
+  AVAILABLE_TRANSLATIONS,
+  translationsForCode,
+} from './constants/languages'
 
 const App = () => {
-  const languages: {
-    [key: string]: {}
-  } = {en, hi, mr, pa, fr, es}
-
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -30,13 +26,15 @@ const App = () => {
 }
 
 const PersistGateConsumer = () => {
-  const locale = localeSelector()
-  const languages: {
-    [key: string]: {}
-  } = {en, hi, mr, pa, fr, es}
+  const localeStored = localeSelector()
+  const locale =
+    localeStored ??
+    (RNLocalize.findBestAvailableLanguage(AVAILABLE_TRANSLATIONS)
+      ?.languageTag ||
+      DEFAULT_LANGUAGE_CODE)
 
   return (
-    <IntlProvider locale={locale} messages={languages[locale]}>
+    <IntlProvider locale={locale} messages={translationsForCode(locale)}>
       <NavigationContainer>
         <Navigation />
       </NavigationContainer>
