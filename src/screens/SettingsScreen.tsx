@@ -163,7 +163,7 @@ function SettingsScreen({navigation}: any) {
 export default SettingsScreen
 
 const styles = StyleSheet.create({
-  content: {margin: 24},
+  content: {marginHorizontal: 24, marginBottom: 24},
   header: {
     flexDirection: 'row',
     alignItems: 'center',
