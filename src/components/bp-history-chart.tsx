@@ -8,12 +8,14 @@ import {
   VictoryScatter,
   VictoryAxis,
   VictoryTooltip,
+  VictoryBar,
 } from 'victory-native'
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {colors} from '../styles'
 import {generateChartData} from '../utils/data-transform'
 import {DateRange} from '../utils/dates'
+import {BodyText} from './text'
 
 type Props = {
   bps: BloodPressure[]
@@ -30,6 +32,8 @@ export const BpHistoryChart = ({bps}: Props) => {
     dates: DateRange[]
     low: DateRange[]
     high: DateRange[]
+    min: null | number
+    max: null | number
   } | null>(null)
 
   const averageList = (value: DateRange) => {
@@ -70,6 +74,30 @@ export const BpHistoryChart = ({bps}: Props) => {
     })
   }
 
+  const getMaxDomain = () => {
+    const threshhold = 140
+    const difference = Math.round(threshhold / 10)
+    let base = chartData?.max ?? threshhold
+
+    if (base < threshhold) {
+      base = threshhold
+    }
+
+    return base + difference
+  }
+
+  const getMinDomain = () => {
+    const threshhold = 90
+    const difference = Math.round(threshhold / 10)
+    let base = chartData?.min ?? threshhold
+
+    if (base > threshhold) {
+      base = threshhold
+    }
+
+    return base - difference
+  }
+
   if (!chartData) {
     return null
   }
@@ -82,16 +110,66 @@ export const BpHistoryChart = ({bps}: Props) => {
         borderLeftWidth: 1,
         borderTopWidth: 1,
         overflow: 'hidden',
+        position: 'relative',
       }}>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          flexDirection: 'row',
+          paddingLeft: 6,
+        }}>
+        {[...Array(chartData.dates.length / 4)].map((value, index) => {
+          return (
+            <View
+              key={index}
+              style={{
+                flex: 1,
+                flexShrink: 0,
+              }}>
+              <BodyText
+                style={{
+                  color: colors.grey0,
+                  fontWeight: '500',
+                  fontSize: 14,
+                  lineHeight: 18,
+                }}>
+                {format(
+                  addMonths(chartData.dates[0].interval.start, index),
+                  'MMM',
+                )}
+              </BodyText>
+              <BodyText
+                style={{
+                  color: colors.grey2,
+                  fontWeight: '500',
+                  fontSize: 14,
+                  lineHeight: 18,
+                }}>
+                {format(
+                  addMonths(chartData.dates[0].interval.start, index),
+                  'yyy',
+                )}
+              </BodyText>
+            </View>
+          )
+        })}
+        <View style={{width: 12}} />
+      </View>
       <VictoryChart
-        width={Dimensions.get('window').width - 44}
-        height={300}
-        minDomain={{y: 40}}
+        width={Dimensions.get('window').width - 24}
+        height={310}
+        maxDomain={{
+          y: getMaxDomain(),
+        }}
+        minDomain={{
+          y: getMinDomain(),
+        }}
         style={{
           parent: {
             position: 'relative',
-            left: -24,
-            top: -24,
+            left: -44,
+            top: -44,
           },
         }}
         scale={{x: 'linear'}}
@@ -106,9 +184,28 @@ export const BpHistoryChart = ({bps}: Props) => {
           }}
           tickValues={chartData.dates.map((date, index) => index)}
           style={{
-            grid: {stroke: colors.grey3, strokeDasharray: 8},
+            grid: {stroke: colors.grey3, strokeDasharray: 4},
             axis: {stroke: colors.grey3, opacity: 0},
             ticks: {opacity: 0},
+            tickLabels: {opacity: 0},
+          }}
+        />
+        <VictoryAxis
+          orientation="left"
+          style={{
+            axis: {
+              strokeWidth: 2,
+              stroke: colors.white100,
+            },
+            tickLabels: {
+              opacity: 0,
+            },
+            ticks: {
+              opacity: 0,
+            },
+            grid: {
+              opacity: 0,
+            },
           }}
         />
         <VictoryAxis
@@ -116,12 +213,72 @@ export const BpHistoryChart = ({bps}: Props) => {
           dependentAxis
           tickValues={[90, 140]}
           style={{
-            grid: {stroke: colors.grey2, strokeDasharray: 8},
-            axis: {stroke: colors.grey3, strokeWidth: 0},
+            grid: {stroke: colors.grey2, strokeDasharray: 4},
+            axis: {stroke: colors.grey3, strokeDasharray: 4, strokeWidth: 0},
             ticks: {opacity: 0},
           }}
         />
 
+        {/* CANDLESTICK CHART */}
+        {/* <VictoryBar
+          data={chartData.high.map((bp, index) => {
+            return {
+              x: bp.index,
+              y: bp.averaged.systolic,
+              y0: bp.averaged.diastolic,
+            }
+          })}
+          style={{
+            data: {
+              fill: colors.red1,
+              width: 8,
+            },
+          }}
+        />
+
+        <VictoryBar
+          data={chartData.low.map((bp, index) => {
+            return {
+              x: bp.index,
+              y: bp.averaged.systolic,
+              y0: bp.averaged.diastolic,
+            }
+          })}
+          style={{
+            data: {
+              fill: colors.green1,
+              width: 8,
+            },
+          }}
+        />
+
+        <VictoryScatter
+          data={chartData.low.flatMap((bp) => {
+            return [
+              {x: bp.index, y: bp.averaged.systolic},
+              {x: bp.index, y: bp.averaged.diastolic},
+            ]
+          })}
+          size={1}
+          style={{
+            data: {fill: colors.green1, stroke: colors.green1, strokeWidth: 2},
+          }}
+        />
+
+        <VictoryScatter
+          data={chartData.high.flatMap((bp) => {
+            return [
+              {x: bp.index, y: bp.averaged.systolic},
+              {x: bp.index, y: bp.averaged.diastolic},
+            ]
+          })}
+          size={1}
+          style={{
+            data: {fill: colors.red1, stroke: colors.red1, strokeWidth: 2},
+          }}
+        /> */}
+
+        {/* LINE CHART */}
         <VictoryLine
           data={[...chartData.low, ...chartData.high].map((bp) => {
             if (bp.list.length) {

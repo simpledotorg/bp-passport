@@ -111,8 +111,9 @@ function Home({navigation, route}: Props) {
     return unsubscribe
   }, [])
 
-  const bps: BloodPressure[] = bloodPressures ?? []
-  const bss: BloodSugar[] = bloodSugars ?? []
+  const bps: BloodPressure[] =
+    bloodPressures?.slice(0, HOME_PAGE_SHOW_LIMIT) ?? []
+  const bss: BloodSugar[] = bloodSugars?.slice(0, HOME_PAGE_SHOW_LIMIT) ?? []
   const meds: Medication[] = medications ?? []
 
   const medicationDisplayName = (medication: Medication) => {
@@ -244,10 +245,6 @@ function Home({navigation, route}: Props) {
               {bps.length > 0 && (
                 <>
                   {bps.map((bp, index) => {
-                    if (index > HOME_PAGE_SHOW_LIMIT - 1) {
-                      return null
-                    }
-
                     return (
                       <>
                         <TouchableHighlight
@@ -323,10 +320,6 @@ function Home({navigation, route}: Props) {
               {bss.length > 0 && (
                 <>
                   {bss.map((bs, index) => {
-                    if (index > HOME_PAGE_SHOW_LIMIT - 1) {
-                      return null
-                    }
-
                     return (
                       <>
                         <TouchableHighlight

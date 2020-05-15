@@ -54,7 +54,7 @@ function BsHistoryScreen({navigation, route}: Props) {
               </BodyHeader>
             </View>
           </View>
-          <View>
+          <View style={{minHeight: 304}}>
             <BsHistoryChart bss={bloodSugars ?? []} />
           </View>
         </View>

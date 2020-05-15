@@ -20,15 +20,42 @@ const getIndexFromBP = (
   }
 }
 
+const getMinValue = (value: any) => {
+  return (
+    value?.blood_sugar_value ??
+    (value?.diastolic < value?.systolic ? value?.diastolic : value?.systolic)
+  )
+}
+
+const getMaxValue = (value: any) => {
+  return (
+    value?.blood_sugar_value ??
+    (value?.diastolic > value?.systolic ? value?.diastolic : value?.systolic)
+  )
+}
+
 export const generateChartData = (
   input: BloodPressure[] | BloodSugar[],
   calculateAverate: (current: DateRange) => number | {},
   isHigh: (value: any) => boolean,
 ) => {
   const dates: DateRange[] = getChartDateRange()
+  let min: number | null = null
+  let max: number | null = null
 
   input.forEach((value: BloodPressure | BloodSugar) => {
     const index = getIndexFromBP(dates, value)
+
+    const valueMin = Number(getMinValue(value))
+    const valueMax = Number(getMaxValue(value))
+
+    if (!min || valueMin < min) {
+      min = valueMin
+    }
+
+    if (!max || valueMax > max) {
+      max = valueMax
+    }
 
     if (dates[index]) {
       dates[index].list.push(value)
@@ -51,5 +78,5 @@ export const generateChartData = (
     {high: [], low: []},
   )
 
-  return {dates, low: reduction.low, high: reduction.high}
+  return {dates, low: reduction.low, high: reduction.high, min, max}
 }
