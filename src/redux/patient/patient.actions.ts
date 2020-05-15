@@ -72,3 +72,8 @@ export const getPatient = (): AppThunk => async (dispatch, getState) => {
     throw err
   }
 }
+
+export const setLanguage = (locale: string) => ({
+  type: PatientActionTypes.SET_LANGUAGE,
+  payload: locale,
+})
