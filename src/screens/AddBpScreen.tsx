@@ -150,7 +150,7 @@ function AddBpScreen({navigation, route}: Props) {
               }}
               placeholder={intl.formatMessage({id: 'general.systolic'})}
               value={systolic.toString()}
-              keyboardType={'numeric'}
+              keyboardType={'number-pad'}
               onSubmitEditing={() => {
                 if (diastolic === '') {
                   diastolicRef?.current?.focus()
@@ -169,7 +169,7 @@ function AddBpScreen({navigation, route}: Props) {
               }}
               placeholder={intl.formatMessage({id: 'general.diastolic'})}
               value={diastolic.toString()}
-              keyboardType={'numeric'}
+              keyboardType={'number-pad'}
               onSubmitEditing={() => {
                 if (!isSaveDisabled()) {
                   save()
