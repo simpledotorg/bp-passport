@@ -1,5 +1,11 @@
 # BP Passport
 
+## Version 1.00
+
+### Many changes and tweaks as per Claudio's priority list:
+
+https://trello.com/b/39A9Sj8R/simple-for-patients
+
 ## Version 0.66
 
 ### What's New

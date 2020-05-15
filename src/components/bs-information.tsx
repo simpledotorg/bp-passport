@@ -56,15 +56,22 @@ export const BsInformation = ({bs, style = {}}: Props) => {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        overflow: 'hidden',
       }}>
       <View
         style={{
           flexDirection: 'row',
+          flex: 1,
           ...style,
         }}>
         <Image source={purpleDrop} style={[styles.informationIcon]} />
-        <View>
-          <View style={{flexDirection: 'row'}}>
+        <View style={{flex: 1}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              flex: 1,
+            }}>
             <BodyText
               style={{
                 fontSize: 18,
@@ -98,7 +105,6 @@ export const BsInformation = ({bs, style = {}}: Props) => {
           <BodyText
             style={{
               fontSize: 16,
-
               color: colors.grey1,
             }}>
             {displayDate(bs)}
