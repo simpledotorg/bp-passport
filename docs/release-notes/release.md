@@ -1,5 +1,15 @@
 # BP Passport
 
+## Version 0.66
+
+### What's New
+
+- Blood sugars history chart
+
+### More bugs quashed & change requests as per the complete column here:
+
+https://trello.com/b/39A9Sj8R/simple-for-patients
+
 ## Version 0.65
 
 ### Overview

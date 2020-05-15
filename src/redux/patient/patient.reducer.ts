@@ -3,7 +3,7 @@ import {AuthActionTypes} from '../auth/auth.types'
 import {Patient} from './patient.models'
 import {DEFAULT_LANGUAGE_CODE} from '../../constants/languages'
 
-const INITIAL_STATE: {patient?: Patient; locale?: string} = {
+const INITIAL_STATE: {patient?: Patient; locale: string} = {
   patient: undefined,
   locale: DEFAULT_LANGUAGE_CODE,
 }

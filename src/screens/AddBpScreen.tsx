@@ -150,7 +150,7 @@ function AddBpScreen({navigation, route}: Props) {
               }}
               placeholder={intl.formatMessage({id: 'general.systolic'})}
               value={systolic.toString()}
-              keyboardType={'number-pad'}
+              keyboardType={'numeric'}
               onSubmitEditing={() => {
                 if (diastolic === '') {
                   diastolicRef?.current?.focus()
