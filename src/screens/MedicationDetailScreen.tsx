@@ -5,7 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   Switch,
-  TouchableWithoutFeedback,
+  TouchableHighlight,
   Platform,
   Alert,
   Text,
@@ -186,8 +186,17 @@ function MedicationDetailsScreen({navigation, route}: Props) {
   return (
     <SafeAreaView style={[containerStyles.fill]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={[containerStyles.containerSegment]}>
-          <Row>
+        <View
+          style={[
+            containerStyles.containerSegment,
+            {
+              paddingHorizontal: 24,
+              padding: 0,
+              paddingTop: 16,
+              paddingBottom: remindersEnabled ? 8 : 0,
+            },
+          ]}>
+          <Row style={{marginBottom: 16}}>
             <BodyHeader>
               <FormattedMessage id="medicine.reminder" />
             </BodyHeader>
@@ -202,7 +211,8 @@ function MedicationDetailsScreen({navigation, route}: Props) {
           </Row>
           {remindersEnabled && (
             <>
-              <TouchableWithoutFeedback
+              <TouchableHighlight
+                underlayColor={colors.grey4}
                 onPress={() => {
                   navigation.navigate(SCREENS.MEDICATION_FREQUENCY, {
                     updateDays,
@@ -215,7 +225,8 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                     {
                       borderBottomWidth: 2,
                       borderColor: colors.grey4,
-                      paddingVertical: 12,
+                      height: 48,
+                      alignItems: 'center',
                     },
                   ]}>
                   <BodyText>
@@ -233,8 +244,9 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                     />
                   </View>
                 </View>
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
+              </TouchableHighlight>
+              <TouchableHighlight
+                underlayColor={colors.grey4}
                 onPress={() => {
                   navigation.navigate(SCREENS.MEDICATION_TIME, {
                     updateDayOffset,
@@ -245,7 +257,8 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                   style={[
                     styles.row,
                     {
-                      paddingTop: 12,
+                      height: 48,
+                      alignItems: 'center',
                     },
                   ]}>
                   <BodyText>
@@ -263,7 +276,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                     />
                   </View>
                 </View>
-              </TouchableWithoutFeedback>
+              </TouchableHighlight>
             </>
           )}
         </View>

@@ -35,7 +35,7 @@ export const BpInformation = ({bp, style = {}}: Props) => {
             color: colors.red1,
           },
         ]}>
-        <FormattedMessage id="general.high-bp" />
+        <FormattedMessage id="general.high" />
       </BodyText>
     ) : (
       <BodyText
@@ -45,7 +45,7 @@ export const BpInformation = ({bp, style = {}}: Props) => {
             color: colors.green1,
           },
         ]}>
-        <FormattedMessage id="general.normal-bp" />
+        <FormattedMessage id="general.normal" />
       </BodyText>
     )
   }
@@ -64,19 +64,24 @@ export const BpInformation = ({bp, style = {}}: Props) => {
           ...style,
         }}>
         <Image source={redHeart} style={[styles.informationIcon]} />
-        <View>
-          <BodyText
-            style={{
-              fontSize: 18,
-              color: colors.grey0,
-            }}>
-            <>{`${bp.systolic} / ${bp.diastolic}`}</>
-
-            <>
-              {` `}
+        <View style={{}}>
+          <View style={{flexDirection: 'row'}}>
+            <BodyText
+              style={{
+                fontSize: 18,
+                color: colors.grey0,
+              }}>
+              {`${bp.systolic} / ${bp.diastolic}`}
+            </BodyText>
+            <BodyText
+              style={{
+                fontSize: 18,
+                color: colors.grey0,
+                marginLeft: 8,
+              }}>
               {getBPText()}
-            </>
-          </BodyText>
+            </BodyText>
+          </View>
           <BodyText
             style={{
               fontSize: 16,
