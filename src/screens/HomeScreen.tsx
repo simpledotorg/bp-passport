@@ -7,8 +7,8 @@ import {
   ScrollView,
   StyleSheet,
   AppState,
-  TouchableOpacity,
   Platform,
+  TouchableHighlight,
 } from 'react-native'
 import {useIntl, FormattedMessage} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -25,6 +25,7 @@ import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {
   Button,
+  Line,
   BodyHeader,
   BodyText,
   BpInformation,
@@ -184,27 +185,30 @@ function Home({navigation, route}: Props) {
                 <>
                   {meds.map((med, index) => {
                     return (
-                      <TouchableOpacity
-                        activeOpacity={0.8}
-                        onPress={() => {
-                          navigation.navigate(SCREENS.MEDICATION_DETAILS, {
-                            medication: med,
-                            isEditing: true,
-                          })
-                        }}
-                        key={index}
-                        style={[
-                          {
-                            marginBottom: 12,
-                            paddingTop: 12,
-                          },
-                          styles.historyItem,
-                          index === meds.length - 1
-                            ? {borderBottomWidth: 0}
-                            : {},
-                        ]}>
-                        <MedsInformation meds={med} />
-                      </TouchableOpacity>
+                      <>
+                        <TouchableHighlight
+                          underlayColor={colors.grey4}
+                          onPress={() => {
+                            navigation.navigate(SCREENS.MEDICATION_DETAILS, {
+                              medication: med,
+                              isEditing: true,
+                            })
+                          }}
+                          key={index}
+                          style={[
+                            {
+                              paddingVertical: 12,
+                              marginHorizontal: -24,
+                              paddingHorizontal: 24,
+                            },
+                            styles.historyItem,
+                          ]}>
+                          <MedsInformation meds={med} />
+                        </TouchableHighlight>
+                        {index < meds.length - 1 && (
+                          <Line key={'line' + index} />
+                        )}
+                      </>
                     )
                   })}
                 </>
@@ -237,26 +241,30 @@ function Home({navigation, route}: Props) {
                     }
 
                     return (
-                      <TouchableOpacity
-                        activeOpacity={0.8}
-                        onPress={() => {
-                          navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
-                            bp,
-                          })
-                        }}
-                        key={index}
-                        style={[
-                          {
-                            marginBottom: 12,
-                            paddingTop: 12,
-                          },
-                          styles.historyItem,
-                          index === bps.length - 1
-                            ? {borderBottomWidth: 0}
-                            : {},
-                        ]}>
-                        <BpInformation bp={bp} />
-                      </TouchableOpacity>
+                      <>
+                        <TouchableHighlight
+                          underlayColor={colors.grey4}
+                          onPress={() => {
+                            navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+                              bp,
+                            })
+                          }}
+                          key={index}
+                          style={[
+                            {
+                              paddingVertical: 12,
+                              marginHorizontal: -24,
+                              paddingHorizontal: 24,
+                            },
+                            styles.historyItem,
+                          ]}>
+                          <BpInformation bp={bp} />
+                        </TouchableHighlight>
+                        {index < bps.length - 1 &&
+                          index < HOME_PAGE_SHOW_LIMIT - 1 && (
+                            <Line key={'line' + index} />
+                          )}
+                      </>
                     )
                   })}
                 </>
@@ -308,26 +316,33 @@ function Home({navigation, route}: Props) {
                     }
 
                     return (
-                      <TouchableOpacity
-                        activeOpacity={0.8}
-                        onPress={() => {
-                          navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
-                            bs,
-                          })
-                        }}
-                        key={index}
-                        style={[
-                          {
-                            marginBottom: 12,
-                            paddingTop: 12,
-                          },
-                          styles.historyItem,
-                          index === bss.length - 1
-                            ? {borderBottomWidth: 0}
-                            : {},
-                        ]}>
-                        <BsInformation bs={bs} />
-                      </TouchableOpacity>
+                      <>
+                        <TouchableHighlight
+                          underlayColor={colors.grey4}
+                          onPress={() => {
+                            navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+                              bs,
+                            })
+                          }}
+                          key={index}
+                          style={[
+                            {
+                              paddingVertical: 12,
+                              marginHorizontal: -24,
+                              paddingHorizontal: 24,
+                            },
+                            styles.historyItem,
+                            index === bss.length - 1
+                              ? {borderBottomWidth: 0}
+                              : {},
+                          ]}>
+                          <BsInformation bs={bs} />
+                        </TouchableHighlight>
+                        {index < bss.length - 1 &&
+                          index < HOME_PAGE_SHOW_LIMIT - 1 && (
+                            <Line key={'line' + index} />
+                          )}
+                      </>
                     )
                   })}
                 </>
@@ -402,8 +417,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   historyItem: {
+    /*
     borderTopWidth: 1,
-    borderColor: colors.grey3,
+    borderColor: colors.grey3,*/
     flexDirection: 'row',
     alignItems: 'center',
   },

@@ -3,7 +3,7 @@ import {
   View,
   FlatList,
   StyleSheet,
-  TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
@@ -11,7 +11,7 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import {FormattedMessage} from 'react-intl'
 
 import {containerStyles, colors} from '../styles'
-import {BodyHeader, BsInformation, BsHistoryChart} from '../components'
+import {BodyHeader, BsInformation, BsHistoryChart, Line} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
@@ -68,29 +68,36 @@ function BsHistoryScreen({navigation, route}: Props) {
               style={{fontSize: 22, fontWeight: 'bold', marginBottom: 14}}>
               <FormattedMessage id="page-titles.all-bs" />
             </BodyHeader>
+            <Line />
             <View>
               {bloodSugars?.map((bs, index) => (
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={() => {
-                    navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
-                      bs,
-                    })
-                  }}
-                  key={index}
-                  style={[
-                    {
-                      marginRight: 24,
-                      marginBottom: 12,
-                      paddingTop: 12,
-                    },
-                    styles.historyItem,
-                    index === bloodSugars.length - 1
-                      ? {borderBottomWidth: 0}
-                      : {},
-                  ]}>
-                  <BsInformation bs={bs} />
-                </TouchableOpacity>
+                <>
+                  <TouchableHighlight
+                    underlayColor={colors.grey4}
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+                        bs,
+                      })
+                    }}
+                    key={index}
+                    style={[
+                      {
+                        paddingVertical: 12,
+                        marginHorizontal: -24,
+                        paddingHorizontal: 24,
+                      },
+                      styles.historyItem,
+                      index === bloodSugars.length - 1
+                        ? {borderBottomWidth: 0}
+                        : {},
+                    ]}>
+                    <BsInformation bs={bs} />
+                  </TouchableHighlight>
+                  {index < bloodSugars.length - 1 && (
+                    <Line key={'line' + index} />
+                  )}
+                </>
               ))}
             </View>
           </View>
@@ -104,8 +111,6 @@ export default BsHistoryScreen
 
 const styles = StyleSheet.create({
   historyItem: {
-    borderColor: colors.grey3,
-    borderBottomWidth: 1,
     paddingBottom: 12,
     flexDirection: 'row',
     alignItems: 'center',
