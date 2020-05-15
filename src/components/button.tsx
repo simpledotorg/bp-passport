@@ -1,6 +1,7 @@
 import React, {ReactNode} from 'react'
 import {
   TouchableOpacity,
+  TouchableHighlight,
   Text,
   StyleProp,
   ViewStyle,
@@ -16,13 +17,22 @@ interface ButtonProps extends NativeButtonProps {
   style?: StyleProp<ViewStyle>
   title: string
   buttonColor?: string
+  buttonUnderlayColor?: string
   disableBoxShadow?: boolean
 }
 
 export const Button = (props: ButtonProps) => {
+  let underlayColour: string | undefined = '#0063C8'
+  if (props.buttonUnderlayColor) {
+    underlayColour = props.buttonUnderlayColor
+  } else if (props.disableBoxShadow) {
+    underlayColour = undefined
+  } else if (props.buttonColor) {
+    underlayColour = '#CBE5FF'
+  }
   return (
-    <TouchableOpacity
-      activeOpacity={0.8}
+    <TouchableHighlight
+      underlayColor={underlayColour}
       {...props}
       style={[
         {
@@ -60,7 +70,7 @@ export const Button = (props: ButtonProps) => {
           {props.title}
         </Text>
       )}
-    </TouchableOpacity>
+    </TouchableHighlight>
   )
 }
 
@@ -104,5 +114,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.16,
     shadowRadius: 1,
     elevation: 2, // Android elevation,
+    borderBottomColor: 'rgba(0, 117, 235, 0.3)',
+    borderBottomWidth: 2,
   },
 })

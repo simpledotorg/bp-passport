@@ -65,6 +65,7 @@ function Login({navigation}: Props) {
                 <FormattedMessage id="login.no-bp-passport" />
               </BodyHeader>
               <Button
+                buttonUnderlayColor={'#00A742'}
                 style={{
                   backgroundColor: colors.green1,
                   width: '100%',
