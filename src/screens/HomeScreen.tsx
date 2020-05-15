@@ -142,7 +142,7 @@ function Home({navigation, route}: Props) {
 
   return (
     <SafeAreaView
-      style={[containerStyles.fill, {backgroundColor: colors.white}]}>
+      style={[containerStyles.fill, {backgroundColor: colors.grey4}]}>
       <StatusBar backgroundColor={colors.blue1} barStyle="light-content" />
       <View style={{position: 'absolute', marginTop: -1}}>
         <View style={{backgroundColor: colors.blue1, height: 30}} />
@@ -178,7 +178,11 @@ function Home({navigation, route}: Props) {
         <>
           <ScrollView contentContainerStyle={styles.scrollContent}>
             <View style={[containerStyles.containerSegment]}>
-              <BodyHeader style={[styles.sectionHeader]}>
+              <BodyHeader
+                style={[
+                  styles.sectionHeader,
+                  !meds.length ? {marginBottom: 8} : {},
+                ]}>
                 <FormattedMessage id="home.my-medicines" />
               </BodyHeader>
               {meds.length > 0 && (
@@ -213,7 +217,7 @@ function Home({navigation, route}: Props) {
                   })}
                 </>
               )}
-              <View style={{marginTop: 15, flexDirection: 'row'}}>
+              <View style={{marginTop: 16, flexDirection: 'row'}}>
                 <Button
                   style={[
                     styles.bpButton,
@@ -230,7 +234,11 @@ function Home({navigation, route}: Props) {
               </View>
             </View>
             <View style={[containerStyles.containerSegment]}>
-              <BodyHeader style={[styles.sectionHeader]}>
+              <BodyHeader
+                style={[
+                  styles.sectionHeader,
+                  !bps.length ? {marginBottom: 8} : {},
+                ]}>
                 <FormattedMessage id="home.my-bp" />
               </BodyHeader>
               {bps.length > 0 && (
@@ -269,12 +277,12 @@ function Home({navigation, route}: Props) {
                   })}
                 </>
               )}
-              <View style={{marginTop: 4, flexDirection: 'row'}}>
+              <View style={{marginTop: 16, flexDirection: 'row'}}>
                 <Button
                   style={[
                     styles.bpButton,
                     {
-                      marginRight: showBpHistoryButton ? 12 : 0,
+                      marginRight: showBpHistoryButton ? 6 : 0,
                     },
                   ]}
                   buttonColor={colors.blue2}
@@ -290,7 +298,7 @@ function Home({navigation, route}: Props) {
                     style={[
                       styles.bpButton,
                       {
-                        marginLeft: 12,
+                        marginLeft: 6,
                       },
                     ]}
                     buttonColor={colors.blue2}
@@ -305,7 +313,11 @@ function Home({navigation, route}: Props) {
               </View>
             </View>
             <View style={[containerStyles.containerSegment]}>
-              <BodyHeader style={[styles.sectionHeader]}>
+              <BodyHeader
+                style={[
+                  styles.sectionHeader,
+                  !bss.length ? {marginBottom: 8} : {},
+                ]}>
                 <FormattedMessage id="home.my-blood-sugar" />
               </BodyHeader>
               {bss.length > 0 && (
@@ -347,12 +359,12 @@ function Home({navigation, route}: Props) {
                   })}
                 </>
               )}
-              <View style={{marginTop: 15, flexDirection: 'row'}}>
+              <View style={{marginTop: 16, flexDirection: 'row'}}>
                 <Button
                   style={[
                     styles.bpButton,
                     {
-                      marginRight: showBsHistoryButton ? 12 : 0,
+                      marginRight: showBsHistoryButton ? 6 : 0,
                     },
                   ]}
                   buttonColor={colors.blue2}
@@ -368,7 +380,7 @@ function Home({navigation, route}: Props) {
                     style={[
                       styles.bpButton,
                       {
-                        marginLeft: 12,
+                        marginLeft: 6,
                       },
                     ]}
                     buttonColor={colors.blue2}

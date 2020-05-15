@@ -41,7 +41,7 @@ export const MedsInformation = ({meds, style = {}}: Props) => {
     }
 
     const date = dateForDayOffset(reminder.dayOffset)
-    reminderText += ' ' + format(date, 'h:mm a')
+    reminderText += ', ' + format(date, 'h:mm a')
   }
 
   return (
