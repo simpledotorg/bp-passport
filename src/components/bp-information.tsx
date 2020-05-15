@@ -57,15 +57,17 @@ export const BpInformation = ({bp, style = {}}: Props) => {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        overflow: 'hidden',
       }}>
       <View
         style={{
           flexDirection: 'row',
+          flex: 1,
           ...style,
         }}>
         <Image source={redHeart} style={[styles.informationIcon]} />
-        <View style={{}}>
-          <View style={{flexDirection: 'row'}}>
+        <View style={{flex: 1}}>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap', flex: 1}}>
             <BodyText
               style={{
                 fontSize: 18,
