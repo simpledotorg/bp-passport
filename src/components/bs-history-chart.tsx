@@ -4,6 +4,7 @@ import {
   Dimensions,
   StyleSheet,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from 'react-native'
 import {format, addMonths} from 'date-fns'
 import {FormattedMessage} from 'react-intl'
@@ -19,7 +20,7 @@ import {
   BloodSugar,
   BLOOD_SUGAR_TYPES,
 } from '../redux/blood-sugar/blood-sugar.models'
-import {colors} from '../styles'
+import {colors, containerStyles} from '../styles'
 import {isHighBloodSugar} from '../utils/blood-sugars'
 import {BodyText} from './text'
 import {DateRange} from '../utils/dates'
@@ -41,6 +42,8 @@ export const BsHistoryChart = ({bss}: Props) => {
     dates: DateRange[]
     low: DateRange[]
     high: DateRange[]
+    min: null | number
+    max: null | number
   } | null>(null)
 
   const averageList = (value: DateRange) => {
@@ -117,8 +120,52 @@ export const BsHistoryChart = ({bss}: Props) => {
     })
   }
 
+  const getThreshhold = (): number => {
+    switch (shownSugarType) {
+      case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
+        return 126
+      case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
+        return 7
+      default:
+        return 200
+    }
+  }
+
+  const getMaxDomain = () => {
+    const threshhold = getThreshhold()
+    const difference = Math.round(threshhold / 10)
+    let base = chartData?.max ?? threshhold
+
+    if (base < threshhold) {
+      base = threshhold
+    }
+
+    return base + difference
+  }
+
+  const getMinDomain = () => {
+    const threshhold = getThreshhold()
+    const difference = Math.round(threshhold / 10)
+    let base = chartData?.min ?? threshhold
+
+    if (base > threshhold) {
+      base = threshhold
+    }
+
+    return base - difference
+  }
+
   if (!chartData) {
-    return <></>
+    return (
+      <View
+        style={[
+          containerStyles.fill,
+          containerStyles.centeredContent,
+          {height: 300},
+        ]}>
+        <ActivityIndicator size="large" color={colors.blue1} />
+      </View>
+    )
   }
 
   return (
@@ -128,6 +175,7 @@ export const BsHistoryChart = ({bss}: Props) => {
           <TouchableWithoutFeedback
             onPress={() => {
               setShownSugarType(BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR)
+              setChartData(null)
             }}>
             <View
               style={[
@@ -153,6 +201,7 @@ export const BsHistoryChart = ({bss}: Props) => {
           <TouchableWithoutFeedback
             onPress={() => {
               setShownSugarType(BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR)
+              setChartData(null)
             }}>
             <View
               style={[
@@ -177,6 +226,7 @@ export const BsHistoryChart = ({bss}: Props) => {
           <TouchableWithoutFeedback
             onPress={() => {
               setShownSugarType(BLOOD_SUGAR_TYPES.HEMOGLOBIC)
+              setChartData(null)
             }}>
             <View
               style={[
@@ -204,15 +254,66 @@ export const BsHistoryChart = ({bss}: Props) => {
           borderColor: colors.grey3,
           borderLeftWidth: 1,
           borderTopWidth: 1,
+          position: 'relative',
         }}>
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            flexDirection: 'row',
+            paddingLeft: 6,
+          }}>
+          {[...Array(chartData.dates.length / 4)].map((value, index) => {
+            return (
+              <View
+                key={index}
+                style={{
+                  flex: 1,
+                  flexShrink: 0,
+                }}>
+                <BodyText
+                  style={{
+                    color: colors.grey0,
+                    fontWeight: '500',
+                    fontSize: 14,
+                    lineHeight: 18,
+                  }}>
+                  {format(
+                    addMonths(chartData.dates[0].interval.start, index),
+                    'MMM',
+                  )}
+                </BodyText>
+                <BodyText
+                  style={{
+                    color: colors.grey2,
+                    fontWeight: '500',
+                    fontSize: 14,
+                    lineHeight: 18,
+                  }}>
+                  {format(
+                    addMonths(chartData.dates[0].interval.start, index),
+                    'yyy',
+                  )}
+                </BodyText>
+              </View>
+            )
+          })}
+          <View style={{width: 12}} />
+        </View>
         <VictoryChart
+          maxDomain={{
+            y: getMaxDomain(),
+          }}
+          minDomain={{
+            y: getMinDomain(),
+          }}
           width={Dimensions.get('window').width - 24}
-          height={300}
+          height={310}
           style={{
             parent: {
               position: 'relative',
-              left: -24,
-              top: -24,
+              left: -44,
+              top: -44,
             },
           }}
           scale={{x: 'linear'}}
@@ -227,9 +328,28 @@ export const BsHistoryChart = ({bss}: Props) => {
             }}
             tickValues={chartData.dates.map((date, index) => index)}
             style={{
-              grid: {stroke: colors.grey3, strokeDasharray: 8},
+              grid: {stroke: colors.grey3, strokeDasharray: 4},
               axis: {stroke: colors.grey3, opacity: 0},
               ticks: {opacity: 0},
+              tickLabels: {opacity: 0},
+            }}
+          />
+          <VictoryAxis
+            orientation="left"
+            style={{
+              axis: {
+                strokeWidth: 2,
+                stroke: colors.white100,
+              },
+              tickLabels: {
+                opacity: 0,
+              },
+              ticks: {
+                opacity: 0,
+              },
+              grid: {
+                opacity: 0,
+              },
             }}
           />
           <VictoryAxis
@@ -241,14 +361,10 @@ export const BsHistoryChart = ({bss}: Props) => {
               }
               return tick
             }}
-            tickValues={
-              shownSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC
-                ? [3, 7, 25]
-                : [126, 200]
-            }
+            tickValues={[getThreshhold()]}
             style={{
-              grid: {stroke: colors.grey2, strokeDasharray: 8},
-              axis: {stroke: colors.grey3, strokeWidth: 0},
+              grid: {stroke: colors.grey2, strokeDasharray: 4},
+              axis: {stroke: colors.grey3, strokeDasharray: 4, strokeWidth: 0},
               ticks: {opacity: 0},
             }}
           />
