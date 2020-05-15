@@ -36,7 +36,7 @@
   "add-bp.diastolic-greater-than-error": "La pression artérielle diastolique ne peut être supérieure à 180",
   "add-bp.please-enter-error": "Svp saisissez les valeurs de la PA",
   "add-bs.bs-less-than-error": "La valeur ne peut être moins de {value} ",
-  "add-bs.bs-more-than-error": "La valeur ne peut être supérieure à {valeur} ",
+  "add-bs.bs-more-than-error": "La valeur ne peut être supérieure à {value} ",
   "add-bs.please-enter-error": "Svp saisissez les valeurs de glycémie",
   "settings.profile": "Profil",
   "settings.name": "Nom",
@@ -94,7 +94,7 @@
   "general.added-at": "Ajouté à",
   "general.cancel": "Annuler ",
   "general.close": "Fermer ",
-  "general.recorded_at": "Enregistré à ",
+  "general.recorded_at": "Enregistré à {location}",
   "general.monday": "lundi",
   "general.tuesday": "mardi ",
   "general.wednesday": "mercredi ",
@@ -144,11 +144,11 @@
   "medicine.set-reminder-for": "Fixer un rappel ",
   "medicine.delete-medicine": "Supprimer le médicament ",
   "medicine.delete-confirm": "Le médicament sera supprimé définitivement. Êtes-vous sûr de vouloir le supprimer?",
-  "medicine.daily": "Quotidien",
+  "medicine.daily": "Tous les jours",
   "medicine.weekdays": "Jours de la semaine ",
   "medicine.weekends": "Fins de semaine ",
   "medicine.custom": "Personnalisé",
   "medicine.allow-notifications-title": "Autoriser les notifications",
   "medicine.allow-notifications-body": "Autorisez les notifications pour recevoir des rappels de médicaments ",
-  "medicine.reminder-notification": "{jour} {heure}, prenez votre médicament "
+  "medicine.reminder-notification": "{day} {time}, prenez votre médicament "
 }

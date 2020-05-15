@@ -22,6 +22,7 @@ import {
 } from '../redux/blood-sugar/blood-sugar.models'
 import {useThunkDispatch} from '../redux/store'
 import {addBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
+import {ScrollView} from 'react-native-gesture-handler'
 
 type AddBsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -158,7 +159,7 @@ function AddBsScreen({navigation, route}: Props) {
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white100}]}>
-        <View
+        <ScrollView
           style={{
             flex: 1,
             padding: 24,
@@ -260,7 +261,7 @@ function AddBsScreen({navigation, route}: Props) {
               {errors}
             </BodyText>
           )}
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </View>
   )
