@@ -38,8 +38,8 @@ const pickerStyles = StyleSheet.create({
   },
   inputAndroid: {
     fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
     borderWidth: 1,
     borderColor: colors.grey3,
     borderRadius: 4,
@@ -47,7 +47,7 @@ const pickerStyles = StyleSheet.create({
     paddingRight: 30,
   },
   iconContainer: {
-    top: Platform.OS === 'ios' ? 16 : 15,
+    top: Platform.OS === 'ios' ? 16 : 20,
     right: 12,
   },
 })
