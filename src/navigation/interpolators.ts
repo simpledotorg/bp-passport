@@ -1,10 +1,15 @@
 import {Animated} from 'react-native'
 import {
+  CardStyleInterpolators,
   StackCardInterpolationProps,
   StackCardInterpolatedStyle,
+  HeaderStyleInterpolators,
+  TransitionPresets,
+  TransitionSpecs,
 } from '@react-navigation/stack'
 const {add, multiply} = Animated
 import {isIphoneX} from 'react-native-iphone-x-helper'
+import {Platform, Easing} from 'react-native'
 
 const forFade = ({current}: StackCardInterpolationProps) => ({
   cardStyle: {
@@ -146,4 +151,111 @@ const forRevealFromBottomAndroid = ({
   }
 }
 
-export {forFade, forModalPresentationIOS, forRevealFromBottomAndroid}
+const ScaleFromCenterAndroidSpec: any = {
+  animation: 'timing',
+  config: {
+    duration: 200,
+    // This is super rough approximation of the path used for the curve by android
+    // See http://aosp.opersys.com/xref/android-10.0.0_r2/xref/frameworks/base/core/res/res/interpolator/fast_out_extra_slow_in.xml
+    easing: Easing.bezier(0.35, 0.45, 0, 1),
+  },
+}
+
+const forScaleFromCenterAndroid = ({
+  current,
+  next,
+  closing,
+}: StackCardInterpolationProps): StackCardInterpolatedStyle => {
+  const progress = add(
+    current.progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [1, 1],
+      extrapolate: 'clamp',
+    }),
+    next
+      ? next.progress.interpolate({
+          inputRange: [0, 1],
+          outputRange: [1, 1],
+          extrapolate: 'clamp',
+        })
+      : 0,
+  )
+
+  const opacity = progress.interpolate({
+    inputRange: [0, 0.8, 1, 1.2, 2],
+    outputRange: [0, 0.5, 1, 0.33, 0],
+  })
+
+  const conditional = (
+    condition: Animated.AnimatedInterpolation,
+    main: Animated.AnimatedInterpolation,
+    fallback: Animated.AnimatedInterpolation,
+  ) => {
+    // To implement this behavior, we multiply the main node with the condition.
+    // So if condition is 0, result will be 0, and if condition is 1, result will be main node.
+    // Then we multiple reverse of the condition (0 if condition is 1) with the fallback.
+    // So if condition is 0, result will be fallback node, and if condition is 1, result will be 0,
+    // This way, one of them will always be 0, and other one will be the value we need.
+    // In the end we add them both together, 0 + value we need = value we need
+    return add(
+      multiply(condition, main),
+      multiply(
+        condition.interpolate({
+          inputRange: [0, 1],
+          outputRange: [1, 0],
+        }),
+        fallback,
+      ),
+    )
+  }
+
+  const scale = conditional(
+    closing,
+    current.progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0.9, 1],
+      extrapolate: 'clamp',
+    }),
+    progress.interpolate({
+      inputRange: [0, 1, 2],
+      outputRange: [0.85, 1, 1.1],
+    }),
+  )
+
+  return {
+    containerStyle: {
+      opacity,
+      transform: [{scale}],
+    },
+  }
+}
+
+const ScaleFromCenterAndroid: any = {
+  gestureDirection: 'horizontal',
+  transitionSpec: {
+    open: ScaleFromCenterAndroidSpec,
+    close: ScaleFromCenterAndroidSpec,
+  },
+  cardStyleInterpolator: forScaleFromCenterAndroid,
+  headerStyleInterpolator: HeaderStyleInterpolators.forFade,
+}
+
+const ANDROID_VERSION_PIE = 28
+const ANDROID_VERSION_Q = 29
+
+const DefaultTransition = Platform.select({
+  ios: TransitionPresets.SlideFromRightIOS,
+  default:
+    Platform.OS === 'android' && Platform.Version >= ANDROID_VERSION_PIE
+      ? Platform.OS === 'android' && Platform.Version >= ANDROID_VERSION_Q
+        ? ScaleFromCenterAndroid
+        : TransitionPresets.RevealFromBottomAndroid
+      : TransitionPresets.FadeFromBottomAndroid,
+})
+
+export {
+  forFade,
+  forModalPresentationIOS,
+  forRevealFromBottomAndroid,
+  DefaultTransition,
+}

@@ -10,9 +10,12 @@ import {CommonActions} from '@react-navigation/native'
 import {
   forFade,
   forModalPresentationIOS,
-  forRevealFromBottomAndroid,
+  DefaultTransition,
 } from './navigation/interpolators'
-import {CardStyleInterpolators} from '@react-navigation/stack'
+import {
+  CardStyleInterpolators,
+  TransitionPresets,
+} from '@react-navigation/stack'
 import {useIntl, FormattedMessage} from 'react-intl'
 import {usePrevious} from './effects/use-previous.effect'
 
@@ -306,6 +309,7 @@ function MainStack({navigation}: Props) {
         ...navigationStyle,
         headerTintColor: colors.white100,
         gestureEnabled: true,
+        ...DefaultTransition,
       }}>
       <Stack.Screen
         name={SCREENS.SPLASH}
