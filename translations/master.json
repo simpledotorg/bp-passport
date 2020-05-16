@@ -128,7 +128,7 @@
   "bs.fasting-code": "FBS",
   "bs.post-prandial": "Postprandial blood sugar (PPBS)",
   "bs.post-prenial-code": "PPBS",
-  "bs.hemoglobic": "Hemoglobic A1C (HbA1C)",
+  "bs.hemoglobic": "Hemoglobin A1C (HbA1C)",
   "bs.hemoglobic-code": "HbA1C",
   "bs.mgdl": "mg/dL",
   "bs.select-rbs-if-unsure": "Select RBS if you’re not sure",
