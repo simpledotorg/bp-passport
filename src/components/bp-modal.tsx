@@ -15,6 +15,7 @@ import {BodyText, BodyHeader, Button} from './'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {useThunkDispatch} from '../redux/store'
 import {deleteBloodPressure} from '../redux/blood-pressure/blood-pressure.actions'
+import {ButtonType} from './button'
 
 type Props = {
   bp: BloodPressure
@@ -123,12 +124,10 @@ export const BpModal = ({bp, close}: Props) => {
           <Button
             style={[
               {
-                backgroundColor: colors.blue3,
-                shadowColor: 'rgba(0, 117, 235, 0.3)',
                 flex: 1,
               },
             ]}
-            buttonColor={colors.blue2}
+            buttonType={ButtonType.LightBlue}
             title={intl.formatMessage({id: 'general.close'})}
             onPress={() => {
               close()
@@ -137,11 +136,9 @@ export const BpModal = ({bp, close}: Props) => {
           {bp.offline && (
             <Button
               style={{
-                backgroundColor: colors.white100,
                 flex: 1,
               }}
-              buttonColor={colors.red1}
-              disableBoxShadow
+              buttonType={ButtonType.Delete}
               title={intl.formatMessage({id: 'general.delete'})}
               onPress={() => {
                 Alert.alert(
@@ -153,6 +150,7 @@ export const BpModal = ({bp, close}: Props) => {
                     },
                     {
                       text: intl.formatMessage({id: 'general.ok'}),
+                      style: 'destructive',
                       onPress: () => {
                         dispatch(deleteBloodPressure(bp))
                         close()

@@ -12,26 +12,70 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {colors, typography} from '../styles'
 
+export enum ButtonType {
+  Normal,
+  LightBlue,
+  Green,
+  Delete,
+}
+
 interface ButtonProps extends NativeButtonProps {
   children?: ReactNode
   style?: StyleProp<ViewStyle>
   title: string
-  buttonColor?: string
+  buttonType?: ButtonType
   buttonUnderlayColor?: string
-  disableBoxShadow?: boolean
 }
 
 export const Button = (props: ButtonProps) => {
+  let backgroundColor: string | undefined = 'red'
+  let shadowColor: string | undefined = 'rgba(0, 0, 0, 0.16)'
+
   let underlayColour: string | undefined = '#0063C8'
   let shadowInset = {}
+  let buttonTextColor: string | undefined
+  let transparent = false
+  /*
   if (props.buttonUnderlayColor) {
     underlayColour = props.buttonUnderlayColor
+    shadowInset = styles.shadowInsetDarkBlueButton
   } else if (props.disableBoxShadow) {
     underlayColour = undefined
-  } else if (props.buttonColor) {
-    underlayColour = '#CBE5FF'
-    shadowInset = styles.shadowInset
+  } */
+
+  if (props.disabled) {
+    backgroundColor = colors.grey3
+    shadowInset = styles.shadowInsetDisabledButton
+  } else if (props.buttonType !== undefined) {
+    switch (props.buttonType) {
+      case ButtonType.Normal:
+        backgroundColor = colors.blue2
+        underlayColour = '#0063C8'
+        shadowInset = styles.shadowInsetDarkBlueButton
+        shadowColor = 'rgba(0, 0, 0, 0.16)'
+        break
+      case ButtonType.LightBlue:
+        underlayColour = '#CBE5FF'
+        shadowInset = styles.shadowInsetLightBlueButton
+        buttonTextColor = colors.blue2
+        backgroundColor = colors.blue3
+        shadowColor = 'rgba(0, 117, 235, 0.3)'
+        break
+      case ButtonType.Green:
+        underlayColour = '#00A742'
+        shadowInset = styles.shadowInsetGreenButton
+        backgroundColor = colors.green1
+        shadowColor = 'rgba(0, 0, 0, 0.16)'
+        break
+      case ButtonType.Delete:
+        underlayColour = colors.grey4
+        backgroundColor = 'transparent'
+        transparent = true
+        buttonTextColor = colors.red1
+        break
+    }
   }
+
   return (
     <TouchableHighlight
       underlayColor={underlayColour}
@@ -40,16 +84,11 @@ export const Button = (props: ButtonProps) => {
         {
           height: 48,
           borderRadius: 2,
-          backgroundColor: colors.blue2,
           alignItems: 'center',
           justifyContent: 'center',
         },
-        props.disableBoxShadow ? {} : {...styles.shadowStyles, ...shadowInset},
-        props.disabled
-          ? {
-              backgroundColor: colors.grey3,
-            }
-          : {},
+        transparent ? {} : {...styles.shadowStyles, ...shadowInset},
+        {backgroundColor, shadowColor},
         props.style,
       ]}>
       {props.title && (
@@ -64,7 +103,7 @@ export const Button = (props: ButtonProps) => {
               letterSpacing: 1.25,
               color: props.disabled
                 ? colors.grey2
-                : props.buttonColor || colors.white100,
+                : buttonTextColor || colors.white100,
               textTransform: 'uppercase',
               textAlign: 'center',
             },
@@ -108,17 +147,29 @@ export const ButtonIcon = (props: ButtonIconProps) => {
 
 const styles = StyleSheet.create({
   shadowStyles: {
-    shadowColor: colors.black, // iOS box shadow
+    shadowOpacity: 1,
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.16,
+    /* shadowOpacity: 0.16,*/
     shadowRadius: 1,
     elevation: 2, // Android elevation,
   },
-  shadowInset: {
+  shadowInsetLightBlueButton: {
     borderBottomColor: 'rgba(0, 117, 235, 0.3)',
+    borderBottomWidth: 2,
+  },
+  shadowInsetDarkBlueButton: {
+    borderBottomColor: '#00478F',
+    borderBottomWidth: 2,
+  },
+  shadowInsetGreenButton: {
+    borderBottomColor: '#007A31',
+    borderBottomWidth: 2,
+  },
+  shadowInsetDisabledButton: {
+    borderBottomColor: '#ADB2B8',
     borderBottomWidth: 2,
   },
 })

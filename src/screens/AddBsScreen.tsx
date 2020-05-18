@@ -12,7 +12,7 @@ import {useIntl, FormattedMessage} from 'react-intl'
 import {Item} from 'react-native-picker-select'
 
 import {containerStyles, colors} from '../styles'
-import {Picker, BodyText, Button} from '../components'
+import {Picker, BodyText, Button, ButtonType} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 
@@ -225,6 +225,7 @@ function AddBsScreen({navigation, route}: Props) {
           <Button
             title={intl.formatMessage({id: 'general.save'})}
             disabled={isSaveDisabled()}
+            buttonType={ButtonType.Normal}
             style={{
               marginTop: 24,
             }}

@@ -12,7 +12,7 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import {containerStyles, colors} from '../styles'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-import {BodyHeader, BodyText, CheckBox, Button} from '../components'
+import {BodyHeader, BodyText, CheckBox, Button, ButtonType} from '../components'
 import {FormattedMessage, IntlContext, useIntl} from 'react-intl'
 import {
   Day,
@@ -122,6 +122,7 @@ function MedicineFrequencyScreen({navigation, route}: Props) {
             })}
           </View>
           <Button
+            buttonType={ButtonType.Normal}
             style={{marginHorizontal: 16, marginBottom: 16}}
             disabled={!days.length}
             onPress={() => {

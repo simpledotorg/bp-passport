@@ -6,7 +6,13 @@ import {RouteProp} from '@react-navigation/native'
 import Modal from 'react-native-modal'
 
 import {containerStyles, colors} from '../styles'
-import {BodyText, Button, BodyHeader, LoadingOverlay} from '../components'
+import {
+  BodyText,
+  Button,
+  BodyHeader,
+  LoadingOverlay,
+  ButtonType,
+} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {useThunkDispatch} from '../redux/store'
@@ -100,6 +106,7 @@ function VerifyNumber({navigation, route}: Props) {
           />
           <Button
             style={[{marginTop: 24}]}
+            buttonType={ButtonType.Normal}
             disabled={!input}
             onPress={() => {
               verifyOTP(input)
