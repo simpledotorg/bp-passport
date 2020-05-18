@@ -11,7 +11,7 @@ import {FormattedMessage, useIntl} from 'react-intl'
 import {Item} from 'react-native-picker-select'
 
 import {containerStyles, colors} from '../styles'
-import {BodyText, BodyHeader, Picker, Button} from '../components'
+import {BodyText, BodyHeader, Picker, Button, ButtonType} from '../components'
 import {
   AVAILABLE_TRANSLATIONS,
   languageCodeToDisplayTitle,
@@ -144,7 +144,7 @@ function SettingsScreen({navigation}: any) {
                 <View>
                   <Button
                     style={[styles.bpButton, {}]}
-                    buttonColor={colors.blue2}
+                    buttonType={ButtonType.LightBlue}
                     title={intl.formatMessage({id: 'login.scan-passport'})}
                     onPress={() => {
                       navigation.navigate(SCREENS.SCAN_STACK)
@@ -202,7 +202,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   bpButton: {
-    backgroundColor: colors.blue3,
     flex: 1,
   },
 })

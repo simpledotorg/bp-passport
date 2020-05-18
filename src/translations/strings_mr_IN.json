@@ -87,6 +87,8 @@
   "page-titles.all-bs": "All BS",
   "page-titles.new-bs": "New BS",
   "page-titles.add-medicine": "Add medicine",
+  "general.sheet-high-disclaimer": "High {label} is above {limit}. Note, your personal \"high\" {label} may be different. Discuss with your doctor.",
+  "general.sheet-normal-disclaimer": "Normal {label} is at or below {limit}. Note, your personal \"normal\" {label} may be different. Discuss with your doctor.",
   "general.add-bs": "Add BS",
   "general.save": "Save",
   "general.next": "Next",

@@ -7,7 +7,7 @@ import {containerStyles, colors, medicineClock} from '../styles'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 
-import {BodyText, BodyHeader, Button} from '../components'
+import {BodyText, BodyHeader, Button, ButtonType} from '../components'
 
 import {FormattedMessage, useIntl} from 'react-intl'
 
@@ -63,7 +63,7 @@ function AllowNotificationsModalScreen({navigation, route}: Props) {
             <FormattedMessage id="medicine.allow-notifications-body" />
           </BodyText>
           <Button
-            style={{}}
+            buttonType={ButtonType.Normal}
             title={intl.formatMessage({id: 'general.ok'})}
             onPress={() => {
               navigation.pop()

@@ -59,6 +59,8 @@
   "page-titles.all-bs": "Todas mis glucosas",
   "page-titles.new-bs": "Agregar glucosa",
   "page-titles.add-medicine": "Agregar medicina",
+  "general.sheet-high-disclaimer": "High {label} is above {limit}. Note, your personal \"high\" {label} may be different. Discuss with your doctor.",
+  "general.sheet-normal-disclaimer": "Normal {label} is at or below {limit}. Note, your personal \"normal\" {label} may be different. Discuss with your doctor.",
   "general.add-bs": "Agregar glucosa",
   "general.save": "Guardar",
   "general.done": "Hecho",

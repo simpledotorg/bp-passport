@@ -4,7 +4,7 @@ import {FormattedMessage, useIntl} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
 
 import {containerStyles, colors, splashImage} from '../styles'
-import {Button, BodyHeader} from '../components'
+import {Button, BodyHeader, ButtonType} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 
@@ -71,7 +71,7 @@ function SplashScreen({navigation}: Props) {
 
           <Button
             style={[styles.primaryButton]}
-            buttonColor={colors.blue2}
+            buttonType={ButtonType.LightBlue}
             title={intl.formatMessage({id: 'general.next'})}
             onPress={() => {
               navigation.navigate(SCREENS.LOGIN)
