@@ -32,6 +32,7 @@ import {
   MedsInformation,
   ContentLoadingSegment,
   BsInformation,
+  ButtonType,
 } from '../components'
 
 import {ContentLoadingSegmentSize} from '../components/content-loading-segment'
@@ -226,7 +227,7 @@ function Home({navigation, route}: Props) {
                       marginRight: showBsHistoryButton ? 12 : 0,
                     },
                   ]}
-                  buttonColor={colors.blue2}
+                  buttonType={ButtonType.LightBlue}
                   title={intl.formatMessage({id: 'home.add-medicine'})}
                   onPress={() => {
                     navigation.navigate(SCREENS.ADD_MEDICINE)
@@ -282,7 +283,7 @@ function Home({navigation, route}: Props) {
                       marginRight: showBpHistoryButton ? 6 : 0,
                     },
                   ]}
-                  buttonColor={colors.blue2}
+                  buttonType={ButtonType.LightBlue}
                   title={intl.formatMessage({
                     id: showBpHistoryButton ? 'home.add' : 'home.add-bp',
                   })}
@@ -298,7 +299,7 @@ function Home({navigation, route}: Props) {
                         marginLeft: 6,
                       },
                     ]}
-                    buttonColor={colors.blue2}
+                    buttonType={ButtonType.LightBlue}
                     title={intl.formatMessage({id: 'general.see-all'})}
                     onPress={() => {
                       navigation.navigate(SCREENS.BP_HISTORY, {
@@ -360,7 +361,7 @@ function Home({navigation, route}: Props) {
                       marginRight: showBsHistoryButton ? 6 : 0,
                     },
                   ]}
-                  buttonColor={colors.blue2}
+                  buttonType={ButtonType.LightBlue}
                   title={intl.formatMessage({
                     id: showBsHistoryButton ? 'home.add' : 'home.add-bs',
                   })}
@@ -376,7 +377,7 @@ function Home({navigation, route}: Props) {
                         marginLeft: 6,
                       },
                     ]}
-                    buttonColor={colors.blue2}
+                    buttonType={ButtonType.LightBlue}
                     title={intl.formatMessage({id: 'general.see-all'})}
                     onPress={() => {
                       navigation.navigate(SCREENS.BS_HISTORY, {
@@ -417,8 +418,6 @@ const styles = StyleSheet.create({
     flexShrink: 0,
   },
   bpButton: {
-    backgroundColor: colors.blue3,
-
     flex: 1,
   },
   historyItem: {

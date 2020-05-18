@@ -7,7 +7,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import {containerStyles, colors} from '../styles'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-import {BodyHeader, BodyText, CheckBox, Button} from '../components'
+import {BodyHeader, BodyText, CheckBox, Button, ButtonType} from '../components'
 import {FormattedMessage, IntlContext, useIntl} from 'react-intl'
 import {
   dateForDayOffset,
@@ -116,6 +116,7 @@ function MedicineTimeScreen({navigation, route}: Props) {
             </View>
           </View>
           <Button
+            buttonType={ButtonType.Normal}
             style={{marginHorizontal: 16, marginBottom: 16}}
             onPress={() => {
               updateDayOffset(dayOffsetForDate(date))

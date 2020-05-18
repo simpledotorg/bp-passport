@@ -4,7 +4,7 @@ import {FormattedMessage, useIntl} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
 
 import {containerStyles, colors} from '../styles'
-import {Button, Link, BodyText} from '../components'
+import {Button, Link, BodyText, ButtonType} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {loginNoApi} from '../redux/auth/auth.actions'
@@ -66,6 +66,7 @@ function Consent({navigation}: Props) {
             backgroundColor: colors.blue3,
           }}>
           <Button
+            buttonType={ButtonType.Normal}
             title={intl.formatMessage({id: 'general.i-agree'})}
             onPress={() => {
               dispatch(loginNoApi())

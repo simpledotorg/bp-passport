@@ -11,7 +11,7 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import {useIntl} from 'react-intl'
 
 import {containerStyles, colors} from '../styles'
-import {Button, BodyText} from '../components'
+import {Button, BodyText, ButtonType} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 
@@ -202,6 +202,7 @@ function AddBpScreen({navigation, route}: Props) {
           </View>
           <Button
             title={intl.formatMessage({id: 'general.save'})}
+            buttonType={ButtonType.Normal}
             disabled={isSaveDisabled()}
             style={{
               marginTop: 24,
