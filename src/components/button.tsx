@@ -27,7 +27,7 @@ export const Button = (props: ButtonProps) => {
   if (props.buttonUnderlayColor) {
     underlayColour = props.buttonUnderlayColor
   } else if (props.disableBoxShadow) {
-    underlayColour = undefined
+    underlayColour = 'transparent'
   } else if (props.buttonColor) {
     underlayColour = '#CBE5FF'
     shadowInset = styles.shadowInset

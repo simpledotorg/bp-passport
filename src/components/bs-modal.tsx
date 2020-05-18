@@ -56,6 +56,31 @@ export const BsModal = ({bs, close}: Props) => {
     )
   }
 
+  const getNotes = () => {
+    const bsDetails = getBloodSugarDetails(bs)
+    return isHighBloodSugar(bs) ? (
+      <BodyText>
+        <FormattedMessage
+          id="general.sheet-high-disclaimer"
+          values={{
+            label: <FormattedMessage id={bsDetails.languageTypeCode} />,
+            limit: bsDetails.high,
+          }}
+        />
+      </BodyText>
+    ) : (
+      <BodyText>
+        <FormattedMessage
+          id="general.sheet-normal-disclaimer"
+          values={{
+            label: <FormattedMessage id={bsDetails.languageTypeCode} />,
+            limit: bsDetails.high,
+          }}
+        />
+      </BodyText>
+    )
+  }
+
   const details = getBloodSugarDetails(bs)
   return (
     <TouchableWithoutFeedback
@@ -104,7 +129,6 @@ export const BsModal = ({bs, close}: Props) => {
                 {getBSText()}
               </>
             </BodyText>
-
             <BodyText
               style={{
                 lineHeight: 26,
@@ -114,7 +138,6 @@ export const BsModal = ({bs, close}: Props) => {
               }}>
               {displayDate(bs)}
             </BodyText>
-
             {bs.facility && (
               <BodyText style={{lineHeight: 26, paddingTop: 12}}>
                 <FormattedMessage
@@ -125,6 +148,9 @@ export const BsModal = ({bs, close}: Props) => {
                 />
               </BodyText>
             )}
+            <BodyText style={{lineHeight: 26, paddingTop: 12}}>
+              {getNotes()}
+            </BodyText>
           </View>
         </View>
         <View style={{marginTop: 24, flexDirection: 'row'}}>
