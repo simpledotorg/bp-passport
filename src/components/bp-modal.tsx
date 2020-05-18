@@ -61,6 +61,30 @@ export const BpModal = ({bp, close}: Props) => {
     )
   }
 
+  const getNotes = () => {
+    return isBloodPressureHigh(bp) ? (
+      <BodyText>
+        <FormattedMessage
+          id="general.sheet-high-disclaimer"
+          values={{
+            label: <FormattedMessage id={'general.bp'} />,
+            limit: '140/90',
+          }}
+        />
+      </BodyText>
+    ) : (
+      <BodyText>
+        <FormattedMessage
+          id="general.sheet-normal-disclaimer"
+          values={{
+            label: <FormattedMessage id={'general.bp'} />,
+            limit: '140/90',
+          }}
+        />
+      </BodyText>
+    )
+  }
+
   return (
     <TouchableWithoutFeedback
       onPress={(e) => {
@@ -117,6 +141,10 @@ export const BpModal = ({bp, close}: Props) => {
                 />
               </BodyText>
             )}
+
+            <BodyText style={{lineHeight: 26, paddingTop: 12}}>
+              {getNotes()}
+            </BodyText>
           </View>
         </View>
         <View style={{marginTop: 24, flexDirection: 'row'}}>
