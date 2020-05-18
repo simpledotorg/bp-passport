@@ -4,6 +4,7 @@ import {
   createStackNavigator,
   useHeaderHeight,
   StackNavigationProp,
+  StackNavigationOptions,
 } from '@react-navigation/stack'
 import {useNavigationState, StackActions} from '@react-navigation/native'
 import {CommonActions} from '@react-navigation/native'
@@ -178,6 +179,16 @@ type Props = {
   navigation: MainStackNavigationProp
 }
 
+const sharedNavigationOptions: StackNavigationOptions = {
+  headerTitleAlign: 'left',
+  headerTitleContainerStyle: {left: 56},
+  headerBackImage: () => {
+    return <ButtonIcon iconName="arrow-back" iconColor={colors.white} />
+  },
+  headerBackTitle: ' ',
+  headerTintColor: colors.white100,
+}
+
 function MainStack({navigation}: Props) {
   const intl = useIntl()
   const [appState, setAppState] = useState(AppState.currentState)
@@ -304,7 +315,11 @@ function MainStack({navigation}: Props) {
       }
       screenOptions={{
         ...navigationStyle,
-        headerTintColor: colors.white100,
+        headerStyle: {
+          ...navigationStyle.headerStyle,
+          height: headerHeightIncludingSafeArea + 6,
+        },
+        ...sharedNavigationOptions,
         gestureEnabled: true,
       }}>
       <Stack.Screen
@@ -316,17 +331,6 @@ function MainStack({navigation}: Props) {
         name={SCREENS.CONSENT}
         component={ConsentScreen}
         options={{
-          headerBackTitle: ' ',
-          headerTitleAlign: 'left',
-          headerLeft: () => (
-            <ButtonIcon
-              iconName="arrow-back"
-              iconColor={colors.white}
-              onPress={() => {
-                navigation.goBack()
-              }}
-            />
-          ),
           title: intl.formatMessage({id: 'page-titles.consent'}),
         }}
       />
@@ -380,6 +384,7 @@ function MainStack({navigation}: Props) {
             shadowOpacity: 0,
           },
           headerTitleAlign: 'center',
+          headerTitleContainerStyle: {},
           headerTitle: () => <HomeHeaderTitle />,
           headerRight: () => {
             if (passportLinkedState !== PassportLinkedState.Linking) {
@@ -412,12 +417,18 @@ function MainStack({navigation}: Props) {
 
 function ScanStack({navigation}: Props) {
   const intl = useIntl()
+  const headerHeightIncludingSafeArea = useHeaderHeight()
+
   return (
     <Stack.Navigator
       initialRouteName={SCREENS.SCAN_BP_PASSPORT}
       screenOptions={{
         ...navigationStyle,
-        headerTintColor: colors.white100,
+        headerStyle: {
+          ...navigationStyle.headerStyle,
+          height: headerHeightIncludingSafeArea + 6,
+        },
+        ...sharedNavigationOptions,
         gestureEnabled: true,
       }}>
       <Stack.Screen
@@ -429,6 +440,7 @@ function ScanStack({navigation}: Props) {
             return (
               <ButtonIcon
                 iconName="close"
+                iconSize={24}
                 iconColor={colors.white100}
                 onPress={() => navigation.goBack()}
               />
@@ -450,11 +462,17 @@ function ScanStack({navigation}: Props) {
 
 function AddBPStack({navigation}: Props) {
   const intl = useIntl()
+  const headerHeightIncludingSafeArea = useHeaderHeight()
+
   return (
     <Stack.Navigator
       screenOptions={{
         ...navigationStyle,
-        headerTintColor: colors.white100,
+        headerStyle: {
+          ...navigationStyle.headerStyle,
+          height: headerHeightIncludingSafeArea + 6,
+        },
+        ...sharedNavigationOptions,
         gestureEnabled: true,
       }}>
       <Stack.Screen
@@ -463,6 +481,7 @@ function AddBPStack({navigation}: Props) {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.new-bp'}),
+
           headerLeft: () => {
             return (
               <ButtonIcon
@@ -481,11 +500,17 @@ function AddBPStack({navigation}: Props) {
 
 function AddBSStack({navigation}: Props) {
   const intl = useIntl()
+  const headerHeightIncludingSafeArea = useHeaderHeight()
+
   return (
     <Stack.Navigator
       screenOptions={{
         ...navigationStyle,
-        headerTintColor: colors.white100,
+        headerStyle: {
+          ...navigationStyle.headerStyle,
+          height: headerHeightIncludingSafeArea + 6,
+        },
+        ...sharedNavigationOptions,
         gestureEnabled: true,
       }}>
       <Stack.Screen

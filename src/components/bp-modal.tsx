@@ -142,13 +142,12 @@ export const BpModal = ({bp, close}: Props) => {
                 />
               </BodyText>
             )}
-
-            <BodyText style={{lineHeight: 26, paddingTop: 12}}>
-              {getNotes()}
-            </BodyText>
           </View>
         </View>
-        <View style={{marginTop: 24, flexDirection: 'row'}}>
+        <BodyText style={{lineHeight: 26, marginVertical: 34}}>
+          {getNotes()}
+        </BodyText>
+        <View style={{flexDirection: 'row'}}>
           <Button
             style={[
               {
