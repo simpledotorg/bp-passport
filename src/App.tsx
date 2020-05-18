@@ -1,85 +1,45 @@
-import React, {useEffect} from 'react'
+import React, {useContext} from 'react'
 import {NavigationContainer} from '@react-navigation/native'
-import {createStackNavigator} from '@react-navigation/stack'
-import {useDarkMode} from 'react-native-dark-mode'
 import {IntlProvider} from 'react-intl'
-import useLocaleMessages from './effects/use-locale-messages.effect'
+import {PersistGate} from 'redux-persist/es/integration/react'
+import {Provider} from 'react-redux'
+import {store, persistor} from './redux/store'
+import * as RNLocalize from 'react-native-localize'
 
-import {colors} from './styles'
+import Navigation from './Navigation'
 
-import SCREENS from './constants/screens'
-import LaunchScreen from './screens/LaunchScreen'
-import SplashScreen from './screens/SplashScreen'
+import {localeSelector} from './redux/patient/patient.selectors'
+import {
+  DEFAULT_LANGUAGE_CODE,
+  AVAILABLE_TRANSLATIONS,
+  translationsForCode,
+} from './constants/languages'
 
-import {forFade} from './navigation/interpolators'
+const App = () => {
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <PersistGateConsumer />
+      </PersistGate>
+    </Provider>
+  )
+}
 
-const Stack = createStackNavigator()
-
-export default function App() {
-  const localeMessages = useLocaleMessages()
-
-  useEffect(() => {
-    console.log(
-      'localeMessages changed >> ',
-      localeMessages.locale,
-      localeMessages.messages,
-    )
-  }, [localeMessages])
+const PersistGateConsumer = () => {
+  const localeStored = localeSelector()
+  const locale =
+    localeStored ??
+    (RNLocalize.findBestAvailableLanguage(AVAILABLE_TRANSLATIONS)
+      ?.languageTag ||
+      DEFAULT_LANGUAGE_CODE)
 
   return (
-    <IntlProvider
-      locale={localeMessages.locale}
-      messages={localeMessages.messages}>
-      <Navigation />
+    <IntlProvider locale={locale} messages={translationsForCode(locale)}>
+      <NavigationContainer>
+        <Navigation />
+      </NavigationContainer>
     </IntlProvider>
   )
 }
 
-function Navigation() {
-  const ref = React.useRef()
-
-  const isDarkMode = useDarkMode()
-
-  const theme = {
-    dark: false,
-    colors: {
-      primary: 'rgb(255, 45, 85)',
-      background: colors.Black,
-      card: 'rgb(255, 255, 255)',
-      text: 'rgb(28, 28, 30)',
-      border: 'rgb(199, 199, 204)',
-    },
-  }
-
-  return (
-    <NavigationContainer ref={ref} theme={isDarkMode ? theme : theme}>
-      <Stack.Navigator
-        initialRouteName={SCREENS.LAUNCH}
-        headerMode={'none'}
-        mode="modal"
-        screenOptions={{
-          gestureEnabled: false,
-        }}>
-        <Stack.Screen name={SCREENS.LAUNCH} component={LaunchScreen} />
-        <Stack.Screen
-          name={SCREENS.MAIN_STACK}
-          component={MainStack}
-          options={{cardStyleInterpolator: forFade}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  )
-}
-
-function MainStack() {
-  return (
-    <Stack.Navigator
-      initialRouteName={SCREENS.SPLASH}
-      headerMode={'none'}
-      screenOptions={{
-        gestureEnabled: true,
-      }}>
-      <Stack.Screen name={SCREENS.SPLASH} component={SplashScreen} />
-    </Stack.Navigator>
-  )
-}
+export default App

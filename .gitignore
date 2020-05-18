@@ -21,6 +21,15 @@ DerivedData
 *.ipa
 *.xcuserstate
 
+# Environment
+.env.development
+
+# Keys
+google-services.json
+GoogleService-Info.plist
+AppCenter-Config.plist
+appcenter-config.json
+
 # Android/IntelliJ
 #
 build/
