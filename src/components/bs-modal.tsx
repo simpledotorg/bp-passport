@@ -77,7 +77,7 @@ export const BsModal = ({bs, close}: Props) => {
         </BodyHeader>
         <View style={{flexDirection: 'row'}}>
           <Image source={purpleDrop} />
-          <View style={{paddingLeft: 16}}>
+          <View style={{paddingLeft: 16, width: '90%'}}>
             <BodyText
               style={{
                 lineHeight: 26,

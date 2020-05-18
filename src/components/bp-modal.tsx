@@ -81,7 +81,7 @@ export const BpModal = ({bp, close}: Props) => {
         </BodyHeader>
         <View style={{flexDirection: 'row'}}>
           <Image source={redHeart} />
-          <View style={{paddingLeft: 16}}>
+          <View style={{paddingLeft: 16, width: '90%'}}>
             <BodyText
               style={{
                 lineHeight: 26,
