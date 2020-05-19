@@ -36,7 +36,7 @@ function Login({navigation}: Props) {
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{paddingBottom: 30}}>
-          <View style={[{marginTop: 40}]}>
+          <View style={[{marginTop: 18}]}>
             <View style={[styles.loginContainer, {marginBottom: 10}]}>
               <Image
                 source={bpPassportImage}
@@ -116,7 +116,7 @@ const styles = {
   loginContainer: {
     backgroundColor: colors.white100,
     borderRadius: 4,
-    marginHorizontal: 8,
+    marginHorizontal: 18,
     marginBottom: 8,
     flexShrink: 0,
     padding: 24,
