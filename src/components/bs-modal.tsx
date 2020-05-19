@@ -65,7 +65,20 @@ export const BsModal = ({bs, close}: Props) => {
           id="general.sheet-high-disclaimer"
           values={{
             label: <FormattedMessage id={bsDetails.languageTypeCode} />,
-            limit: bsDetails.high,
+            limit: (
+              <BodyText>
+                {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
+                  <>
+                    {bsDetails.high}
+                    <BodyText>%</BodyText>
+                  </>
+                ) : (
+                  <>
+                    {bsDetails.high} <FormattedMessage id="bs.mgdl" />
+                  </>
+                )}
+              </BodyText>
+            ),
           }}
         />
       </BodyText>
@@ -75,7 +88,20 @@ export const BsModal = ({bs, close}: Props) => {
           id="general.sheet-normal-disclaimer"
           values={{
             label: <FormattedMessage id={bsDetails.languageTypeCode} />,
-            limit: bsDetails.high,
+            limit: (
+              <BodyText>
+                {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
+                  <>
+                    {bsDetails.high}
+                    <BodyText>%</BodyText>
+                  </>
+                ) : (
+                  <>
+                    {bsDetails.high} <FormattedMessage id="bs.mgdl" />
+                  </>
+                )}
+              </BodyText>
+            ),
           }}
         />
       </BodyText>
