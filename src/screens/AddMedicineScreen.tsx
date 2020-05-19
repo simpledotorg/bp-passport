@@ -20,7 +20,10 @@ import {setHours, setMinutes} from 'date-fns'
 import {useThunkDispatch} from '../redux/store'
 import {BodyText} from '../components'
 import {medicationsLibrarySelector} from '../redux/medication/medication.selectors'
-import {createAMedicationWithReminder} from '../redux/medication/medication.models'
+import {
+  createAMedicationWithReminder,
+  Medication,
+} from '../redux/medication/medication.models'
 
 type AddMedicineScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -41,9 +44,19 @@ function AddMedicineScreen({navigation, route}: Props) {
   const inputRef = useRef<null | any>(null)
 
   const medicines = medicationsLibrarySelector()
-  const medicinesFiltered = medicines.filter((item) => {
-    return input !== '' && item.name.toLowerCase().includes(input.toLowerCase())
-  })
+  const inputLower = input.toLowerCase()
+  const medicinesFiltered: Medication[] = input.length
+    ? medicines.filter((item) => {
+        const words = item.name.toLowerCase().split(' ')
+        const matches = words.filter((word) => {
+          if (word.indexOf(inputLower) === 0) {
+            return true
+          }
+          return false
+        })
+        return matches.length > 0 ? true : false
+      })
+    : []
 
   return (
     <SafeAreaView style={[containerStyles.fill]}>
@@ -85,6 +98,7 @@ function AddMedicineScreen({navigation, route}: Props) {
           <View
             style={{
               paddingHorizontal: 8,
+              paddingBottom: 8,
             }}>
             <KeyboardAwareFlatList
               keyboardShouldPersistTaps={'handled'}
