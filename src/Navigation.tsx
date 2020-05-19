@@ -182,9 +182,12 @@ type Props = {
 const sharedNavigationOptions: StackNavigationOptions = {
   headerTitleAlign: 'left',
   headerTitleContainerStyle: {left: 56},
-  headerBackImage: () => {
-    return <ButtonIcon iconName="arrow-back" iconColor={colors.white} />
-  },
+  headerBackImage:
+    Platform.OS === 'ios'
+      ? () => {
+          return <ButtonIcon iconName="arrow-back" iconColor={colors.white} />
+        }
+      : undefined,
   headerBackTitle: ' ',
   headerTintColor: colors.white100,
 }
