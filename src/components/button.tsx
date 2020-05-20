@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     },
     /* shadowOpacity: 0.16,*/
     shadowRadius: 1,
-    elevation: 2, // Android elevation,
+    elevation: 1, // Android elevation,
   },
   shadowInsetLightBlueButton: {
     borderBottomColor: 'rgba(0, 117, 235, 0.3)',
