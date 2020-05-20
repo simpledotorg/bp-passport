@@ -184,161 +184,171 @@ function MedicationDetailsScreen({navigation, route}: Props) {
   const debugPush = false
 
   return (
-    <SafeAreaView style={[containerStyles.fill]}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View
-          style={[
-            containerStyles.containerSegment,
-            {
-              paddingHorizontal: 24,
-              padding: 0,
-              paddingTop: 16,
-              paddingBottom: remindersEnabled ? 8 : 0,
-            },
-          ]}>
-          <Row style={{marginBottom: 16}}>
-            <BodyHeader>
-              <FormattedMessage id="medicine.reminder" />
-            </BodyHeader>
-            <Switch
-              trackColor={{false: colors.grey4, true: colors.blue3}}
-              thumbColor={remindersEnabled ? colors.blue2 : colors.grey3}
-              onValueChange={() => {
-                setRemindersEnabled(!remindersEnabled)
-              }}
-              value={remindersEnabled}
-            />
-          </Row>
-          {remindersEnabled && (
-            <>
-              <TouchableHighlight
-                underlayColor={colors.grey4}
-                onPress={() => {
-                  navigation.navigate(SCREENS.MEDICATION_FREQUENCY, {
-                    updateDays,
-                    reminder,
-                  })
+    <SafeAreaView
+      style={[containerStyles.fill, {backgroundColor: colors.blue3}]}>
+      <View style={[containerStyles.fill, {backgroundColor: colors.grey4}]}>
+        <View style={styles.container}>
+          <View
+            style={[
+              containerStyles.containerSegment,
+              {
+                paddingHorizontal: 24,
+                padding: 0,
+                paddingTop: 16,
+                paddingBottom: remindersEnabled ? 8 : 0,
+              },
+            ]}>
+            <Row style={{marginBottom: 16}}>
+              <BodyHeader>
+                <FormattedMessage id="medicine.reminder" />
+              </BodyHeader>
+              <Switch
+                trackColor={{false: colors.grey4, true: colors.blue3}}
+                thumbColor={remindersEnabled ? colors.blue2 : colors.grey3}
+                onValueChange={() => {
+                  setRemindersEnabled(!remindersEnabled)
                 }}
-                style={{marginHorizontal: -24, paddingHorizontal: 24}}>
-                <View
-                  style={[
-                    styles.row,
-                    {
-                      height: 48,
-                      alignItems: 'center',
-                    },
-                  ]}>
-                  <BodyText>
-                    <FormattedMessage id="medicine.frequency" />
-                  </BodyText>
-                  <View style={{flexDirection: 'row'}}>
-                    <BodyText style={{color: colors.blue2, marginRight: 16}}>
-                      <FormattedMessage id={frequencyText(reminder.days)} />
+                value={remindersEnabled}
+              />
+            </Row>
+            {remindersEnabled && (
+              <>
+                <TouchableHighlight
+                  underlayColor={colors.grey4}
+                  onPress={() => {
+                    navigation.navigate(SCREENS.MEDICATION_FREQUENCY, {
+                      updateDays,
+                      reminder,
+                    })
+                  }}
+                  style={{marginHorizontal: -24, paddingHorizontal: 24}}>
+                  <View
+                    style={[
+                      styles.row,
+                      {
+                        height: 48,
+                        alignItems: 'center',
+                      },
+                    ]}>
+                    <BodyText>
+                      <FormattedMessage id="medicine.frequency" />
                     </BodyText>
-                    <Icon
-                      name="chevron-right"
-                      size={24}
-                      style={{marginLeft: 'auto'}}
-                      color={colors.blue2}
-                    />
+                    <View style={{flexDirection: 'row'}}>
+                      <BodyText style={{color: colors.blue2, marginRight: 16}}>
+                        <FormattedMessage id={frequencyText(reminder.days)} />
+                      </BodyText>
+                      <Icon
+                        name="chevron-right"
+                        size={24}
+                        style={{marginLeft: 'auto'}}
+                        color={colors.blue2}
+                      />
+                    </View>
                   </View>
-                </View>
-              </TouchableHighlight>
-              <Line />
-              <TouchableHighlight
-                underlayColor={colors.grey4}
-                onPress={() => {
-                  navigation.navigate(SCREENS.MEDICATION_TIME, {
-                    updateDayOffset,
-                    reminder,
-                  })
-                }}
-                style={{marginHorizontal: -24, paddingHorizontal: 24}}>
-                <View
-                  style={[
-                    styles.row,
-                    {
-                      height: 48,
-                      alignItems: 'center',
-                    },
-                  ]}>
-                  <BodyText>
-                    <FormattedMessage id="medicine.time" />
-                  </BodyText>
-                  <View style={{flexDirection: 'row'}}>
-                    <BodyText style={{color: colors.blue2, marginRight: 16}}>
-                      {format(reminderDate, 'h:mm a')}
+                </TouchableHighlight>
+                <Line />
+                <TouchableHighlight
+                  underlayColor={colors.grey4}
+                  onPress={() => {
+                    navigation.navigate(SCREENS.MEDICATION_TIME, {
+                      updateDayOffset,
+                      reminder,
+                    })
+                  }}
+                  style={{marginHorizontal: -24, paddingHorizontal: 24}}>
+                  <View
+                    style={[
+                      styles.row,
+                      {
+                        height: 48,
+                        alignItems: 'center',
+                      },
+                    ]}>
+                    <BodyText>
+                      <FormattedMessage id="medicine.time" />
                     </BodyText>
-                    <Icon
-                      name="chevron-right"
-                      size={24}
-                      style={{marginLeft: 'auto'}}
-                      color={colors.blue2}
-                    />
+                    <View style={{flexDirection: 'row'}}>
+                      <BodyText style={{color: colors.blue2, marginRight: 16}}>
+                        {format(reminderDate, 'h:mm a')}
+                      </BodyText>
+                      <Icon
+                        name="chevron-right"
+                        size={24}
+                        style={{marginLeft: 'auto'}}
+                        color={colors.blue2}
+                      />
+                    </View>
                   </View>
-                </View>
-              </TouchableHighlight>
-            </>
-          )}
-        </View>
-        {debugPush && (
-          <View style={[containerStyles.containerSegment]}>
-            <Row>
-              <BodyHeader style={{marginBottom: 15}}>Push Stuff</BodyHeader>
-            </Row>
-            <Row style={{marginBottom: 15}}>
-              <BodyText style={{flex: 1}}>Push permissions:</BodyText>
-              <BodyText>{pushPermission}</BodyText>
-            </Row>
-            <Row>
-              <BodyText style={{flex: 1}}>Device token:</BodyText>
-            </Row>
-            {devicePushToken && (
-              <Row>
-                <BodyText style={{flex: 1}}>{devicePushToken}</BodyText>
-              </Row>
+                </TouchableHighlight>
+              </>
             )}
           </View>
-        )}
+          {debugPush && (
+            <View style={[containerStyles.containerSegment]}>
+              <Row>
+                <BodyHeader style={{marginBottom: 15}}>Push Stuff</BodyHeader>
+              </Row>
+              <Row style={{marginBottom: 15}}>
+                <BodyText style={{flex: 1}}>Push permissions:</BodyText>
+                <BodyText>{pushPermission}</BodyText>
+              </Row>
+              <Row>
+                <BodyText style={{flex: 1}}>Device token:</BodyText>
+              </Row>
+              {devicePushToken && (
+                <Row>
+                  <BodyText style={{flex: 1}}>{devicePushToken}</BodyText>
+                </Row>
+              )}
+            </View>
+          )}
 
-        {isEditing && medication.offline && (
-          <Button
-            style={{
-              marginTop: 22,
-            }}
-            buttonType={ButtonType.Delete}
-            title={intl.formatMessage({id: 'medicine.delete-medicine'})}
-            onPress={() => {
-              Alert.alert(
-                intl.formatMessage({id: 'medicine.delete-medicine'}),
-                intl.formatMessage({id: 'medicine.delete-confirm'}),
-                [
-                  {
-                    text: intl.formatMessage({id: 'general.cancel'}),
-                  },
-                  {
-                    text: intl.formatMessage({id: 'general.delete'}),
-                    style: 'destructive',
-                    onPress: () => {
-                      dispatch(deleteMedication(medication))
-                      navigation.popToTop()
+          {isEditing && medication.offline && (
+            <Button
+              style={{
+                marginTop: 22,
+              }}
+              buttonType={ButtonType.Delete}
+              title={intl.formatMessage({id: 'medicine.delete-medicine'})}
+              onPress={() => {
+                Alert.alert(
+                  intl.formatMessage({id: 'medicine.delete-medicine'}),
+                  intl.formatMessage({id: 'medicine.delete-confirm'}),
+                  [
+                    {
+                      text: intl.formatMessage({id: 'general.cancel'}),
                     },
-                  },
-                ],
-                {cancelable: true},
-              )
+                    {
+                      text: intl.formatMessage({id: 'general.delete'}),
+                      style: 'destructive',
+                      onPress: () => {
+                        dispatch(deleteMedication(medication))
+                        navigation.popToTop()
+                      },
+                    },
+                  ],
+                  {cancelable: true},
+                )
+              }}
+            />
+          )}
+        </View>
+
+        <View
+          style={{
+            padding: 8,
+            backgroundColor: colors.blue3,
+          }}>
+          <Button
+            style={{marginHorizontal: 8}}
+            buttonType={ButtonType.Normal}
+            title={intl.formatMessage({id: 'general.save'})}
+            onPress={() => {
+              saveOrUpdate()
             }}
           />
-        )}
-        <Button
-          style={{marginHorizontal: 8, marginTop: 'auto'}}
-          buttonType={ButtonType.Normal}
-          title={intl.formatMessage({id: 'general.save'})}
-          onPress={() => {
-            saveOrUpdate()
-          }}
-        />
-      </ScrollView>
+        </View>
+      </View>
     </SafeAreaView>
   )
 }
@@ -346,7 +356,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
 export default MedicationDetailsScreen
 
 const styles = StyleSheet.create({
-  scrollContent: {
+  container: {
     paddingTop: 8,
     paddingBottom: 8,
     flex: 1,
