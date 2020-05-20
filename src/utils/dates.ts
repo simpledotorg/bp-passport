@@ -22,7 +22,7 @@ export const getChartDateRange = () => {
   const today = new Date()
   const monthCount = 5
   const start = subMonths(startOfMonth(today), monthCount - 1)
-  const response = []
+  const response: any[] = []
   let currentCount = 0
 
   while (currentCount < monthCount) {
@@ -68,5 +68,6 @@ export const getChartDateRange = () => {
     response.push(month)
     currentCount++
   }
+  console.log('response', response.length)
   return response.flat()
 }
