@@ -19,8 +19,8 @@ export const DEFAULT_LANGUAGE_CODE = LanguageCode.ENGLISH
 export const AVAILABLE_TRANSLATIONS: LanguageCode[] = [
   LanguageCode.ENGLISH,
   LanguageCode.HINDI,
-  /* LanguageCode.MARATHI,
-  LanguageCode.PUNJABI, */
+  /* LanguageCode.MARATHI,*/
+  LanguageCode.PUNJABI,
   LanguageCode.FRENCH,
   LanguageCode.SPANISH,
 ]

@@ -134,6 +134,22 @@ function AddBpScreen({navigation, route}: Props) {
       : setDiastolic(input.replace(/[^0-9]/g, ''))
   }
 
+  useEffect(() => {
+    if (systolicRef?.current?.isFocused()) {
+      if (systolic.length === 3) {
+        if (systolic.match('^[123].*$')) {
+          diastolicRef?.current?.focus()
+        }
+      } else if (systolic.length === 2) {
+        if (systolic.match('^[789].*$')) {
+          diastolicRef?.current?.focus()
+        }
+      }
+    }
+  }, [systolic])
+
+  // paragraph.match(regex)
+
   return (
     <View style={{flex: 1}}>
       <SafeAreaView
@@ -193,6 +209,7 @@ function AddBpScreen({navigation, route}: Props) {
               placeholder={intl.formatMessage({id: 'general.diastolic'})}
               value={diastolic.toString()}
               keyboardType={'number-pad'}
+              returnKeyType={'done'}
               onSubmitEditing={() => {
                 if (!isSaveDisabled()) {
                   save()
