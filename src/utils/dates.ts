@@ -68,6 +68,5 @@ export const getChartDateRange = () => {
     response.push(month)
     currentCount++
   }
-  console.log('response', response.length)
-  return response.flat()
+  return [].concat.apply([], response)
 }
