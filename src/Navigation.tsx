@@ -109,15 +109,6 @@ const Navigation = () => {
       cardStyleInterpolator: forModalPresentationIOS,
       cardOverlayEnabled: true,
     }
-    /*
-    return Platform.OS === 'ios'
-      ? {
-          cardStyleInterpolator: forModalPresentationIOS,
-          cardOverlayEnabled: true,
-        }
-      : {
-          cardStyleInterpolator: forRevealFromBottomAndroid,
-        } */
   }
   return (
     <>
@@ -379,6 +370,8 @@ function MainStack({navigation}: Props) {
         name={SCREENS.HOME}
         component={HomeScreen}
         options={{
+          headerShown: false,
+          /*
           ...navigationStyle,
           headerStyle: {
             ...navigationStyle.headerStyle,
@@ -403,7 +396,7 @@ function MainStack({navigation}: Props) {
             return null
           },
           headerLeft: () => null,
-          gestureEnabled: false,
+          gestureEnabled: false, */
         }}
       />
       <Stack.Screen
