@@ -52,6 +52,8 @@ import {Medication} from '../redux/medication/medication.models'
 import {refreshAllLocalPushReminders} from '../redux/medication/medication.actions'
 import {RouteProp} from '@react-navigation/native'
 
+import {HomeHeader} from '../components'
+
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   SCREENS.HOME
@@ -69,6 +71,8 @@ const HOME_PAGE_SHOW_LIMIT = 3
 function Home({navigation, route}: Props) {
   const dispatch = useThunkDispatch()
 
+  const [hideNav, setHideNav] = useState(false)
+
   const apiUser = patientSelector()
   const passportLinkedState = passportLinkedStateSelector()
 
@@ -82,7 +86,6 @@ function Home({navigation, route}: Props) {
     passportLinkedState === PassportLinkedState.Linked
 
   const showLoading = hasPassportLinked && !apiUser
-
   useEffect(() => {
     // on first load refresh patient data if we have authParams we should refresh the api patient data
     if (
@@ -146,39 +149,73 @@ function Home({navigation, route}: Props) {
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.grey4}]}>
       <StatusBar backgroundColor={colors.blue1} barStyle="light-content" />
-      <View style={{position: 'absolute', marginTop: -1}}>
-        <View style={{backgroundColor: colors.blue1, height: 30}} />
+      <View
+        style={{
+          position: 'absolute',
+          backgroundColor: colors.blue1,
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 50,
+        }}
+      />
+      <View style={{flex: 1}}>
         <View
-          style={[
-            containerStyles.fill,
-            {
-              width: 0,
-              height: 0,
-              marginTop: 0,
-              backgroundColor: 'transparent',
-              borderStyle: 'solid',
-              borderTopWidth: 50,
-              borderRightWidth: Dimensions.get('window').width,
-              borderBottomWidth: 0,
-              borderLeftWidth: 0,
-              borderTopColor: colors.blue1,
-              borderRightColor: 'transparent',
-              borderBottomColor: 'transparent',
-              borderLeftColor: colors.blue1,
-            },
-          ]}
-        />
-      </View>
-      {showLoading && (
-        <View style={[containerStyles.fill]}>
-          <ContentLoadingSegment size={ContentLoadingSegmentSize.Small} />
-          <ContentLoadingSegment size={ContentLoadingSegmentSize.Large} />
-          <ContentLoadingSegment size={ContentLoadingSegmentSize.Small} />
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+          }}>
+          <HomeHeader hideNav={hideNav} />
+          <View style={{backgroundColor: colors.blue1, height: 30}} />
+          <View
+            style={[
+              containerStyles.fill,
+              {
+                width: 0,
+                height: 0,
+                marginTop: 0,
+                backgroundColor: 'transparent',
+                borderStyle: 'solid',
+                borderTopWidth: 50,
+                borderRightWidth: Dimensions.get('window').width,
+                borderBottomWidth: 0,
+                borderLeftWidth: 0,
+                borderTopColor: colors.blue1,
+                borderRightColor: 'transparent',
+                borderBottomColor: 'transparent',
+                borderLeftColor: colors.blue1,
+              },
+            ]}
+          />
         </View>
-      )}
-      {!showLoading && (
-        <>
-          <ScrollView contentContainerStyle={styles.scrollContent}>
+
+        {showLoading && (
+          <View style={[containerStyles.fill, {marginTop: 103}]}>
+            <ContentLoadingSegment size={ContentLoadingSegmentSize.Small} />
+            <ContentLoadingSegment size={ContentLoadingSegmentSize.Large} />
+            <ContentLoadingSegment size={ContentLoadingSegmentSize.Small} />
+          </View>
+        )}
+        {!showLoading && (
+          <ScrollView
+            style={styles.scrollContainer}
+            onScroll={(event: any) => {
+              const scrollY: number = event.nativeEvent.contentOffset.y
+              //console.log('scrollY', scrollY)
+              if (scrollY > 90) {
+                if (!hideNav) {
+                  setHideNav(true)
+                }
+              } else {
+                if (hideNav) {
+                  setHideNav(false)
+                }
+              }
+            }}
+            contentContainerStyle={styles.scrollContentContainer}
+            showsVerticalScrollIndicator={false}>
             <View style={[containerStyles.containerSegment]}>
               <BodyHeader
                 style={[
@@ -389,8 +426,8 @@ function Home({navigation, route}: Props) {
               </View>
             </View>
           </ScrollView>
-        </>
-      )}
+        )}
+      </View>
     </SafeAreaView>
   )
 }
@@ -398,7 +435,11 @@ function Home({navigation, route}: Props) {
 export default Home
 
 const styles = StyleSheet.create({
-  scrollContent: {
+  scrollContainer: {
+    marginTop: 103,
+    overflow: 'visible',
+  },
+  scrollContentContainer: {
     paddingBottom: 20,
   },
   buttonContainer: {

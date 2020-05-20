@@ -1,14 +1,55 @@
 import React, {useEffect} from 'react'
-import {View, Text, Image, StyleSheet} from 'react-native'
+import {View, Text, Image, StyleSheet, StyleProp, ViewStyle} from 'react-native'
 import {containerStyles, navigation, colors, iconHomeHeader} from '../styles'
 import {FormattedMessage} from 'react-intl'
 import {PassportLinkedState} from '../redux/auth/auth.models'
 import {passportLinkedStateSelector} from '../redux/auth/auth.selectors'
+import {useNavigation} from '@react-navigation/native'
 
 import {patientSelector} from '../redux/patient/patient.selectors'
 import {passportSelector} from '../redux/auth/auth.selectors'
+import {ButtonIcon} from './button'
+import SCREENS from '../constants/screens'
 
-export const HomeHeaderTitle = () => {
+type Props = {
+  hideNav: boolean
+}
+
+export const HomeHeader = ({hideNav}: Props) => {
+  const passportLinkedState = passportLinkedStateSelector()
+  const navigation = useNavigation()
+  return (
+    <View
+      style={{
+        flex: 1,
+        height: 103,
+        backgroundColor: colors.blue1,
+        flexDirection: 'row',
+        alignItems: 'center',
+      }}>
+      <View style={{width: 50}} />
+      <HomeHeaderTitle contentOpacity={hideNav ? 0 : 1} />
+      <View style={{width: 50}}>
+        {passportLinkedState !== PassportLinkedState.Linking && (
+          <ButtonIcon
+            iconName="settings"
+            iconColor={colors.grey3}
+            onPress={() => {
+              navigation.navigate(SCREENS.SETTINGS)
+            }}
+            style={{marginRight: 8}}
+          />
+        )}
+      </View>
+    </View>
+  )
+}
+
+type HomeHeaderTitleProps = {
+  contentOpacity: number
+}
+
+export const HomeHeaderTitle = (props: HomeHeaderTitleProps) => {
   const passportLinkedState = passportLinkedStateSelector()
   const apiUser = patientSelector()
   const passport = passportSelector()
@@ -45,6 +86,7 @@ export const HomeHeaderTitle = () => {
           style={{
             ...navigation.homeHeaderTitleStyle,
             marginHorizontal: 11,
+            opacity: props.contentOpacity,
           }}
           numberOfLines={1}>
           BP Passport
@@ -60,6 +102,7 @@ export const HomeHeaderTitle = () => {
           style={{
             ...navigation.homeHeaderTitleStyle,
             marginHorizontal: 43,
+            opacity: props.contentOpacity,
           }}
           numberOfLines={1}>
           {apiUser?.full_name}
