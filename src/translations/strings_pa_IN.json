@@ -152,5 +152,5 @@
   "medicine.custom": "ਕਸਟਮ",
   "medicine.allow-notifications-title": "ਸੂਚਨਾਵਾਂ ਦੀ ਇਜ਼ਾਜ਼ਤ ਦਿਓ",
   "medicine.allow-notifications-body": "ਦਵਾਈਆਂ ਦਾ ਰਿਮਾਇੰਡਰ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਸੁਚਨਾਂਵਾਂ ਦੀ ਇਜ਼ਾਜ਼ਤ ਦਿਓ",
-  "medicine.reminder-notification": "{ਦਿਨ} {ਸਮਾਂ}, ਆਪਣੀ ਦਵਾਈ ਲਓ"
+  "medicine.reminder-notification": "{day} {time}, ਆਪਣੀ ਦਵਾਈ ਲਓ"
 }
