@@ -60,7 +60,7 @@
   "page-titles.new-bs": "ਬਲੱਡ ਸ਼ੂਗਰ ਸ਼ਾਮਲ ਕਰੋ",
   "page-titles.add-medicine": "ਦਵਾਈ ਸ਼ਾਮਲ ਕਰੋ",
   "general.sheet-high-disclaimer": "ਉੱਚ {label} {limit} ਤੋਂ ਉਪਰ ਹੈ। ਨੋਟ,  ਤੁਹਾਡਾ ਨਿੱਜੀ \"ਉੱਚ\" {label} ਵੱਖਰਾ ਹੋ ਸਕਦਾ ਹੈ। ਆਪਣੇ ਡਾਕਟਰ ਨਾਲ ਵਿਚਾਰ ਕਰੋ।",
-  "general.sheet-normal-disclaimer": "ਸਧਾਰਣ {ਲੇਬਲ} {ਸੀਮਾ}  ਜਿੰਨ੍ਹਾ ਜਾਂ ਇਸ ਤੋਂ ਘੱਟ ਹੈ। ਨੋਟ, ਤੁਹਾਡਾ ਨਿੱਜੀ \"ਸਾਧਾਰਣ\" {ਲੇਬਲ} ਵੱਖਰਾ ਹੋ ਸਕਦਾ ਹੈ। ਆਪਣੇ ਡਾਕਟਰ ਨਾਲ ਵਿਚਾਰ ਕਰੋ।",
+  "general.sheet-normal-disclaimer": "ਸਧਾਰਣ {label} {limit}  ਜਿੰਨ੍ਹਾ ਜਾਂ ਇਸ ਤੋਂ ਘੱਟ ਹੈ। ਨੋਟ, ਤੁਹਾਡਾ ਨਿੱਜੀ \"ਸਾਧਾਰਣ\" {label} ਵੱਖਰਾ ਹੋ ਸਕਦਾ ਹੈ। ਆਪਣੇ ਡਾਕਟਰ ਨਾਲ ਵਿਚਾਰ ਕਰੋ।",
   "general.add-bs": "ਬਲੱਡ ਸ਼ੂਗਰ ਸ਼ਾਮਲ ਕਰੋ ",
   "general.save": "ਸੁਰੱਖਿਅਤ ਕਰੋ",
   "general.done": "ਹੋ ਗਿਆ",
