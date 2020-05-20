@@ -53,10 +53,8 @@ export const BsInformation = ({bs, style = {}}: Props) => {
     <View
       style={{
         flexDirection: 'row',
-        flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
+        flex: 1,
       }}>
       <View
         style={{
@@ -70,7 +68,6 @@ export const BsInformation = ({bs, style = {}}: Props) => {
             style={{
               flexDirection: 'row',
               flexWrap: 'wrap',
-              flex: 1,
             }}>
             <BodyText
               style={{
@@ -78,17 +75,16 @@ export const BsInformation = ({bs, style = {}}: Props) => {
                 color: colors.grey0,
                 fontWeight: '500',
               }}>
-              {`${bs.blood_sugar_value}`}
+              {`${Number(bs.blood_sugar_value)}`}
               {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
                 <>
                   <BodyText>%</BodyText>{' '}
-                  <FormattedMessage id={details.languageTypeCode} />
+                  <FormattedMessage id={details.languageTypeCode} />{' '}
                 </>
               ) : (
                 <>
-                  {' '}
                   <FormattedMessage id="bs.mgdl" />{' '}
-                  <FormattedMessage id={details.languageTypeCode} />
+                  <FormattedMessage id={details.languageTypeCode} />{' '}
                 </>
               )}
             </BodyText>
@@ -97,7 +93,6 @@ export const BsInformation = ({bs, style = {}}: Props) => {
                 fontSize: 18,
                 color: colors.grey0,
                 fontWeight: '500',
-                marginLeft: 8,
               }}>
               {getBSText()}
             </BodyText>
@@ -111,12 +106,7 @@ export const BsInformation = ({bs, style = {}}: Props) => {
           </BodyText>
         </View>
       </View>
-      <Icon
-        name="chevron-right"
-        size={24}
-        style={{marginLeft: 'auto'}}
-        color={colors.grey3}
-      />
+      <Icon name="chevron-right" size={24} color={colors.grey3} />
     </View>
   )
 }
@@ -125,7 +115,6 @@ const styles = StyleSheet.create({
   bsText: {
     fontWeight: '500',
     fontSize: 18,
-    marginLeft: 'auto',
     textAlign: 'center',
   },
   informationIcon: {
