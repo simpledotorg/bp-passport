@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import {colors, redHeart} from '../styles'
 import {BodyText} from './'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
+import {dateLocale, LanguageCode} from '../constants/languages'
 
 type Props = {
   bp: BloodPressure
@@ -22,7 +23,9 @@ export const BpInformation = ({bp, style = {}}: Props) => {
 
   const displayDate = (bpIn: BloodPressure) => {
     return bpIn.recorded_at
-      ? format(new Date(bpIn.recorded_at), 'dd-MMM-yyy')
+      ? format(new Date(bpIn.recorded_at), 'dd-MMM-yyy', {
+          locale: dateLocale(),
+        })
       : null
   }
 

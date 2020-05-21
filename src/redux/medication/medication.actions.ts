@@ -5,6 +5,7 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios'
 import PushNotificationAndroid from 'react-native-push-notification'
 import {IntlShape} from 'react-intl'
 import {format} from 'date-fns'
+import {dateLocale} from '../../constants/languages'
 
 export const mergeMedications = (medications: Medication[]) => ({
   type: MedicationActionTypes.MERGE_MEDICATIONS,
@@ -68,7 +69,9 @@ export const refreshAllLocalPushReminders = (
           }
           const dayString = intl.formatMessage({id: dayToKeyString(day, true)})
           const whenDay = `${dayString}`
-          const whenTime = `${format(fireDate, 'h:mm a')}`
+          const whenTime = `${format(fireDate, 'h:mm a', {
+            locale: dateLocale(),
+          })}`
 
           const body = intl.formatMessage(
             {id: 'medicine.reminder-notification'},
