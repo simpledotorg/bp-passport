@@ -128,7 +128,7 @@
   "bs.random-blood-code": "RBS",
   "bs.fasting-blood-sugar": "১২ ঘন্টা উপবাস পর রক্তে চিনির মাত্রা /Fasting blood sugar (FBS)  ",
   "bs.fasting-code": "FBS",
-  "bs.post-prandial": " রক্তে চিনির ধরণ নির্ধারণ করন (PPBS)",
+  "bs.post-prandial": " Postprandial blood sugar (PPBS)",
   "bs.post-prenial-code": "PPBS",
   "bs.hemoglobic": "হিমোগ্লোবিন এ 1 সি (HbA1C)",
   "bs.hemoglobic-code": "HbA1C",
