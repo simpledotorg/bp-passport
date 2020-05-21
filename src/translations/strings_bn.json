@@ -8,7 +8,7 @@
   "login.scan-passport": "পাসপোর্টটি স্ক্যান করুন",
   "login.no-bp-passport": "আপনার বিপি পাসপোর্ট নেই?",
   "login.get-started": "এবার শুরু করি ",
-  "login.by-using-app": "এই অ্যাপ্লটি ব্যবহারে আপনি আমাদের {গোপনীয়তা} এবং {শর্তাদিতে} সম্মত",
+  "login.by-using-app": "এই অ্যাপটি ব্যবহারের মাধ্যমে আপনি আমাদের {গোপনীয়তা} এবং {শর্তাদিতে} সম্মত হলেন",
   "login.privacy-policy-link": "গোপনীয়তা নীতি",
   "login.terms-of-use-link": "ব্যবহারের শর্তাবলী",
   "login.camera-access": "ক্যামেরায় প্রবেশ করা",
