@@ -37,7 +37,7 @@
   "add-bp.please-enter-error": "দয়া করে রক্তচাপের মানটি প্রবেশ করান",
   "add-bs.bs-less-than-error": "মানটি {মান} এর চেয়ে কম হতে পারে না ",
   "add-bs.bs-more-than-error": "মানটি {মান} এর চেয়ে বেশী হতে পারে না",
-  "add-bs.please-enter-error": "দয়া করে রক্তে চিনির মানটি প্রবেশ করান",
+  "add-bs.please-enter-error": "দয়া করে রক্তে চিনির মাত্রার মানটি প্রবেশ করান",
   "settings.profile": "পরিচয়",
   "settings.name": "নাম",
   "settings.state": "রাষ্ট্র",
