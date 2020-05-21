@@ -37,7 +37,7 @@
   "add-bp.please-enter-error": "कृपया बी.पी दर्ज करें",
   "add-bs.bs-less-than-error": "वैल्यू {value} से कम नहीं हो सकती ",
   "add-bs.bs-more-than-error": "वैल्यू {value} से अधिक नहीं हो सकती ",
-  "add-bs.please-enter-error": "कृपया एक ब्लड शुगर दर्ज करें",
+  "add-bs.please-enter-error": "कृपया ब्लड शुगर दर्ज करें",
   "settings.profile": "प्रोफ़ाइल",
   "settings.name": "नाम",
   "settings.state": "राज्य",
