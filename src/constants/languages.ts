@@ -4,6 +4,7 @@ import mrTranslations from '../translations/strings_mr_IN.json'
 import paTranslations from '../translations/strings_pa_IN.json'
 import frTranslations from '../translations/strings_fr.json'
 import esTranslations from '../translations/strings_es.json'
+import bnTranslations from '../translations/strings_bn.json'
 
 export enum LanguageCode {
   ENGLISH = 'en',
@@ -89,5 +90,7 @@ export const translationsForCode = (code: LanguageCode) => {
       return frTranslations
     case LanguageCode.SPANISH:
       return esTranslations
+    case LanguageCode.BENGALI:
+      return bnTranslations
   }
 }
