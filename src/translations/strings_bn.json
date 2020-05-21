@@ -147,7 +147,7 @@
   "medicine.delete-medicine": "ঔষধের নাম মুছে ফেলুন",
   "medicine.delete-confirm": "এটি ঔষধের নাম স্থায়ীভাবে মুছে ফেলবে। আপনি কি নিশ্চিত?",
   "medicine.daily": "দৈনিক",
-  "medicine.weekdays": "কাজের দিন ",
+  "medicine.weekdays": "সপ্তাহের কাজের দিনগুলো ",
   "medicine.weekends": "সপ্তাহান্তিক দিন ",
   "medicine.custom": "নিজস্ব প্রণালী",
   "medicine.allow-notifications-title": "প্রজ্ঞাপনের অনুমতি দিন",
