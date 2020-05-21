@@ -151,6 +151,6 @@
   "medicine.weekends": "সপ্তাহের ছুটির দিনগুলো",
   "medicine.custom": "নিজস্ব প্রণালী",
   "medicine.allow-notifications-title": "প্রজ্ঞাপনের অনুমতি দিন",
-  "medicine.allow-notifications-body": "ঔষধ  গ্রহণ করার প্রজ্ঞাপন পেতে অনুমতি দিন",
+  "medicine.allow-notifications-body": "ঔষধ খাওয়ার কথা মনে করিয়ে দেয়ার নোটিফিকেশন পেতে অনুমতি দিন",
   "medicine.reminder-notification": "{ দিন} {সময়}, আপনার ওষুধ গ্রহণ করুন"
 }
