@@ -16,7 +16,7 @@
   "scan-bp-passport.hold-camera": "বিপি পাসপোর্টের উপরের এই প্রতীকটির উপর ক্যামেরা ধরে রাখুন",
   "scan-bp-passport.cant-verify-account": "অ্যাকাউন্ট যাচাই করা যাচ্ছে না \n",
   "scan-bp-passport.dont-have-phone-number": "আপনার বিপি পাসপোর্টের সংশ্লিষ্ট কোন ফোন নম্বর আমাদের কাছে নেই। কয়েক সপ্তাহের মধ্যে আবার চেষ্টা করুন।",
-  "verify-pin.please-verify": "যাচাইপূর্বক 6 ডিজিটের কোড, আমরা যা আপনাকে পাঠিয়েছি তা দয়া করে প্রবেশ করান\n",
+  "verify-pin.please-verify": "6 ডিজিটের যাচাই কোড, যা আপনাকে আমরা পাঠিয়েছিলাম, তা দয়া করে প্রবেশ করান\n",
   "verify-pin.code": "কোড",
   "verify-pin.wrong-pin": "সঠিক কোড প্রবেশ করান",
   "verify-pin.no-pin": "কোন কোড পাননি?",
