@@ -13,7 +13,7 @@
   "login.terms-of-use-link": "ব্যবহারের শর্তাবলী",
   "login.camera-access": "ক্যামেরায় প্রবেশ করা",
   "login.allow-camera-access": "দয়া করে সেটিংসে ক্যামেরায় প্রবেশের অনুমতি দিন",
-  "scan-bp-passport.hold-camera": "বিপি পাসপোর্টের উপরের প্রতীকটির উপর ক্যামেরা ধরে রাখুন",
+  "scan-bp-passport.hold-camera": "বিপি পাসপোর্টের উপরের এই প্রতীকটির উপর ক্যামেরা ধরে রাখুন",
   "scan-bp-passport.cant-verify-account": "অ্যাকাউন্ট যাচাই করা যাচ্ছে না \n",
   "scan-bp-passport.dont-have-phone-number": "আপনার বিপি পাসপোর্টের সংশ্লিষ্ট আমাদের কোন ফোন নম্বর যুক্ত নেই। কয়েক সপ্তাহের মধ্যে আবার চেষ্টা করুন।",
   "verify-pin.please-verify": "যাচাইপূর্বক 6 ডিজিটের কোড, আমরা যা আপনাকে পাঠিয়েছি তা দয়া করে প্রবেশ করান\n",
