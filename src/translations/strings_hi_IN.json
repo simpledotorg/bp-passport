@@ -133,7 +133,7 @@
   "bs.hemoglobic": "हेमोग्लोबिन A1C (Hb A1C)\n ",
   "bs.hemoglobic-code": "HbA1C",
   "bs.mgdl": "mg/dl",
-  "bs.select-rbs-if-unsure": "RBS चुने अगर पक्की तरह से नहीं मालूम",
+  "bs.select-rbs-if-unsure": "अगर सही तरह से नहीं मालूम तो RBS चुने ",
   "bs.bs-trend": "ब्लड शुगर प्रवृत्ति",
   "bs.bs-details": "ब्लड शुगर विस्तार",
   "bs.delete-bs": "ब्लड शुगर हटायें",
