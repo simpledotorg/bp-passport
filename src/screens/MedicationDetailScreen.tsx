@@ -357,7 +357,7 @@ export default MedicationDetailsScreen
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 8,
+    paddingTop: 18,
     paddingBottom: 8,
     flex: 1,
   },
