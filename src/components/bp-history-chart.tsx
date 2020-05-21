@@ -289,6 +289,43 @@ export const BpHistoryChart = ({bps}: Props) => {
         /> */}
 
         {/* LINE CHART */}
+
+        <VictoryLine
+          data={[...chartData.low, ...chartData.high].map((bp, index) => {
+            try {
+              return {
+                x: bp.index,
+                y: bp.averaged.systolic,
+              }
+            } catch (e) {
+              return null
+            }
+          })}
+          style={{
+            data: {
+              stroke: colors.green1,
+            },
+          }}
+        />
+
+        <VictoryLine
+          data={[...chartData.low, ...chartData.high].map((bp) => {
+            try {
+              return {
+                x: bp.index,
+                y: bp.averaged.diastolic,
+              }
+            } catch (e) {
+              return null
+            }
+          })}
+          style={{
+            data: {
+              stroke: colors.green1,
+            },
+          }}
+        />
+
         <VictoryLine
           data={[...chartData.low, ...chartData.high].map((bp) => {
             if (bp.list.length) {
@@ -319,40 +356,6 @@ export const BpHistoryChart = ({bps}: Props) => {
           style={{
             data: {
               stroke: colors.red1,
-            },
-          }}
-        />
-
-        <VictoryLine
-          data={chartData.low.map((bp) => {
-            if (bp.list.length) {
-              return {
-                x: bp.index,
-                y: bp.averaged.systolic,
-              }
-            }
-            return null
-          })}
-          style={{
-            data: {
-              stroke: colors.green1,
-            },
-          }}
-        />
-
-        <VictoryLine
-          data={chartData.low.map((bp) => {
-            if (bp.list.length) {
-              return {
-                x: bp.index,
-                y: bp.averaged.diastolic,
-              }
-            }
-            return null
-          })}
-          style={{
-            data: {
-              stroke: colors.green1,
             },
           }}
         />
