@@ -83,6 +83,7 @@ export const BsInformation = ({bs, style = {}}: Props) => {
                 </>
               ) : (
                 <>
+                  {' '}
                   <FormattedMessage id="bs.mgdl" />{' '}
                   <FormattedMessage id={details.languageTypeCode} />{' '}
                 </>
