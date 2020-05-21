@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 import {
   Dimensions,
   SafeAreaView,
@@ -9,6 +9,7 @@ import {
   AppState,
   Platform,
   TouchableHighlight,
+  Animated,
 } from 'react-native'
 import {useIntl, FormattedMessage} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -71,6 +72,8 @@ const HOME_PAGE_SHOW_LIMIT = 3
 function Home({navigation, route}: Props) {
   const dispatch = useThunkDispatch()
 
+  const opacityNavAnim = useRef(new Animated.Value(1)).current
+  const [scrollContentOffset, setScrollContentOffset] = useState(0)
   const [hideNav, setHideNav] = useState(false)
 
   const apiUser = patientSelector()
@@ -167,7 +170,11 @@ function Home({navigation, route}: Props) {
             left: 0,
             right: 0,
           }}>
-          <HomeHeader hideNav={hideNav} />
+          <View style={{backgroundColor: colors.blue1}}>
+            <Animated.View style={{opacity: opacityNavAnim}}>
+              <HomeHeader hideNav={false} />
+            </Animated.View>
+          </View>
           <View style={{backgroundColor: colors.blue1, height: 30}} />
           <View
             style={[
@@ -201,17 +208,26 @@ function Home({navigation, route}: Props) {
         {!showLoading && (
           <ScrollView
             style={styles.scrollContainer}
+            scrollEventThrottle={100}
             onScroll={(event: any) => {
               const scrollY: number = event.nativeEvent.contentOffset.y
-              //console.log('scrollY', scrollY)
-              if (scrollY > 90) {
-                if (!hideNav) {
-                  setHideNav(true)
-                }
+
+              if (scrollY > 150) {
+                opacityNavAnim.setValue(0)
+                /*
+                Animated.timing(opacityNavAnim, {
+                  toValue: 0,
+                  duration: 100,
+                  useNativeDriver: true,
+                }).start() */
               } else {
-                if (hideNav) {
-                  setHideNav(false)
-                }
+                opacityNavAnim.setValue(1)
+                /*
+                Animated.timing(opacityNavAnim, {
+                  toValue: 1,
+                  duration: 100,
+                  useNativeDriver: true,
+                }).start() */
               }
             }}
             contentContainerStyle={styles.scrollContentContainer}

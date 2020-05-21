@@ -154,7 +154,9 @@ function AddBpScreen({navigation, route}: Props) {
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white100}]}>
-        <ScrollView style={{padding: 24, flex: 1}}>
+        <ScrollView
+          style={{padding: 24, flex: 1}}
+          keyboardShouldPersistTaps="handled">
           <View style={{flexDirection: 'row'}}>
             <TextInput
               maxLength={6}
@@ -225,6 +227,7 @@ function AddBpScreen({navigation, route}: Props) {
               marginTop: 24,
             }}
             onPress={() => {
+              console.log('onPress')
               save()
             }}
           />
