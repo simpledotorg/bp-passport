@@ -29,7 +29,7 @@
   "home.add-medicine": "दवाई जोड़ें",
   "home.add-bs": "ब्लड शुगर जोड़ें",
   "all-bp.bp-trend": "बीपी प्रवृत्ति",
-  "all-bp.bp-details": "बीपी विस्तार",
+  "all-bp.bp-details": "बी.पी ",
   "add-bp.systolic-less-than-error": "सिस्टोलिक 70 से कम नहीं हो सकता",
   "add-bp.systolic-greater-than-error": "सिस्टोलिक 300 से अधिक नहीं हो सकता",
   "add-bp.diastolic-less-than-error": "डायस्टोलिक 40 से कम नहीं हो सकता",
