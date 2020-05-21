@@ -47,6 +47,7 @@ import {
   pushNotificationPermissionSelector,
 } from '../redux/notifications/notifications.selectors'
 import {setPushNotificationPermission} from '../redux/notifications/notifications.actions'
+import {dateLocale} from '../constants/languages'
 
 type MedicationDetailsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -269,7 +270,9 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                     </BodyText>
                     <View style={{flexDirection: 'row'}}>
                       <BodyText style={{color: colors.blue2, marginRight: 16}}>
-                        {format(reminderDate, 'h:mm a')}
+                        {format(reminderDate, 'h:mm a', {
+                          locale: dateLocale(),
+                        })}
                       </BodyText>
                       <Icon
                         name="chevron-right"

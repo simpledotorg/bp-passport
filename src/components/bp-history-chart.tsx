@@ -16,6 +16,7 @@ import {colors} from '../styles'
 import {generateChartData} from '../utils/data-transform'
 import {DateRange} from '../utils/dates'
 import {BodyText} from './text'
+import {dateLocale} from '../constants/languages'
 
 type Props = {
   bps: BloodPressure[]
@@ -137,6 +138,9 @@ export const BpHistoryChart = ({bps}: Props) => {
                 {format(
                   addMonths(chartData.dates[0].interval.start, index),
                   'MMM',
+                  {
+                    locale: dateLocale(),
+                  },
                 )}
               </BodyText>
               <BodyText
@@ -149,6 +153,9 @@ export const BpHistoryChart = ({bps}: Props) => {
                 {format(
                   addMonths(chartData.dates[0].interval.start, index),
                   'yyy',
+                  {
+                    locale: dateLocale(),
+                  },
                 )}
               </BodyText>
             </View>
@@ -180,6 +187,9 @@ export const BpHistoryChart = ({bps}: Props) => {
             return format(
               addMonths(chartData.dates[0].interval.start, tick / 4),
               'MMM-yy',
+              {
+                locale: dateLocale(),
+              },
             )
           }}
           tickValues={chartData.dates.map((date, index) => index)}

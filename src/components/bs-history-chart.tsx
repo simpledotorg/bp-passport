@@ -25,6 +25,7 @@ import {isHighBloodSugar} from '../utils/blood-sugars'
 import {BodyText} from './text'
 import {DateRange} from '../utils/dates'
 import {generateChartData} from '../utils/data-transform'
+import { dateLocale } from '../constants/languages'
 
 type Props = {
   bss: BloodSugar[]
@@ -280,8 +281,10 @@ export const BsHistoryChart = ({bss}: Props) => {
                   }}>
                   {format(
                     addMonths(chartData.dates[0].interval.start, index),
-                    'MMM',
-                  )}
+                    'MMM', {
+                      locale: dateLocale(),
+                    }
+                  ),}
                 </BodyText>
                 <BodyText
                   style={{
@@ -292,7 +295,9 @@ export const BsHistoryChart = ({bss}: Props) => {
                   }}>
                   {format(
                     addMonths(chartData.dates[0].interval.start, index),
-                    'yyy',
+                    'yyy', {
+                      locale: dateLocale(),
+                    }
                   )}
                 </BodyText>
               </View>

@@ -16,6 +16,7 @@ import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {useThunkDispatch} from '../redux/store'
 import {deleteBloodPressure} from '../redux/blood-pressure/blood-pressure.actions'
 import {ButtonType} from './button'
+import {dateLocale} from '../constants/languages'
 
 type Props = {
   bp: BloodPressure
@@ -34,7 +35,9 @@ export const BpModal = ({bp, close}: Props) => {
 
   const displayDate = (bpIn: BloodPressure) => {
     return bpIn.recorded_at
-      ? format(new Date(bpIn.recorded_at), `dd-MMM-yyy '-' HH:mm`)
+      ? format(new Date(bpIn.recorded_at), `dd-MMM-yyy '-' HH:mm`, {
+          locale: dateLocale(),
+        })
       : null
   }
 

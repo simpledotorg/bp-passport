@@ -42,11 +42,11 @@ export const AVAILABLE_TRANSLATIONS: LanguageCode[] = [
 export const dateLocale = () => {
   const reduxState = store.getState() as RootState
   const code: LanguageCode = reduxState.patient.locale ?? DEFAULT_LANGUAGE_CODE
-
   switch (code) {
     case LanguageCode.HINDI:
       return hi
     case LanguageCode.BENGALI:
+      console.log('YOYO: ', bn)
       return bn
     case LanguageCode.FRENCH:
       return fr
