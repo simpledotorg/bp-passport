@@ -28,7 +28,7 @@
   "home.my-blood-sugar": "আমার রক্তে চিনির মাত্রা",
   "home.add-medicine": "ঔষধ সংযুক্ত করুন",
   "home.add-bs": "রক্তে চিনির মাত্রা - সংযুক্ত করুন",
-  "all-bp.bp-trend": "বিপি গতি প্রবণতা",
+  "all-bp.bp-trend": "রক্তচাপের প্রবণতা",
   "all-bp.bp-details": "বিপি- বিস্তারিত",
   "add-bp.systolic-less-than-error": "সিস্টোলিক 70 এর চেয়ে কম হতে পারে না",
   "add-bp.systolic-greater-than-error": " সিস্টোলিক 300 এর বেশি হতে পারে না",
