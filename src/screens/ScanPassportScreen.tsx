@@ -6,7 +6,7 @@ import {RNCamera, BarCodeType} from 'react-native-camera'
 import {StackNavigationProp} from '@react-navigation/stack'
 
 import {containerStyles, qrImage, qrMaskImage, colors} from '../styles'
-import {BodyHeader, LoadingOverlay} from '../components'
+import {BodyHeader, BodyText, LoadingOverlay} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {useThunkDispatch} from '../redux/store'
@@ -117,13 +117,13 @@ function ScanPassportScreen({navigation}: Props) {
               }}
               source={qrImage}
             />
-            <BodyHeader
+            <BodyText
               style={{
-                fontSize: 20,
+                fontSize: 18,
                 flex: 1,
               }}>
               <FormattedMessage id="scan-bp-passport.hold-camera" />
-            </BodyHeader>
+            </BodyText>
           </View>
           <View
             style={{

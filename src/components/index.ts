@@ -1,4 +1,4 @@
-export {HomeHeaderTitle} from './home-header'
+export {HomeHeader, HomeHeaderTitle} from './home-header'
 export {Button, ButtonIcon, ButtonType} from './button'
 export {Line} from './line'
 export {Link} from './links'

@@ -16,6 +16,7 @@ import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {useThunkDispatch} from '../redux/store'
 import {deleteBloodPressure} from '../redux/blood-pressure/blood-pressure.actions'
 import {ButtonType} from './button'
+import {dateLocale} from '../constants/languages'
 
 type Props = {
   bp: BloodPressure
@@ -34,7 +35,9 @@ export const BpModal = ({bp, close}: Props) => {
 
   const displayDate = (bpIn: BloodPressure) => {
     return bpIn.recorded_at
-      ? format(new Date(bpIn.recorded_at), `dd-MMM-yyy '-' HH:mm`)
+      ? format(new Date(bpIn.recorded_at), `dd-MMM-yyy '-' HH:mm`, {
+          locale: dateLocale(),
+        })
       : null
   }
 
@@ -106,7 +109,7 @@ export const BpModal = ({bp, close}: Props) => {
         </BodyHeader>
         <View style={{flexDirection: 'row'}}>
           <Image source={redHeart} />
-          <View style={{paddingLeft: 16, width: '90%'}}>
+          <View style={{paddingLeft: 16, flex: 1}}>
             <BodyText
               style={{
                 lineHeight: 26,
@@ -125,7 +128,7 @@ export const BpModal = ({bp, close}: Props) => {
             <BodyText
               style={{
                 lineHeight: 26,
-                paddingTop: 12,
+                paddingTop: 8,
                 fontSize: 16,
                 color: colors.grey1,
               }}>
@@ -133,7 +136,7 @@ export const BpModal = ({bp, close}: Props) => {
             </BodyText>
 
             {bp.facility && (
-              <BodyText style={{lineHeight: 26, paddingTop: 12}}>
+              <BodyText style={{lineHeight: 26, paddingTop: 8}}>
                 <FormattedMessage
                   id="general.recorded_at"
                   values={{

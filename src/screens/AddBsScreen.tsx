@@ -132,7 +132,7 @@ function AddBsScreen({navigation, route}: Props) {
     }
 
     if (errors) {
-      errorShowTimeout = setTimeout(() => setShowErrors(true), 2000)
+      errorShowTimeout = setTimeout(() => setShowErrors(true), 1500)
     } else {
       setShowErrors(false)
     }
@@ -163,7 +163,8 @@ function AddBsScreen({navigation, route}: Props) {
           style={{
             flex: 1,
             padding: 24,
-          }}>
+          }}
+          keyboardShouldPersistTaps="handled">
           <View
             style={{
               position: 'relative',

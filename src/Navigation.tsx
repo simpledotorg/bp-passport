@@ -109,15 +109,6 @@ const Navigation = () => {
       cardStyleInterpolator: forModalPresentationIOS,
       cardOverlayEnabled: true,
     }
-    /*
-    return Platform.OS === 'ios'
-      ? {
-          cardStyleInterpolator: forModalPresentationIOS,
-          cardOverlayEnabled: true,
-        }
-      : {
-          cardStyleInterpolator: forRevealFromBottomAndroid,
-        } */
   }
   return (
     <>
@@ -182,9 +173,12 @@ type Props = {
 const sharedNavigationOptions: StackNavigationOptions = {
   headerTitleAlign: 'left',
   headerTitleContainerStyle: {left: 56},
-  headerBackImage: () => {
-    return <ButtonIcon iconName="arrow-back" iconColor={colors.white} />
-  },
+  headerBackImage:
+    Platform.OS === 'ios'
+      ? () => {
+          return <ButtonIcon iconName="arrow-back" iconColor={colors.white} />
+        }
+      : undefined,
   headerBackTitle: ' ',
   headerTintColor: colors.white100,
 }
@@ -376,6 +370,8 @@ function MainStack({navigation}: Props) {
         name={SCREENS.HOME}
         component={HomeScreen}
         options={{
+          headerShown: false,
+          /*
           ...navigationStyle,
           headerStyle: {
             ...navigationStyle.headerStyle,
@@ -400,7 +396,7 @@ function MainStack({navigation}: Props) {
             return null
           },
           headerLeft: () => null,
-          gestureEnabled: false,
+          gestureEnabled: false, */
         }}
       />
       <Stack.Screen

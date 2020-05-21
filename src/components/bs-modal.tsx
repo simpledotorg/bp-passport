@@ -65,7 +65,20 @@ export const BsModal = ({bs, close}: Props) => {
           id="general.sheet-high-disclaimer"
           values={{
             label: <FormattedMessage id={bsDetails.languageTypeCode} />,
-            limit: bsDetails.high,
+            limit: (
+              <BodyText>
+                {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
+                  <>
+                    {bsDetails.high}
+                    <BodyText>%</BodyText>
+                  </>
+                ) : (
+                  <>
+                    {bsDetails.high} <FormattedMessage id="bs.mgdl" />
+                  </>
+                )}
+              </BodyText>
+            ),
           }}
         />
       </BodyText>
@@ -75,7 +88,20 @@ export const BsModal = ({bs, close}: Props) => {
           id="general.sheet-normal-disclaimer"
           values={{
             label: <FormattedMessage id={bsDetails.languageTypeCode} />,
-            limit: bsDetails.high,
+            limit: (
+              <BodyText>
+                {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
+                  <>
+                    {bsDetails.high}
+                    <BodyText>%</BodyText>
+                  </>
+                ) : (
+                  <>
+                    {bsDetails.high} <FormattedMessage id="bs.mgdl" />
+                  </>
+                )}
+              </BodyText>
+            ),
           }}
         />
       </BodyText>
@@ -103,7 +129,7 @@ export const BsModal = ({bs, close}: Props) => {
         </BodyHeader>
         <View style={{flexDirection: 'row'}}>
           <Image source={purpleDrop} />
-          <View style={{paddingLeft: 16, width: '90%'}}>
+          <View style={{paddingLeft: 16, flex: 1}}>
             <BodyText
               style={{
                 lineHeight: 26,
@@ -133,14 +159,14 @@ export const BsModal = ({bs, close}: Props) => {
             <BodyText
               style={{
                 lineHeight: 26,
-                paddingTop: 12,
+                paddingTop: 8,
                 fontSize: 16,
                 color: colors.grey1,
               }}>
               {displayDate(bs)}
             </BodyText>
             {bs.facility && (
-              <BodyText style={{lineHeight: 26, paddingTop: 12}}>
+              <BodyText style={{lineHeight: 26, paddingTop: 8}}>
                 <FormattedMessage
                   id="general.recorded_at"
                   values={{

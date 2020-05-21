@@ -16,6 +16,7 @@ import {colors} from '../styles'
 import {generateChartData} from '../utils/data-transform'
 import {DateRange} from '../utils/dates'
 import {BodyText} from './text'
+import {dateLocale} from '../constants/languages'
 
 type Props = {
   bps: BloodPressure[]
@@ -137,6 +138,9 @@ export const BpHistoryChart = ({bps}: Props) => {
                 {format(
                   addMonths(chartData.dates[0].interval.start, index),
                   'MMM',
+                  {
+                    locale: dateLocale(),
+                  },
                 )}
               </BodyText>
               <BodyText
@@ -149,6 +153,9 @@ export const BpHistoryChart = ({bps}: Props) => {
                 {format(
                   addMonths(chartData.dates[0].interval.start, index),
                   'yyy',
+                  {
+                    locale: dateLocale(),
+                  },
                 )}
               </BodyText>
             </View>
@@ -180,6 +187,9 @@ export const BpHistoryChart = ({bps}: Props) => {
             return format(
               addMonths(chartData.dates[0].interval.start, tick / 4),
               'MMM-yy',
+              {
+                locale: dateLocale(),
+              },
             )
           }}
           tickValues={chartData.dates.map((date, index) => index)}
@@ -279,6 +289,43 @@ export const BpHistoryChart = ({bps}: Props) => {
         /> */}
 
         {/* LINE CHART */}
+
+        <VictoryLine
+          data={[...chartData.low, ...chartData.high].map((bp, index) => {
+            try {
+              return {
+                x: bp.index,
+                y: bp.averaged.systolic,
+              }
+            } catch (e) {
+              return null
+            }
+          })}
+          style={{
+            data: {
+              stroke: colors.green1,
+            },
+          }}
+        />
+
+        <VictoryLine
+          data={[...chartData.low, ...chartData.high].map((bp) => {
+            try {
+              return {
+                x: bp.index,
+                y: bp.averaged.diastolic,
+              }
+            } catch (e) {
+              return null
+            }
+          })}
+          style={{
+            data: {
+              stroke: colors.green1,
+            },
+          }}
+        />
+
         <VictoryLine
           data={[...chartData.low, ...chartData.high].map((bp) => {
             if (bp.list.length) {
@@ -309,40 +356,6 @@ export const BpHistoryChart = ({bps}: Props) => {
           style={{
             data: {
               stroke: colors.red1,
-            },
-          }}
-        />
-
-        <VictoryLine
-          data={chartData.low.map((bp) => {
-            if (bp.list.length) {
-              return {
-                x: bp.index,
-                y: bp.averaged.systolic,
-              }
-            }
-            return null
-          })}
-          style={{
-            data: {
-              stroke: colors.green1,
-            },
-          }}
-        />
-
-        <VictoryLine
-          data={chartData.low.map((bp) => {
-            if (bp.list.length) {
-              return {
-                x: bp.index,
-                y: bp.averaged.diastolic,
-              }
-            }
-            return null
-          })}
-          style={{
-            data: {
-              stroke: colors.green1,
             },
           }}
         />

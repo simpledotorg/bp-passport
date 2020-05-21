@@ -53,18 +53,18 @@ function SplashScreen({navigation}: Props) {
           {
             justifyContent: 'center',
             flexDirection: 'row',
-            paddingTop: 68,
+            paddingTop: 56,
             paddingBottom: 32,
           },
         ]}
         onLayout={(event: any) => {
           setBottomContentHeight(event.nativeEvent.layout.height)
         }}>
-        <View>
+        <View style={{flex: 1}}>
           <BodyHeader
             style={{
               textAlign: 'center',
-              marginBottom: 28,
+              marginBottom: 24,
             }}>
             <FormattedMessage id="splash.track-bp-bs-meds" />
           </BodyHeader>

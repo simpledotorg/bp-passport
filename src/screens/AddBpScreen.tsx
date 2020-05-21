@@ -134,11 +134,29 @@ function AddBpScreen({navigation, route}: Props) {
       : setDiastolic(input.replace(/[^0-9]/g, ''))
   }
 
+  useEffect(() => {
+    if (systolicRef?.current?.isFocused()) {
+      if (systolic.length === 3) {
+        if (systolic.match('^[123].*$')) {
+          diastolicRef?.current?.focus()
+        }
+      } else if (systolic.length === 2) {
+        if (systolic.match('^[789].*$')) {
+          diastolicRef?.current?.focus()
+        }
+      }
+    }
+  }, [systolic])
+
+  // paragraph.match(regex)
+
   return (
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white100}]}>
-        <ScrollView style={{padding: 24, flex: 1}}>
+        <ScrollView
+          style={{padding: 24, flex: 1}}
+          keyboardShouldPersistTaps="handled">
           <View style={{flexDirection: 'row'}}>
             <TextInput
               maxLength={6}
@@ -193,6 +211,7 @@ function AddBpScreen({navigation, route}: Props) {
               placeholder={intl.formatMessage({id: 'general.diastolic'})}
               value={diastolic.toString()}
               keyboardType={'number-pad'}
+              returnKeyType={'done'}
               onSubmitEditing={() => {
                 if (!isSaveDisabled()) {
                   save()
@@ -208,6 +227,7 @@ function AddBpScreen({navigation, route}: Props) {
               marginTop: 24,
             }}
             onPress={() => {
+              console.log('onPress')
               save()
             }}
           />
