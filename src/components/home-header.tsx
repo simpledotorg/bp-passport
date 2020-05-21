@@ -92,7 +92,6 @@ export const HomeHeaderTitle = () => {
         <Text
           style={{
             ...navigation.homeHeaderTitleStyle,
-            marginHorizontal: 43,
           }}
           numberOfLines={1}>
           {apiUser?.full_name}
