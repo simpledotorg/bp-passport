@@ -34,7 +34,7 @@
   "add-bp.systolic-greater-than-error": "सिस्टोलिक 300 से अधिक नहीं हो सकता",
   "add-bp.diastolic-less-than-error": "डायस्टोलिक 40 से कम नहीं हो सकता",
   "add-bp.diastolic-greater-than-error": "डायस्टोलिक 180 से अधिक नहीं हो सकता",
-  "add-bp.please-enter-error": "कृपया बीपी वैल्यूज़ दर्ज करें",
+  "add-bp.please-enter-error": "कृपया बी.पी दर्ज करें",
   "add-bs.bs-less-than-error": "वैल्यू {value} से कम नहीं हो सकती ",
   "add-bs.bs-more-than-error": "वैल्यू {value} से अधिक नहीं हो सकती ",
   "add-bs.please-enter-error": "कृपया एक ब्लड शुगर वैल्यू दर्ज करें",
