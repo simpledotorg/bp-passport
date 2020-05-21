@@ -4,6 +4,7 @@ import {
   createStackNavigator,
   useHeaderHeight,
   StackNavigationProp,
+  StackNavigationOptions,
 } from '@react-navigation/stack'
 import {useNavigationState, StackActions} from '@react-navigation/native'
 import {CommonActions} from '@react-navigation/native'
@@ -108,15 +109,6 @@ const Navigation = () => {
       cardStyleInterpolator: forModalPresentationIOS,
       cardOverlayEnabled: true,
     }
-    /*
-    return Platform.OS === 'ios'
-      ? {
-          cardStyleInterpolator: forModalPresentationIOS,
-          cardOverlayEnabled: true,
-        }
-      : {
-          cardStyleInterpolator: forRevealFromBottomAndroid,
-        } */
   }
   return (
     <>
@@ -176,6 +168,19 @@ type MainStackNavigationProp = StackNavigationProp<
 
 type Props = {
   navigation: MainStackNavigationProp
+}
+
+const sharedNavigationOptions: StackNavigationOptions = {
+  headerTitleAlign: 'left',
+  headerTitleContainerStyle: {left: 56},
+  headerBackImage:
+    Platform.OS === 'ios'
+      ? () => {
+          return <ButtonIcon iconName="arrow-back" iconColor={colors.white} />
+        }
+      : undefined,
+  headerBackTitle: ' ',
+  headerTintColor: colors.white100,
 }
 
 function MainStack({navigation}: Props) {
@@ -304,7 +309,11 @@ function MainStack({navigation}: Props) {
       }
       screenOptions={{
         ...navigationStyle,
-        headerTintColor: colors.white100,
+        headerStyle: {
+          ...navigationStyle.headerStyle,
+          height: headerHeightIncludingSafeArea + 6,
+        },
+        ...sharedNavigationOptions,
         gestureEnabled: true,
       }}>
       <Stack.Screen
@@ -316,17 +325,6 @@ function MainStack({navigation}: Props) {
         name={SCREENS.CONSENT}
         component={ConsentScreen}
         options={{
-          headerBackTitle: ' ',
-          headerTitleAlign: 'left',
-          headerLeft: () => (
-            <ButtonIcon
-              iconName="arrow-back"
-              iconColor={colors.white}
-              onPress={() => {
-                navigation.goBack()
-              }}
-            />
-          ),
           title: intl.formatMessage({id: 'page-titles.consent'}),
         }}
       />
@@ -372,6 +370,8 @@ function MainStack({navigation}: Props) {
         name={SCREENS.HOME}
         component={HomeScreen}
         options={{
+          headerShown: false,
+          /*
           ...navigationStyle,
           headerStyle: {
             ...navigationStyle.headerStyle,
@@ -380,6 +380,7 @@ function MainStack({navigation}: Props) {
             shadowOpacity: 0,
           },
           headerTitleAlign: 'center',
+          headerTitleContainerStyle: {},
           headerTitle: () => <HomeHeaderTitle />,
           headerRight: () => {
             if (passportLinkedState !== PassportLinkedState.Linking) {
@@ -395,7 +396,7 @@ function MainStack({navigation}: Props) {
             return null
           },
           headerLeft: () => null,
-          gestureEnabled: false,
+          gestureEnabled: false, */
         }}
       />
       <Stack.Screen
@@ -412,12 +413,18 @@ function MainStack({navigation}: Props) {
 
 function ScanStack({navigation}: Props) {
   const intl = useIntl()
+  const headerHeightIncludingSafeArea = useHeaderHeight()
+
   return (
     <Stack.Navigator
       initialRouteName={SCREENS.SCAN_BP_PASSPORT}
       screenOptions={{
         ...navigationStyle,
-        headerTintColor: colors.white100,
+        headerStyle: {
+          ...navigationStyle.headerStyle,
+          height: headerHeightIncludingSafeArea + 6,
+        },
+        ...sharedNavigationOptions,
         gestureEnabled: true,
       }}>
       <Stack.Screen
@@ -429,6 +436,7 @@ function ScanStack({navigation}: Props) {
             return (
               <ButtonIcon
                 iconName="close"
+                iconSize={24}
                 iconColor={colors.white100}
                 onPress={() => navigation.goBack()}
               />
@@ -450,11 +458,17 @@ function ScanStack({navigation}: Props) {
 
 function AddBPStack({navigation}: Props) {
   const intl = useIntl()
+  const headerHeightIncludingSafeArea = useHeaderHeight()
+
   return (
     <Stack.Navigator
       screenOptions={{
         ...navigationStyle,
-        headerTintColor: colors.white100,
+        headerStyle: {
+          ...navigationStyle.headerStyle,
+          height: headerHeightIncludingSafeArea + 6,
+        },
+        ...sharedNavigationOptions,
         gestureEnabled: true,
       }}>
       <Stack.Screen
@@ -463,6 +477,7 @@ function AddBPStack({navigation}: Props) {
         options={{
           headerBackTitle: ' ',
           title: intl.formatMessage({id: 'page-titles.new-bp'}),
+
           headerLeft: () => {
             return (
               <ButtonIcon
@@ -481,11 +496,17 @@ function AddBPStack({navigation}: Props) {
 
 function AddBSStack({navigation}: Props) {
   const intl = useIntl()
+  const headerHeightIncludingSafeArea = useHeaderHeight()
+
   return (
     <Stack.Navigator
       screenOptions={{
         ...navigationStyle,
-        headerTintColor: colors.white100,
+        headerStyle: {
+          ...navigationStyle.headerStyle,
+          height: headerHeightIncludingSafeArea + 6,
+        },
+        ...sharedNavigationOptions,
         gestureEnabled: true,
       }}>
       <Stack.Screen

@@ -14,6 +14,7 @@ import {
   Day,
   dayToKeyString,
 } from '../redux/medication/medication.models'
+import {dateLocale} from '../constants/languages'
 
 type Props = {
   meds: Medication
@@ -27,8 +28,9 @@ export const MedsInformation = ({meds, style = {}}: Props) => {
 
   const reminder = meds.reminder
   if (reminder) {
-    // medicine.custom
     const translationKey = frequencyText(reminder.days)
+    /*
+    // medicine.custom
     if (translationKey === 'medicine.custom') {
       reminderText = reminder.days
         .split('')
@@ -39,9 +41,16 @@ export const MedsInformation = ({meds, style = {}}: Props) => {
     } else {
       reminderText = intl.formatMessage({id: translationKey})
     }
+*/
+
+    reminderText = intl.formatMessage({id: translationKey})
 
     const date = dateForDayOffset(reminder.dayOffset)
-    reminderText += ', ' + format(date, 'h:mm a')
+    reminderText +=
+      ', ' +
+      format(date, 'h:mm a', {
+        locale: dateLocale(),
+      })
   }
 
   return (

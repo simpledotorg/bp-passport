@@ -36,7 +36,7 @@ function BsHistoryScreen({navigation, route}: Props) {
 
   return (
     <View style={{flex: 1}}>
-      <ScrollView contentContainerStyle={{paddingVertical: 8}}>
+      <ScrollView contentContainerStyle={{paddingVertical: 18}}>
         <View
           style={[
             containerStyles.containerSegment,

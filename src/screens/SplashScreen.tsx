@@ -4,7 +4,7 @@ import {FormattedMessage, useIntl} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
 
 import {containerStyles, colors, splashImage} from '../styles'
-import {Button, BodyHeader} from '../components'
+import {Button, BodyHeader, ButtonType} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 
@@ -53,25 +53,25 @@ function SplashScreen({navigation}: Props) {
           {
             justifyContent: 'center',
             flexDirection: 'row',
-            paddingTop: 68,
+            paddingTop: 56,
             paddingBottom: 32,
           },
         ]}
         onLayout={(event: any) => {
           setBottomContentHeight(event.nativeEvent.layout.height)
         }}>
-        <View>
+        <View style={{flex: 1}}>
           <BodyHeader
             style={{
               textAlign: 'center',
-              marginBottom: 28,
+              marginBottom: 24,
             }}>
             <FormattedMessage id="splash.track-bp-bs-meds" />
           </BodyHeader>
 
           <Button
             style={[styles.primaryButton]}
-            buttonColor={colors.blue2}
+            buttonType={ButtonType.LightBlue}
             title={intl.formatMessage({id: 'general.next'})}
             onPress={() => {
               navigation.navigate(SCREENS.LOGIN)

@@ -1,12 +1,45 @@
 import React, {useEffect} from 'react'
-import {View, Text, Image, StyleSheet} from 'react-native'
+import {View, Text, Image, StyleSheet, StyleProp, ViewStyle} from 'react-native'
 import {containerStyles, navigation, colors, iconHomeHeader} from '../styles'
 import {FormattedMessage} from 'react-intl'
 import {PassportLinkedState} from '../redux/auth/auth.models'
 import {passportLinkedStateSelector} from '../redux/auth/auth.selectors'
+import {useNavigation} from '@react-navigation/native'
 
 import {patientSelector} from '../redux/patient/patient.selectors'
 import {passportSelector} from '../redux/auth/auth.selectors'
+import {ButtonIcon} from './button'
+import SCREENS from '../constants/screens'
+
+export const HomeHeader = () => {
+  const passportLinkedState = passportLinkedStateSelector()
+  const navigation = useNavigation()
+  return (
+    <View
+      style={{
+        flex: 1,
+        height: 103,
+        backgroundColor: colors.blue1,
+        flexDirection: 'row',
+        alignItems: 'center',
+      }}>
+      <View style={{width: 50}} />
+      <HomeHeaderTitle />
+      <View style={{width: 50}}>
+        {passportLinkedState !== PassportLinkedState.Linking && (
+          <ButtonIcon
+            iconName="settings"
+            iconColor={colors.grey3}
+            onPress={() => {
+              navigation.navigate(SCREENS.SETTINGS)
+            }}
+            style={{marginRight: 8}}
+          />
+        )}
+      </View>
+    </View>
+  )
+}
 
 export const HomeHeaderTitle = () => {
   const passportLinkedState = passportLinkedStateSelector()
@@ -59,7 +92,6 @@ export const HomeHeaderTitle = () => {
         <Text
           style={{
             ...navigation.homeHeaderTitleStyle,
-            marginHorizontal: 43,
           }}
           numberOfLines={1}>
           {apiUser?.full_name}

@@ -12,7 +12,7 @@ import {useIntl, FormattedMessage} from 'react-intl'
 import {Item} from 'react-native-picker-select'
 
 import {containerStyles, colors} from '../styles'
-import {Picker, BodyText, Button} from '../components'
+import {Picker, BodyText, Button, ButtonType} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 
@@ -132,7 +132,7 @@ function AddBsScreen({navigation, route}: Props) {
     }
 
     if (errors) {
-      errorShowTimeout = setTimeout(() => setShowErrors(true), 2000)
+      errorShowTimeout = setTimeout(() => setShowErrors(true), 1500)
     } else {
       setShowErrors(false)
     }
@@ -163,7 +163,8 @@ function AddBsScreen({navigation, route}: Props) {
           style={{
             flex: 1,
             padding: 24,
-          }}>
+          }}
+          keyboardShouldPersistTaps="handled">
           <View
             style={{
               position: 'relative',
@@ -225,6 +226,7 @@ function AddBsScreen({navigation, route}: Props) {
           <Button
             title={intl.formatMessage({id: 'general.save'})}
             disabled={isSaveDisabled()}
+            buttonType={ButtonType.Normal}
             style={{
               marginTop: 24,
             }}

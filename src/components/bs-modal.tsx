@@ -22,6 +22,7 @@ import {
 } from '../utils/blood-sugars'
 import {useThunkDispatch} from '../redux/store'
 import {deleteBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
+import {ButtonType} from './button'
 
 type Props = {
   bs: BloodSugar
@@ -56,6 +57,57 @@ export const BsModal = ({bs, close}: Props) => {
     )
   }
 
+  const getNotes = () => {
+    const bsDetails = getBloodSugarDetails(bs)
+    return isHighBloodSugar(bs) ? (
+      <BodyText>
+        <FormattedMessage
+          id="general.sheet-high-disclaimer"
+          values={{
+            label: <FormattedMessage id={bsDetails.languageTypeCode} />,
+            limit: (
+              <BodyText>
+                {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
+                  <>
+                    {bsDetails.high}
+                    <BodyText>%</BodyText>
+                  </>
+                ) : (
+                  <>
+                    {bsDetails.high} <FormattedMessage id="bs.mgdl" />
+                  </>
+                )}
+              </BodyText>
+            ),
+          }}
+        />
+      </BodyText>
+    ) : (
+      <BodyText>
+        <FormattedMessage
+          id="general.sheet-normal-disclaimer"
+          values={{
+            label: <FormattedMessage id={bsDetails.languageTypeCode} />,
+            limit: (
+              <BodyText>
+                {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
+                  <>
+                    {bsDetails.high}
+                    <BodyText>%</BodyText>
+                  </>
+                ) : (
+                  <>
+                    {bsDetails.high} <FormattedMessage id="bs.mgdl" />
+                  </>
+                )}
+              </BodyText>
+            ),
+          }}
+        />
+      </BodyText>
+    )
+  }
+
   const details = getBloodSugarDetails(bs)
   return (
     <TouchableWithoutFeedback
@@ -77,7 +129,7 @@ export const BsModal = ({bs, close}: Props) => {
         </BodyHeader>
         <View style={{flexDirection: 'row'}}>
           <Image source={purpleDrop} />
-          <View style={{paddingLeft: 16}}>
+          <View style={{paddingLeft: 16, flex: 1}}>
             <BodyText
               style={{
                 lineHeight: 26,
@@ -104,19 +156,17 @@ export const BsModal = ({bs, close}: Props) => {
                 {getBSText()}
               </>
             </BodyText>
-
             <BodyText
               style={{
                 lineHeight: 26,
-                paddingTop: 12,
+                paddingTop: 8,
                 fontSize: 16,
                 color: colors.grey1,
               }}>
               {displayDate(bs)}
             </BodyText>
-
             {bs.facility && (
-              <BodyText style={{lineHeight: 26, paddingTop: 12}}>
+              <BodyText style={{lineHeight: 26, paddingTop: 8}}>
                 <FormattedMessage
                   id="general.recorded_at"
                   values={{
@@ -127,16 +177,17 @@ export const BsModal = ({bs, close}: Props) => {
             )}
           </View>
         </View>
-        <View style={{marginTop: 24, flexDirection: 'row'}}>
+        <BodyText style={{lineHeight: 26, marginVertical: 34}}>
+          {getNotes()}
+        </BodyText>
+        <View style={{flexDirection: 'row'}}>
           <Button
             style={[
               {
-                backgroundColor: colors.blue3,
-                shadowColor: 'rgba(0, 117, 235, 0.3)',
                 flex: 1,
               },
             ]}
-            buttonColor={colors.blue2}
+            buttonType={ButtonType.LightBlue}
             title={intl.formatMessage({id: 'general.close'})}
             onPress={() => {
               close()
@@ -148,8 +199,7 @@ export const BsModal = ({bs, close}: Props) => {
                 backgroundColor: colors.white100,
                 flex: 1,
               }}
-              buttonColor={colors.red1}
-              disableBoxShadow
+              buttonType={ButtonType.Delete}
               title={intl.formatMessage({id: 'general.delete'})}
               onPress={() => {
                 Alert.alert(
@@ -161,6 +211,7 @@ export const BsModal = ({bs, close}: Props) => {
                     },
                     {
                       text: intl.formatMessage({id: 'general.ok'}),
+                      style: 'destructive',
                       onPress: () => {
                         dispatch(deleteBloodSugar(bs))
                         close()

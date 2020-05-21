@@ -12,7 +12,7 @@ import {StackNavigationProp} from '@react-navigation/stack'
 
 import SCREENS from '../constants/screens'
 import {containerStyles, colors, bpPassportImage} from '../styles'
-import {Button, Link, PageHeader, BodyText, BodyHeader} from '../components'
+import {Button, ButtonType, BodyText, BodyHeader} from '../components'
 import {RootStackParamList} from '../Navigation'
 
 type LoginScreenNavigationProp = StackNavigationProp<
@@ -36,7 +36,7 @@ function Login({navigation}: Props) {
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{paddingBottom: 30}}>
-          <View style={[{marginTop: 40}]}>
+          <View style={[{marginTop: 18}]}>
             <View style={[styles.loginContainer, {marginBottom: 10}]}>
               <Image
                 source={bpPassportImage}
@@ -48,7 +48,7 @@ function Login({navigation}: Props) {
 
               <Button
                 style={[styles.primaryButton]}
-                buttonColor={colors.blue2}
+                buttonType={ButtonType.LightBlue}
                 title={intl.formatMessage({id: 'login.scan-passport'})}
                 onPress={() => {
                   navigation.navigate(SCREENS.SCAN_STACK)
@@ -65,11 +65,8 @@ function Login({navigation}: Props) {
                 <FormattedMessage id="login.no-bp-passport" />
               </BodyHeader>
               <Button
-                buttonUnderlayColor={'#00A742'}
-                style={{
-                  backgroundColor: colors.green1,
-                  width: '100%',
-                }}
+                buttonType={ButtonType.Green}
+                style={styles.primaryButton}
                 title={intl.formatMessage({id: 'login.get-started'})}
                 onPress={() => {
                   navigation.navigate(SCREENS.CONSENT)
@@ -119,7 +116,7 @@ const styles = {
   loginContainer: {
     backgroundColor: colors.white100,
     borderRadius: 4,
-    marginHorizontal: 8,
+    marginHorizontal: 18,
     marginBottom: 8,
     flexShrink: 0,
     padding: 24,
@@ -135,8 +132,6 @@ const styles = {
     elevation: 5,
   },
   primaryButton: {
-    backgroundColor: colors.blue3,
-    shadowColor: 'rgba(0, 117, 235, 0.3)',
     width: '100%',
   },
 }
