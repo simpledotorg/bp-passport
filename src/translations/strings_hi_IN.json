@@ -59,7 +59,7 @@
   "page-titles.all-bs": "सभी ब्लड शुगर",
   "page-titles.new-bs": "ब्लड शुगर जोड़ें",
   "page-titles.add-medicine": "दवाई जोड़ें",
-  "general.sheet-high-disclaimer": "उच्च {label} {limit} से ऊपर होता है। ध्यान दें, आपका व्यक्तिगत \"उच्च\" {label} अलग हो सकता है। अपने डॉक्टर से चर्चा करें।\n ",
+  "general.sheet-high-disclaimer": "उच्च {label} {limit} से ऊपर होता है। ध्यान दें, आपका व्यक्तिगत \"उच्च\" {label} अलग हो सकता है। अपने डॉक्टर से बात  करें।\n ",
   "general.sheet-normal-disclaimer": "नॉर्मल {label} {limit} के बराबर  या नीचे होता है। ध्यान दें, आपका व्यक्तिगत \"नॉर्मल\" {label} अलग हो सकता है। अपने डॉक्टर से चर्चा करें।",
   "general.add-bs": "ब्लड शुगर जोड़ें",
   "general.save": "सेव",
