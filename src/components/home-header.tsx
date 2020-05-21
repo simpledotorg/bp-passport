@@ -11,11 +11,7 @@ import {passportSelector} from '../redux/auth/auth.selectors'
 import {ButtonIcon} from './button'
 import SCREENS from '../constants/screens'
 
-type Props = {
-  hideNav: boolean
-}
-
-export const HomeHeader = ({hideNav}: Props) => {
+export const HomeHeader = () => {
   const passportLinkedState = passportLinkedStateSelector()
   const navigation = useNavigation()
   return (
@@ -28,7 +24,7 @@ export const HomeHeader = ({hideNav}: Props) => {
         alignItems: 'center',
       }}>
       <View style={{width: 50}} />
-      <HomeHeaderTitle contentOpacity={hideNav ? 0 : 1} />
+      <HomeHeaderTitle />
       <View style={{width: 50}}>
         {passportLinkedState !== PassportLinkedState.Linking && (
           <ButtonIcon
@@ -45,11 +41,7 @@ export const HomeHeader = ({hideNav}: Props) => {
   )
 }
 
-type HomeHeaderTitleProps = {
-  contentOpacity: number
-}
-
-export const HomeHeaderTitle = (props: HomeHeaderTitleProps) => {
+export const HomeHeaderTitle = () => {
   const passportLinkedState = passportLinkedStateSelector()
   const apiUser = patientSelector()
   const passport = passportSelector()
@@ -86,7 +78,6 @@ export const HomeHeaderTitle = (props: HomeHeaderTitleProps) => {
           style={{
             ...navigation.homeHeaderTitleStyle,
             marginHorizontal: 11,
-            opacity: props.contentOpacity,
           }}
           numberOfLines={1}>
           BP Passport
@@ -102,7 +93,6 @@ export const HomeHeaderTitle = (props: HomeHeaderTitleProps) => {
           style={{
             ...navigation.homeHeaderTitleStyle,
             marginHorizontal: 43,
-            opacity: props.contentOpacity,
           }}
           numberOfLines={1}>
           {apiUser?.full_name}

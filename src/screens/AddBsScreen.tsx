@@ -163,7 +163,8 @@ function AddBsScreen({navigation, route}: Props) {
           style={{
             flex: 1,
             padding: 24,
-          }}>
+          }}
+          keyboardShouldPersistTaps="handled">
           <View
             style={{
               position: 'relative',
