@@ -132,7 +132,7 @@
   "bs.post-prenial-code": "PPBS",
   "bs.hemoglobic": "Hemoglobin A1C (HbA1C)",
   "bs.hemoglobic-code": "HbA1C",
-  "bs.mgdl": "মি:গ্রা:/ডেসি:লি:",
+  "bs.mgdl": "mg/dL or mmol/L",
   "bs.select-rbs-if-unsure": "আপনি যদি নিশ্চিত না হন তবে RBS নির্বাচন করুন",
   "bs.bs-trend": "রক্তে চিনির মাত্রার প্রবণতা",
   "bs.bs-details": "রক্তে চিনির মাত্রার বিশদ",
