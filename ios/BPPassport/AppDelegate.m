@@ -11,7 +11,7 @@
 #import <RNCPushNotificationIOS.h>
 #import <UserNotifications/UserNotifications.h>
 
-#import <Firebase.h>
+@import Firebase;
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -47,9 +47,7 @@ static void InitializeFlipper(UIApplication *application) {
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
   [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
   
- if ([FIRApp defaultApp] == nil) {
-   [FIRApp configure];
- }
+ [FIRApp configure];
   
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
