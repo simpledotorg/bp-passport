@@ -172,7 +172,7 @@ function Home({navigation, route}: Props) {
           }}>
           <View style={{backgroundColor: colors.blue1}}>
             <Animated.View style={{opacity: opacityNavAnim}}>
-              <HomeHeader hideNav={false} />
+              <HomeHeader />
             </Animated.View>
           </View>
           <View style={{backgroundColor: colors.blue1, height: 30}} />
@@ -214,20 +214,8 @@ function Home({navigation, route}: Props) {
 
               if (scrollY > 150) {
                 opacityNavAnim.setValue(0)
-                /*
-                Animated.timing(opacityNavAnim, {
-                  toValue: 0,
-                  duration: 100,
-                  useNativeDriver: true,
-                }).start() */
               } else {
                 opacityNavAnim.setValue(1)
-                /*
-                Animated.timing(opacityNavAnim, {
-                  toValue: 1,
-                  duration: 100,
-                  useNativeDriver: true,
-                }).start() */
               }
             }}
             contentContainerStyle={styles.scrollContentContainer}
