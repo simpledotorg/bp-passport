@@ -13,7 +13,7 @@
   "login.terms-of-use-link": "उपयोग की शर्तें",
   "login.camera-access": "कैमरा ऐक्सेस ",
   "login.allow-camera-access": "सेटिंग्स में कैमरा ऐक्सेस की अनुमति दें",
-  "scan-bp-passport.hold-camera": "बीपी पासपोर्ट पर इस प्रतीक पर कैमरा पकड़ो",
+  "scan-bp-passport.hold-camera": "बी.पी पासपोर्ट पर बने इस चिह्न  की ओर कैमरा को रखें ",
   "scan-bp-passport.cant-verify-account": "अकाउंट सत्यापित नहीं किया जा सकता",
   "scan-bp-passport.dont-have-phone-number": "हमारे पास आपके बीपी पासपोर्ट से जुड़ा कोई फ़ोन नंबर नहीं है।कृपया कुछ सप्ताह में फिर से प्रयास करें।",
   "verify-pin.please-verify": "SMS में आया 6 अंक का PIN कोड दर्ज करें",
