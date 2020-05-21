@@ -145,7 +145,7 @@
   "medicine.save-medicine": " ঔষধের নাম সংরক্ষন করুন",
   "medicine.set-reminder-for": "এর জন্য সময় সংকেত ঠিক করুন",
   "medicine.delete-medicine": "ঔষধের নাম মুছে ফেলুন",
-  "medicine.delete-confirm": "এটি ঔষধকে স্থায়ীভাবে মুছে ফেলবে। আপনি কি নিশ্চিত?",
+  "medicine.delete-confirm": "এটি ঔষধের নাম স্থায়ীভাবে মুছে ফেলবে। আপনি কি নিশ্চিত?",
   "medicine.daily": "দৈনিক",
   "medicine.weekdays": "কাজের দিন ",
   "medicine.weekends": "সপ্তাহান্তিক দিন ",
