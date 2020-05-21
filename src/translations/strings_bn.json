@@ -34,7 +34,7 @@
   "add-bp.systolic-greater-than-error": " সিস্টোলিক 300 এর বেশি হতে পারে না",
   "add-bp.diastolic-less-than-error": "ডায়াস্টোলিক 40 এর চেয়ে কম হতে পারে না",
   "add-bp.diastolic-greater-than-error": "ডায়াস্টোলিক 180 এর বেশি হতে পারে না",
-  "add-bp.please-enter-error": "দয়া করে বিপি মানটি প্রবেশ করান",
+  "add-bp.please-enter-error": "দয়া করে রক্তচাপের মানটি প্রবেশ করান",
   "add-bs.bs-less-than-error": "মানটি {মান} এর চেয়ে কম হতে পারে না ",
   "add-bs.bs-more-than-error": "মানটি {মান} এর চেয়ে বড় হতে পারে না",
   "add-bs.please-enter-error": "দয়া করে রক্তে চিনির মানটি প্রবেশ করান",
