@@ -152,5 +152,5 @@
   "medicine.custom": "কাস্টম",
   "medicine.allow-notifications-title": "বিজ্ঞপ্তির অনুমতি দিন",
   "medicine.allow-notifications-body": "ঔষধ সেবনের রিমাইন্ডার পেতে বিজ্ঞপ্তির অনুমতি দিন",
-  "medicine.reminder-notification": "{day} {time}, আপনার ওষুধটি সেবন করুন"
+  "medicine.reminder-notification": "{day} {time}, আপনার ঔষধটি সেবন করুন"
 }
