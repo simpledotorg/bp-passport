@@ -63,7 +63,7 @@
   "general.sheet-high-disclaimer": "उच्च {label} {limit} वर आहे. लक्षात घ्या, तुमचे वैयक्तिक \"उच्च\" {label} वेगळे असू शकते. आपल्या डॉक्टरांशी चर्चा करा.",
   "general.sheet-normal-disclaimer": "सामान्य {label} येथे किंवा खाली {मर्यादा}आहे. लक्षात घ्या, तुमचे वैयक्तिक \"सामान्य\" {label} वेगळे असू शकते. आपल्या डॉक्टरांशी चर्चा करा.",
   "general.add-bs": "रक्तातील साखर जोडा",
-  "general.save": "जतन करा",
+  "general.save": "सेव करा",
   "general.done": "पूर्ण झाले",
   "general.next": "पुढील",
   "general.i-agree": "मी सहमत आहे",
