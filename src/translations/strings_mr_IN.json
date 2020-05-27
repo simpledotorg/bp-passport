@@ -133,7 +133,7 @@
   "bs.post-prenial-code": "PPBS",
   "bs.hemoglobic": "हिमोग्लोबिक A1C (HbA1C)",
   "bs.hemoglobic-code": "HbA1C",
-  "bs.mgdl": "मिग्रॅ/dL",
+  "bs.mgdl": "mg/dL",
   "bs.select-rbs-if-unsure": "आपल्याला खात्री नसल्यास RBS निवडा",
   "bs.bs-trend": "रक्तातील साखरेचा ट्रेंड",
   "bs.bs-details": "रक्तातील साखरेचा तपशील",
