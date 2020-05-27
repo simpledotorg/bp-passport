@@ -150,7 +150,7 @@
   "medicine.daily": "दररोज",
   "medicine.weekdays": "आठवड्यातील दिवस",
   "medicine.weekends": "सप्‍ताहंत",
-  "medicine.custom": "सानुकूल",
+  "medicine.custom": "इच्छिक",
   "medicine.allow-notifications-title": "सूचनांना परवानगी द्या",
   "medicine.allow-notifications-body": "औषध स्मरणपत्रे प्राप्त करण्यासाठी सूचनांना अनुमती द्या",
   "medicine.reminder-notification": "{day} {time}, आपले औषध घ्या"
