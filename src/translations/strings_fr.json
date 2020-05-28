@@ -3,7 +3,7 @@
   "consent.using-this-app": "En utilisant cette app, vous reconnaissez que vous entrez vos propres renseignements ou que vous êtes authorisé à soumettre des informations au nom d'autres parties.",
   "consent.any-data-stored": "Toutes les données saisies par cette application sont stockées localement sur votre dispositif et ne sont pas partagées avec le concepteur de cette application ou avec des tiers.",
   "consent.more-information": "Vous pouvez trouver plus d’informations quant à la sécurité et la confidentialité des données {ici}.",
-  "consent.medical-disclaimer": "L'utilisation de cette application n'est pas destinée ni implicite à remplacer les conseils médicaux d'un médecin ou d'un médecin professionnel. Les paramètres généraux sont utilisés pour désigner les mesures de la pression artérielle comme «élevées» ou «normales» et ne doivent pas être considérés comme des conseils médicaux individuels. Veuillez consulter votre médecin avant et pendant l'utilisation de cette application.",
+  "consent.medical-disclaimer": "Votre utilisation de cette app ne devrait pas être interprétée comme avis médical et ne constitue pas l'avis d'un médecin ou autre professionnel de la santé. L’étiquetage des mesures tensionnelles, tel que “élevé” ou “normal”, est conforme aux mesures tensionelles généralement reconnues et et ne constitue pas un avis médical personnalisé. Veuillez consulter votre médecin pendant ou avant d’utiliser cette app.",
   "consent.here-link": "ici",
   "login.have-a-paper": "Avez-vous une version papier du BP Passport de votre médecin?",
   "login.scan-passport": "Balayez votre Passport",
