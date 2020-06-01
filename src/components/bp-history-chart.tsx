@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {View, Dimensions} from 'react-native'
-import {format, addMonths, isWithinInterval} from 'date-fns'
+import {format, addMonths} from 'date-fns'
+import {zonedTimeToUtc} from 'date-fns-tz'
 import {
   VictoryChart,
   VictoryTheme,

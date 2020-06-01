@@ -1,18 +1,8 @@
-import {
-  subMonths,
-  format,
-  startOfMonth,
-  endOfMonth,
-  addDays,
-  addMonths,
-  addWeeks,
-  endOfDay,
-  addMinutes,
-  eachDayOfInterval,
-} from 'date-fns'
+import {subMonths, startOfMonth, endOfMonth, addDays} from 'date-fns'
 import {zonedTimeToUtc} from 'date-fns-tz'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
+import {isBefore} from 'date-fns/esm'
 
 export interface DateRange {
   date: Date
@@ -24,23 +14,24 @@ export interface DateRange {
 export const CHART_MONTH_RANGE = 4
 
 export const getChartDateRange = () => {
-  const end = new Date()
-  const start = zonedTimeToUtc(
-    subMonths(startOfMonth(end), CHART_MONTH_RANGE - 1),
-    'UTC',
-  )
+  const end = endOfMonth(new Date())
+  const start = subMonths(startOfMonth(end), CHART_MONTH_RANGE - 1)
 
-  const eachDay = eachDayOfInterval({
-    start,
-    end,
-  })
+  const result = []
+  let currentDay = start
+  let index = 0
 
-  return eachDay.map((day, index) => {
-    return {
+  while (isBefore(currentDay, end)) {
+    result.push({
       index,
-      date: day,
+      date: currentDay,
       list: [],
       averaged: {},
-    }
-  })
+    })
+
+    index = index + 1
+    currentDay = addDays(currentDay, 1)
+  }
+
+  return result
 }
