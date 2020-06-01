@@ -41,6 +41,9 @@ function Consent({navigation}: Props) {
             contentContainerStyle={{paddingHorizontal: 24, paddingVertical: 24}}
             showsVerticalScrollIndicator={false}>
             <BodyText style={{marginBottom: 24}}>
+              <FormattedMessage id="consent.medical-disclaimer" />
+            </BodyText>
+            <BodyText style={{marginBottom: 24}}>
               <FormattedMessage id="consent.using-this-app" />
             </BodyText>
             <BodyText style={{marginBottom: 24}}>

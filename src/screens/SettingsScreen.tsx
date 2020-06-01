@@ -153,6 +153,16 @@ function SettingsScreen({navigation}: any) {
                 </View>
               </>
             )}
+            <View style={styles.header}>
+              <BodyHeader>
+                <FormattedMessage id="general.disclaimer" />
+              </BodyHeader>
+            </View>
+            <View style={styles.item}>
+              <BodyText>
+                <FormattedMessage id="consent.medical-disclaimer" />
+              </BodyText>
+            </View>
           </View>
         </ScrollView>
       </View>

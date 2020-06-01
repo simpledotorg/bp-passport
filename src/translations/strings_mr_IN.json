@@ -9,6 +9,7 @@
   "consent.using-this-app": "By using this app, you confirm that you are only entering your own information or are authorized to enter information on behalf of others.",
   "consent.any-data-stored": "Any data you enter into this app is stored locally on your device and is not transmitted to the creator of this app or any other party. Anonymous analytical data about your use of the app may be tracked and transferred to the creator of this app.",
   "consent.more-information": "More information about how we secure data and ensure privacy can be found",
+  "consent.medical-disclaimer": "The use of this app should not be construed as medical advice and is not a replacement for a doctor or other healthcare professional. All blood pressure labels, such as \"high\" or \"normal\", are consistent with generally accepted measures for labelling blood pressure and are not given as specific medical advice for individuals. Please consult your doctor while or before using this app.",
   "consent.this-means-that": "This means that you know that you are entering personal data into the app, understand what data is being collected, and know that you may be contacted via WhatsApp, text message, or other methods using the phone number provided in the app by a registered medical doctor.",
   "consent.patient-data": "Patient data and privacy is protected by the use of safeguarding technology and by restricting user access. More information can be found",
   "consent.here-link": "here",
