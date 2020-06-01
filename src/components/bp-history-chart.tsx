@@ -89,8 +89,6 @@ export const BpHistoryChart = ({bps}: Props) => {
     return null
   }
 
-  console.log('-------')
-
   return (
     <View
       style={{
@@ -344,7 +342,6 @@ export const BpHistoryChart = ({bps}: Props) => {
         <VictoryScatter
           data={[...chartData.low, ...chartData.high].flatMap(
             (bp: DateRange) => {
-              console.log(bp)
               return [
                 bp.averaged.systolic < 140
                   ? {
