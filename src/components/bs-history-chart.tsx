@@ -14,6 +14,7 @@ import {
   VictoryScatter,
   VictoryAxis,
   VictoryTooltip,
+  VictoryLine,
 } from 'victory-native'
 
 import {
@@ -25,6 +26,7 @@ import {isHighBloodSugar} from '../utils/blood-sugars'
 import {BodyText} from './text'
 import {DateRange} from '../utils/dates'
 import {generateChartData} from '../utils/data-transform'
+import {CHART_MONTH_RANGE} from '../utils/dates'
 import {dateLocale} from '../constants/languages'
 
 type Props = {
@@ -264,7 +266,7 @@ export const BsHistoryChart = ({bss}: Props) => {
             flexDirection: 'row',
             paddingLeft: 6,
           }}>
-          {[...Array(chartData.dates.length / 4)].map((value, index) => {
+          {[...Array(CHART_MONTH_RANGE)].map((value, index) => {
             return (
               <View
                 key={index}
@@ -279,13 +281,9 @@ export const BsHistoryChart = ({bss}: Props) => {
                     fontSize: 14,
                     lineHeight: 18,
                   }}>
-                  {format(
-                    addMonths(chartData.dates[0].interval.start, index),
-                    'MMM',
-                    {
-                      locale: dateLocale(),
-                    },
-                  )}
+                  {format(addMonths(chartData.dates[0].date, index), 'MMM', {
+                    locale: dateLocale(),
+                  })}
                 </BodyText>
                 <BodyText
                   style={{
@@ -294,18 +292,14 @@ export const BsHistoryChart = ({bss}: Props) => {
                     fontSize: 14,
                     lineHeight: 18,
                   }}>
-                  {format(
-                    addMonths(chartData.dates[0].interval.start, index),
-                    'yyy',
-                    {
-                      locale: dateLocale(),
-                    },
-                  )}
+                  {format(addMonths(chartData.dates[0].date, index), 'yyy', {
+                    locale: dateLocale(),
+                  })}
                 </BodyText>
               </View>
             )
           })}
-          <View style={{width: 12}} />
+          <View style={{width: 32}} />
         </View>
         <VictoryChart
           maxDomain={{
@@ -326,10 +320,10 @@ export const BsHistoryChart = ({bss}: Props) => {
           scale={{x: 'linear'}}
           theme={VictoryTheme.material}>
           <VictoryAxis
-            tickCount={5}
+            tickCount={CHART_MONTH_RANGE}
             tickFormat={(tick) => {
               return format(
-                addMonths(chartData.dates[0].interval.start, tick / 4),
+                addMonths(chartData.dates[0].date, tick / 4),
                 'MMM-yy',
                 {
                   locale: dateLocale(),
@@ -379,26 +373,38 @@ export const BsHistoryChart = ({bss}: Props) => {
             }}
           />
 
-          <VictoryScatter
-            data={generateScatter(chartData.low)}
-            size={5}
+          <VictoryLine
+            data={[...chartData.low, ...chartData.high].map((bs) => {
+              if (bs.list.length) {
+                return {x: bs.index, y: bs.averaged}
+              }
+
+              return null
+            })}
             style={{
               data: {
-                fill: colors.white100,
-                stroke: colors.green1,
-                strokeWidth: 3,
+                stroke: colors.grey1,
+                strokeWidth: 1,
+              },
+            }}
+          />
+
+          <VictoryScatter
+            data={generateScatter(chartData.low)}
+            size={4}
+            style={{
+              data: {
+                fill: colors.green1,
               },
             }}
             labelComponent={<VictoryTooltip renderInPortal={false} />}
           />
           <VictoryScatter
             data={generateScatter(chartData.high)}
-            size={5}
+            size={4}
             style={{
               data: {
-                fill: colors.white100,
-                stroke: colors.red1,
-                strokeWidth: 3,
+                fill: colors.red1,
               },
             }}
             labelComponent={<VictoryTooltip renderInPortal={false} />}

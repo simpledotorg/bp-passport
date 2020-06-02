@@ -800,7 +800,7 @@
 				CODE_SIGN_ENTITLEMENTS = "BPPassport/BP Passport.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 215;
+				CURRENT_PROJECT_VERSION = 235;
 				DEVELOPMENT_TEAM = DBJVYHVN4H;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -809,7 +809,7 @@
 				);
 				INFOPLIST_FILE = BPPassport/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.02;
+				MARKETING_VERSION = 1.03;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -833,11 +833,11 @@
 				CODE_SIGN_ENTITLEMENTS = "BPPassport/BP Passport.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 215;
+				CURRENT_PROJECT_VERSION = 235;
 				DEVELOPMENT_TEAM = DBJVYHVN4H;
 				INFOPLIST_FILE = BPPassport/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.02;
+				MARKETING_VERSION = 1.03;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -861,13 +861,13 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CURRENT_PROJECT_VERSION = 215;
+				CURRENT_PROJECT_VERSION = 235;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "BPPassport-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.02;
+				MARKETING_VERSION = 1.03;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -892,12 +892,12 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 215;
+				CURRENT_PROJECT_VERSION = 235;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "BPPassport-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.02;
+				MARKETING_VERSION = 1.03;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
