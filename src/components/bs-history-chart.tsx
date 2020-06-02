@@ -299,7 +299,7 @@ export const BsHistoryChart = ({bss}: Props) => {
               </View>
             )
           })}
-          <View style={{width: 12}} />
+          <View style={{width: 32}} />
         </View>
         <VictoryChart
           maxDomain={{

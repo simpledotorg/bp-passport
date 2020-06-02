@@ -23,7 +23,7 @@ export const BpInformation = ({bp, style = {}}: Props) => {
 
   const displayDate = (bpIn: BloodPressure) => {
     return bpIn.recorded_at
-      ? format(new Date(bpIn.recorded_at), 'dd-MMM-yyy', {
+      ? format(new Date(bpIn.recorded_at), `dd-MMM-yyy',' h:mm a`, {
           locale: dateLocale(),
         })
       : null

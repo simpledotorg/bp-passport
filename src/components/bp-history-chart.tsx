@@ -140,7 +140,7 @@ export const BpHistoryChart = ({bps}: Props) => {
             </View>
           )
         })}
-        <View style={{width: 12}} />
+        <View style={{width: 32}} />
       </View>
       <VictoryChart
         width={Dimensions.get('window').width - 24}

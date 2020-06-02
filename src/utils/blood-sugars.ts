@@ -8,7 +8,7 @@ import {dateLocale} from '../constants/languages'
 
 export const displayDate = (bsIn: BloodSugar) => {
   return bsIn.recorded_at
-    ? format(new Date(bsIn.recorded_at), `dd-MMM-yyy`, {
+    ? format(new Date(bsIn.recorded_at), `dd-MMM-yyy',' h:mm a`, {
         locale: dateLocale(),
       })
     : null
