@@ -92,7 +92,7 @@ function ScanPassportScreen({navigation}: Props) {
       type: RNCamera.Constants.BarCodeType.qr,
     })
   }, [])
-*/
+  */
 
   return (
     <>
