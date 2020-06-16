@@ -367,6 +367,39 @@ export const BpHistoryChart = ({bps}: Props) => {
               fill: colors.green1,
             },
           }}
+          events={[
+            {
+              target: 'data',
+              eventHandlers: {
+                onPressIn: () => {
+                  return [
+                    {
+                      target: 'data',
+                      mutation: () => ({
+                        style: {stroke: colors.blue2, strokeWidth: 3},
+                      }),
+                    },
+                    {
+                      target: 'labels',
+                      mutation: () => ({active: true}),
+                    },
+                  ]
+                },
+                onPressOut: () => {
+                  return [
+                    {
+                      target: 'data',
+                      mutation: () => {},
+                    },
+                    {
+                      target: 'labels',
+                      mutation: () => ({active: false}),
+                    },
+                  ]
+                },
+              },
+            },
+          ]}
           labelComponent={<VictoryTooltip renderInPortal={false} />}
         />
         <VictoryScatter
