@@ -404,7 +404,17 @@ export const BpHistoryChart = ({bps}: Props) => {
               },
             },
           ]}
-          labelComponent={<VictoryTooltip renderInPortal={false} />}
+          labelComponent={
+            <VictoryTooltip
+              cornerRadius={20}
+              pointerLength={5}
+              flyoutStyle={{
+                height: 32,
+                fill: colors.grey0,
+              }}
+              renderInPortal={false}
+            />
+          }
         />
         <VictoryScatter
           data={[...chartData.low, ...chartData.high].flatMap(
