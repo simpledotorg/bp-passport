@@ -24,6 +24,8 @@ import {useThunkDispatch} from '../redux/store'
 import {addBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
 import {ScrollView} from 'react-native-gesture-handler'
 
+import {isHighBloodSugar, isLowBloodSugar} from '../utils/blood-sugars'
+
 type AddBsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   SCREENS.ADD_BS
@@ -241,6 +243,16 @@ function AddBsScreen({navigation, route}: Props) {
               dispatch(addBloodSugar(newBloodSugar))
 
               navigation.goBack()
+
+              if (isHighBloodSugar(newBloodSugar)) {
+                setTimeout(() => {
+                  navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN)
+                }, 250)
+              } else if (isLowBloodSugar(newBloodSugar)) {
+                setTimeout(() => {
+                  navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN)
+                }, 250)
+              }
             }}
           />
           {!errors && !showErrors && reading === '' && (
