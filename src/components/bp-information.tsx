@@ -1,10 +1,10 @@
 import React from 'react'
-import {View, StyleSheet, Image, ViewStyle} from 'react-native'
+import {Text, View, StyleSheet, Image, ViewStyle} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 import {format} from 'date-fns'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
-import {colors, redHeart} from '../styles'
+import {colors, redHeart, smallWarningSign} from '../styles'
 import {BodyText} from './'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {dateLocale, LanguageCode} from '../constants/languages'
@@ -31,15 +31,21 @@ export const BpInformation = ({bp, style = {}}: Props) => {
 
   const getBPText = () => {
     return isBloodPressureHigh(bp) ? (
-      <BodyText
-        style={[
-          styles.bpText,
-          {
-            color: colors.red1,
-          },
-        ]}>
-        <FormattedMessage id="general.high" />
-      </BodyText>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <BodyText
+          style={[
+            styles.bpText,
+            {
+              color: colors.red1,
+            },
+          ]}>
+          <FormattedMessage id="general.high" />
+        </BodyText>
+        <Image
+          source={smallWarningSign}
+          style={{marginLeft: 4, marginTop: 3}}
+        />
+      </View>
     ) : (
       <BodyText
         style={[
@@ -52,7 +58,6 @@ export const BpInformation = ({bp, style = {}}: Props) => {
       </BodyText>
     )
   }
-
   return (
     <View
       style={{
@@ -78,14 +83,12 @@ export const BpInformation = ({bp, style = {}}: Props) => {
               }}>
               {`${bp.systolic} / ${bp.diastolic}`}
             </BodyText>
-            <BodyText
+            <View
               style={{
-                fontSize: 18,
-                color: colors.grey0,
                 marginLeft: 8,
               }}>
               {getBPText()}
-            </BodyText>
+            </View>
           </View>
           <BodyText
             style={{
