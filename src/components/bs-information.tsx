@@ -12,6 +12,7 @@ import {
 import {
   displayDate,
   isHighBloodSugar,
+  isLowBloodSugar,
   getBloodSugarDetails,
 } from '../utils/blood-sugars'
 
@@ -24,7 +25,24 @@ export const BsInformation = ({bs, style = {}}: Props) => {
   const intl = useIntl()
 
   const getBSText = () => {
-    return isHighBloodSugar(bs) ? (
+    if (isHighBloodSugar(bs)) {
+      return (
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <BodyText
+            style={[
+              styles.bsText,
+              {
+                color: colors.red1,
+              },
+            ]}>
+            <FormattedMessage id="general.high" />
+          </BodyText>
+          <Image source={smallWarningSign} style={styles.warningIcon} />
+        </View>
+      )
+    }
+
+    return isLowBloodSugar(bs) ? (
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <BodyText
           style={[
@@ -33,7 +51,7 @@ export const BsInformation = ({bs, style = {}}: Props) => {
               color: colors.red1,
             },
           ]}>
-          <FormattedMessage id="general.high" />
+          <FormattedMessage id="general.low" />
         </BodyText>
         <Image source={smallWarningSign} style={styles.warningIcon} />
       </View>

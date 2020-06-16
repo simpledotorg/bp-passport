@@ -18,15 +18,23 @@ export const isHighBloodSugar = (bs: BloodSugar) => {
   return Number(bs.blood_sugar_value) >= getBloodSugarDetails(bs).high
 }
 
+export const isLowBloodSugar = (bs: BloodSugar) => {
+  return Number(bs.blood_sugar_value) <= getBloodSugarDetails(bs).low
+}
+
 export const getBloodSugarDetails: (
   bs: BloodSugar,
-) => {high: number; languageKey: string; languageTypeCode: string} = (
-  bs: BloodSugar,
 ) => {
+  high: number
+  low: number
+  languageKey: string
+  languageTypeCode: string
+} = (bs: BloodSugar) => {
   switch (bs.blood_sugar_type) {
     case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR: {
       return {
         high: 126,
+        low: 50,
         languageKey: 'bs.fasting-blood-sugar',
         languageTypeCode: 'bs.fasting-code',
       }
@@ -34,6 +42,7 @@ export const getBloodSugarDetails: (
     case BLOOD_SUGAR_TYPES.POST_PRANDIAL: {
       return {
         high: 200,
+        low: 70,
         languageKey: 'bs.post-prandial',
         languageTypeCode: 'bs.post-prenial-code',
       }
@@ -41,6 +50,7 @@ export const getBloodSugarDetails: (
     case BLOOD_SUGAR_TYPES.HEMOGLOBIC: {
       return {
         high: 7,
+        low: 4,
         languageKey: 'bs.hemoglobic',
         languageTypeCode: 'bs.hemoglobic-code',
       }
@@ -49,6 +59,7 @@ export const getBloodSugarDetails: (
     default: {
       return {
         high: 200,
+        low: 70,
         languageKey: 'bs.random-blood-sugar',
         languageTypeCode: 'bs.random-blood-code',
       }
