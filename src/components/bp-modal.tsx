@@ -74,19 +74,28 @@ export const BpModal = ({bp, close}: Props) => {
           marginVertical: 34,
         }}>
         <Image source={largeWarningSign} />
-        <BodyText
-          style={{
-            lineHeight: 26,
-            paddingLeft: 16,
-            flex: 1,
-          }}>
-          <FormattedMessage
-            id="alert.description-high"
-            values={{
-              label: <FormattedMessage id={'general.bp'} />,
-            }}
-          />
-        </BodyText>
+        <View style={{flexDirection: 'column', flex: 1, paddingLeft: 16}}>
+          <BodyText
+            style={{
+              color: colors.grey0,
+              fontWeight: 'bold',
+              fontSize: 18,
+              lineHeight: 26,
+            }}>
+            <FormattedMessage id="alert.title" />
+          </BodyText>
+          <BodyText
+            style={{
+              lineHeight: 26,
+            }}>
+            <FormattedMessage
+              id="alert.description-high"
+              values={{
+                label: <FormattedMessage id={'general.bp'} />,
+              }}
+            />
+          </BodyText>
+        </View>
       </View>
     ) : (
       <BodyText style={{lineHeight: 26, marginVertical: 34}}>
