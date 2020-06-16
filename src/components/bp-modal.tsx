@@ -9,7 +9,7 @@ import {
 import {FormattedMessage, useIntl} from 'react-intl'
 import {format} from 'date-fns'
 
-import {colors, redHeart} from '../styles'
+import {colors, redHeart, largeWarningSign} from '../styles'
 import {BodyText, BodyHeader, Button} from './'
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
@@ -67,17 +67,29 @@ export const BpModal = ({bp, close}: Props) => {
 
   const getNotes = () => {
     return isBloodPressureHigh(bp) ? (
-      <BodyText>
-        <FormattedMessage
-          id="general.sheet-high-disclaimer"
-          values={{
-            label: <FormattedMessage id={'general.bp'} />,
-            limit: '140/90',
-          }}
-        />
-      </BodyText>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'flex-start',
+          marginVertical: 34,
+        }}>
+        <Image source={largeWarningSign} />
+        <BodyText
+          style={{
+            lineHeight: 26,
+            paddingLeft: 16,
+            flex: 1,
+          }}>
+          <FormattedMessage
+            id="alert.description-high"
+            values={{
+              label: <FormattedMessage id={'general.bp'} />,
+            }}
+          />
+        </BodyText>
+      </View>
     ) : (
-      <BodyText>
+      <BodyText style={{lineHeight: 26, marginVertical: 34}}>
         <FormattedMessage
           id="general.sheet-normal-disclaimer"
           values={{
@@ -147,9 +159,7 @@ export const BpModal = ({bp, close}: Props) => {
             )}
           </View>
         </View>
-        <BodyText style={{lineHeight: 26, marginVertical: 34}}>
-          {getNotes()}
-        </BodyText>
+        {getNotes()}
         <View style={{flexDirection: 'row'}}>
           <Button
             style={[
