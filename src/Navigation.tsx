@@ -35,6 +35,7 @@ import MedicationDetailScreen from './screens/MedicationDetailScreen'
 import MedicationFrequencyScreen from './screens/MedicineFrequencyScreen'
 import MedicationTimeScreen from './screens/MedicationTimeScreen'
 import AllowNotificationsModalScreen from './screens/AllowNotificationsModalScreen'
+import AddDataWarningModalScreen from './screens/AddDataWarningModalScreen'
 
 import SCREENS from './constants/screens'
 import {
@@ -97,6 +98,7 @@ export type RootStackParamList = {
     okCallback: () => void
     cancelCallback: () => void
   }
+  ADD_DATA_WARNING_MODAL_SCREEN: undefined
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -130,6 +132,15 @@ const Navigation = () => {
         <Stack.Screen
           name={SCREENS.ALLOW_NOTIFICATIONS_MODAL_SCREEN}
           component={AllowNotificationsModalScreen}
+          options={{
+            cardStyleInterpolator:
+              CardStyleInterpolators.forModalPresentationIOS,
+            cardOverlayEnabled: true,
+          }}
+        />
+        <Stack.Screen
+          name={SCREENS.ADD_DATA_WARNING_MODAL_SCREEN}
+          component={AddDataWarningModalScreen}
           options={{
             cardStyleInterpolator:
               CardStyleInterpolators.forModalPresentationIOS,
