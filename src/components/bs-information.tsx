@@ -3,7 +3,7 @@ import {View, StyleSheet, Image, ViewStyle} from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
-import {colors, purpleDrop} from '../styles'
+import {colors, purpleDrop, smallWarningSign} from '../styles'
 import {BodyText} from './'
 import {
   BloodSugar,
@@ -25,15 +25,18 @@ export const BsInformation = ({bs, style = {}}: Props) => {
 
   const getBSText = () => {
     return isHighBloodSugar(bs) ? (
-      <BodyText
-        style={[
-          styles.bsText,
-          {
-            color: colors.red1,
-          },
-        ]}>
-        <FormattedMessage id="general.high" />
-      </BodyText>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <BodyText
+          style={[
+            styles.bsText,
+            {
+              color: colors.red1,
+            },
+          ]}>
+          <FormattedMessage id="general.high" />
+        </BodyText>
+        <Image source={smallWarningSign} style={styles.warningIcon} />
+      </View>
     ) : (
       <BodyText
         style={[
@@ -89,14 +92,7 @@ export const BsInformation = ({bs, style = {}}: Props) => {
                 </>
               )}
             </BodyText>
-            <BodyText
-              style={{
-                fontSize: 18,
-                color: colors.grey0,
-                fontWeight: '500',
-              }}>
-              {getBSText()}
-            </BodyText>
+            <View>{getBSText()}</View>
           </View>
           <BodyText
             style={{
@@ -121,5 +117,9 @@ const styles = StyleSheet.create({
   informationIcon: {
     marginRight: 16,
     flexShrink: 0,
+  },
+  warningIcon: {
+    marginLeft: 4,
+    marginTop: 3,
   },
 })
