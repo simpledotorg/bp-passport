@@ -1,5 +1,5 @@
 import React from 'react'
-import {Text, View, StyleSheet, Image, ViewStyle} from 'react-native'
+import {View, StyleSheet, Image, ViewStyle} from 'react-native'
 import {FormattedMessage} from 'react-intl'
 import {format} from 'date-fns'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -41,10 +41,7 @@ export const BpInformation = ({bp, style = {}}: Props) => {
           ]}>
           <FormattedMessage id="general.high" />
         </BodyText>
-        <Image
-          source={smallWarningSign}
-          style={{marginLeft: 4, marginTop: 3}}
-        />
+        <Image source={smallWarningSign} style={styles.warningIcon} />
       </View>
     ) : (
       <BodyText
@@ -119,5 +116,9 @@ const styles = StyleSheet.create({
   informationIcon: {
     marginRight: 16,
     flexShrink: 0,
+  },
+  warningIcon: {
+    marginLeft: 4,
+    marginTop: 3,
   },
 })
