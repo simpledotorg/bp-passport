@@ -24,7 +24,11 @@ import {useThunkDispatch} from '../redux/store'
 import {addBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
 import {ScrollView} from 'react-native-gesture-handler'
 
-import {isHighBloodSugar, isLowBloodSugar} from '../utils/blood-sugars'
+import {
+  isHighBloodSugar,
+  isLowBloodSugar,
+  showWarning,
+} from '../utils/blood-sugars'
 
 type AddBsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -244,27 +248,29 @@ function AddBsScreen({navigation, route}: Props) {
 
               navigation.goBack()
 
-              if (isHighBloodSugar(newBloodSugar)) {
-                setTimeout(() => {
-                  navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN, {
-                    displayText: intl.formatMessage(
-                      {id: 'alert.description-high'},
-                      {
-                        label: intl.formatMessage({
-                          id: 'bs.blood-sugar',
-                        }),
-                      },
-                    ),
-                  })
-                }, 250)
-              } else if (isLowBloodSugar(newBloodSugar)) {
-                setTimeout(() => {
-                  navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN, {
-                    displayText: intl.formatMessage({
-                      id: 'alert.description-low',
-                    }),
-                  })
-                }, 250)
+              if (showWarning(newBloodSugar)) {
+                if (isHighBloodSugar(newBloodSugar)) {
+                  setTimeout(() => {
+                    navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN, {
+                      displayText: intl.formatMessage(
+                        {id: 'alert.description-high'},
+                        {
+                          label: intl.formatMessage({
+                            id: 'bs.blood-sugar',
+                          }),
+                        },
+                      ),
+                    })
+                  }, 250)
+                } else if (isLowBloodSugar(newBloodSugar)) {
+                  setTimeout(() => {
+                    navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN, {
+                      displayText: intl.formatMessage({
+                        id: 'alert.description-low',
+                      }),
+                    })
+                  }, 250)
+                }
               }
             }}
           />
