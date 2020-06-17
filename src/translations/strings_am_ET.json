@@ -164,7 +164,7 @@
   "medicine.custom": "የተበጀ",
   "medicine.allow-notifications-title": "ማሳወቂያዎችን ፍቀድ",
   "medicine.allow-notifications-body": "የመድሃኒት ማስታወሻዎችን እንዲቀበሉ ለማሳወቂያዎች ይፍቀዱ",
-  "medicine.reminder-notification": "{day} {time}፣ መድሃኒትዎን ይውሰዱ",
+  "medicine.reminder-notification": "{ቀን} {ሰአት}፣ መድሃኒትዎን ይውሰዱ",
   "alert.title": "የሕክምና ዕርዳታ ያግኙ",
   "alert.description-high": "የእርስዎ {መለያ} በጣም ከፍተኛ ነው። ጤናዎ እንዲመረምር በአፋጣኝ ዶክተር ያነጋግሩ።",
   "alert.description-low": "የደም ስኳርዎ በጣም ዝቅተኛ ነው። እንደ ስኳር ያሉ የስኳር ምግቦችን ይመገቡ የደም ስኳርዎን ከፍ ለማድረግ እና ዶክተርዎን በአፋጣኝ ያነጋግሩ።",
