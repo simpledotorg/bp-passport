@@ -161,7 +161,7 @@
   "medicine.daily": "እለታዊ",
   "medicine.weekdays": "የስራ ቀናት",
   "medicine.weekends": "ቅዳሜ እና አሁድ",
-  "medicine.custom": "ብጁ",
+  "medicine.custom": "የተበጀ",
   "medicine.allow-notifications-title": "ማሳወቂያዎችን ፍቀድ",
   "medicine.allow-notifications-body": "የመድሃኒት ማስታወሻዎችን እንዲቀበሉ ለማሳወቂያዎች ይፍቀዱ",
   "medicine.reminder-notification": "{day} {time}፣ መድሃኒትዎን ይውሰዱ",
