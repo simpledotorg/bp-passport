@@ -19,6 +19,7 @@ import {
   displayDate,
   isHighBloodSugar,
   isLowBloodSugar,
+  showWarning,
   getBloodSugarDetails,
 } from '../utils/blood-sugars'
 import {useThunkDispatch} from '../redux/store'
@@ -35,7 +36,21 @@ export const BsModal = ({bs, close}: Props) => {
   const dispatch = useThunkDispatch()
 
   const getBSText = () => {
-    return isHighBloodSugar(bs) ? (
+    if (isHighBloodSugar(bs)) {
+      return (
+        <BodyText
+          style={[
+            styles.bsText,
+            {
+              color: colors.red1,
+            },
+          ]}>
+          <FormattedMessage id="general.high" />
+        </BodyText>
+      )
+    }
+
+    return isLowBloodSugar(bs) ? (
       <BodyText
         style={[
           styles.bsText,
@@ -43,7 +58,7 @@ export const BsModal = ({bs, close}: Props) => {
             color: colors.red1,
           },
         ]}>
-        <FormattedMessage id="general.high" />
+        <FormattedMessage id="general.low" />
       </BodyText>
     ) : (
       <BodyText
@@ -60,7 +75,7 @@ export const BsModal = ({bs, close}: Props) => {
 
   const getNotes = () => {
     const bsDetails = getBloodSugarDetails(bs)
-    if (isHighBloodSugar(bs)) {
+    if (isHighBloodSugar(bs) && showWarning(bs)) {
       return (
         <View
           style={{
@@ -95,7 +110,7 @@ export const BsModal = ({bs, close}: Props) => {
       )
     }
 
-    return isLowBloodSugar(bs) ? (
+    return isLowBloodSugar(bs) && showWarning(bs) ? (
       <View
         style={{
           flexDirection: 'row',
