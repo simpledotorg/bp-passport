@@ -31,7 +31,7 @@
   "home.add-bs": "የደም ስኳር ያስገቡ",
   "all-bp.bp-trend": "የደም ግፊት ሁኔታ",
   "all-bp.bp-details": "የደም ግፊት ዝርዝሮች",
-  "add-bp.systolic-less-than-error": "ሰልኮሊክ ከ 70 በታች መሆን አይችልም",
+  "add-bp.systolic-less-than-error": "ሲስቶሊክ ከ 70 በታች መሆን አይችልም",
   "add-bp.systolic-greater-than-error": "ሲስቶሊክ ከ 300 በላይ መሆን አይችልም",
   "add-bp.diastolic-less-than-error": "ድያስቶሊክ ከ 40 በታች መሆን አይችልም",
   "add-bp.diastolic-greater-than-error": "ድያስቶሊክ ከ 180 በታች መሆን አይችልም",
