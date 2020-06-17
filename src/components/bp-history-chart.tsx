@@ -10,6 +10,7 @@ import {
   VictoryAxis,
   VictoryTooltip,
   VictoryBar,
+  VictoryVoronoiContainer,
 } from 'victory-native'
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
@@ -97,7 +98,7 @@ export const BpHistoryChart = ({bps}: Props) => {
         borderColor: colors.grey3,
         borderLeftWidth: 1,
         borderTopWidth: 1,
-        overflow: 'hidden',
+        overflow: 'visible',
         position: 'relative',
       }}>
       <View
@@ -151,6 +152,7 @@ export const BpHistoryChart = ({bps}: Props) => {
         minDomain={{
           y: getMinDomain(),
         }}
+        containerComponent={<VictoryVoronoiContainer />}
         style={{
           parent: {
             position: 'relative',
@@ -348,14 +350,22 @@ export const BpHistoryChart = ({bps}: Props) => {
                   ? {
                       x: bp.index,
                       y: bp.averaged.systolic,
-                      label: `${bp.averaged.systolic}/${bp.averaged.diastolic}`,
+                      label: `${bp.averaged.systolic}/${
+                        bp.averaged.diastolic
+                      }, ${format(bp.date, 'dd-MM-yyyy')}, ${format(
+                        bp.date,
+                        'k:mm',
+                      )}`,
                     }
                   : null,
                 bp.averaged.diastolic < 90
                   ? {
                       x: bp.index,
                       y: bp.averaged.diastolic,
-                      label: `${bp.averaged.systolic}/${bp.averaged.diastolic}`,
+                      label: `${bp.averaged.systolic} / ${
+                        bp.averaged.diastolic
+                      }, ${format(bp.date, 'dd-MM-yyyy')}
+                      , ${format(bp.date, 'k:mm')}`,
                     }
                   : null,
               ]
@@ -377,9 +387,9 @@ export const BpHistoryChart = ({bps}: Props) => {
                       target: 'data',
                       mutation: () => ({
                         style: {
-                          fill: colors.blue2,
-                          stroke: colors.blue4,
+                          stroke: colors.blue2,
                           strokeWidth: 3,
+                          boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
                         },
                       }),
                     },
@@ -406,13 +416,16 @@ export const BpHistoryChart = ({bps}: Props) => {
           ]}
           labelComponent={
             <VictoryTooltip
+              renderInPortal={true}
+              constrainToVisibleArea={true}
               cornerRadius={20}
               pointerLength={5}
               flyoutStyle={{
                 height: 32,
+                padding: 200,
                 fill: colors.grey0,
               }}
-              renderInPortal={false}
+              style={{fill: colors.white}}
             />
           }
         />
@@ -424,14 +437,24 @@ export const BpHistoryChart = ({bps}: Props) => {
                   ? {
                       x: bp.index,
                       y: bp.averaged.systolic,
-                      label: `${bp.averaged.systolic}/${bp.averaged.diastolic}`,
+                      label: `${bp.averaged.systolic}/${
+                        bp.averaged.diastolic
+                      }, ${format(bp.date, 'dd-MM-yyyy')}, ${format(
+                        bp.date,
+                        'k:mm',
+                      )}`,
                     }
                   : null,
                 bp.averaged.diastolic >= 90
                   ? {
                       x: bp.index,
                       y: bp.averaged.diastolic,
-                      label: `${bp.averaged.systolic}/${bp.averaged.diastolic}`,
+                      label: `${bp.averaged.systolic}/${
+                        bp.averaged.diastolic
+                      }, ${format(bp.date, 'dd-MM-yyyy')}, ${format(
+                        bp.date,
+                        'k:mm',
+                      )}`,
                     }
                   : null,
               ]
@@ -453,9 +476,9 @@ export const BpHistoryChart = ({bps}: Props) => {
                       target: 'data',
                       mutation: () => ({
                         style: {
-                          fill: colors.blue2,
-                          stroke: colors.blue4,
+                          stroke: colors.blue2,
                           strokeWidth: 3,
+                          boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
                         },
                       }),
                     },
@@ -480,7 +503,19 @@ export const BpHistoryChart = ({bps}: Props) => {
               },
             },
           ]}
-          labelComponent={<VictoryTooltip renderInPortal={false} />}
+          labelComponent={
+            <VictoryTooltip
+              renderInPortal={true}
+              constrainToVisibleArea={true}
+              cornerRadius={20}
+              pointerLength={5}
+              flyoutStyle={{
+                height: 32,
+                fill: colors.grey0,
+              }}
+              style={{fill: colors.white}}
+            />
+          }
         />
       </VictoryChart>
     </View>
