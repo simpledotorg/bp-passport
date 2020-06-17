@@ -13,6 +13,7 @@ import {
   displayDate,
   isHighBloodSugar,
   isLowBloodSugar,
+  showWarning,
   getBloodSugarDetails,
 } from '../utils/blood-sugars'
 
@@ -36,8 +37,11 @@ export const BsInformation = ({bs, style = {}}: Props) => {
               },
             ]}>
             <FormattedMessage id="general.high" />
+            {isHighBloodSugar(bs)}
           </BodyText>
-          <Image source={smallWarningSign} style={styles.warningIcon} />
+          {showWarning(bs) && (
+            <Image source={smallWarningSign} style={styles.warningIcon} />
+          )}
         </View>
       )
     }
