@@ -16,7 +16,7 @@
   "login.allow-camera-access": "እባክዎ የካሜራ ተደራሽነትን በስለክዎ ቅንብሮች (setting) ውስጥ ይፍቀዱ",
   "scan-bp-passport.hold-camera": "በደም ግፊት ፓስፖርት ላይ ካሜራውን በዚህ ምልክት ላይ ይያዙ",
   "scan-bp-passport.cant-verify-account": "መለያን ማረጋገጥ አልተቻለም",
-  "scan-bp-passport.dont-have-phone-number": "ከBP ፓስፖርትዎ ጋር የተዛመደ ስልክ ቁጥር የለንም። እባክዎ በጥቂት ሳምንታት ውስጥ ዳግም ይሞክሩ።",
+  "scan-bp-passport.dont-have-phone-number": "ከደም ግፊት ፓስፖርትዎ ጋር የተዛመደ ስልክ ቁጥር የለንም። እባክዎ በጥቂት ሳምንታት ውስጥ ዳግም ይሞክሩ።",
   "verify-pin.please-verify": "እባክዎ በአጭር የጽሁፍ መልዕክት የላክልንዎትን ባለ 6 አሃዝ የማረጋገጫ\nኮድ ያስገቡ",
   "verify-pin.code": "ኮድ",
   "verify-pin.wrong-pin": "እባክዎ ትክክለኛ ኮድ ያስገቡ",
