@@ -135,7 +135,7 @@
   "bs.blood-sugar": "የደም ስኳር መጠን",
   "bs.random-blood-sugar": "የዘፈቀደ የደም ስኳር (RBS)",
   "bs.random-blood-code": "RBS",
-  "bs.fasting-blood-sugar": "የደም ስኳር (FBS)",
+  "bs.fasting-blood-sugar": "በባዶ ሆድ የደም ስኳር (FBS)",
   "bs.fasting-code": "FBS",
   "bs.fasting-description": "8 ሰዓት ሳይመገቡ",
   "bs.post-prandial": "ክምግብ በኋላ የደም ስኳር መጠን (PFBS)",
