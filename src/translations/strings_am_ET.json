@@ -21,7 +21,7 @@
   "verify-pin.code": "ኮድ",
   "verify-pin.wrong-pin": "እባክዎ ትክክለኛ ኮድ ያስገቡ",
   "verify-pin.no-pin": "ኮድ አልደረስዎትም?",
-  "verify-pin.resend-sms-link": "ኤስኤምኤስ እንደገና ይላኩ",
+  "verify-pin.resend-sms-link": "አጭር መልክት (SMS) እንደገና ይላኩ",
   "home.my-medicines": "የእኔ መድሃኒቶች",
   "home.add-bp": "የደም ግፊት ያክሉ",
   "home.add": "ያክሉ",
