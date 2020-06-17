@@ -9,7 +9,7 @@ import {
 import {FormattedMessage, useIntl} from 'react-intl'
 import {format} from 'date-fns'
 
-import {colors, redHeart, largeWarningSign} from '../styles'
+import {colors, redHeart, mediumWarningSign} from '../styles'
 import {BodyText, BodyHeader, Button} from './'
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
@@ -73,7 +73,7 @@ export const BpModal = ({bp, close}: Props) => {
           alignItems: 'flex-start',
           marginVertical: 34,
         }}>
-        <Image source={largeWarningSign} />
+        <Image source={mediumWarningSign} />
         <View style={{flexDirection: 'column', flex: 1, paddingLeft: 16}}>
           <BodyText
             style={{

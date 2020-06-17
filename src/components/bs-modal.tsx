@@ -9,7 +9,7 @@ import {
 import {FormattedMessage, useIntl} from 'react-intl'
 import {format} from 'date-fns'
 
-import {colors, purpleDrop, largeWarningSign} from '../styles'
+import {colors, purpleDrop, mediumWarningSign} from '../styles'
 import {BodyHeader, BodyText, Button} from './'
 import {
   BloodSugar,
@@ -68,7 +68,7 @@ export const BsModal = ({bs, close}: Props) => {
             alignItems: 'flex-start',
             marginVertical: 34,
           }}>
-          <Image source={largeWarningSign} />
+          <Image source={mediumWarningSign} />
           <View style={{flexDirection: 'column', flex: 1, paddingLeft: 16}}>
             <BodyText
               style={{
