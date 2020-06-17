@@ -27,6 +27,11 @@ export const BpModal = ({bp, close}: Props) => {
   const intl = useIntl()
   const dispatch = useThunkDispatch()
 
+  const showWarning = (bpIn: BloodPressure) => {
+    // This is a high blood pressure that is high enough to warrant a warning
+    return bpIn.systolic >= 180 || bpIn.diastolic >= 110
+  }
+
   const isBloodPressureHigh = (bpIn: BloodPressure) => {
     // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
     // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
@@ -66,7 +71,7 @@ export const BpModal = ({bp, close}: Props) => {
   }
 
   const getNotes = () => {
-    return isBloodPressureHigh(bp) ? (
+    return showWarning(bp) ? (
       <View
         style={{
           flexDirection: 'row',
