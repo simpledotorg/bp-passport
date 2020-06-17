@@ -27,6 +27,7 @@ type Props = {
 }
 
 function AddDataWarningModalScreen({navigation, route}: Props) {
+  const {displayText} = route.params
   const intl = useIntl()
 
   return (
@@ -60,12 +61,7 @@ function AddDataWarningModalScreen({navigation, route}: Props) {
             <FormattedMessage id="alert.title" />
           </BodyHeader>
           <BodyText style={{textAlign: 'center', marginBottom: 24}}>
-            <FormattedMessage
-              id="alert.description-high"
-              values={{
-                label: <FormattedMessage id={'general.bp'} />,
-              }}
-            />
+            {displayText}
           </BodyText>
           <Button
             buttonType={ButtonType.Normal}

@@ -112,7 +112,12 @@ function AddBpScreen({navigation, route}: Props) {
 
     if (isBloodPressureHigh(newBloodPressure)) {
       setTimeout(() => {
-        navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN)
+        navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN, {
+          displayText: intl.formatMessage(
+            {id: 'alert.description-high'},
+            {label: intl.formatMessage({id: 'general.bp'})},
+          ),
+        })
       }, 250)
     }
   }

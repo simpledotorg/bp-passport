@@ -246,11 +246,24 @@ function AddBsScreen({navigation, route}: Props) {
 
               if (isHighBloodSugar(newBloodSugar)) {
                 setTimeout(() => {
-                  navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN)
+                  navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN, {
+                    displayText: intl.formatMessage(
+                      {id: 'alert.description-high'},
+                      {
+                        label: intl.formatMessage({
+                          id: 'bs.blood-sugar',
+                        }),
+                      },
+                    ),
+                  })
                 }, 250)
               } else if (isLowBloodSugar(newBloodSugar)) {
                 setTimeout(() => {
-                  navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN)
+                  navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN, {
+                    displayText: intl.formatMessage({
+                      id: 'alert.description-low',
+                    }),
+                  })
                 }, 250)
               }
             }}
