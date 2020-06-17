@@ -138,7 +138,7 @@
   "bs.fasting-blood-sugar": "በባዶ ሆድ የደም ስኳር (FBS)",
   "bs.fasting-code": "FBS",
   "bs.fasting-description": "8 ሰዓት ሳይመገቡ",
-  "bs.post-prandial": "ክምግብ በኋላ የደም ስኳር መጠን (PFBS)",
+  "bs.post-prandial": "ከምግብ በኋላ የደም ስኳር መጠን (PFBS)",
   "bs.post-prenial-code": "PPBS",
   "bs.post-prandial-description": "ከተመገቡ ከ 2 ሰዓታት በኋላ",
   "bs.hemoglobic": "ሄሞግሎቢን A1C (HbA1C)",
