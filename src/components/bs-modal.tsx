@@ -102,7 +102,7 @@ export const BsModal = ({bs, close}: Props) => {
           alignItems: 'flex-start',
           marginVertical: 34,
         }}>
-        <Image source={largeWarningSign} />
+        <Image source={mediumWarningSign} />
         <View style={{flexDirection: 'column', flex: 1, paddingLeft: 16}}>
           <BodyText
             style={{
