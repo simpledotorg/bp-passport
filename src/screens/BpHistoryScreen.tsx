@@ -45,7 +45,7 @@ function BpHistoryScreen({navigation, route}: Props) {
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log('didfocus!')
+      // console.log('didfocus!')
       setIsAnimating(false)
     }, []),
   )

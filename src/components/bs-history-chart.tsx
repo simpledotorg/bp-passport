@@ -29,6 +29,8 @@ import {DateRange} from '../utils/dates'
 import {generateAverageChartData} from '../utils/data-transform'
 import {CHART_MONTH_RANGE} from '../utils/dates'
 import {dateLocale} from '../constants/languages'
+import {DateEntry} from './bs-history/date-entry'
+import {DateAxis} from './bs-history/date-axis'
 
 type Props = {
   bss: BloodSugar[]
@@ -138,6 +140,13 @@ export const BsHistoryChart = ({bss}: Props) => {
         )
       }
     })
+
+    const dateAxis = DateAxis.CreateMostRecentMonthsFromBloodSugars(
+      bss,
+      CHART_MONTH_RANGE,
+    )
+
+    console.log(dateAxis.getDateEntryForBloodSugar(bss[5]))
 
     setChartData(
       generateAverageChartData(filteredValues, averageList, (value) => {
