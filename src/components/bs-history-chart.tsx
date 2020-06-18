@@ -124,11 +124,11 @@ export const BsHistoryChart = ({bss}: Props) => {
       return {
         x: bs.index,
         y: bs.averaged,
-        label: `${bs.averaged.toFixed(2)} ${intl.formatMessage({
+        label: `${bs.averaged.toFixed(0)} ${intl.formatMessage({
           id: 'bs.mgdl',
         })} ${intl.formatMessage({
           id: 'bs.random-blood-code',
-        })}, ${format(bs.date, 'dd-MMM-yyyy')}, ${format(bs.date, 'k:mm')}`,
+        })}, ${format(bs.date, 'dd-MMM-yyyy')}`,
       }
     })
   }
