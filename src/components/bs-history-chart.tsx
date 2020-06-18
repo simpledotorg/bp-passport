@@ -29,8 +29,7 @@ import {DateRange} from '../utils/dates'
 import {generateAverageChartData} from '../utils/data-transform'
 import {CHART_MONTH_RANGE} from '../utils/dates'
 import {dateLocale} from '../constants/languages'
-import {DateEntry} from './bs-history/date-entry'
-import {DateAxis} from './bs-history/date-axis'
+import {ChartData} from './bs-history/chart-data'
 
 type Props = {
   bss: BloodSugar[]
@@ -45,24 +44,7 @@ export const BsHistoryChart = ({bss}: Props) => {
   const [hasFasting, setHasFasting] = useState<boolean>(false)
   const [hasHemoglobic, setHasHemoglobic] = useState<boolean>(false)
 
-  const [chartData, setChartData] = useState<{
-    dates: DateRange[]
-    low: DateRange[]
-    high: DateRange[]
-    min: null | number
-    max: null | number
-  } | null>(null)
-
-  const averageList = (value: DateRange) => {
-    const valuesAccumulator = value.list.reduce(
-      (memo: number, current: any) => {
-        return (memo += Number(current.blood_sugar_value))
-      },
-      0,
-    )
-
-    return valuesAccumulator / value.list.length
-  }
+  const [chartData, setChartData] = useState<ChartData | null>(null)
 
   const isRandomBloodSugar = () => {
     return shownSugarType === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR
@@ -128,36 +110,10 @@ export const BsHistoryChart = ({bss}: Props) => {
   }, [hasRandom, hasFasting, hasHemoglobic])
 
   useEffect(() => {
-    const filteredValues = bss.filter((bs) => {
-      if (isHemoglobic()) {
-        return bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
-      } else if (isFastingBloodSugar()) {
-        return bs.blood_sugar_type === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
-      } else {
-        return (
-          bs.blood_sugar_type !== BLOOD_SUGAR_TYPES.HEMOGLOBIC &&
-          bs.blood_sugar_type !== BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
-        )
-      }
-    })
-
-    const dateAxis = DateAxis.CreateMostRecentMonthsFromBloodSugars(
-      bss,
-      CHART_MONTH_RANGE,
-    )
-
-    console.log(dateAxis.getDateEntryForBloodSugar(bss[5]))
-
-    setChartData(
-      generateAverageChartData(filteredValues, averageList, (value) => {
-        return isHighBloodSugar({
-          blood_sugar_value: value,
-          blood_sugar_type: shownSugarType,
-        } as BloodSugar)
-      }),
-    )
+    setChartData(new ChartData(shownSugarType, bss))
   }, [bss, shownSugarType])
 
+  /*
   const generateScatter = (bss: DateRange[]): any[] => {
     return bss.map((bs: DateRange) => {
       return {
@@ -175,7 +131,7 @@ export const BsHistoryChart = ({bss}: Props) => {
         )}`,
       }
     })
-  }
+  }*/
 
   const getThreshhold = (): number => {
     switch (shownSugarType) {
@@ -191,7 +147,7 @@ export const BsHistoryChart = ({bss}: Props) => {
   const getMaxDomain = () => {
     const threshhold = getThreshhold()
     const difference = Math.round(threshhold / 10)
-    let base = chartData?.max ?? threshhold
+    let base = chartData?.getMaxReading() ?? threshhold
 
     if (base < threshhold) {
       base = threshhold
@@ -203,7 +159,7 @@ export const BsHistoryChart = ({bss}: Props) => {
   const getMinDomain = () => {
     const threshhold = getThreshhold()
     const difference = Math.round(threshhold / 10)
-    let base = chartData?.min ?? threshhold
+    let base = chartData?.getMinReading() ?? threshhold
 
     if (base > threshhold) {
       base = threshhold
@@ -313,48 +269,6 @@ export const BsHistoryChart = ({bss}: Props) => {
           borderTopWidth: 1,
           position: 'relative',
         }}>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            flexDirection: 'row',
-            paddingLeft: 6,
-          }}>
-          {[...Array(CHART_MONTH_RANGE)].map((value, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  flex: 1,
-                  flexShrink: 0,
-                }}>
-                <BodyText
-                  style={{
-                    color: colors.grey0,
-                    fontWeight: '500',
-                    fontSize: 14,
-                    lineHeight: 18,
-                  }}>
-                  {format(addMonths(chartData.dates[0].date, index), 'MMM', {
-                    locale: dateLocale(),
-                  })}
-                </BodyText>
-                <BodyText
-                  style={{
-                    color: colors.grey2,
-                    fontWeight: '500',
-                    fontSize: 14,
-                    lineHeight: 18,
-                  }}>
-                  {format(addMonths(chartData.dates[0].date, index), 'yyy', {
-                    locale: dateLocale(),
-                  })}
-                </BodyText>
-              </View>
-            )
-          })}
-          <View style={{width: 32}} />
-        </View>
         <VictoryChart
           maxDomain={{
             y: getMaxDomain(),
@@ -377,15 +291,9 @@ export const BsHistoryChart = ({bss}: Props) => {
           <VictoryAxis
             tickCount={CHART_MONTH_RANGE}
             tickFormat={(tick) => {
-              return format(
-                addMonths(chartData.dates[0].date, tick / 4),
-                'MMM-yy',
-                {
-                  locale: dateLocale(),
-                },
-              )
+              return tick
             }}
-            tickValues={chartData.dates.map((date, index) => index)}
+            tickValues={chartData.getIndexValues()}
             style={{
               grid: {stroke: colors.grey3, strokeDasharray: 4},
               axis: {stroke: colors.grey3, opacity: 0},
@@ -428,89 +336,12 @@ export const BsHistoryChart = ({bss}: Props) => {
             }}
           />
 
-          <VictoryLine
-            data={[...chartData.low, ...chartData.high].map((bs) => {
-              if (bs.list.length) {
-                return {x: bs.index, y: bs.averaged}
-              }
-
-              return null
-            })}
-            style={{
-              data: {
-                stroke: colors.grey1,
-                strokeWidth: 1,
-              },
-            }}
-          />
-
           <VictoryScatter
-            data={generateScatter(chartData.low)}
+            data={chartData.getScatterDataForGraph()}
             size={5}
             style={{
               data: {
                 fill: colors.green1,
-              },
-            }}
-            events={[
-              {
-                target: 'data',
-                eventHandlers: {
-                  onPressIn: () => {
-                    return [
-                      {
-                        target: 'data',
-                        mutation: () => ({
-                          style: {
-                            stroke: colors.blue2,
-                            strokeWidth: 3,
-                            fill: colors.white,
-                            boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
-                          },
-                        }),
-                      },
-                      {
-                        target: 'labels',
-                        mutation: () => ({active: true}),
-                      },
-                    ]
-                  },
-                  onPressOut: () => {
-                    return [
-                      {
-                        target: 'data',
-                        mutation: () => {},
-                      },
-                      {
-                        target: 'labels',
-                        mutation: () => ({active: false}),
-                      },
-                    ]
-                  },
-                },
-              },
-            ]}
-            labelComponent={
-              <VictoryTooltip
-                renderInPortal={false}
-                constrainToVisibleArea={true}
-                cornerRadius={20}
-                pointerLength={5}
-                flyoutStyle={{
-                  height: 32,
-                  padding: 200,
-                  fill: colors.grey0,
-                }}
-                style={{fill: colors.white}}
-              />
-            }
-          />
-          <VictoryScatter
-            data={generateScatter(chartData.high)}
-            size={4}
-            style={{
-              data: {
-                fill: colors.red1,
               },
             }}
             events={[
