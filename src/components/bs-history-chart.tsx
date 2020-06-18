@@ -515,13 +515,13 @@ export const BsHistoryChart = ({bss}: Props) => {
           {fullChartData && (
             <VictoryLine
               data={[
-                {x: 5, y: 100},
-                {x: 5, y: 300},
+                {x: 107, y: 100},
+                {x: 107, y: 300},
               ]}
               style={{
                 data: {
-                  stroke: colors.grey1,
-                  strokeWidth: 1,
+                  stroke: colors.grey4,
+                  strokeWidth: 6,
                 },
               }}
             />
