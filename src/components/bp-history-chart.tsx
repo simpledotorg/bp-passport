@@ -153,7 +153,6 @@ export const BpHistoryChart = ({bps}: Props) => {
         minDomain={{
           y: getMinDomain(),
         }}
-        containerComponent={<VictoryVoronoiContainer />}
         style={{
           parent: {
             position: 'relative',
@@ -307,219 +306,218 @@ export const BpHistoryChart = ({bps}: Props) => {
             },
           }}
         /> */}
-        <VictoryGroup>
-          <VictoryLine
-            data={[...chartData.low, ...chartData.high].map((bp) => {
-              if (bp.list.length) {
-                return {
-                  x: bp.index,
-                  y: bp.averaged.systolic,
-                }
+        <VictoryLine
+          data={[...chartData.low, ...chartData.high].map((bp) => {
+            if (bp.list.length) {
+              return {
+                x: bp.index,
+                y: bp.averaged.systolic,
               }
-              return null
-            })}
-            style={{
-              data: {
-                stroke: colors.grey1,
-                strokeWidth: 1,
-              },
-            }}
-          />
-          <VictoryScatter
-            data={[...chartData.low, ...chartData.high].flatMap(
-              (bp: DateRange) => {
-                return [
-                  bp.averaged.systolic < 140
-                    ? {
-                        x: bp.index,
-                        y: bp.averaged.systolic,
-                        label: `${bp.averaged.systolic}/${
-                          bp.averaged.diastolic
-                        }, ${format(bp.date, 'dd-MM-yyyy')}, ${format(
-                          bp.date,
-                          'k:mm',
-                        )}`,
-                      }
-                    : null,
-                  bp.averaged.diastolic < 90
-                    ? {
-                        x: bp.index,
-                        y: bp.averaged.diastolic,
-                        label: `${bp.averaged.systolic} / ${
-                          bp.averaged.diastolic
-                        }, ${format(bp.date, 'dd-MM-yyyy')}
+            }
+            return null
+          })}
+          style={{
+            data: {
+              stroke: colors.grey1,
+              strokeWidth: 1,
+            },
+          }}
+        />
+        <VictoryScatter
+          data={[...chartData.low, ...chartData.high].flatMap(
+            (bp: DateRange) => {
+              return [
+                bp.averaged.systolic < 140
+                  ? {
+                      x: bp.index,
+                      y: bp.averaged.systolic,
+                      label: `${bp.averaged.systolic}/${
+                        bp.averaged.diastolic
+                      }, ${format(bp.date, 'dd-MM-yyyy')}, ${format(
+                        bp.date,
+                        'k:mm',
+                      )}`,
+                    }
+                  : null,
+                bp.averaged.diastolic < 90
+                  ? {
+                      x: bp.index,
+                      y: bp.averaged.diastolic,
+                      label: `${bp.averaged.systolic} / ${
+                        bp.averaged.diastolic
+                      }, ${format(bp.date, 'dd-MM-yyyy')}
                       , ${format(bp.date, 'k:mm')}`,
-                      }
-                    : null,
-                ]
-              },
-            )}
-            size={4}
-            style={{
-              data: {
-                fill: colors.green1,
-              },
-            }}
-            events={[
-              {
-                target: 'data',
-                eventHandlers: {
-                  onPressIn: () => {
-                    return [
-                      {
-                        target: 'data',
-                        mutation: () => ({
-                          style: {
-                            stroke: colors.blue2,
-                            strokeWidth: 3,
-                            boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
-                          },
-                        }),
-                      },
-                      {
-                        target: 'labels',
-                        mutation: () => ({active: true}),
-                      },
-                    ]
-                  },
-                  onPressOut: () => {
-                    return [
-                      {
-                        target: 'data',
-                        mutation: () => {},
-                      },
-                      {
-                        target: 'labels',
-                        mutation: () => ({active: false}),
-                      },
-                    ]
-                  },
+                    }
+                  : null,
+              ]
+            },
+          )}
+          size={4}
+          style={{
+            data: {
+              fill: colors.green1,
+            },
+          }}
+          events={[
+            {
+              target: 'data',
+              eventHandlers: {
+                onPressIn: () => {
+                  return [
+                    {
+                      target: 'data',
+                      mutation: () => ({
+                        style: {
+                          stroke: colors.blue2,
+                          strokeWidth: 3,
+                          fill: colors.white,
+                          boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
+                        },
+                      }),
+                    },
+                    {
+                      target: 'labels',
+                      mutation: () => ({active: true}),
+                    },
+                  ]
+                },
+                onPressOut: () => {
+                  return [
+                    {
+                      target: 'data',
+                      mutation: () => {},
+                    },
+                    {
+                      target: 'labels',
+                      mutation: () => ({active: false}),
+                    },
+                  ]
                 },
               },
-            ]}
-            labelComponent={
-              <VictoryTooltip
-                renderInPortal={true}
-                constrainToVisibleArea={true}
-                cornerRadius={20}
-                pointerLength={5}
-                flyoutStyle={{
-                  height: 32,
-                  padding: 200,
-                  fill: colors.grey0,
-                }}
-                style={{fill: colors.white}}
-              />
-            }
-          />
-        </VictoryGroup>
+            },
+          ]}
+          labelComponent={
+            <VictoryTooltip
+              renderInPortal={true}
+              constrainToVisibleArea={true}
+              cornerRadius={20}
+              pointerLength={5}
+              flyoutStyle={{
+                height: 32,
+                padding: 200,
+                fill: colors.grey0,
+              }}
+              style={{fill: colors.white}}
+            />
+          }
+        />
 
-        <VictoryGroup>
-          <VictoryLine
-            data={[...chartData.low, ...chartData.high].map((bp) => {
-              if (bp.list.length) {
-                return {
-                  x: bp.index,
-                  y: bp.averaged.diastolic,
-                }
+        <VictoryLine
+          data={[...chartData.low, ...chartData.high].map((bp) => {
+            if (bp.list.length) {
+              return {
+                x: bp.index,
+                y: bp.averaged.diastolic,
               }
-              return null
-            })}
-            style={{
-              data: {
-                stroke: colors.grey1,
-                strokeWidth: 1,
-              },
-            }}
-          />
-          <VictoryScatter
-            data={[...chartData.low, ...chartData.high].flatMap(
-              (bp: DateRange) => {
-                return [
-                  bp.averaged.systolic < 140
-                    ? {
-                        x: bp.index,
-                        y: bp.averaged.systolic,
-                        label: `${bp.averaged.systolic}/${
-                          bp.averaged.diastolic
-                        }, ${format(bp.date, 'dd-MM-yyyy')}, ${format(
-                          bp.date,
-                          'k:mm',
-                        )}`,
-                      }
-                    : null,
-                  bp.averaged.diastolic < 90
-                    ? {
-                        x: bp.index,
-                        y: bp.averaged.diastolic,
-                        label: `${bp.averaged.systolic} / ${
-                          bp.averaged.diastolic
-                        }, ${format(bp.date, 'dd-MM-yyyy')}
+            }
+            return null
+          })}
+          style={{
+            data: {
+              stroke: colors.grey1,
+              strokeWidth: 1,
+            },
+          }}
+        />
+        <VictoryScatter
+          data={[...chartData.low, ...chartData.high].flatMap(
+            (bp: DateRange) => {
+              return [
+                bp.averaged.systolic < 140
+                  ? {
+                      x: bp.index,
+                      y: bp.averaged.systolic,
+                      label: `${bp.averaged.systolic}/${
+                        bp.averaged.diastolic
+                      }, ${format(bp.date, 'dd-MM-yyyy')}, ${format(
+                        bp.date,
+                        'k:mm',
+                      )}`,
+                    }
+                  : null,
+                bp.averaged.diastolic < 90
+                  ? {
+                      x: bp.index,
+                      y: bp.averaged.diastolic,
+                      label: `${bp.averaged.systolic} / ${
+                        bp.averaged.diastolic
+                      }, ${format(bp.date, 'dd-MM-yyyy')}
                       , ${format(bp.date, 'k:mm')}`,
-                      }
-                    : null,
-                ]
-              },
-            )}
-            size={4}
-            style={{
-              data: {
-                fill: colors.green1,
-              },
-            }}
-            events={[
-              {
-                target: 'data',
-                eventHandlers: {
-                  onPressIn: () => {
-                    return [
-                      {
-                        target: 'data',
-                        mutation: () => ({
-                          style: {
-                            stroke: colors.blue2,
-                            strokeWidth: 3,
-                            boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
-                          },
-                        }),
-                      },
-                      {
-                        target: 'labels',
-                        mutation: () => ({active: true}),
-                      },
-                    ]
-                  },
-                  onPressOut: () => {
-                    return [
-                      {
-                        target: 'data',
-                        mutation: () => {},
-                      },
-                      {
-                        target: 'labels',
-                        mutation: () => ({active: false}),
-                      },
-                    ]
-                  },
+                    }
+                  : null,
+              ]
+            },
+          )}
+          size={4}
+          style={{
+            data: {
+              fill: colors.green1,
+            },
+          }}
+          events={[
+            {
+              target: 'data',
+              eventHandlers: {
+                onPressIn: () => {
+                  return [
+                    {
+                      target: 'data',
+                      mutation: () => ({
+                        style: {
+                          stroke: colors.blue2,
+                          strokeWidth: 3,
+                          fill: colors.white,
+                          boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
+                        },
+                      }),
+                    },
+                    {
+                      target: 'labels',
+                      mutation: () => ({active: true}),
+                    },
+                  ]
+                },
+                onPressOut: () => {
+                  return [
+                    {
+                      target: 'data',
+                      mutation: () => {},
+                    },
+                    {
+                      target: 'labels',
+                      mutation: () => ({active: false}),
+                    },
+                  ]
                 },
               },
-            ]}
-            labelComponent={
-              <VictoryTooltip
-                renderInPortal={true}
-                constrainToVisibleArea={true}
-                cornerRadius={20}
-                pointerLength={5}
-                flyoutStyle={{
-                  height: 32,
-                  padding: 200,
-                  fill: colors.grey0,
-                }}
-                style={{fill: colors.white}}
-              />
-            }
-          />
-        </VictoryGroup>
+            },
+          ]}
+          labelComponent={
+            <VictoryTooltip
+              renderInPortal={true}
+              constrainToVisibleArea={true}
+              cornerRadius={20}
+              pointerLength={5}
+              flyoutStyle={{
+                height: 32,
+                padding: 200,
+                fill: colors.grey0,
+              }}
+              style={{fill: colors.white}}
+            />
+          }
+        />
+
         <VictoryScatter
           data={[...chartData.low, ...chartData.high].flatMap(
             (bp: DateRange) => {
