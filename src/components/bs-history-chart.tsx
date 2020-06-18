@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
 } from 'react-native'
 import {format, addMonths} from 'date-fns'
-import {FormattedMessage} from 'react-intl'
+import {FormattedMessage, useIntl} from 'react-intl'
 import {
   VictoryChart,
   VictoryTheme,
@@ -35,6 +35,7 @@ type Props = {
 }
 
 export const BsHistoryChart = ({bss}: Props) => {
+  const intl = useIntl()
   const [shownSugarType, setShownSugarType] = useState<BLOOD_SUGAR_TYPES>(
     BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
   )
@@ -123,10 +124,11 @@ export const BsHistoryChart = ({bss}: Props) => {
       return {
         x: bs.index,
         y: bs.averaged,
-        label: `${bs.averaged.toFixed(2)}, ${format(
-          bs.date,
-          'dd-MMM-yyyy',
-        )}, ${format(bs.date, 'k:mm')}`,
+        label: `${bs.averaged.toFixed(2)} ${intl.formatMessage({
+          id: 'bs.mgdl',
+        })} ${intl.formatMessage({
+          id: 'bs.random-blood-code',
+        })}, ${format(bs.date, 'dd-MMM-yyyy')}, ${format(bs.date, 'k:mm')}`,
       }
     })
   }
