@@ -50,6 +50,12 @@ export const BsHistoryChart = ({bss}: Props) => {
     max: null | number
   } | null>(null)
 
+  const [fullChartData, setFullChartData] = useState<{
+    data: BloodSugar[]
+    min: null | number
+    max: null | number
+  } | null>(null)
+
   const averageList = (value: DateRange) => {
     const valuesAccumulator = value.list.reduce(
       (memo: number, current: any) => {
@@ -120,7 +126,7 @@ export const BsHistoryChart = ({bss}: Props) => {
     }
   }, [bss, shownSugarType])
 
-  const generateScatter = (bss: DateRange[]): any[] => {
+  const generateAverageScatter = (bss: DateRange[]): any[] => {
     return bss.map((bs: DateRange) => {
       return {x: bs.index, y: bs.averaged, label: bs.averaged}
     })
@@ -161,7 +167,7 @@ export const BsHistoryChart = ({bss}: Props) => {
     return base - difference
   }
 
-  if (!averageChartData) {
+  if (!averageChartData && !fullChartData) {
     return (
       <View
         style={[
@@ -266,47 +272,48 @@ export const BsHistoryChart = ({bss}: Props) => {
             flexDirection: 'row',
             paddingLeft: 6,
           }}>
-          {[...Array(CHART_MONTH_RANGE)].map((value, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  flex: 1,
-                  flexShrink: 0,
-                }}>
-                <BodyText
+          {averageChartData &&
+            [...Array(CHART_MONTH_RANGE)].map((value, index) => {
+              return (
+                <View
+                  key={index}
                   style={{
-                    color: colors.grey0,
-                    fontWeight: '500',
-                    fontSize: 14,
-                    lineHeight: 18,
+                    flex: 1,
+                    flexShrink: 0,
                   }}>
-                  {format(
-                    addMonths(averageChartData.dates[0].date, index),
-                    'MMM',
-                    {
-                      locale: dateLocale(),
-                    },
-                  )}
-                </BodyText>
-                <BodyText
-                  style={{
-                    color: colors.grey2,
-                    fontWeight: '500',
-                    fontSize: 14,
-                    lineHeight: 18,
-                  }}>
-                  {format(
-                    addMonths(averageChartData.dates[0].date, index),
-                    'yyy',
-                    {
-                      locale: dateLocale(),
-                    },
-                  )}
-                </BodyText>
-              </View>
-            )
-          })}
+                  <BodyText
+                    style={{
+                      color: colors.grey0,
+                      fontWeight: '500',
+                      fontSize: 14,
+                      lineHeight: 18,
+                    }}>
+                    {format(
+                      addMonths(averageChartData.dates[0].date, index),
+                      'MMM',
+                      {
+                        locale: dateLocale(),
+                      },
+                    )}
+                  </BodyText>
+                  <BodyText
+                    style={{
+                      color: colors.grey2,
+                      fontWeight: '500',
+                      fontSize: 14,
+                      lineHeight: 18,
+                    }}>
+                    {format(
+                      addMonths(averageChartData.dates[0].date, index),
+                      'yyy',
+                      {
+                        locale: dateLocale(),
+                      },
+                    )}
+                  </BodyText>
+                </View>
+              )
+            })}
           <View style={{width: 32}} />
         </View>
         <VictoryChart
@@ -327,25 +334,27 @@ export const BsHistoryChart = ({bss}: Props) => {
           }}
           scale={{x: 'linear'}}
           theme={VictoryTheme.material}>
-          <VictoryAxis
-            tickCount={CHART_MONTH_RANGE}
-            tickFormat={(tick) => {
-              return format(
-                addMonths(averageChartData.dates[0].date, tick / 4),
-                'MMM-yy',
-                {
-                  locale: dateLocale(),
-                },
-              )
-            }}
-            tickValues={averageChartData.dates.map((date, index) => index)}
-            style={{
-              grid: {stroke: colors.grey3, strokeDasharray: 4},
-              axis: {stroke: colors.grey3, opacity: 0},
-              ticks: {opacity: 0},
-              tickLabels: {opacity: 0},
-            }}
-          />
+          {averageChartData && (
+            <VictoryAxis
+              tickCount={CHART_MONTH_RANGE}
+              tickFormat={(tick) => {
+                return format(
+                  addMonths(averageChartData.dates[0].date, tick / 4),
+                  'MMM-yy',
+                  {
+                    locale: dateLocale(),
+                  },
+                )
+              }}
+              tickValues={averageChartData.dates.map((date, index) => index)}
+              style={{
+                grid: {stroke: colors.grey3, strokeDasharray: 4},
+                axis: {stroke: colors.grey3, opacity: 0},
+                ticks: {opacity: 0},
+                tickLabels: {opacity: 0},
+              }}
+            />
+          )}
           <VictoryAxis
             orientation="left"
             style={{
@@ -380,45 +389,49 @@ export const BsHistoryChart = ({bss}: Props) => {
               ticks: {opacity: 0},
             }}
           />
+          {averageChartData && (
+            <VictoryLine
+              data={[...averageChartData.low, ...averageChartData.high].map(
+                (bs) => {
+                  if (bs.list.length) {
+                    return {x: bs.index, y: bs.averaged}
+                  }
 
-          <VictoryLine
-            data={[...averageChartData.low, ...averageChartData.high].map(
-              (bs) => {
-                if (bs.list.length) {
-                  return {x: bs.index, y: bs.averaged}
-                }
-
-                return null
-              },
-            )}
-            style={{
-              data: {
-                stroke: colors.grey1,
-                strokeWidth: 1,
-              },
-            }}
-          />
-
-          <VictoryScatter
-            data={generateScatter(averageChartData.low)}
-            size={4}
-            style={{
-              data: {
-                fill: colors.green1,
-              },
-            }}
-            labelComponent={<VictoryTooltip renderInPortal={false} />}
-          />
-          <VictoryScatter
-            data={generateScatter(averageChartData.high)}
-            size={4}
-            style={{
-              data: {
-                fill: colors.red1,
-              },
-            }}
-            labelComponent={<VictoryTooltip renderInPortal={false} />}
-          />
+                  return null
+                },
+              )}
+              style={{
+                data: {
+                  stroke: colors.grey1,
+                  strokeWidth: 1,
+                },
+              }}
+            />
+          )}
+          {averageChartData && (
+            <VictoryScatter
+              data={generateAverageScatter(averageChartData.low)}
+              size={4}
+              style={{
+                data: {
+                  fill: colors.green1,
+                },
+              }}
+              labelComponent={<VictoryTooltip renderInPortal={false} />}
+            />
+          )}
+          {averageChartData && (
+            <VictoryScatter
+              data={generateAverageScatter(averageChartData.high)}
+              size={4}
+              style={{
+                data: {
+                  fill: colors.red1,
+                },
+              }}
+              labelComponent={<VictoryTooltip renderInPortal={false} />}
+            />
+          )}
         </VictoryChart>
       </View>
     </>
