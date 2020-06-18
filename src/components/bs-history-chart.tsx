@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
 } from 'react-native'
 import {format, addMonths} from 'date-fns'
-import {FormattedMessage} from 'react-intl'
+import {FormattedMessage, useIntl} from 'react-intl'
 import {
   VictoryChart,
   VictoryTheme,
@@ -15,6 +15,7 @@ import {
   VictoryAxis,
   VictoryTooltip,
   VictoryLine,
+  VictoryVoronoiContainer,
 } from 'victory-native'
 
 import {
@@ -34,6 +35,7 @@ type Props = {
 }
 
 export const BsHistoryChart = ({bss}: Props) => {
+  const intl = useIntl()
   const [shownSugarType, setShownSugarType] = useState<BLOOD_SUGAR_TYPES>(
     BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
   )
@@ -58,6 +60,36 @@ export const BsHistoryChart = ({bss}: Props) => {
     )
 
     return valuesAccumulator / value.list.length
+  }
+
+  const isRandomBloodSugar = () => {
+    return shownSugarType === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR
+  }
+
+  const isPostPrandial = () => {
+    return shownSugarType === BLOOD_SUGAR_TYPES.POST_PRANDIAL
+  }
+
+  const isFastingBloodSugar = () => {
+    return shownSugarType === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
+  }
+
+  const isHemoglobic = () => {
+    return shownSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC
+  }
+
+  const bloodSugarType = () => {
+    if (isRandomBloodSugar()) {
+      return intl.formatMessage({
+        id: 'bs.random-blood-code',
+      })
+    }
+
+    if (isFastingBloodSugar()) {
+      return intl.formatMessage({
+        id: 'bs.fasting-code',
+      })
+    }
   }
 
   useEffect(() => {
@@ -95,9 +127,9 @@ export const BsHistoryChart = ({bss}: Props) => {
 
   useEffect(() => {
     const filteredValues = bss.filter((bs) => {
-      if (shownSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
+      if (isHemoglobic()) {
         return bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
-      } else if (shownSugarType === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR) {
+      } else if (isFastingBloodSugar()) {
         return bs.blood_sugar_type === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
       } else {
         return (
@@ -119,7 +151,20 @@ export const BsHistoryChart = ({bss}: Props) => {
 
   const generateScatter = (bss: DateRange[]): any[] => {
     return bss.map((bs: DateRange) => {
-      return {x: bs.index, y: bs.averaged, label: bs.averaged}
+      return {
+        x: bs.index,
+        y: bs.averaged,
+        label: `${bs.averaged.toFixed(0)}${
+          isRandomBloodSugar() || isPostPrandial() || isFastingBloodSugar()
+            ? intl.formatMessage({
+                id: 'bs.mgdl',
+              })
+            : '%,'
+        } ${isHemoglobic() ? '' : bloodSugarType() + ', '}${format(
+          bs.date,
+          'dd-MMM-yyyy',
+        )}`,
+      }
     })
   }
 
@@ -318,7 +363,8 @@ export const BsHistoryChart = ({bss}: Props) => {
             },
           }}
           scale={{x: 'linear'}}
-          theme={VictoryTheme.material}>
+          theme={VictoryTheme.material}
+          containerComponent={<VictoryVoronoiContainer radius={20} />}>
           <VictoryAxis
             tickCount={CHART_MONTH_RANGE}
             tickFormat={(tick) => {
@@ -391,13 +437,64 @@ export const BsHistoryChart = ({bss}: Props) => {
 
           <VictoryScatter
             data={generateScatter(chartData.low)}
-            size={4}
+            size={5}
             style={{
               data: {
                 fill: colors.green1,
               },
             }}
-            labelComponent={<VictoryTooltip renderInPortal={false} />}
+            events={[
+              {
+                target: 'data',
+                eventHandlers: {
+                  onPressIn: () => {
+                    return [
+                      {
+                        target: 'data',
+                        mutation: () => ({
+                          style: {
+                            stroke: colors.blue2,
+                            strokeWidth: 3,
+                            fill: colors.white,
+                            boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
+                          },
+                        }),
+                      },
+                      {
+                        target: 'labels',
+                        mutation: () => ({active: true}),
+                      },
+                    ]
+                  },
+                  onPressOut: () => {
+                    return [
+                      {
+                        target: 'data',
+                        mutation: () => {},
+                      },
+                      {
+                        target: 'labels',
+                        mutation: () => ({active: false}),
+                      },
+                    ]
+                  },
+                },
+              },
+            ]}
+            labelComponent={
+              <VictoryTooltip
+                renderInPortal={false}
+                constrainToVisibleArea={true}
+                cornerRadius={20}
+                pointerLength={5}
+                flyoutStyle={{
+                  height: 32,
+                  padding: 200,
+                  fill: colors.grey0,
+                }}
+                style={{fill: colors.white}}
+              />
+            }
           />
           <VictoryScatter
             data={generateScatter(chartData.high)}
@@ -407,7 +504,58 @@ export const BsHistoryChart = ({bss}: Props) => {
                 fill: colors.red1,
               },
             }}
-            labelComponent={<VictoryTooltip renderInPortal={false} />}
+            events={[
+              {
+                target: 'data',
+                eventHandlers: {
+                  onPressIn: () => {
+                    return [
+                      {
+                        target: 'data',
+                        mutation: () => ({
+                          style: {
+                            stroke: colors.blue2,
+                            strokeWidth: 3,
+                            fill: colors.white,
+                            boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
+                          },
+                        }),
+                      },
+                      {
+                        target: 'labels',
+                        mutation: () => ({active: true}),
+                      },
+                    ]
+                  },
+                  onPressOut: () => {
+                    return [
+                      {
+                        target: 'data',
+                        mutation: () => {},
+                      },
+                      {
+                        target: 'labels',
+                        mutation: () => ({active: false}),
+                      },
+                    ]
+                  },
+                },
+              },
+            ]}
+            labelComponent={
+              <VictoryTooltip
+                renderInPortal={false}
+                constrainToVisibleArea={true}
+                cornerRadius={20}
+                pointerLength={5}
+                flyoutStyle={{
+                  height: 32,
+                  padding: 200,
+                  fill: colors.grey0,
+                }}
+                style={{fill: colors.white}}
+              />
+            }
           />
         </VictoryChart>
       </View>
