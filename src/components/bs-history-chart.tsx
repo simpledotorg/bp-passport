@@ -26,7 +26,7 @@ import {colors, containerStyles} from '../styles'
 import {isHighBloodSugar} from '../utils/blood-sugars'
 import {BodyText} from './text'
 import {DateRange} from '../utils/dates'
-import {generateChartData} from '../utils/data-transform'
+import {generateAverageChartData} from '../utils/data-transform'
 import {CHART_MONTH_RANGE} from '../utils/dates'
 import {dateLocale} from '../constants/languages'
 
@@ -140,7 +140,7 @@ export const BsHistoryChart = ({bss}: Props) => {
     })
 
     setChartData(
-      generateChartData(filteredValues, averageList, (value) => {
+      generateAverageChartData(filteredValues, averageList, (value) => {
         return isHighBloodSugar({
           blood_sugar_value: value,
           blood_sugar_type: shownSugarType,
