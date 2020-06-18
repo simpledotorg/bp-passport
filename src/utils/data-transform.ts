@@ -39,7 +39,7 @@ const getMaxValue = (value: any) => {
   )
 }
 
-export const generateChartData = (
+export const generateAverageChartData = (
   input: BloodPressure[] | BloodSugar[],
   calculateAverage: (current: DateRange) => number | {},
   isHigh: (value: any) => boolean,

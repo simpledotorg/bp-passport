@@ -25,7 +25,7 @@ import {colors, containerStyles} from '../styles'
 import {isHighBloodSugar} from '../utils/blood-sugars'
 import {BodyText} from './text'
 import {DateRange} from '../utils/dates'
-import {generateChartData} from '../utils/data-transform'
+import {generateAverageChartData} from '../utils/data-transform'
 import {CHART_MONTH_RANGE} from '../utils/dates'
 import {dateLocale} from '../constants/languages'
 
@@ -34,6 +34,7 @@ type Props = {
 }
 
 export const BsHistoryChart = ({bss}: Props) => {
+  const useAverageData = true
   const [shownSugarType, setShownSugarType] = useState<BLOOD_SUGAR_TYPES>(
     BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
   )
@@ -41,7 +42,7 @@ export const BsHistoryChart = ({bss}: Props) => {
   const [hasFasting, setHasFasting] = useState<boolean>(false)
   const [hasHemoglobic, setHasHemoglobic] = useState<boolean>(false)
 
-  const [chartData, setChartData] = useState<{
+  const [averageChartData, setAverageChartData] = useState<{
     dates: DateRange[]
     low: DateRange[]
     high: DateRange[]
@@ -107,14 +108,16 @@ export const BsHistoryChart = ({bss}: Props) => {
       }
     })
 
-    setChartData(
-      generateChartData(filteredValues, averageList, (value) => {
-        return isHighBloodSugar({
-          blood_sugar_value: value,
-          blood_sugar_type: shownSugarType,
-        } as BloodSugar)
-      }),
-    )
+    if (useAverageData) {
+      setAverageChartData(
+        generateAverageChartData(filteredValues, averageList, (value) => {
+          return isHighBloodSugar({
+            blood_sugar_value: value,
+            blood_sugar_type: shownSugarType,
+          } as BloodSugar)
+        }),
+      )
+    }
   }, [bss, shownSugarType])
 
   const generateScatter = (bss: DateRange[]): any[] => {
@@ -137,7 +140,7 @@ export const BsHistoryChart = ({bss}: Props) => {
   const getMaxDomain = () => {
     const threshhold = getThreshhold()
     const difference = Math.round(threshhold / 10)
-    let base = chartData?.max ?? threshhold
+    let base = useAverageData ? averageChartData?.max ?? threshhold : 0
 
     if (base < threshhold) {
       base = threshhold
@@ -149,7 +152,7 @@ export const BsHistoryChart = ({bss}: Props) => {
   const getMinDomain = () => {
     const threshhold = getThreshhold()
     const difference = Math.round(threshhold / 10)
-    let base = chartData?.min ?? threshhold
+    let base = useAverageData ? averageChartData?.min ?? threshhold : 0
 
     if (base > threshhold) {
       base = threshhold
@@ -158,7 +161,7 @@ export const BsHistoryChart = ({bss}: Props) => {
     return base - difference
   }
 
-  if (!chartData) {
+  if (!averageChartData) {
     return (
       <View
         style={[
@@ -178,7 +181,6 @@ export const BsHistoryChart = ({bss}: Props) => {
           <TouchableWithoutFeedback
             onPress={() => {
               setShownSugarType(BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR)
-              // setChartData(null)
             }}>
             <View
               style={[
@@ -204,7 +206,6 @@ export const BsHistoryChart = ({bss}: Props) => {
           <TouchableWithoutFeedback
             onPress={() => {
               setShownSugarType(BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR)
-              //  setChartData(null)
             }}>
             <View
               style={[
@@ -229,7 +230,6 @@ export const BsHistoryChart = ({bss}: Props) => {
           <TouchableWithoutFeedback
             onPress={() => {
               setShownSugarType(BLOOD_SUGAR_TYPES.HEMOGLOBIC)
-              //  setChartData(null)
             }}>
             <View
               style={[
@@ -281,9 +281,13 @@ export const BsHistoryChart = ({bss}: Props) => {
                     fontSize: 14,
                     lineHeight: 18,
                   }}>
-                  {format(addMonths(chartData.dates[0].date, index), 'MMM', {
-                    locale: dateLocale(),
-                  })}
+                  {format(
+                    addMonths(averageChartData.dates[0].date, index),
+                    'MMM',
+                    {
+                      locale: dateLocale(),
+                    },
+                  )}
                 </BodyText>
                 <BodyText
                   style={{
@@ -292,9 +296,13 @@ export const BsHistoryChart = ({bss}: Props) => {
                     fontSize: 14,
                     lineHeight: 18,
                   }}>
-                  {format(addMonths(chartData.dates[0].date, index), 'yyy', {
-                    locale: dateLocale(),
-                  })}
+                  {format(
+                    addMonths(averageChartData.dates[0].date, index),
+                    'yyy',
+                    {
+                      locale: dateLocale(),
+                    },
+                  )}
                 </BodyText>
               </View>
             )
@@ -323,14 +331,14 @@ export const BsHistoryChart = ({bss}: Props) => {
             tickCount={CHART_MONTH_RANGE}
             tickFormat={(tick) => {
               return format(
-                addMonths(chartData.dates[0].date, tick / 4),
+                addMonths(averageChartData.dates[0].date, tick / 4),
                 'MMM-yy',
                 {
                   locale: dateLocale(),
                 },
               )
             }}
-            tickValues={chartData.dates.map((date, index) => index)}
+            tickValues={averageChartData.dates.map((date, index) => index)}
             style={{
               grid: {stroke: colors.grey3, strokeDasharray: 4},
               axis: {stroke: colors.grey3, opacity: 0},
@@ -374,13 +382,15 @@ export const BsHistoryChart = ({bss}: Props) => {
           />
 
           <VictoryLine
-            data={[...chartData.low, ...chartData.high].map((bs) => {
-              if (bs.list.length) {
-                return {x: bs.index, y: bs.averaged}
-              }
+            data={[...averageChartData.low, ...averageChartData.high].map(
+              (bs) => {
+                if (bs.list.length) {
+                  return {x: bs.index, y: bs.averaged}
+                }
 
-              return null
-            })}
+                return null
+              },
+            )}
             style={{
               data: {
                 stroke: colors.grey1,
@@ -390,7 +400,7 @@ export const BsHistoryChart = ({bss}: Props) => {
           />
 
           <VictoryScatter
-            data={generateScatter(chartData.low)}
+            data={generateScatter(averageChartData.low)}
             size={4}
             style={{
               data: {
@@ -400,7 +410,7 @@ export const BsHistoryChart = ({bss}: Props) => {
             labelComponent={<VictoryTooltip renderInPortal={false} />}
           />
           <VictoryScatter
-            data={generateScatter(chartData.high)}
+            data={generateScatter(averageChartData.high)}
             size={4}
             style={{
               data: {
