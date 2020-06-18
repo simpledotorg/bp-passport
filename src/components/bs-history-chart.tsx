@@ -22,11 +22,11 @@ import {
   BLOOD_SUGAR_TYPES,
 } from '../redux/blood-sugar/blood-sugar.models'
 import {colors, containerStyles} from '../styles'
-import {isHighBloodSugar, getBloodSugarDetails} from '../utils/blood-sugars'
+import {isHighBloodSugar, isLowBloodSugar} from '../utils/blood-sugars'
 import {BodyText} from './text'
 import {DateRange} from '../utils/dates'
-import {generateAverageChartData} from '../utils/data-transform'
-import {CHART_MONTH_RANGE} from '../utils/dates'
+import {generateAverageChartData, getIndexFromBP} from '../utils/data-transform'
+import {CHART_MONTH_RANGE, getChartDateRange} from '../utils/dates'
 import {dateLocale} from '../constants/languages'
 
 type Props = {
@@ -51,9 +51,8 @@ export const BsHistoryChart = ({bss}: Props) => {
   } | null>(null)
 
   const [fullChartData, setFullChartData] = useState<{
+    dates: DateRange[]
     data: BloodSugar[]
-    min: null | number
-    max: null | number
   } | null>(null)
 
   const averageList = (value: DateRange) => {
@@ -125,16 +124,26 @@ export const BsHistoryChart = ({bss}: Props) => {
       )
     } else {
       setFullChartData({
+        dates: getChartDateRange(),
         data: filteredValues,
-        min: getMinThreshhold(),
-        max: getMaxThreshhold(),
       })
     }
   }, [bss, shownSugarType])
 
-  const generateAverageScatter = (bss: DateRange[]): any[] => {
-    return bss.map((bs: DateRange) => {
+  const generateAverageScatter = (bloodSugarData: DateRange[]): any[] => {
+    return bloodSugarData.map((bs: DateRange) => {
       return {x: bs.index, y: bs.averaged, label: bs.averaged}
+    })
+  }
+
+  const generateFullScatter = (chartData: any): any[] => {
+    return chartData.data.map((bs: BloodSugar) => {
+      return {
+        x: getIndexFromBP(chartData.dates, bs),
+        y: Number(bs.blood_sugar_value),
+        label: bs.blood_sugar_value,
+        showOutOfRange: isHighBloodSugar(bs) || isLowBloodSugar(bs),
+      }
     })
   }
 
@@ -161,7 +170,7 @@ export const BsHistoryChart = ({bss}: Props) => {
   const getMaxDomain = () => {
     const threshhold = getMaxThreshhold()
     const difference = Math.round(threshhold / 10)
-    let base = useAverageData ? averageChartData?.max ?? threshhold : 0
+    let base = (useAverageData ? averageChartData?.max ?? threshhold : 400) ?? 0
 
     if (base < threshhold) {
       base = threshhold
@@ -172,8 +181,8 @@ export const BsHistoryChart = ({bss}: Props) => {
 
   const getMinDomain = () => {
     const threshhold = getMinThreshhold() ?? getMaxThreshhold()
-    const difference = Math.round(threshhold / 10)
-    let base = useAverageData ? averageChartData?.min ?? threshhold : 0
+    const difference = Math.round(getMaxThreshhold() / 10)
+    let base = (useAverageData ? averageChartData?.min ?? threshhold : 50) ?? 0
 
     if (base > threshhold) {
       base = threshhold
@@ -329,6 +338,48 @@ export const BsHistoryChart = ({bss}: Props) => {
                 </View>
               )
             })}
+          {fullChartData &&
+            [...Array(CHART_MONTH_RANGE)].map((value, index) => {
+              return (
+                <View
+                  key={index}
+                  style={{
+                    flex: 1,
+                    flexShrink: 0,
+                  }}>
+                  <BodyText
+                    style={{
+                      color: colors.grey0,
+                      fontWeight: '500',
+                      fontSize: 14,
+                      lineHeight: 18,
+                    }}>
+                    {format(
+                      addMonths(fullChartData.dates[0].date, index),
+                      'MMM',
+                      {
+                        locale: dateLocale(),
+                      },
+                    )}
+                  </BodyText>
+                  <BodyText
+                    style={{
+                      color: colors.grey2,
+                      fontWeight: '500',
+                      fontSize: 14,
+                      lineHeight: 18,
+                    }}>
+                    {format(
+                      addMonths(fullChartData.dates[0].date, index),
+                      'yyy',
+                      {
+                        locale: dateLocale(),
+                      },
+                    )}
+                  </BodyText>
+                </View>
+              )
+            })}
           <View style={{width: 32}} />
         </View>
         <VictoryChart
@@ -362,6 +413,27 @@ export const BsHistoryChart = ({bss}: Props) => {
                 )
               }}
               tickValues={averageChartData.dates.map((date, index) => index)}
+              style={{
+                grid: {stroke: colors.grey3, strokeDasharray: 4},
+                axis: {stroke: colors.grey3, opacity: 0},
+                ticks: {opacity: 0},
+                tickLabels: {opacity: 0},
+              }}
+            />
+          )}
+          {fullChartData && (
+            <VictoryAxis
+              tickCount={CHART_MONTH_RANGE}
+              tickFormat={(tick) => {
+                return format(
+                  addMonths(fullChartData.dates[0].date, tick / 4),
+                  'MMM-yy',
+                  {
+                    locale: dateLocale(),
+                  },
+                )
+              }}
+              tickValues={fullChartData.dates.map((date, index) => index)}
               style={{
                 grid: {stroke: colors.grey3, strokeDasharray: 4},
                 axis: {stroke: colors.grey3, opacity: 0},
@@ -464,6 +536,20 @@ export const BsHistoryChart = ({bss}: Props) => {
               style={{
                 data: {
                   fill: colors.red1,
+                },
+              }}
+              labelComponent={<VictoryTooltip renderInPortal={false} />}
+            />
+          )}
+
+          {fullChartData && (
+            <VictoryScatter
+              data={generateFullScatter(fullChartData)}
+              size={4}
+              style={{
+                data: {
+                  fill: ({datum}) =>
+                    datum.showOutOfRange ? colors.red1 : colors.green1,
                 },
               }}
               labelComponent={<VictoryTooltip renderInPortal={false} />}

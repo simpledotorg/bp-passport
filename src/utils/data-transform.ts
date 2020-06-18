@@ -5,7 +5,7 @@ import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
 import {getChartDateRange, DateRange} from './dates'
 
-const getIndexFromBP = (
+export const getIndexFromBP = (
   dates: DateRange[],
   input: BloodPressure | BloodSugar,
 ): number | null => {
