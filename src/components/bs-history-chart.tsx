@@ -444,7 +444,7 @@ export const BsHistoryChart = ({bss}: Props) => {
             ]}
             labelComponent={
               <VictoryTooltip
-                renderInPortal={true}
+                renderInPortal={false}
                 constrainToVisibleArea={true}
                 cornerRadius={20}
                 pointerLength={5}
@@ -505,7 +505,7 @@ export const BsHistoryChart = ({bss}: Props) => {
             ]}
             labelComponent={
               <VictoryTooltip
-                renderInPortal={true}
+                renderInPortal={false}
                 constrainToVisibleArea={true}
                 cornerRadius={20}
                 pointerLength={5}
