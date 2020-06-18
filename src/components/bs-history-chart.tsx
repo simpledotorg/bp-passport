@@ -62,6 +62,36 @@ export const BsHistoryChart = ({bss}: Props) => {
     return valuesAccumulator / value.list.length
   }
 
+  const isRandomBloodSugar = () => {
+    return shownSugarType === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR
+  }
+
+  const isPostPrandial = () => {
+    return shownSugarType === BLOOD_SUGAR_TYPES.POST_PRANDIAL
+  }
+
+  const isFastingBloodSugar = () => {
+    return shownSugarType === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
+  }
+
+  const isHemoglobic = () => {
+    return shownSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC
+  }
+
+  const bloodSugarType = () => {
+    if (isRandomBloodSugar()) {
+      return intl.formatMessage({
+        id: 'bs.random-blood-code',
+      })
+    }
+
+    if (isFastingBloodSugar()) {
+      return intl.formatMessage({
+        id: 'bs.fasting-code',
+      })
+    }
+  }
+
   useEffect(() => {
     setHasRandom(
       !!bss.find((bs) => {
@@ -97,9 +127,9 @@ export const BsHistoryChart = ({bss}: Props) => {
 
   useEffect(() => {
     const filteredValues = bss.filter((bs) => {
-      if (shownSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
+      if (isHemoglobic()) {
         return bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
-      } else if (shownSugarType === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR) {
+      } else if (isFastingBloodSugar()) {
         return bs.blood_sugar_type === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
       } else {
         return (
@@ -124,11 +154,16 @@ export const BsHistoryChart = ({bss}: Props) => {
       return {
         x: bs.index,
         y: bs.averaged,
-        label: `${bs.averaged.toFixed(0)} ${intl.formatMessage({
-          id: 'bs.mgdl',
-        })} ${intl.formatMessage({
-          id: 'bs.random-blood-code',
-        })}, ${format(bs.date, 'dd-MMM-yyyy')}`,
+        label: `${bs.averaged.toFixed(0)}${
+          isRandomBloodSugar() || isPostPrandial() || isFastingBloodSugar()
+            ? intl.formatMessage({
+                id: 'bs.mgdl',
+              })
+            : '%,'
+        } ${isHemoglobic() ? '' : bloodSugarType() + ', '}${format(
+          bs.date,
+          'dd-MMM-yyyy',
+        )}`,
       }
     })
   }
