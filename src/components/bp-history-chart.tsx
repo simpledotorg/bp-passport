@@ -306,6 +306,7 @@ export const BpHistoryChart = ({bps}: Props) => {
             },
           }}
         /> */}
+
         <VictoryLine
           data={[...chartData.low, ...chartData.high].map((bp) => {
             if (bp.list.length) {
@@ -331,9 +332,9 @@ export const BpHistoryChart = ({bps}: Props) => {
                   ? {
                       x: bp.index,
                       y: bp.averaged.systolic,
-                      label: `${bp.averaged.systolic}/${
+                      label: `${bp.averaged.systolic} / ${
                         bp.averaged.diastolic
-                      }, ${format(bp.date, 'dd-MM-yyyy')}, ${format(
+                      }, ${format(bp.date, 'dd-MMM-yyyy')}, ${format(
                         bp.date,
                         'k:mm',
                       )}`,
@@ -345,7 +346,7 @@ export const BpHistoryChart = ({bps}: Props) => {
                       y: bp.averaged.diastolic,
                       label: `${bp.averaged.systolic} / ${
                         bp.averaged.diastolic
-                      }, ${format(bp.date, 'dd-MM-yyyy')}
+                      }, ${format(bp.date, 'dd-MMM-yyyy')}
                       , ${format(bp.date, 'k:mm')}`,
                     }
                   : null,
@@ -398,7 +399,7 @@ export const BpHistoryChart = ({bps}: Props) => {
           ]}
           labelComponent={
             <VictoryTooltip
-              renderInPortal={true}
+              renderInPortal={false}
               constrainToVisibleArea={true}
               cornerRadius={20}
               pointerLength={5}
@@ -437,11 +438,11 @@ export const BpHistoryChart = ({bps}: Props) => {
                   ? {
                       x: bp.index,
                       y: bp.averaged.systolic,
-                      label: `${bp.averaged.systolic}/${
-                        bp.averaged.diastolic
-                      }, ${format(bp.date, 'dd-MM-yyyy')}, ${format(
+                      label: `${bp.averaged.systolic.toFixed(
+                        0,
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
                         bp.date,
-                        'k:mm',
+                        'dd-MMM-yyyy',
                       )}`,
                     }
                   : null,
@@ -449,10 +450,12 @@ export const BpHistoryChart = ({bps}: Props) => {
                   ? {
                       x: bp.index,
                       y: bp.averaged.diastolic,
-                      label: `${bp.averaged.systolic} / ${
-                        bp.averaged.diastolic
-                      }, ${format(bp.date, 'dd-MM-yyyy')}
-                      , ${format(bp.date, 'k:mm')}`,
+                      label: `${bp.averaged.systolic.toFixed(
+                        0,
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
+                        bp.date,
+                        'dd-MMM-yyyy',
+                      )}`,
                     }
                   : null,
               ]
@@ -504,7 +507,7 @@ export const BpHistoryChart = ({bps}: Props) => {
           ]}
           labelComponent={
             <VictoryTooltip
-              renderInPortal={true}
+              renderInPortal={false}
               constrainToVisibleArea={true}
               cornerRadius={20}
               pointerLength={5}
@@ -526,11 +529,11 @@ export const BpHistoryChart = ({bps}: Props) => {
                   ? {
                       x: bp.index,
                       y: bp.averaged.systolic,
-                      label: `${bp.averaged.systolic}/${
-                        bp.averaged.diastolic
-                      }, ${format(bp.date, 'dd-MM-yyyy')}, ${format(
+                      label: `${bp.averaged.systolic.toFixed(
+                        0,
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
                         bp.date,
-                        'k:mm',
+                        'dd-MMM-yyyy',
                       )}`,
                     }
                   : null,
@@ -538,11 +541,11 @@ export const BpHistoryChart = ({bps}: Props) => {
                   ? {
                       x: bp.index,
                       y: bp.averaged.diastolic,
-                      label: `${bp.averaged.systolic}/${
-                        bp.averaged.diastolic
-                      }, ${format(bp.date, 'dd-MM-yyyy')}, ${format(
+                      label: `${bp.averaged.systolic.toFixed(
+                        0,
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
                         bp.date,
-                        'k:mm',
+                        'dd-MMM-yyyy',
                       )}`,
                     }
                   : null,
@@ -594,7 +597,7 @@ export const BpHistoryChart = ({bps}: Props) => {
           ]}
           labelComponent={
             <VictoryTooltip
-              renderInPortal={true}
+              renderInPortal={false}
               constrainToVisibleArea={true}
               cornerRadius={20}
               pointerLength={5}
