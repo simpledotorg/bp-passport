@@ -12,6 +12,9 @@ const medicineClock = require('../assets/images/clock.png')
 const medicinePill = require('../assets/images/pill.png')
 const grayDrop = require('../assets/images/gray-drop.png')
 const purpleDrop = require('../assets/images/purple-drop.png')
+const largeWarningSign = require('../assets/images/warning-sign-large.png')
+const mediumWarningSign = require('../assets/images/warning-sign-medium.png')
+const smallWarningSign = require('../assets/images/warning-sign-small.png')
 
 export {
   iconLaunch,
@@ -28,4 +31,7 @@ export {
   medicinePill,
   grayDrop,
   purpleDrop,
+  largeWarningSign,
+  mediumWarningSign,
+  smallWarningSign,
 }

@@ -3,7 +3,7 @@ import {View, StyleSheet, Image, ViewStyle} from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
-import {colors, purpleDrop} from '../styles'
+import {colors, purpleDrop, smallWarningSign} from '../styles'
 import {BodyText} from './'
 import {
   BloodSugar,
@@ -12,6 +12,8 @@ import {
 import {
   displayDate,
   isHighBloodSugar,
+  isLowBloodSugar,
+  showWarning,
   getBloodSugarDetails,
 } from '../utils/blood-sugars'
 
@@ -24,16 +26,39 @@ export const BsInformation = ({bs, style = {}}: Props) => {
   const intl = useIntl()
 
   const getBSText = () => {
-    return isHighBloodSugar(bs) ? (
-      <BodyText
-        style={[
-          styles.bsText,
-          {
-            color: colors.red1,
-          },
-        ]}>
-        <FormattedMessage id="general.high" />
-      </BodyText>
+    if (isHighBloodSugar(bs)) {
+      return (
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <BodyText
+            style={[
+              styles.bsText,
+              {
+                color: colors.red1,
+              },
+            ]}>
+            <FormattedMessage id="general.high" />
+            {isHighBloodSugar(bs)}
+          </BodyText>
+          {showWarning(bs) && (
+            <Image source={smallWarningSign} style={styles.warningIcon} />
+          )}
+        </View>
+      )
+    }
+
+    return isLowBloodSugar(bs) ? (
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <BodyText
+          style={[
+            styles.bsText,
+            {
+              color: colors.red1,
+            },
+          ]}>
+          <FormattedMessage id="general.low" />
+        </BodyText>
+        <Image source={smallWarningSign} style={styles.warningIcon} />
+      </View>
     ) : (
       <BodyText
         style={[
@@ -89,14 +114,7 @@ export const BsInformation = ({bs, style = {}}: Props) => {
                 </>
               )}
             </BodyText>
-            <BodyText
-              style={{
-                fontSize: 18,
-                color: colors.grey0,
-                fontWeight: '500',
-              }}>
-              {getBSText()}
-            </BodyText>
+            <View>{getBSText()}</View>
           </View>
           <BodyText
             style={{
@@ -121,5 +139,9 @@ const styles = StyleSheet.create({
   informationIcon: {
     marginRight: 16,
     flexShrink: 0,
+  },
+  warningIcon: {
+    marginLeft: 4,
+    marginTop: 3,
   },
 })

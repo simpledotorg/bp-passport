@@ -9,7 +9,7 @@ import {
 import {FormattedMessage, useIntl} from 'react-intl'
 import {format} from 'date-fns'
 
-import {colors, redHeart} from '../styles'
+import {colors, redHeart, mediumWarningSign} from '../styles'
 import {BodyText, BodyHeader, Button} from './'
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
@@ -26,6 +26,11 @@ type Props = {
 export const BpModal = ({bp, close}: Props) => {
   const intl = useIntl()
   const dispatch = useThunkDispatch()
+
+  const showWarning = (bpIn: BloodPressure) => {
+    // This is a high blood pressure that is high enough to warrant a warning
+    return bpIn.systolic >= 180 || bpIn.diastolic >= 110
+  }
 
   const isBloodPressureHigh = (bpIn: BloodPressure) => {
     // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
@@ -66,18 +71,39 @@ export const BpModal = ({bp, close}: Props) => {
   }
 
   const getNotes = () => {
-    return isBloodPressureHigh(bp) ? (
-      <BodyText>
-        <FormattedMessage
-          id="general.sheet-high-disclaimer"
-          values={{
-            label: <FormattedMessage id={'general.bp'} />,
-            limit: '140/90',
-          }}
-        />
-      </BodyText>
+    return showWarning(bp) ? (
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'flex-start',
+          marginVertical: 34,
+        }}>
+        <Image source={mediumWarningSign} />
+        <View style={{flexDirection: 'column', flex: 1, paddingLeft: 16}}>
+          <BodyText
+            style={{
+              color: colors.grey0,
+              fontWeight: 'bold',
+              fontSize: 18,
+              lineHeight: 26,
+            }}>
+            <FormattedMessage id="alert.title" />
+          </BodyText>
+          <BodyText
+            style={{
+              lineHeight: 26,
+            }}>
+            <FormattedMessage
+              id="alert.description-high"
+              values={{
+                label: <FormattedMessage id={'general.bp'} />,
+              }}
+            />
+          </BodyText>
+        </View>
+      </View>
     ) : (
-      <BodyText>
+      <BodyText style={{lineHeight: 26, marginVertical: 34}}>
         <FormattedMessage
           id="general.sheet-normal-disclaimer"
           values={{
@@ -147,9 +173,7 @@ export const BpModal = ({bp, close}: Props) => {
             )}
           </View>
         </View>
-        <BodyText style={{lineHeight: 26, marginVertical: 34}}>
-          {getNotes()}
-        </BodyText>
+        {getNotes()}
         <View style={{flexDirection: 'row'}}>
           <Button
             style={[
