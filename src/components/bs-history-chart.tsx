@@ -498,17 +498,26 @@ export const BsHistoryChart = ({bss}: Props) => {
               }}
             />
           )}
-          {averageChartData && (
+          {fullChartData && (
             <VictoryLine
-              data={[...averageChartData.low, ...averageChartData.high].map(
-                (bs) => {
-                  if (bs.list.length) {
-                    return {x: bs.index, y: bs.averaged}
-                  }
-
-                  return null
+              data={[
+                {x: 1, y: 70},
+                {x: 1, y: 200},
+              ]}
+              style={{
+                data: {
+                  stroke: colors.grey1,
+                  strokeWidth: 1,
                 },
-              )}
+              }}
+            />
+          )}
+          {fullChartData && (
+            <VictoryLine
+              data={[
+                {x: 5, y: 100},
+                {x: 5, y: 300},
+              ]}
               style={{
                 data: {
                   stroke: colors.grey1,
