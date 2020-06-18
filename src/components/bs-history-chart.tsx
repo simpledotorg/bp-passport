@@ -34,6 +34,14 @@ type Props = {
 }
 
 export const BsHistoryChart = ({bss}: Props) => {
+  interface DataForDay {
+    date: DateRange
+    values: number[]
+    index: number
+    min: number
+    max: number
+  }
+
   const useAverageData = false
   const [shownSugarType, setShownSugarType] = useState<BLOOD_SUGAR_TYPES>(
     BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
@@ -52,7 +60,7 @@ export const BsHistoryChart = ({bss}: Props) => {
 
   const [fullChartData, setFullChartData] = useState<{
     dates: DateRange[]
-    data: BloodSugar[]
+    data: DataForDay[]
   } | null>(null)
 
   const averageList = (value: DateRange) => {
@@ -64,6 +72,34 @@ export const BsHistoryChart = ({bss}: Props) => {
     )
 
     return valuesAccumulator / value.list.length
+  }
+
+  const getDataByDay = (
+    filteredValues: BloodSugar[],
+    dates: DateRange[],
+  ): DataForDay[] => {
+    filteredValues.forEach((value: BloodSugar) => {
+      const index = getIndexFromBP(dates, value)
+
+      if (index) {
+        if (dates[index]) {
+          dates[index].list.push(value)
+        }
+      }
+    })
+
+    return dates.map((date: DateRange) => {
+      const values = date.list.map((value: any) =>
+        Number(value?.blood_sugar_value ?? 0),
+      )
+      return {
+        date,
+        values,
+        index: date.index,
+        min: values.reduce((a, b) => (a < b ? a : b), 0),
+        max: values.reduce((a, b) => (a > b ? a : b), 10000),
+      }
+    })
   }
 
   useEffect(() => {
@@ -123,9 +159,10 @@ export const BsHistoryChart = ({bss}: Props) => {
         }),
       )
     } else {
+      const dates = getChartDateRange()
       setFullChartData({
-        dates: getChartDateRange(),
-        data: filteredValues,
+        dates,
+        data: getDataByDay(filteredValues, dates),
       })
     }
   }, [bss, shownSugarType])
