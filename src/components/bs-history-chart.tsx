@@ -125,7 +125,7 @@ export const BsHistoryChart = ({bss}: Props) => {
         y: bs.averaged,
         label: `${bs.averaged.toFixed(2)}, ${format(
           bs.date,
-          'dd-MM-yyyy',
+          'dd-MMM-yyyy',
         )}, ${format(bs.date, 'k:mm')}`,
       }
     })
