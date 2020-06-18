@@ -15,6 +15,7 @@ import {
   VictoryAxis,
   VictoryTooltip,
   VictoryLine,
+  VictoryVoronoiContainer,
 } from 'victory-native'
 
 import {
@@ -325,7 +326,8 @@ export const BsHistoryChart = ({bss}: Props) => {
             },
           }}
           scale={{x: 'linear'}}
-          theme={VictoryTheme.material}>
+          theme={VictoryTheme.material}
+          containerComponent={<VictoryVoronoiContainer radius={20} />}>
           <VictoryAxis
             tickCount={CHART_MONTH_RANGE}
             tickFormat={(tick) => {
@@ -398,7 +400,7 @@ export const BsHistoryChart = ({bss}: Props) => {
 
           <VictoryScatter
             data={generateScatter(chartData.low)}
-            size={4}
+            size={5}
             style={{
               data: {
                 fill: colors.green1,
