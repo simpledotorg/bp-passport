@@ -22,7 +22,7 @@ import {
   BLOOD_SUGAR_TYPES,
 } from '../redux/blood-sugar/blood-sugar.models'
 import {colors, containerStyles} from '../styles'
-import {isHighBloodSugar} from '../utils/blood-sugars'
+import {isHighBloodSugar, getBloodSugarDetails} from '../utils/blood-sugars'
 import {BodyText} from './text'
 import {DateRange} from '../utils/dates'
 import {generateAverageChartData} from '../utils/data-transform'
@@ -34,7 +34,7 @@ type Props = {
 }
 
 export const BsHistoryChart = ({bss}: Props) => {
-  const useAverageData = true
+  const useAverageData = false
   const [shownSugarType, setShownSugarType] = useState<BLOOD_SUGAR_TYPES>(
     BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
   )
@@ -123,6 +123,12 @@ export const BsHistoryChart = ({bss}: Props) => {
           } as BloodSugar)
         }),
       )
+    } else {
+      setFullChartData({
+        data: filteredValues,
+        min: getMinThreshhold(),
+        max: getMaxThreshhold(),
+      })
     }
   }, [bss, shownSugarType])
 
@@ -132,7 +138,7 @@ export const BsHistoryChart = ({bss}: Props) => {
     })
   }
 
-  const getThreshhold = (): number => {
+  const getMaxThreshhold = (): number => {
     switch (shownSugarType) {
       case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
         return 126
@@ -143,8 +149,17 @@ export const BsHistoryChart = ({bss}: Props) => {
     }
   }
 
+  const getMinThreshhold = (): number | null => {
+    switch (shownSugarType) {
+      case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
+        return null
+      default:
+        return 70
+    }
+  }
+
   const getMaxDomain = () => {
-    const threshhold = getThreshhold()
+    const threshhold = getMaxThreshhold()
     const difference = Math.round(threshhold / 10)
     let base = useAverageData ? averageChartData?.max ?? threshhold : 0
 
@@ -156,7 +171,7 @@ export const BsHistoryChart = ({bss}: Props) => {
   }
 
   const getMinDomain = () => {
-    const threshhold = getThreshhold()
+    const threshhold = getMinThreshhold() ?? getMaxThreshhold()
     const difference = Math.round(threshhold / 10)
     let base = useAverageData ? averageChartData?.min ?? threshhold : 0
 
@@ -382,13 +397,35 @@ export const BsHistoryChart = ({bss}: Props) => {
               }
               return tick
             }}
-            tickValues={[getThreshhold()]}
+            tickValues={[getMaxThreshhold()]}
             style={{
               grid: {stroke: colors.grey2, strokeDasharray: 4},
               axis: {stroke: colors.grey3, strokeDasharray: 4, strokeWidth: 0},
               ticks: {opacity: 0},
             }}
           />
+          {getMinThreshhold() && (
+            <VictoryAxis
+              orientation="right"
+              dependentAxis
+              tickFormat={(tick) => {
+                if (shownSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
+                  return `${tick}%`
+                }
+                return tick
+              }}
+              tickValues={[getMinThreshhold()]}
+              style={{
+                grid: {stroke: colors.grey2, strokeDasharray: 4},
+                axis: {
+                  stroke: colors.grey3,
+                  strokeDasharray: 4,
+                  strokeWidth: 0,
+                },
+                ticks: {opacity: 0},
+              }}
+            />
+          )}
           {averageChartData && (
             <VictoryLine
               data={[...averageChartData.low, ...averageChartData.high].map(
