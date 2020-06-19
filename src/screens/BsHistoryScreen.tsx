@@ -71,7 +71,7 @@ function BsHistoryScreen({navigation, route}: Props) {
             <Line />
             <View>
               {bloodSugars?.map((bs, index) => (
-                <>
+                <View key={index}>
                   <TouchableHighlight
                     underlayColor={colors.grey4}
                     activeOpacity={0.8}
@@ -97,7 +97,7 @@ function BsHistoryScreen({navigation, route}: Props) {
                   {index < bloodSugars.length - 1 && (
                     <Line key={'line' + index} />
                   )}
-                </>
+                </View>
               ))}
             </View>
           </View>
