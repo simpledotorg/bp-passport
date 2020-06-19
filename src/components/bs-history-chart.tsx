@@ -1,18 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import {
-  View,
-  Dimensions,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  ActivityIndicator,
-} from 'react-native'
-import {FormattedMessage} from 'react-intl'
+import {View, Dimensions, ActivityIndicator} from 'react-native'
+import {useIntl} from 'react-intl'
+
 import {
   VictoryChart,
   VictoryTheme,
   VictoryScatter,
   VictoryAxis,
-  VictoryTooltip,
   VictoryLine,
   VictoryVoronoiContainer,
 } from 'victory-native'
@@ -23,16 +17,18 @@ import {
 } from '../redux/blood-sugar/blood-sugar.models'
 import {colors, containerStyles} from '../styles'
 import {BodyText} from './text'
-import {CHART_MONTH_RANGE} from '../utils/dates'
-
 import {RequestChart} from './bs-history/request-chart'
 import {ChartData} from './bs-history/chart-data'
+import {ChartTypeSelectionPill} from './bs-history/chart-type-selection-pill'
+import {VictoryGraphToolTipHelper} from './bs-history/victory-graph-tool-tip-helper'
 
 type Props = {
   bss: BloodSugar[]
 }
 
 export const BsHistoryChart = ({bss}: Props) => {
+  const intl = useIntl()
+
   const [requestedChart, setRequestedChart] = useState<RequestChart>(
     RequestChart.DefaultTypeFromAvailableReadings(bss),
   )
@@ -103,6 +99,11 @@ export const BsHistoryChart = ({bss}: Props) => {
     return base - difference
   }
 
+  const changeChartTypeHandler = (newChartType: BLOOD_SUGAR_TYPES): void => {
+    setChartData(null)
+    setRequestedChart(RequestChart.FromUserSelected(newChartType))
+  }
+
   if (!chartData) {
     return (
       <View
@@ -121,94 +122,40 @@ export const BsHistoryChart = ({bss}: Props) => {
       <View style={{flexDirection: 'row'}}>
         {(chartData.getHasRandomReadings() ||
           chartData.getHasPostPrandialReadings()) && (
-          <TouchableWithoutFeedback
-            onPress={() => {
-              setChartData(null)
-              setRequestedChart(
-                RequestChart.FromUserSelected(
-                  BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
-                ),
-              )
-            }}>
-            <View
-              style={[
-                styles.pill,
-                chartData.getChartType() ===
-                BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR
-                  ? styles.pillActive
-                  : {},
-              ]}>
-              <BodyText
-                style={{
-                  color:
-                    chartData.getChartType() ===
-                    BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR
-                      ? colors.white100
-                      : colors.blue2,
-                }}>
-                <FormattedMessage id="bs.random-blood-code" />/
-                <FormattedMessage id="bs.post-prenial-code" />
-              </BodyText>
-            </View>
-          </TouchableWithoutFeedback>
+          <ChartTypeSelectionPill
+            changeChartType={changeChartTypeHandler}
+            currentChartType={chartData.getChartType()}
+            newChartType={BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR}
+            pillLabel={
+              intl.formatMessage({
+                id: 'bs.random-blood-code',
+              }) +
+              '/' +
+              intl.formatMessage({
+                id: 'bs.post-prenial-code',
+              })
+            }
+          />
         )}
         {chartData.getHasFastingReadings() && (
-          <TouchableWithoutFeedback
-            onPress={() => {
-              setChartData(null)
-              setRequestedChart(
-                RequestChart.FromUserSelected(
-                  BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR,
-                ),
-              )
-            }}>
-            <View
-              style={[
-                styles.pill,
-                chartData.getChartType() ===
-                BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
-                  ? styles.pillActive
-                  : {},
-              ]}>
-              <BodyText
-                style={{
-                  color:
-                    chartData.getChartType() ===
-                    BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
-                      ? colors.white100
-                      : colors.blue2,
-                }}>
-                <FormattedMessage id="bs.fasting-code" />
-              </BodyText>
-            </View>
-          </TouchableWithoutFeedback>
+          <ChartTypeSelectionPill
+            changeChartType={changeChartTypeHandler}
+            currentChartType={chartData.getChartType()}
+            newChartType={BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR}
+            pillLabel={intl.formatMessage({
+              id: 'bs.fasting-code',
+            })}
+          />
         )}
         {chartData.getHasHemoglobicReadings() && (
-          <TouchableWithoutFeedback
-            onPress={() => {
-              setChartData(null)
-              setRequestedChart(
-                RequestChart.FromUserSelected(BLOOD_SUGAR_TYPES.HEMOGLOBIC),
-              )
-            }}>
-            <View
-              style={[
-                styles.pill,
-                chartData.getChartType() === BLOOD_SUGAR_TYPES.HEMOGLOBIC
-                  ? styles.pillActive
-                  : {},
-              ]}>
-              <BodyText
-                style={{
-                  color:
-                    chartData.getChartType() === BLOOD_SUGAR_TYPES.HEMOGLOBIC
-                      ? colors.white100
-                      : colors.blue2,
-                }}>
-                <FormattedMessage id="bs.hemoglobic-code" />
-              </BodyText>
-            </View>
-          </TouchableWithoutFeedback>
+          <ChartTypeSelectionPill
+            changeChartType={changeChartTypeHandler}
+            currentChartType={chartData.getChartType()}
+            newChartType={BLOOD_SUGAR_TYPES.HEMOGLOBIC}
+            pillLabel={intl.formatMessage({
+              id: 'bs.hemoglobic-code',
+            })}
+          />
         )}
       </View>
       <View
@@ -277,7 +224,7 @@ export const BsHistoryChart = ({bss}: Props) => {
           theme={VictoryTheme.material}
           containerComponent={<VictoryVoronoiContainer radius={20} />}>
           <VictoryAxis
-            tickCount={CHART_MONTH_RANGE}
+            tickCount={chartData.getAxisTickValues().length}
             tickFormat={(tick) => {
               return tick
             }}
@@ -371,76 +318,11 @@ export const BsHistoryChart = ({bss}: Props) => {
                   datum.showOutOfRange ? colors.red1 : colors.green1,
               },
             }}
-            events={[
-              {
-                target: 'data',
-                eventHandlers: {
-                  onPressIn: () => {
-                    return [
-                      {
-                        target: 'data',
-                        mutation: () => ({
-                          style: {
-                            stroke: colors.blue2,
-                            strokeWidth: 3,
-                            fill: colors.white,
-                            boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
-                          },
-                        }),
-                      },
-                      {
-                        target: 'labels',
-                        mutation: () => ({active: true}),
-                      },
-                    ]
-                  },
-                  onPressOut: () => {
-                    return [
-                      {
-                        target: 'data',
-                        mutation: () => {},
-                      },
-                      {
-                        target: 'labels',
-                        mutation: () => ({active: false}),
-                      },
-                    ]
-                  },
-                },
-              },
-            ]}
-            labelComponent={
-              <VictoryTooltip
-                renderInPortal={false}
-                constrainToVisibleArea={true}
-                cornerRadius={20}
-                pointerLength={5}
-                flyoutStyle={{
-                  height: 32,
-                  padding: 200,
-                  fill: colors.grey0,
-                }}
-                style={{fill: colors.white}}
-              />
-            }
+            events={VictoryGraphToolTipHelper.getEventHandlers()}
+            labelComponent={VictoryGraphToolTipHelper.getVictoryToolTip()}
           />
         </VictoryChart>
       </View>
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  pill: {
-    alignSelf: 'flex-start',
-    backgroundColor: colors.blue3,
-    borderRadius: 100,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    marginBottom: 12,
-    marginRight: 12,
-  },
-  pillActive: {
-    backgroundColor: colors.blue2,
-  },
-})
