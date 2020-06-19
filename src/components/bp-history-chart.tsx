@@ -41,6 +41,8 @@ export const BpHistoryChart = ({bps}: Props) => {
     max: null | number
   } | null>(null)
 
+  const [showConnectingLine, setShowConnectingLine] = useState(false)
+
   const averageList = (value: DateRange) => {
     const list = [...value.list].slice(0, 2)
 
@@ -164,7 +166,7 @@ export const BpHistoryChart = ({bps}: Props) => {
         }}
         scale={{x: 'linear'}}
         theme={VictoryTheme.material}
-        containerComponent={<VictoryVoronoiContainer radius={20} />}>
+        containerComponent={<VictoryVoronoiContainer radius={30} />}>
         <VictoryAxis
           tickCount={CHART_MONTH_RANGE}
           tickFormat={(tick) => {
@@ -323,6 +325,26 @@ export const BpHistoryChart = ({bps}: Props) => {
             },
           }}
         />
+
+        {showConnectingLine &&
+          [...chartData.low, ...chartData.high].map((bp) => {
+            return (
+              <VictoryLine
+                key={bp.index}
+                data={[
+                  {x: bp.index, y: bp.averaged.systolic},
+                  {x: bp.index, y: bp.averaged.diastolic},
+                ]}
+                style={{
+                  data: {
+                    stroke: colors.blue2,
+                    strokeWidth: 2,
+                  },
+                }}
+              />
+            )
+          })}
+
         <VictoryScatter
           data={[...chartData.low, ...chartData.high].flatMap(
             (bp: DateRange) => {
@@ -359,6 +381,7 @@ export const BpHistoryChart = ({bps}: Props) => {
               target: 'data',
               eventHandlers: {
                 onPressIn: () => {
+                  setShowConnectingLine(true)
                   return [
                     {
                       target: 'data',
@@ -378,6 +401,7 @@ export const BpHistoryChart = ({bps}: Props) => {
                   ]
                 },
                 onPressOut: () => {
+                  setShowConnectingLine(false)
                   return [
                     {
                       target: 'data',
@@ -466,6 +490,7 @@ export const BpHistoryChart = ({bps}: Props) => {
               target: 'data',
               eventHandlers: {
                 onPressIn: () => {
+                  setShowConnectingLine(true)
                   return [
                     {
                       target: 'data',
@@ -474,7 +499,6 @@ export const BpHistoryChart = ({bps}: Props) => {
                           stroke: colors.blue2,
                           strokeWidth: 3,
                           fill: colors.white,
-                          boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
                         },
                       }),
                     },
@@ -485,6 +509,7 @@ export const BpHistoryChart = ({bps}: Props) => {
                   ]
                 },
                 onPressOut: () => {
+                  setShowConnectingLine(false)
                   return [
                     {
                       target: 'data',
@@ -556,6 +581,7 @@ export const BpHistoryChart = ({bps}: Props) => {
               target: 'data',
               eventHandlers: {
                 onPressIn: () => {
+                  setShowConnectingLine(true)
                   return [
                     {
                       target: 'data',
@@ -563,7 +589,6 @@ export const BpHistoryChart = ({bps}: Props) => {
                         style: {
                           stroke: colors.blue2,
                           strokeWidth: 3,
-                          boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
                         },
                       }),
                     },
@@ -574,6 +599,7 @@ export const BpHistoryChart = ({bps}: Props) => {
                   ]
                 },
                 onPressOut: () => {
+                  setShowConnectingLine(false)
                   return [
                     {
                       target: 'data',
