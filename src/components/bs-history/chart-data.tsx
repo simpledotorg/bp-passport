@@ -6,7 +6,6 @@ import {CHART_MONTH_RANGE} from '../../utils/dates'
 import {AggregatedBloodSugarData} from './aggregated-blood-sugar-data'
 import {DateAxis} from './date-axis'
 import {ScatterGraphDataPoint} from './scatter-graph-data-point'
-import {max} from 'date-fns'
 
 export class ChartData {
   private readonly chartType: BLOOD_SUGAR_TYPES
@@ -222,5 +221,13 @@ export class ChartData {
     return this.dateAxis.getDates().map((dateEntry) => {
       return dateEntry.getIndex()
     })
+  }
+
+  public getAxisTickValues(): {
+    month: number
+    monthName: string
+    year: number
+  }[] {
+    return this.dateAxis.getAxisTickValues()
   }
 }

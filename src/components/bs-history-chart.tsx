@@ -219,6 +219,44 @@ export const BsHistoryChart = ({bss}: Props) => {
           borderTopWidth: 1,
           position: 'relative',
         }}>
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            flexDirection: 'row',
+            paddingLeft: 6,
+          }}>
+          {chartData.getAxisTickValues().map((value, index) => {
+            return (
+              <View
+                key={index}
+                style={{
+                  flex: 1,
+                  flexShrink: 0,
+                }}>
+                <BodyText
+                  style={{
+                    color: colors.grey0,
+                    fontWeight: '500',
+                    fontSize: 14,
+                    lineHeight: 18,
+                  }}>
+                  {value.monthName}
+                </BodyText>
+                <BodyText
+                  style={{
+                    color: colors.grey2,
+                    fontWeight: '500',
+                    fontSize: 14,
+                    lineHeight: 18,
+                  }}>
+                  {value.year}
+                </BodyText>
+              </View>
+            )
+          })}
+          <View style={{width: 32}} />
+        </View>
         <VictoryChart
           maxDomain={{
             y: getMaxDomain(),

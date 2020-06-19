@@ -1,6 +1,8 @@
 import {differenceInDays, addMonths, addDays} from 'date-fns'
 import {DateEntry} from './date-entry'
 import {BloodSugar} from '../../redux/blood-sugar/blood-sugar.models'
+import {format} from 'date-fns'
+import {dateLocale} from '../../constants/languages'
 
 export class DateAxis {
   private dates: DateEntry[]
@@ -48,8 +50,6 @@ export class DateAxis {
   ): DateEntry | undefined {
     const dateToFind = new Date(bloodSugar.recorded_at)
 
-    //console.log(dateToFind)
-    //console.log(this.dates)
     return this.dates.find((date) => {
       return date.isSameDate(dateToFind)
     })
@@ -61,5 +61,32 @@ export class DateAxis {
 
   public getTickCount(): number {
     return this.dates.length
+  }
+
+  public getAxisTickValues(): {
+    month: number
+    monthName: string
+    year: number
+  }[] {
+    const values: {month: number; monthName: string; year: number}[] = []
+    this.dates.forEach((date) => {
+      if (
+        !values.find((value) => {
+          return (
+            value.month === date.getDate().getMonth() &&
+            value.year === date.getDate().getFullYear()
+          )
+        })
+      ) {
+        values.push({
+          month: date.getDate().getMonth(),
+          monthName: format(date.getDate(), 'MMM', {
+            locale: dateLocale(),
+          }),
+          year: date.getDate().getFullYear(),
+        })
+      }
+    })
+    return values
   }
 }
