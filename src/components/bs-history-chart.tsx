@@ -6,7 +6,7 @@ import {
   TouchableWithoutFeedback,
   ActivityIndicator,
 } from 'react-native'
-import {FormattedMessage, useIntl} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 import {
   VictoryChart,
   VictoryTheme,
@@ -32,8 +32,6 @@ type Props = {
 }
 
 export const BsHistoryChart = ({bss}: Props) => {
-  const intl = useIntl()
-
   const [requestedChart, setRequestedChart] = useState<RequestChart>(
     RequestChart.DefaultTypeFromAvailableReadings(bss),
   )
@@ -42,20 +40,7 @@ export const BsHistoryChart = ({bss}: Props) => {
 
   /*
   const bloodSugarType = () => {
-    if (
-      chartData.getChartType() === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR ||
-      chartData.getChartType() === BLOOD_SUGAR_TYPES.POST_PRANDIAL
-    ) {
-      return intl.formatMessage({
-        id: 'bs.random-blood-code',
-      })
-    }
-
-    if (chartData.getChartType() === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR) {
-      return intl.formatMessage({
-        id: 'bs.fasting-code',
-      })
-    }
+    
   }
 */
 
@@ -69,16 +54,7 @@ export const BsHistoryChart = ({bss}: Props) => {
       return {
         x: bs.index,
         y: bs.averaged,
-        label: `${bs.averaged.toFixed(0)}${
-          isRandomBloodSugar() || isPostPrandial() || isFastingBloodSugar()
-            ? intl.formatMessage({
-                id: 'bs.mgdl',
-              })
-            : '%,'
-        } ${isHemoglobic() ? '' : bloodSugarType() + ', '}${format(
-          bs.date,
-          'dd-MMM-yyyy',
-        )}`,
+        label: 
       }
     })
   }*/
