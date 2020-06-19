@@ -13,6 +13,7 @@ import {
   VictoryScatter,
   VictoryAxis,
   VictoryTooltip,
+  VictoryLine,
   VictoryVoronoiContainer,
 } from 'victory-native'
 
@@ -38,26 +39,9 @@ export const BsHistoryChart = ({bss}: Props) => {
 
   const [chartData, setChartData] = useState<ChartData | null>(null)
 
-  /*
-  const bloodSugarType = () => {
-    
-  }
-*/
-
   useEffect(() => {
     setChartData(new ChartData(requestedChart.getChartType(), bss))
   }, [bss, requestedChart])
-
-  /*
-  const generateScatter = (bss: DateRange[]): any[] => {
-    return bss.map((bs: DateRange) => {
-      return {
-        x: bs.index,
-        y: bs.averaged,
-        label: 
-      }
-    })
-  }*/
 
   const getMaxThreshhold = (): number => {
     if (!chartData) {
@@ -323,6 +307,23 @@ export const BsHistoryChart = ({bss}: Props) => {
               }}
             />
           )}
+          {chartData.getMinMaxDataForGraph().map((line) => {
+            return (
+              <VictoryLine
+                key={line.index}
+                data={[
+                  {x: line.index, y: line.max},
+                  {x: line.index, y: line.min},
+                ]}
+                style={{
+                  data: {
+                    stroke: colors.grey4,
+                    strokeWidth: 6,
+                  },
+                }}
+              />
+            )
+          })}
           <VictoryScatter
             data={chartData.getScatterDataForGraph()}
             size={5}

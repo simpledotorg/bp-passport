@@ -6,6 +6,7 @@ import {CHART_MONTH_RANGE} from '../../utils/dates'
 import {AggregatedBloodSugarData} from './aggregated-blood-sugar-data'
 import {DateAxis} from './date-axis'
 import {ScatterGraphDataPoint} from './scatter-graph-data-point'
+import {max} from 'date-fns'
 
 export class ChartData {
   private readonly chartType: BLOOD_SUGAR_TYPES
@@ -126,6 +127,37 @@ export class ChartData {
       })
     })
     return data
+  }
+
+  public getMinMaxDataForGraph(): {index: number; min: number; max: number}[] {
+    const values: {index: number; min: number; max: number}[] = []
+    this.aggregatedData.forEach((aggregateRecord) => {
+      if (
+        !aggregateRecord.getMinReading() ||
+        !aggregateRecord.getMaxReading()
+      ) {
+        return
+      }
+
+      const minValue = Number(
+        aggregateRecord.getMinReading()?.blood_sugar_value,
+      )
+      const maxValue = Number(
+        aggregateRecord.getMaxReading()?.blood_sugar_value,
+      )
+
+      if (minValue === maxValue) {
+        return
+      }
+
+      values.push({
+        index: aggregateRecord.getDateEntry().getIndex(),
+        min: minValue,
+        max: maxValue,
+      })
+    })
+
+    return values
   }
 
   public getChartType(): BLOOD_SUGAR_TYPES {
