@@ -23,21 +23,23 @@ import {ChartTypeSelectionPill} from './bs-history/chart-type-selection-pill'
 import {VictoryGraphToolTipHelper} from './bs-history/victory-graph-tool-tip-helper'
 
 type Props = {
-  bss: BloodSugar[]
+  bloodSugarReadings: BloodSugar[]
 }
 
-export const BsHistoryChart = ({bss}: Props) => {
+export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
   const intl = useIntl()
 
   const [requestedChart, setRequestedChart] = useState<RequestChart>(
-    RequestChart.DefaultTypeFromAvailableReadings(bss),
+    RequestChart.DefaultTypeFromAvailableReadings(bloodSugarReadings),
   )
 
   const [chartData, setChartData] = useState<ChartData | null>(null)
 
   useEffect(() => {
-    setChartData(new ChartData(requestedChart.getChartType(), bss))
-  }, [bss, requestedChart])
+    setChartData(
+      new ChartData(requestedChart.getChartType(), bloodSugarReadings),
+    )
+  }, [bloodSugarReadings, requestedChart])
 
   const getMaxThreshhold = (): number => {
     if (!chartData) {
