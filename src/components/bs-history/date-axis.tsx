@@ -27,14 +27,23 @@ export class DateAxis {
       throw new Error('Can not find last date')
     }
 
-    const endDate = new Date(
+    const endDate = addDays(
+      new Date(
+        Date.UTC(
+          lastDateValue.getUTCFullYear(),
+          lastDateValue.getUTCMonth() + 1,
+          1,
+        ),
+      ),
+      -1,
+    )
+    const startDate = new Date(
       Date.UTC(
-        lastDateValue.getUTCFullYear(),
-        lastDateValue.getUTCMonth(),
-        lastDateValue.getUTCDate(),
+        endDate.getUTCFullYear(),
+        endDate.getUTCMonth() - (monthRange - 1),
+        1,
       ),
     )
-    const startDate = addMonths(endDate, monthRange * -1)
 
     const numberOfDays = differenceInDays(endDate, startDate) + 1
 
