@@ -23,7 +23,7 @@ export class ScatterGraphDataPoint {
             id: 'bs.mgdl',
           })
         : '%,'
-    } ${this.getBloodSugarType(reading) + ', '}${format(
+    } ${this.getBloodSugarType(reading)}${format(
       new Date(reading.recorded_at),
       'dd-MMM-yyyy',
     )}`
@@ -41,23 +41,29 @@ export class ScatterGraphDataPoint {
 
   private getBloodSugarType(reading: BloodSugar): string {
     if (reading.blood_sugar_type === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR) {
-      return this.intl.formatMessage({
-        id: 'bs.random-blood-code',
-      })
+      return (
+        this.intl.formatMessage({
+          id: 'bs.random-blood-code',
+        }) + ', '
+      )
     }
 
     if (reading.blood_sugar_type === BLOOD_SUGAR_TYPES.POST_PRANDIAL) {
-      return this.intl.formatMessage({
-        id: 'bs.post-prenial-code',
-      })
+      return (
+        this.intl.formatMessage({
+          id: 'bs.post-prenial-code',
+        }) + ', '
+      )
     }
 
     if (reading.blood_sugar_type === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR) {
-      return this.intl.formatMessage({
-        id: 'bs.fasting-code',
-      })
+      return (
+        this.intl.formatMessage({
+          id: 'bs.fasting-code',
+        }) + ', '
+      )
     }
 
-    return ' '
+    return ''
   }
 }
