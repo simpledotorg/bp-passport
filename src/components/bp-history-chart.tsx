@@ -161,7 +161,8 @@ export const BpHistoryChart = ({bps}: Props) => {
           },
         }}
         scale={{x: 'linear'}}
-        theme={VictoryTheme.material}>
+        theme={VictoryTheme.material}
+        containerComponent={<VictoryVoronoiContainer radius={20} />}>
         <VictoryAxis
           tickCount={CHART_MONTH_RANGE}
           tickFormat={(tick) => {
@@ -209,7 +210,6 @@ export const BpHistoryChart = ({bps}: Props) => {
             ticks: {opacity: 0},
           }}
         />
-
         {/* CANDLESTICK CHART */}
         {/* <VictoryBar
           data={chartData.high.map((bp, index) => {
@@ -268,9 +268,7 @@ export const BpHistoryChart = ({bps}: Props) => {
             data: {fill: colors.red1, stroke: colors.red1, strokeWidth: 2},
           }}
         /> */}
-
         {/* LINE CHART */}
-
         {/* <VictoryLine
           data={[...chartData.low, ...chartData.high].map((bp, index) => {
             try {
@@ -306,7 +304,6 @@ export const BpHistoryChart = ({bps}: Props) => {
             },
           }}
         /> */}
-
         <VictoryLine
           data={[...chartData.low, ...chartData.high].map((bp) => {
             if (bp.list.length) {
@@ -334,10 +331,7 @@ export const BpHistoryChart = ({bps}: Props) => {
                       y: bp.averaged.systolic,
                       label: `${bp.averaged.systolic} / ${
                         bp.averaged.diastolic
-                      }, ${format(bp.date, 'dd-MMM-yyyy')}, ${format(
-                        bp.date,
-                        'k:mm',
-                      )}`,
+                      }, ${format(bp.date, 'dd-MMM-yyyy')}`,
                     }
                   : null,
                 bp.averaged.diastolic < 90
@@ -346,8 +340,7 @@ export const BpHistoryChart = ({bps}: Props) => {
                       y: bp.averaged.diastolic,
                       label: `${bp.averaged.systolic} / ${
                         bp.averaged.diastolic
-                      }, ${format(bp.date, 'dd-MMM-yyyy')}
-                      , ${format(bp.date, 'k:mm')}`,
+                      }, ${format(bp.date, 'dd-MMM-yyyy')}`,
                     }
                   : null,
               ]
@@ -412,7 +405,6 @@ export const BpHistoryChart = ({bps}: Props) => {
             />
           }
         />
-
         <VictoryLine
           data={[...chartData.low, ...chartData.high].map((bp) => {
             if (bp.list.length) {
@@ -520,7 +512,6 @@ export const BpHistoryChart = ({bps}: Props) => {
             />
           }
         />
-
         <VictoryScatter
           data={[...chartData.low, ...chartData.high].flatMap(
             (bp: DateRange) => {
