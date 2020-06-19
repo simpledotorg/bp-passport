@@ -40,12 +40,15 @@ export class ScatterGraphDataPoint {
   }
 
   private getBloodSugarType(reading: BloodSugar): string {
-    if (
-      reading.blood_sugar_type === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR ||
-      reading.blood_sugar_type === BLOOD_SUGAR_TYPES.POST_PRANDIAL
-    ) {
+    if (reading.blood_sugar_type === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR) {
       return this.intl.formatMessage({
         id: 'bs.random-blood-code',
+      })
+    }
+
+    if (reading.blood_sugar_type === BLOOD_SUGAR_TYPES.POST_PRANDIAL) {
+      return this.intl.formatMessage({
+        id: 'bs.post-prenial-code',
       })
     }
 
