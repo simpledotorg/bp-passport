@@ -1,5 +1,4 @@
 import {subMonths, startOfMonth, endOfMonth, addDays} from 'date-fns'
-import {zonedTimeToUtc} from 'date-fns-tz'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
 import {isBefore} from 'date-fns/esm'

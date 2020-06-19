@@ -14,7 +14,7 @@ import {
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {colors} from '../styles'
-import {generateChartData} from '../utils/data-transform'
+import {generateAverageChartData} from '../utils/data-transform'
 import {CHART_MONTH_RANGE} from '../utils/dates'
 import {DateRange} from '../utils/dates'
 import {BodyText} from './text'
@@ -59,7 +59,9 @@ export const BpHistoryChart = ({bps}: Props) => {
   }
 
   useEffect(() => {
-    setChartData(generateChartData(bps, averageList, isBloodPressureHigh))
+    setChartData(
+      generateAverageChartData(bps, averageList, isBloodPressureHigh),
+    )
   }, [bps])
 
   const getMaxDomain = () => {
