@@ -370,7 +370,7 @@ export const BpHistoryChart = ({bps}: Props) => {
               ]
             },
           )}
-          size={4}
+          size={5}
           style={{
             data: {
               fill: colors.green1,
@@ -390,7 +390,6 @@ export const BpHistoryChart = ({bps}: Props) => {
                           stroke: colors.blue2,
                           strokeWidth: 3,
                           fill: colors.white,
-                          boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
                         },
                       }),
                     },
@@ -479,7 +478,7 @@ export const BpHistoryChart = ({bps}: Props) => {
               ]
             },
           )}
-          size={4}
+          size={5}
           style={{
             data: {
               fill: colors.green1,
@@ -496,9 +495,9 @@ export const BpHistoryChart = ({bps}: Props) => {
                       target: 'data',
                       mutation: () => ({
                         style: {
+                          fill: colors.white,
                           stroke: colors.blue2,
                           strokeWidth: 3,
-                          fill: colors.white,
                         },
                       }),
                     },
@@ -570,7 +569,7 @@ export const BpHistoryChart = ({bps}: Props) => {
               ]
             },
           )}
-          size={4}
+          size={5}
           style={{
             data: {
               fill: colors.red1,
