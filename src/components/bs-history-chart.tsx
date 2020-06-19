@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from 'react'
-import {View, Dimensions, ActivityIndicator} from 'react-native'
+import {View, Dimensions} from 'react-native'
 import {useIntl} from 'react-intl'
+import {GraphLoadingPlaceholder} from './victory-chart-parts/graph-loading-placeholder'
+import {EmptyYLeftAxis} from './victory-chart-parts/empty-y-left-axis'
+import {ThreshholdLine} from './victory-chart-parts/threshold-line'
 
 import {
   VictoryChart,
@@ -15,12 +18,12 @@ import {
   BloodSugar,
   BLOOD_SUGAR_TYPES,
 } from '../redux/blood-sugar/blood-sugar.models'
-import {colors, containerStyles} from '../styles'
+import {colors} from '../styles'
 import {BodyText} from './text'
 import {RequestChart} from './bs-history/request-chart'
 import {ChartData} from './bs-history/chart-data'
 import {ChartTypeSelectionPill} from './bs-history/chart-type-selection-pill'
-import {VictoryGraphToolTipHelper} from './bs-history/victory-graph-tool-tip-helper'
+import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
 
 type Props = {
   bloodSugarReadings: BloodSugar[]
@@ -106,17 +109,14 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
     setRequestedChart(RequestChart.FromUserSelected(newChartType))
   }
 
+  const thresholdLineTickLabel = (tick: any): any => {
+    return chartData?.getChartType() === BLOOD_SUGAR_TYPES.HEMOGLOBIC
+      ? `${tick}%`
+      : tick
+  }
+
   if (!chartData) {
-    return (
-      <View
-        style={[
-          containerStyles.fill,
-          containerStyles.centeredContent,
-          {height: 260},
-        ]}>
-        <ActivityIndicator size="large" color={colors.blue1} />
-      </View>
-    )
+    return <GraphLoadingPlaceholder />
   }
 
   return (
@@ -238,24 +238,7 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
               tickLabels: {opacity: 0},
             }}
           />
-          <VictoryAxis
-            orientation="left"
-            style={{
-              axis: {
-                strokeWidth: 2,
-                stroke: colors.white100,
-              },
-              tickLabels: {
-                opacity: 0,
-              },
-              ticks: {
-                opacity: 0,
-              },
-              grid: {
-                opacity: 0,
-              },
-            }}
-          />
+          <EmptyYLeftAxis />
           <VictoryAxis
             orientation="right"
             dependentAxis
