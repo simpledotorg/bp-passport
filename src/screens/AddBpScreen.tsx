@@ -250,7 +250,7 @@ function AddBpScreen({navigation, route}: Props) {
               marginTop: 24,
             }}
             onPress={() => {
-              console.log('onPress')
+              // console.log('onPress')
               save()
             }}
           />
