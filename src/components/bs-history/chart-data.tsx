@@ -9,6 +9,12 @@ import {ScatterGraphDataPoint} from './scatter-graph-data-point'
 
 export class ChartData {
   private readonly chartType: BLOOD_SUGAR_TYPES
+
+  private readonly hasRandomReadings: boolean
+  private readonly hasPostPrandialReadings: boolean
+  private readonly hasFastingReadings: boolean
+  private readonly hasHemoglobicReadings: boolean
+
   private readonly dateAxis: DateAxis
   private readonly aggregatedData: AggregatedBloodSugarData[] = []
 
@@ -55,6 +61,23 @@ export class ChartData {
   constructor(chartType: BLOOD_SUGAR_TYPES, readings: BloodSugar[]) {
     this.chartType = chartType
 
+    this.hasRandomReadings = ChartData.hasReadingType(
+      readings,
+      BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
+    )
+    this.hasPostPrandialReadings = ChartData.hasReadingType(
+      readings,
+      BLOOD_SUGAR_TYPES.POST_PRANDIAL,
+    )
+    this.hasFastingReadings = ChartData.hasReadingType(
+      readings,
+      BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR,
+    )
+    this.hasHemoglobicReadings = ChartData.hasReadingType(
+      readings,
+      BLOOD_SUGAR_TYPES.HEMOGLOBIC,
+    )
+
     const filteredReadings = ChartData.filterReadings(chartType, readings)
 
     this.dateAxis = DateAxis.CreateMostRecentMonthsFromBloodSugars(
@@ -83,6 +106,17 @@ export class ChartData {
     })
   }
 
+  private static hasReadingType(
+    readings: BloodSugar[],
+    type: BLOOD_SUGAR_TYPES,
+  ): boolean {
+    return (
+      readings.find((reading) => {
+        return reading.blood_sugar_type === type
+      }) !== undefined
+    )
+  }
+
   public getScatterDataForGraph(): ScatterGraphDataPoint[] {
     const data: ScatterGraphDataPoint[] = []
     this.aggregatedData.forEach((aggregateRecord) => {
@@ -98,6 +132,22 @@ export class ChartData {
     return this.chartType
   }
 
+  public getHasRandomReadings(): boolean {
+    return this.hasRandomReadings
+  }
+
+  public getHasPostPrandialReadings(): boolean {
+    return this.hasPostPrandialReadings
+  }
+
+  public getHasFastingReadings(): boolean {
+    return this.hasFastingReadings
+  }
+
+  public getHasHemoglobicReadings(): boolean {
+    return this.hasHemoglobicReadings
+  }
+
   public getMaxReading(): number | null {
     return this.aggregatedData.reduce(
       (
@@ -109,9 +159,9 @@ export class ChartData {
           return memo
         }
 
-        return !memo || maxValueForCurrentDay > memo
-          ? maxValueForCurrentDay
-          : memo
+        const currentValue = Number(maxValueForCurrentDay.blood_sugar_value)
+
+        return !memo || currentValue > memo ? currentValue : memo
       },
       null,
     )
@@ -128,9 +178,9 @@ export class ChartData {
           return memo
         }
 
-        return !memo || minValueForCurrentDay < memo
-          ? minValueForCurrentDay
-          : memo
+        const currentValue = Number(minValueForCurrentDay.blood_sugar_value)
+
+        return !memo || currentValue < memo ? currentValue : memo
       },
       null,
     )

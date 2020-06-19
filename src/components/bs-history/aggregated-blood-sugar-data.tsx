@@ -4,10 +4,10 @@ import {BloodSugar} from '../../redux/blood-sugar/blood-sugar.models'
 export class AggregatedBloodSugarData {
   private dateEntry: DateEntry
 
-  private minReading: number | null = null
-  private maxReading: number | null = null
+  private minReading: BloodSugar | null = null
+  private maxReading: BloodSugar | null = null
 
-  private readings: number[] = []
+  private readings: BloodSugar[] = []
 
   public constructor(dateEntry: DateEntry) {
     this.dateEntry = dateEntry
@@ -17,34 +17,48 @@ export class AggregatedBloodSugarData {
     return this.dateEntry
   }
 
-  private updateMinReading(readingValue: number): void {
-    if (!this.minReading || this.minReading > readingValue) {
-      this.minReading = readingValue
+  private updateMinReading(reading: BloodSugar): void {
+    if (!this.minReading) {
+      this.minReading = reading
+    }
+
+    const readingValue = Number(reading.blood_sugar_value)
+    const currentMinValue = Number(this.minReading.blood_sugar_value)
+
+    if (currentMinValue > readingValue) {
+      this.minReading = reading
     }
   }
 
-  private updateMaxReading(readingValue: number): void {
-    if (!this.maxReading || readingValue > this.maxReading) {
-      this.maxReading = readingValue
+  private updateMaxReading(reading: BloodSugar): void {
+    if (!this.maxReading) {
+      this.maxReading = reading
+      return
+    }
+
+    const readingValue = Number(reading.blood_sugar_value)
+    const currentMaxValue = Number(this.maxReading.blood_sugar_value)
+
+    if (readingValue > currentMaxValue) {
+      this.maxReading = reading
     }
   }
 
   public addReading(reading: BloodSugar): void {
-    const readingValue = Number(reading.blood_sugar_value)
-    this.readings.push(readingValue)
-    this.updateMinReading(readingValue)
-    this.updateMaxReading(readingValue)
+    this.readings.push(reading)
+    this.updateMinReading(reading)
+    this.updateMaxReading(reading)
   }
 
-  public getReadings(): number[] {
+  public getReadings(): BloodSugar[] {
     return this.readings
   }
 
-  public getMaxReading(): number | null {
+  public getMaxReading(): BloodSugar | null {
     return this.maxReading
   }
 
-  public getMinReading(): number | null {
+  public getMinReading(): BloodSugar | null {
     return this.minReading
   }
 }
