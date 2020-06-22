@@ -10,6 +10,8 @@ import {
   VictoryAxis,
   VictoryTooltip,
   VictoryBar,
+  VictoryVoronoiContainer,
+  VictoryGroup,
 } from 'victory-native'
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
@@ -99,7 +101,7 @@ export const BpHistoryChart = ({bps}: Props) => {
         borderColor: colors.grey3,
         borderLeftWidth: 1,
         borderTopWidth: 1,
-        overflow: 'hidden',
+        overflow: 'visible',
         position: 'relative',
       }}>
       <View
@@ -161,7 +163,8 @@ export const BpHistoryChart = ({bps}: Props) => {
           },
         }}
         scale={{x: 'linear'}}
-        theme={VictoryTheme.material}>
+        theme={VictoryTheme.material}
+        containerComponent={<VictoryVoronoiContainer radius={30} />}>
         <VictoryAxis
           tickCount={CHART_MONTH_RANGE}
           tickFormat={(tick) => {
@@ -209,7 +212,6 @@ export const BpHistoryChart = ({bps}: Props) => {
             ticks: {opacity: 0},
           }}
         />
-
         {/* CANDLESTICK CHART */}
         {/* <VictoryBar
           data={chartData.high.map((bp, index) => {
@@ -268,9 +270,7 @@ export const BpHistoryChart = ({bps}: Props) => {
             data: {fill: colors.red1, stroke: colors.red1, strokeWidth: 2},
           }}
         /> */}
-
         {/* LINE CHART */}
-
         {/* <VictoryLine
           data={[...chartData.low, ...chartData.high].map((bp, index) => {
             try {
@@ -306,7 +306,6 @@ export const BpHistoryChart = ({bps}: Props) => {
             },
           }}
         /> */}
-
         <VictoryLine
           data={[...chartData.low, ...chartData.high].map((bp) => {
             if (bp.list.length) {
@@ -325,6 +324,89 @@ export const BpHistoryChart = ({bps}: Props) => {
           }}
         />
 
+        <VictoryScatter
+          data={[...chartData.low, ...chartData.high].flatMap(
+            (bp: DateRange) => {
+              return [
+                bp.averaged.systolic < 140
+                  ? {
+                      x: bp.index,
+                      y: bp.averaged.systolic,
+                      label: `${bp.averaged.systolic} / ${
+                        bp.averaged.diastolic
+                      }, ${format(bp.date, 'dd-MMM-yyyy')}`,
+                    }
+                  : null,
+                bp.averaged.diastolic < 90
+                  ? {
+                      x: bp.index,
+                      y: bp.averaged.diastolic,
+                      label: `${bp.averaged.systolic} / ${
+                        bp.averaged.diastolic
+                      }, ${format(bp.date, 'dd-MMM-yyyy')}`,
+                    }
+                  : null,
+              ]
+            },
+          )}
+          size={5}
+          style={{
+            data: {
+              fill: colors.green1,
+            },
+          }}
+          events={[
+            {
+              target: 'data',
+              eventHandlers: {
+                onPressIn: () => {
+                  return [
+                    {
+                      target: 'data',
+                      mutation: () => ({
+                        style: {
+                          stroke: colors.blue2,
+                          strokeWidth: 3,
+                          fill: colors.white,
+                        },
+                      }),
+                    },
+                    {
+                      target: 'labels',
+                      mutation: () => ({active: true}),
+                    },
+                  ]
+                },
+                onPressOut: () => {
+                  return [
+                    {
+                      target: 'data',
+                      mutation: () => {},
+                    },
+                    {
+                      target: 'labels',
+                      mutation: () => ({active: false}),
+                    },
+                  ]
+                },
+              },
+            },
+          ]}
+          labelComponent={
+            <VictoryTooltip
+              renderInPortal={false}
+              constrainToVisibleArea={true}
+              cornerRadius={20}
+              pointerLength={5}
+              flyoutStyle={{
+                height: 32,
+                padding: 200,
+                fill: colors.grey0,
+              }}
+              style={{fill: colors.white}}
+            />
+          }
+        />
         <VictoryLine
           data={[...chartData.low, ...chartData.high].map((bp) => {
             if (bp.list.length) {
@@ -350,26 +432,86 @@ export const BpHistoryChart = ({bps}: Props) => {
                   ? {
                       x: bp.index,
                       y: bp.averaged.systolic,
-                      label: `${bp.averaged.systolic}/${bp.averaged.diastolic}`,
+                      label: `${bp.averaged.systolic.toFixed(
+                        0,
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
+                        bp.date,
+                        'dd-MMM-yyyy',
+                      )}`,
                     }
                   : null,
                 bp.averaged.diastolic < 90
                   ? {
                       x: bp.index,
                       y: bp.averaged.diastolic,
-                      label: `${bp.averaged.systolic}/${bp.averaged.diastolic}`,
+                      label: `${bp.averaged.systolic.toFixed(
+                        0,
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
+                        bp.date,
+                        'dd-MMM-yyyy',
+                      )}`,
                     }
                   : null,
               ]
             },
           )}
-          size={4}
+          size={5}
           style={{
             data: {
               fill: colors.green1,
             },
           }}
-          labelComponent={<VictoryTooltip renderInPortal={false} />}
+          events={[
+            {
+              target: 'data',
+              eventHandlers: {
+                onPressIn: () => {
+                  return [
+                    {
+                      target: 'data',
+                      mutation: () => ({
+                        style: {
+                          fill: colors.white,
+                          stroke: colors.blue2,
+                          strokeWidth: 3,
+                        },
+                      }),
+                    },
+                    {
+                      target: 'labels',
+                      mutation: () => ({active: true}),
+                    },
+                  ]
+                },
+                onPressOut: () => {
+                  return [
+                    {
+                      target: 'data',
+                      mutation: () => {},
+                    },
+                    {
+                      target: 'labels',
+                      mutation: () => ({active: false}),
+                    },
+                  ]
+                },
+              },
+            },
+          ]}
+          labelComponent={
+            <VictoryTooltip
+              renderInPortal={false}
+              constrainToVisibleArea={true}
+              cornerRadius={20}
+              pointerLength={5}
+              flyoutStyle={{
+                height: 32,
+                padding: 200,
+                fill: colors.grey0,
+              }}
+              style={{fill: colors.white}}
+            />
+          }
         />
         <VictoryScatter
           data={[...chartData.low, ...chartData.high].flatMap(
@@ -379,26 +521,84 @@ export const BpHistoryChart = ({bps}: Props) => {
                   ? {
                       x: bp.index,
                       y: bp.averaged.systolic,
-                      label: `${bp.averaged.systolic}/${bp.averaged.diastolic}`,
+                      label: `${bp.averaged.systolic.toFixed(
+                        0,
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
+                        bp.date,
+                        'dd-MMM-yyyy',
+                      )}`,
                     }
                   : null,
                 bp.averaged.diastolic >= 90
                   ? {
                       x: bp.index,
                       y: bp.averaged.diastolic,
-                      label: `${bp.averaged.systolic}/${bp.averaged.diastolic}`,
+                      label: `${bp.averaged.systolic.toFixed(
+                        0,
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
+                        bp.date,
+                        'dd-MMM-yyyy',
+                      )}`,
                     }
                   : null,
               ]
             },
           )}
-          size={4}
+          size={5}
           style={{
             data: {
               fill: colors.red1,
             },
           }}
-          labelComponent={<VictoryTooltip renderInPortal={false} />}
+          events={[
+            {
+              target: 'data',
+              eventHandlers: {
+                onPressIn: () => {
+                  return [
+                    {
+                      target: 'data',
+                      mutation: () => ({
+                        style: {
+                          stroke: colors.blue2,
+                          strokeWidth: 3,
+                        },
+                      }),
+                    },
+                    {
+                      target: 'labels',
+                      mutation: () => ({active: true}),
+                    },
+                  ]
+                },
+                onPressOut: () => {
+                  return [
+                    {
+                      target: 'data',
+                      mutation: () => {},
+                    },
+                    {
+                      target: 'labels',
+                      mutation: () => ({active: false}),
+                    },
+                  ]
+                },
+              },
+            },
+          ]}
+          labelComponent={
+            <VictoryTooltip
+              renderInPortal={false}
+              constrainToVisibleArea={true}
+              cornerRadius={20}
+              pointerLength={5}
+              flyoutStyle={{
+                height: 32,
+                fill: colors.grey0,
+              }}
+              style={{fill: colors.white}}
+            />
+          }
         />
       </VictoryChart>
     </View>
