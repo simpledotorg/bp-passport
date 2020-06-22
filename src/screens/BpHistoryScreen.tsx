@@ -95,7 +95,7 @@ function BpHistoryScreen({navigation, route}: Props) {
             <Line />
             <View>
               {bps?.map((bp, index) => (
-                <>
+                <View key={index}>
                   <TouchableHighlight
                     underlayColor={colors.grey4}
                     onPress={() => {
@@ -116,7 +116,7 @@ function BpHistoryScreen({navigation, route}: Props) {
                     <BpInformation bp={bp} />
                   </TouchableHighlight>
                   {index < bps.length - 1 && <Line key={'line' + index} />}
-                </>
+                </View>
               ))}
             </View>
           </View>
