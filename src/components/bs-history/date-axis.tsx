@@ -1,4 +1,4 @@
-import {differenceInDays, addMonths, addDays} from 'date-fns'
+import {differenceInDays, addDays} from 'date-fns'
 import {DateEntry} from './date-entry'
 import {BloodSugar} from '../../redux/blood-sugar/blood-sugar.models'
 import {format} from 'date-fns'

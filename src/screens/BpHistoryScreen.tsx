@@ -4,21 +4,18 @@ import {
   View,
   StyleSheet,
   TouchableHighlight,
-  Dimensions,
   ActivityIndicator,
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {FormattedMessage} from 'react-intl'
 import {useFocusEffect} from '@react-navigation/native'
-import {VictoryChart, VictoryTheme, VictoryLine} from 'victory-native'
 
 import {containerStyles, colors} from '../styles'
 import {BodyHeader, BpInformation, BpHistoryChart, Line} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
-import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 
 type BpHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
