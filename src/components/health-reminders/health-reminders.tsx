@@ -1,6 +1,7 @@
 import React from 'react'
-import {View, ActivityIndicator} from 'react-native'
+import {HealthReminder} from './health-reminder'
+import {HealthReminderModel} from './health-reminder-model'
 
 export const HealthReminders = () => {
-  return <View></View>
+  return <HealthReminder data={HealthReminderModel.TakToYourDoctor()} />
 }
