@@ -19,45 +19,4 @@ export class VictoryGraphToolTipHelper {
       />
     )
   }
-
-  public static getEventHandlers(): any {
-    return [
-      {
-        target: 'data',
-        eventHandlers: {
-          onPressIn: () => {
-            return [
-              {
-                target: 'data',
-                mutation: () => ({
-                  style: {
-                    stroke: colors.blue2,
-                    strokeWidth: 3,
-                    fill: colors.white,
-                    boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
-                  },
-                }),
-              },
-              {
-                target: 'labels',
-                mutation: () => ({active: true}),
-              },
-            ]
-          },
-          onPressOut: () => {
-            return [
-              {
-                target: 'data',
-                mutation: () => {},
-              },
-              {
-                target: 'labels',
-                mutation: () => ({active: false}),
-              },
-            ]
-          },
-        },
-      },
-    ]
-  }
 }
