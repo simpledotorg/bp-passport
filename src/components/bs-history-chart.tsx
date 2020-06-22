@@ -224,7 +224,7 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
           }}
           scale={{x: 'linear'}}
           theme={VictoryTheme.material}
-          containerComponent={<VictoryVoronoiContainer radius={20} />}>
+          containerComponent={<VictoryVoronoiContainer radius={30} />}>
           <VictoryAxis
             tickCount={chartData.getAxisTickValues().length}
             tickFormat={(tick) => {
@@ -303,7 +303,6 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
                   datum.showOutOfRange ? colors.red1 : colors.green1,
               },
             }}
-            events={VictoryGraphToolTipHelper.getEventHandlers()}
             labelComponent={VictoryGraphToolTipHelper.getVictoryToolTip()}
           />
         </VictoryChart>

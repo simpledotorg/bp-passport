@@ -323,90 +323,6 @@ export const BpHistoryChart = ({bps}: Props) => {
             },
           }}
         />
-
-        <VictoryScatter
-          data={[...chartData.low, ...chartData.high].flatMap(
-            (bp: DateRange) => {
-              return [
-                bp.averaged.systolic < 140
-                  ? {
-                      x: bp.index,
-                      y: bp.averaged.systolic,
-                      label: `${bp.averaged.systolic} / ${
-                        bp.averaged.diastolic
-                      }, ${format(bp.date, 'dd-MMM-yyyy')}`,
-                    }
-                  : null,
-                bp.averaged.diastolic < 90
-                  ? {
-                      x: bp.index,
-                      y: bp.averaged.diastolic,
-                      label: `${bp.averaged.systolic} / ${
-                        bp.averaged.diastolic
-                      }, ${format(bp.date, 'dd-MMM-yyyy')}`,
-                    }
-                  : null,
-              ]
-            },
-          )}
-          size={5}
-          style={{
-            data: {
-              fill: colors.green1,
-            },
-          }}
-          events={[
-            {
-              target: 'data',
-              eventHandlers: {
-                onPressIn: () => {
-                  return [
-                    {
-                      target: 'data',
-                      mutation: () => ({
-                        style: {
-                          stroke: colors.blue2,
-                          strokeWidth: 3,
-                          fill: colors.white,
-                        },
-                      }),
-                    },
-                    {
-                      target: 'labels',
-                      mutation: () => ({active: true}),
-                    },
-                  ]
-                },
-                onPressOut: () => {
-                  return [
-                    {
-                      target: 'data',
-                      mutation: () => {},
-                    },
-                    {
-                      target: 'labels',
-                      mutation: () => ({active: false}),
-                    },
-                  ]
-                },
-              },
-            },
-          ]}
-          labelComponent={
-            <VictoryTooltip
-              renderInPortal={false}
-              constrainToVisibleArea={true}
-              cornerRadius={20}
-              pointerLength={5}
-              flyoutStyle={{
-                height: 32,
-                padding: 200,
-                fill: colors.grey0,
-              }}
-              style={{fill: colors.white}}
-            />
-          }
-        />
         <VictoryLine
           data={[...chartData.low, ...chartData.high].map((bp) => {
             if (bp.list.length) {
@@ -425,6 +341,20 @@ export const BpHistoryChart = ({bps}: Props) => {
           }}
         />
         <VictoryScatter
+          labelComponent={
+            <VictoryTooltip
+              renderInPortal={false}
+              constrainToVisibleArea={true}
+              cornerRadius={20}
+              pointerLength={5}
+              flyoutStyle={{
+                padding: 200,
+                height: 32,
+                fill: colors.grey0,
+              }}
+              style={{fill: colors.white}}
+            />
+          }
           data={[...chartData.low, ...chartData.high].flatMap(
             (bp: DateRange) => {
               return [
@@ -452,71 +382,6 @@ export const BpHistoryChart = ({bps}: Props) => {
                       )}`,
                     }
                   : null,
-              ]
-            },
-          )}
-          size={5}
-          style={{
-            data: {
-              fill: colors.green1,
-            },
-          }}
-          events={[
-            {
-              target: 'data',
-              eventHandlers: {
-                onPressIn: () => {
-                  return [
-                    {
-                      target: 'data',
-                      mutation: () => ({
-                        style: {
-                          fill: colors.white,
-                          stroke: colors.blue2,
-                          strokeWidth: 3,
-                        },
-                      }),
-                    },
-                    {
-                      target: 'labels',
-                      mutation: () => ({active: true}),
-                    },
-                  ]
-                },
-                onPressOut: () => {
-                  return [
-                    {
-                      target: 'data',
-                      mutation: () => {},
-                    },
-                    {
-                      target: 'labels',
-                      mutation: () => ({active: false}),
-                    },
-                  ]
-                },
-              },
-            },
-          ]}
-          labelComponent={
-            <VictoryTooltip
-              renderInPortal={false}
-              constrainToVisibleArea={true}
-              cornerRadius={20}
-              pointerLength={5}
-              flyoutStyle={{
-                height: 32,
-                padding: 200,
-                fill: colors.grey0,
-              }}
-              style={{fill: colors.white}}
-            />
-          }
-        />
-        <VictoryScatter
-          data={[...chartData.low, ...chartData.high].flatMap(
-            (bp: DateRange) => {
-              return [
                 bp.averaged.systolic >= 140
                   ? {
                       x: bp.index,
@@ -547,58 +412,25 @@ export const BpHistoryChart = ({bps}: Props) => {
           size={5}
           style={{
             data: {
-              fill: colors.red1,
-            },
-          }}
-          events={[
-            {
-              target: 'data',
-              eventHandlers: {
-                onPressIn: () => {
-                  return [
-                    {
-                      target: 'data',
-                      mutation: () => ({
-                        style: {
-                          stroke: colors.blue2,
-                          strokeWidth: 3,
-                        },
-                      }),
-                    },
-                    {
-                      target: 'labels',
-                      mutation: () => ({active: true}),
-                    },
-                  ]
-                },
-                onPressOut: () => {
-                  return [
-                    {
-                      target: 'data',
-                      mutation: () => {},
-                    },
-                    {
-                      target: 'labels',
-                      mutation: () => ({active: false}),
-                    },
-                  ]
-                },
+              fill: (data: any) => {
+                const datum = data.datum.label.split(',')
+                const values = datum[0].split(' / ')
+                if (values[0] >= 140) {
+                  return colors.red1
+                }
+                if (values[0] < 140) {
+                  return colors.green1
+                }
+
+                if (values[1] >= 90) {
+                  return colors.red1
+                }
+                if (values[1] < 90) {
+                  return colors.green1
+                }
               },
             },
-          ]}
-          labelComponent={
-            <VictoryTooltip
-              renderInPortal={false}
-              constrainToVisibleArea={true}
-              cornerRadius={20}
-              pointerLength={5}
-              flyoutStyle={{
-                height: 32,
-                fill: colors.grey0,
-              }}
-              style={{fill: colors.white}}
-            />
-          }
+          }}
         />
       </VictoryChart>
     </View>
