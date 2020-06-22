@@ -232,7 +232,7 @@ function Home({navigation, route}: Props) {
                 <>
                   {meds.map((med, index) => {
                     return (
-                      <>
+                      <View key={index}>
                         <TouchableHighlight
                           underlayColor={colors.grey4}
                           onPress={() => {
@@ -241,7 +241,6 @@ function Home({navigation, route}: Props) {
                               isEditing: true,
                             })
                           }}
-                          key={index}
                           style={[
                             {
                               paddingVertical: 12,
@@ -255,7 +254,7 @@ function Home({navigation, route}: Props) {
                         {index < meds.length - 1 && (
                           <Line key={'line' + index} />
                         )}
-                      </>
+                      </View>
                     )
                   })}
                 </>
@@ -288,7 +287,7 @@ function Home({navigation, route}: Props) {
                 <>
                   {bps.map((bp, index) => {
                     return (
-                      <>
+                      <View key={index}>
                         <TouchableHighlight
                           underlayColor={colors.grey4}
                           onPress={() => {
@@ -296,7 +295,6 @@ function Home({navigation, route}: Props) {
                               bp,
                             })
                           }}
-                          key={index}
                           style={[
                             {
                               paddingVertical: 12,
@@ -309,9 +307,9 @@ function Home({navigation, route}: Props) {
                         </TouchableHighlight>
                         {index < bps.length - 1 &&
                           index < HOME_PAGE_SHOW_LIMIT - 1 && (
-                            <Line key={'line' + index} />
+                            <Line key={'bpline' + index} />
                           )}
-                      </>
+                      </View>
                     )
                   })}
                 </>
@@ -363,7 +361,7 @@ function Home({navigation, route}: Props) {
                 <>
                   {bss.map((bs, index) => {
                     return (
-                      <>
+                      <View key={index}>
                         <TouchableHighlight
                           underlayColor={colors.grey4}
                           onPress={() => {
@@ -371,7 +369,6 @@ function Home({navigation, route}: Props) {
                               bs,
                             })
                           }}
-                          key={index}
                           style={[
                             {
                               paddingVertical: 12,
@@ -389,7 +386,7 @@ function Home({navigation, route}: Props) {
                           index < HOME_PAGE_SHOW_LIMIT - 1 && (
                             <Line key={'line' + index} />
                           )}
-                      </>
+                      </View>
                     )
                   })}
                 </>
