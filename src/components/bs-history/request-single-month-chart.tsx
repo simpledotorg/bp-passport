@@ -81,4 +81,14 @@ export class RequestSingleMonthChart implements IDefineAChartRequest {
 
     return new RequestSingleMonthChart(this._chartType, newMonth, newYear)
   }
+
+  public changeRequestedType(
+    requestedType: BLOOD_SUGAR_TYPES,
+  ): IDefineAChartRequest {
+    return new RequestSingleMonthChart(
+      requestedType,
+      this._requestedMonth,
+      this._requestedYear,
+    )
+  }
 }

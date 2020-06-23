@@ -34,6 +34,15 @@ export class RequestMultiMonthChart implements IDefineAChartRequest {
     return new RequestMultiMonthChart(chartType, numberOfMonths)
   }
 
+  public changeRequestedType(
+    requestedType: BLOOD_SUGAR_TYPES,
+  ): IDefineAChartRequest {
+    return RequestMultiMonthChart.FromUserSelected(
+      requestedType,
+      this._numberOfMonths,
+    )
+  }
+
   public get chartType(): BLOOD_SUGAR_TYPES {
     return this._chartType
   }

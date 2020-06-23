@@ -108,7 +108,7 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
 
   const changeChartTypeHandler = (newChartType: BLOOD_SUGAR_TYPES): void => {
     setChartData(null)
-    setRequestedChart(RequestChart.FromUserSelected(newChartType))
+    setRequestedChart(requestedChart.changeRequestedType(newChartType))
   }
 
   const thresholdLineTickLabel = (tick: any): any => {
