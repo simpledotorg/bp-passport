@@ -82,7 +82,7 @@ export class ChartData {
 
     this.dateAxis = DateAxis.CreateMostRecentMonthsFromBloodSugars(
       filteredReadings,
-      CHART_MONTH_RANGE,
+      2,
     )
 
     filteredReadings.forEach((bloodSugarReading) => {
