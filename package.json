@@ -91,5 +91,8 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "resolutions": {
+    "@formatjs/intl-datetimeformat": "1.1.0"
   }
 }

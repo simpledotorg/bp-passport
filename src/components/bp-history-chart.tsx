@@ -21,6 +21,7 @@ import {CHART_MONTH_RANGE} from '../utils/dates'
 import {DateRange} from '../utils/dates'
 import {BodyText} from './text'
 import {dateLocale} from '../constants/languages'
+import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
 
 type Props = {
   bps: BloodPressure[]
@@ -341,20 +342,7 @@ export const BpHistoryChart = ({bps}: Props) => {
           }}
         />
         <VictoryScatter
-          labelComponent={
-            <VictoryTooltip
-              renderInPortal={false}
-              constrainToVisibleArea={true}
-              cornerRadius={20}
-              pointerLength={5}
-              flyoutStyle={{
-                padding: 200,
-                height: 32,
-                fill: colors.grey0,
-              }}
-              style={{fill: colors.white}}
-            />
-          }
+          labelComponent={VictoryGraphToolTipHelper.getVictoryToolTip()}
           data={[...chartData.low, ...chartData.high].flatMap(
             (bp: DateRange) => {
               return [
