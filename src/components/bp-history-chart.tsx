@@ -378,9 +378,8 @@ export const BpHistoryChart = ({bps}: Props) => {
                       y: bp.averaged.systolic,
                       label: `${bp.averaged.systolic.toFixed(
                         0,
-                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
                         bp.date,
-                        'dd-MMM-yyyy',
                       )}`,
                     }
                   : null,
@@ -390,9 +389,8 @@ export const BpHistoryChart = ({bps}: Props) => {
                       y: bp.averaged.diastolic,
                       label: `${bp.averaged.systolic.toFixed(
                         0,
-                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
                         bp.date,
-                        'dd-MMM-yyyy',
                       )}`,
                     }
                   : null,
@@ -413,9 +411,8 @@ export const BpHistoryChart = ({bps}: Props) => {
                       y: bp.averaged.diastolic,
                       label: `${bp.averaged.systolic.toFixed(
                         0,
-                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
                         bp.date,
-                        'dd-MMM-yyyy',
                       )}`,
                     }
                   : null,
