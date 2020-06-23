@@ -1,17 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import {View, Dimensions} from 'react-native'
 import {format, addMonths} from 'date-fns'
-import {zonedTimeToUtc} from 'date-fns-tz'
 import {
   VictoryChart,
   VictoryTheme,
   VictoryLine,
   VictoryScatter,
   VictoryAxis,
-  VictoryTooltip,
-  VictoryBar,
   VictoryVoronoiContainer,
-  VictoryGroup,
 } from 'victory-native'
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
@@ -22,6 +18,7 @@ import {DateRange} from '../utils/dates'
 import {BodyText} from './text'
 import {dateLocale} from '../constants/languages'
 import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
+import {ChartData} from './bp-history/chart-data'
 
 type Props = {
   bps: BloodPressure[]
@@ -34,13 +31,7 @@ export const BpHistoryChart = ({bps}: Props) => {
     return bpIn.systolic >= 140 || bpIn.diastolic >= 90
   }
 
-  const [chartData, setChartData] = useState<{
-    dates: DateRange[]
-    low: DateRange[]
-    high: DateRange[]
-    min: null | number
-    max: null | number
-  } | null>(null)
+  const [chartData, setChartData] = useState<ChartData | null>(null)
 
   const averageList = (value: DateRange) => {
     const list = [...value.list].slice(0, 2)
