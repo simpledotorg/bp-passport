@@ -23,7 +23,6 @@ import {RequestChart} from './bs-history/request-chart'
 import {ChartData} from './bs-history/chart-data'
 import {ChartTypeSelectionPill} from './bs-history/chart-type-selection-pill'
 import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
-import {getTestData} from './bs-history/test-data'
 
 type Props = {
   bloodSugarReadings: BloodSugar[]
@@ -31,8 +30,6 @@ type Props = {
 
 export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
   const intl = useIntl()
-
-  bloodSugarReadings = getTestData()
 
   const [requestedChart, setRequestedChart] = useState<RequestChart>(
     RequestChart.DefaultTypeFromAvailableReadings(bloodSugarReadings),
