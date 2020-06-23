@@ -19,7 +19,9 @@ import {
 } from '../redux/blood-sugar/blood-sugar.models'
 import {colors} from '../styles'
 import {BodyText} from './text'
-import {RequestChart} from './bs-history/request-chart'
+import {IDefineAChartRequest} from './bs-history/i-define-a-chart-request'
+import {RequestSingleMonthChart} from './bs-history/request-single-month-chart'
+import {RequestMultiMonthChart} from './bs-history/request-multi-month-chart'
 import {ChartData} from './bs-history/chart-data'
 import {ChartTypeSelectionPill} from './bs-history/chart-type-selection-pill'
 import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
@@ -31,16 +33,17 @@ type Props = {
 export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
   const intl = useIntl()
 
-  const [requestedChart, setRequestedChart] = useState<RequestChart>(
-    RequestChart.DefaultTypeFromAvailableReadings(bloodSugarReadings),
+  const [requestedChart, setRequestedChart] = useState<IDefineAChartRequest>(
+    RequestSingleMonthChart.DefaultTypeFromAvailableReadings(
+      bloodSugarReadings,
+    ),
+    // RequestMultiMonthChart.DefaultTypeFromAvailableReadings(bloodSugarReadings),
   )
 
   const [chartData, setChartData] = useState<ChartData | null>(null)
 
   useEffect(() => {
-    setChartData(
-      new ChartData(requestedChart.getChartType(), bloodSugarReadings),
-    )
+    setChartData(new ChartData(requestedChart, bloodSugarReadings))
   }, [bloodSugarReadings, requestedChart])
 
   const getMaxThreshhold = (): number => {

@@ -2,13 +2,16 @@ import {
   BloodSugar,
   BLOOD_SUGAR_TYPES,
 } from '../../redux/blood-sugar/blood-sugar.models'
-import {CHART_MONTH_RANGE} from '../../utils/dates'
+
 import {AggregatedBloodSugarData} from './aggregated-blood-sugar-data'
 import {DateAxis} from './date-axis'
 import {ScatterGraphDataPoint} from './scatter-graph-data-point'
+import {RequestSingleMonthChart} from './request-single-month-chart'
+import {RequestMultiMonthChart} from './request-multi-month-chart'
+import {IDefineAChartRequest} from './i-define-a-chart-request'
 
 export class ChartData {
-  private readonly chartType: BLOOD_SUGAR_TYPES
+  private readonly _requestedChart: IDefineAChartRequest
 
   private readonly hasRandomReadings: boolean
   private readonly hasPostPrandialReadings: boolean
@@ -58,8 +61,8 @@ export class ChartData {
     }
   }
 
-  constructor(chartType: BLOOD_SUGAR_TYPES, readings: BloodSugar[]) {
-    this.chartType = chartType
+  constructor(requestedChart: IDefineAChartRequest, readings: BloodSugar[]) {
+    this._requestedChart = requestedChart
 
     this.hasRandomReadings = ChartData.hasReadingType(
       readings,
@@ -78,12 +81,24 @@ export class ChartData {
       BLOOD_SUGAR_TYPES.HEMOGLOBIC,
     )
 
-    const filteredReadings = ChartData.filterReadings(chartType, readings)
-
-    this.dateAxis = DateAxis.CreateMostRecentMonthsFromBloodSugars(
-      filteredReadings,
-      2,
+    const filteredReadings = ChartData.filterReadings(
+      this._requestedChart.chartType,
+      readings,
     )
+
+    if (requestedChart instanceof RequestSingleMonthChart) {
+      this.dateAxis = DateAxis.CreateMostRecentMonthsFromBloodSugars(
+        filteredReadings,
+        1,
+      )
+    } else if (requestedChart instanceof RequestMultiMonthChart) {
+      this.dateAxis = DateAxis.CreateMostRecentMonthsFromBloodSugars(
+        filteredReadings,
+        requestedChart.numberOfMonths,
+      )
+    } else {
+      throw new Error('Chart type is not handled')
+    }
 
     filteredReadings.forEach((bloodSugarReading) => {
       const dateEntry = this.dateAxis.getDateEntryForBloodSugar(
@@ -160,7 +175,7 @@ export class ChartData {
   }
 
   public getChartType(): BLOOD_SUGAR_TYPES {
-    return this.chartType
+    return this._requestedChart.chartType
   }
 
   public getHasRandomReadings(): boolean {

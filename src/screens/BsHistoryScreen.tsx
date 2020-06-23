@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-  View,
-  FlatList,
-  StyleSheet,
-  TouchableHighlight,
-  ScrollView,
-} from 'react-native'
+import {View, StyleSheet, TouchableHighlight, ScrollView} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {FormattedMessage} from 'react-intl'
