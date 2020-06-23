@@ -3,7 +3,6 @@ import {View, Dimensions} from 'react-native'
 import {useIntl} from 'react-intl'
 import {GraphLoadingPlaceholder} from './victory-chart-parts/graph-loading-placeholder'
 import {EmptyYLeftAxis} from './victory-chart-parts/empty-y-left-axis'
-import {ThreshholdLine} from './victory-chart-parts/threshold-line'
 
 import {
   VictoryChart,

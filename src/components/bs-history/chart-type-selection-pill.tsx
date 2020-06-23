@@ -1,7 +1,6 @@
 import React from 'react'
 import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native'
 import {BLOOD_SUGAR_TYPES} from '../../redux/blood-sugar/blood-sugar.models'
-import {FormattedMessage} from 'react-intl'
 import {colors} from '../../styles'
 import {BodyText} from '../text'
 
