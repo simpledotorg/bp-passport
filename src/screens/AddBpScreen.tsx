@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableWithoutFeedback,
+  Alert,
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -91,6 +92,17 @@ function AddBpScreen({navigation, route}: Props) {
     return null
   }
 
+  const showWarning = (bpIn: BloodPressure) => {
+    // This is a high blood pressure that is high enough to warrant a warning
+    return bpIn.systolic >= 180 || bpIn.diastolic >= 110
+  }
+
+  const isBloodPressureHigh = (bpIn: BloodPressure) => {
+    // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
+    // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
+    return bpIn.systolic >= 140 || bpIn.diastolic >= 90
+  }
+
   const save = () => {
     const newBloodPressure: BloodPressure = {
       diastolic: Number(diastolic),
@@ -102,6 +114,17 @@ function AddBpScreen({navigation, route}: Props) {
     dispatch(addBloodPressure(newBloodPressure))
 
     navigation.goBack()
+
+    if (showWarning(newBloodPressure)) {
+      setTimeout(() => {
+        navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN, {
+          displayText: intl.formatMessage(
+            {id: 'alert.description-high'},
+            {label: intl.formatMessage({id: 'general.bp'})},
+          ),
+        })
+      }, 250)
+    }
   }
 
   useEffect(() => {
@@ -227,7 +250,7 @@ function AddBpScreen({navigation, route}: Props) {
               marginTop: 24,
             }}
             onPress={() => {
-              console.log('onPress')
+              // console.log('onPress')
               save()
             }}
           />

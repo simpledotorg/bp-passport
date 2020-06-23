@@ -9,7 +9,7 @@ import {
 import {FormattedMessage, useIntl} from 'react-intl'
 import {format} from 'date-fns'
 
-import {colors, purpleDrop} from '../styles'
+import {colors, purpleDrop, mediumWarningSign} from '../styles'
 import {BodyHeader, BodyText, Button} from './'
 import {
   BloodSugar,
@@ -18,6 +18,8 @@ import {
 import {
   displayDate,
   isHighBloodSugar,
+  isLowBloodSugar,
+  showWarning,
   getBloodSugarDetails,
 } from '../utils/blood-sugars'
 import {useThunkDispatch} from '../redux/store'
@@ -34,7 +36,21 @@ export const BsModal = ({bs, close}: Props) => {
   const dispatch = useThunkDispatch()
 
   const getBSText = () => {
-    return isHighBloodSugar(bs) ? (
+    if (isHighBloodSugar(bs)) {
+      return (
+        <BodyText
+          style={[
+            styles.bsText,
+            {
+              color: colors.red1,
+            },
+          ]}>
+          <FormattedMessage id="general.high" />
+        </BodyText>
+      )
+    }
+
+    return isLowBloodSugar(bs) ? (
       <BodyText
         style={[
           styles.bsText,
@@ -42,7 +58,7 @@ export const BsModal = ({bs, close}: Props) => {
             color: colors.red1,
           },
         ]}>
-        <FormattedMessage id="general.high" />
+        <FormattedMessage id="general.low" />
       </BodyText>
     ) : (
       <BodyText
@@ -59,31 +75,69 @@ export const BsModal = ({bs, close}: Props) => {
 
   const getNotes = () => {
     const bsDetails = getBloodSugarDetails(bs)
-    return isHighBloodSugar(bs) ? (
-      <BodyText>
-        <FormattedMessage
-          id="general.sheet-high-disclaimer"
-          values={{
-            label: <FormattedMessage id={bsDetails.languageTypeCode} />,
-            limit: (
-              <BodyText>
-                {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
-                  <>
-                    {bsDetails.high}
-                    <BodyText>%</BodyText>
-                  </>
-                ) : (
-                  <>
-                    {bsDetails.high} <FormattedMessage id="bs.mgdl" />
-                  </>
-                )}
-              </BodyText>
-            ),
-          }}
-        />
-      </BodyText>
+    if (isHighBloodSugar(bs) && showWarning(bs)) {
+      return (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            marginVertical: 34,
+          }}>
+          <Image source={mediumWarningSign} />
+          <View style={{flexDirection: 'column', flex: 1, paddingLeft: 16}}>
+            <BodyText
+              style={{
+                color: colors.grey0,
+                fontWeight: 'bold',
+                fontSize: 18,
+                lineHeight: 26,
+              }}>
+              <FormattedMessage id="alert.title" />
+            </BodyText>
+            <BodyText
+              style={{
+                lineHeight: 26,
+              }}>
+              <FormattedMessage
+                id="alert.description-high"
+                values={{
+                  label: <FormattedMessage id={'bs.blood-sugar'} />,
+                }}
+              />
+            </BodyText>
+          </View>
+        </View>
+      )
+    }
+
+    return isLowBloodSugar(bs) && showWarning(bs) ? (
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'flex-start',
+          marginVertical: 34,
+        }}>
+        <Image source={mediumWarningSign} />
+        <View style={{flexDirection: 'column', flex: 1, paddingLeft: 16}}>
+          <BodyText
+            style={{
+              color: colors.grey0,
+              fontWeight: 'bold',
+              fontSize: 18,
+              lineHeight: 26,
+            }}>
+            <FormattedMessage id="alert.title" />
+          </BodyText>
+          <BodyText
+            style={{
+              lineHeight: 26,
+            }}>
+            <FormattedMessage id="alert.description-low" />
+          </BodyText>
+        </View>
+      </View>
     ) : (
-      <BodyText>
+      <BodyText style={{lineHeight: 26, marginVertical: 34}}>
         <FormattedMessage
           id="general.sheet-normal-disclaimer"
           values={{
@@ -177,9 +231,7 @@ export const BsModal = ({bs, close}: Props) => {
             )}
           </View>
         </View>
-        <BodyText style={{lineHeight: 26, marginVertical: 34}}>
-          {getNotes()}
-        </BodyText>
+        {getNotes()}
         <View style={{flexDirection: 'row'}}>
           <Button
             style={[

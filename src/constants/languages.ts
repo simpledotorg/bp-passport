@@ -46,7 +46,7 @@ export const dateLocale = () => {
     case LanguageCode.HINDI:
       return hi
     case LanguageCode.BENGALI:
-      console.log('YOYO: ', bn)
+      // console.log('YOYO: ', bn)
       return bn
     case LanguageCode.FRENCH:
       return fr

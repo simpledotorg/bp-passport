@@ -10,21 +10,26 @@ import {
   VictoryAxis,
   VictoryTooltip,
   VictoryBar,
+  VictoryVoronoiContainer,
+  VictoryGroup,
 } from 'victory-native'
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {colors} from '../styles'
-import {generateChartData} from '../utils/data-transform'
+import {generateAverageChartData} from '../utils/data-transform'
 import {CHART_MONTH_RANGE} from '../utils/dates'
 import {DateRange} from '../utils/dates'
 import {BodyText} from './text'
 import {dateLocale} from '../constants/languages'
+import {useIntl} from 'react-intl'
 
 type Props = {
   bps: BloodPressure[]
 }
 
 export const BpHistoryChart = ({bps}: Props) => {
+  const intl = useIntl()
+
   const isBloodPressureHigh = (bpIn: BloodPressure) => {
     // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
     // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
@@ -59,7 +64,9 @@ export const BpHistoryChart = ({bps}: Props) => {
   }
 
   useEffect(() => {
-    setChartData(generateChartData(bps, averageList, isBloodPressureHigh))
+    setChartData(
+      generateAverageChartData(bps, averageList, isBloodPressureHigh),
+    )
   }, [bps])
 
   const getMaxDomain = () => {
@@ -86,6 +93,17 @@ export const BpHistoryChart = ({bps}: Props) => {
     return base - difference
   }
 
+  const displayDate = (date: Date) => {
+    return (
+      `${format(date, 'dd')}-` +
+      `${
+        intl.formatMessage({
+          id: `general.${format(date, 'MMM').toLowerCase()}`,
+        }) + `-${format(date, 'yyyy')}`
+      }`
+    )
+  }
+
   if (!chartData) {
     return null
   }
@@ -97,7 +115,7 @@ export const BpHistoryChart = ({bps}: Props) => {
         borderColor: colors.grey3,
         borderLeftWidth: 1,
         borderTopWidth: 1,
-        overflow: 'hidden',
+        overflow: 'visible',
         position: 'relative',
       }}>
       <View
@@ -159,7 +177,8 @@ export const BpHistoryChart = ({bps}: Props) => {
           },
         }}
         scale={{x: 'linear'}}
-        theme={VictoryTheme.material}>
+        theme={VictoryTheme.material}
+        containerComponent={<VictoryVoronoiContainer radius={30} />}>
         <VictoryAxis
           tickCount={CHART_MONTH_RANGE}
           tickFormat={(tick) => {
@@ -207,7 +226,6 @@ export const BpHistoryChart = ({bps}: Props) => {
             ticks: {opacity: 0},
           }}
         />
-
         {/* CANDLESTICK CHART */}
         {/* <VictoryBar
           data={chartData.high.map((bp, index) => {
@@ -266,9 +284,7 @@ export const BpHistoryChart = ({bps}: Props) => {
             data: {fill: colors.red1, stroke: colors.red1, strokeWidth: 2},
           }}
         /> */}
-
         {/* LINE CHART */}
-
         {/* <VictoryLine
           data={[...chartData.low, ...chartData.high].map((bp, index) => {
             try {
@@ -304,7 +320,6 @@ export const BpHistoryChart = ({bps}: Props) => {
             },
           }}
         /> */}
-
         <VictoryLine
           data={[...chartData.low, ...chartData.high].map((bp) => {
             if (bp.list.length) {
@@ -322,7 +337,6 @@ export const BpHistoryChart = ({bps}: Props) => {
             },
           }}
         />
-
         <VictoryLine
           data={[...chartData.low, ...chartData.high].map((bp) => {
             if (bp.list.length) {
@@ -341,6 +355,20 @@ export const BpHistoryChart = ({bps}: Props) => {
           }}
         />
         <VictoryScatter
+          labelComponent={
+            <VictoryTooltip
+              renderInPortal={false}
+              constrainToVisibleArea={true}
+              cornerRadius={20}
+              pointerLength={5}
+              flyoutStyle={{
+                padding: 200,
+                height: 32,
+                fill: colors.grey0,
+              }}
+              style={{fill: colors.white}}
+            />
+          }
           data={[...chartData.low, ...chartData.high].flatMap(
             (bp: DateRange) => {
               return [
@@ -348,55 +376,71 @@ export const BpHistoryChart = ({bps}: Props) => {
                   ? {
                       x: bp.index,
                       y: bp.averaged.systolic,
-                      label: `${bp.averaged.systolic}/${bp.averaged.diastolic}`,
+                      label: `${bp.averaged.systolic.toFixed(
+                        0,
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
+                        bp.date,
+                      )}`,
                     }
                   : null,
                 bp.averaged.diastolic < 90
                   ? {
                       x: bp.index,
                       y: bp.averaged.diastolic,
-                      label: `${bp.averaged.systolic}/${bp.averaged.diastolic}`,
+                      label: `${bp.averaged.systolic.toFixed(
+                        0,
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
+                        bp.date,
+                      )}`,
                     }
                   : null,
-              ]
-            },
-          )}
-          size={4}
-          style={{
-            data: {
-              fill: colors.green1,
-            },
-          }}
-          labelComponent={<VictoryTooltip renderInPortal={false} />}
-        />
-        <VictoryScatter
-          data={[...chartData.low, ...chartData.high].flatMap(
-            (bp: DateRange) => {
-              return [
                 bp.averaged.systolic >= 140
                   ? {
                       x: bp.index,
                       y: bp.averaged.systolic,
-                      label: `${bp.averaged.systolic}/${bp.averaged.diastolic}`,
+                      label: `${bp.averaged.systolic.toFixed(
+                        0,
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
+                        bp.date,
+                      )}`,
                     }
                   : null,
                 bp.averaged.diastolic >= 90
                   ? {
                       x: bp.index,
                       y: bp.averaged.diastolic,
-                      label: `${bp.averaged.systolic}/${bp.averaged.diastolic}`,
+                      label: `${bp.averaged.systolic.toFixed(
+                        0,
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
+                        bp.date,
+                      )}`,
                     }
                   : null,
               ]
             },
           )}
-          size={4}
+          size={5}
           style={{
             data: {
-              fill: colors.red1,
+              fill: (data: any) => {
+                const datum = data.datum.label.split(',')
+                const values = datum[0].split(' / ')
+                if (values[0] >= 140) {
+                  return colors.red1
+                }
+                if (values[0] < 140) {
+                  return colors.green1
+                }
+
+                if (values[1] >= 90) {
+                  return colors.red1
+                }
+                if (values[1] < 90) {
+                  return colors.green1
+                }
+              },
             },
           }}
-          labelComponent={<VictoryTooltip renderInPortal={false} />}
         />
       </VictoryChart>
     </View>
