@@ -7,7 +7,7 @@ import {AggregatedBloodSugarData} from './aggregated-blood-sugar-data'
 import {DateAxis} from './date-axis'
 import {ScatterGraphDataPoint} from './scatter-graph-data-point'
 import {RequestSingleMonthChart} from './request-single-month-chart'
-import {RequestMultiMonthChart} from './request-multi-month-chart'
+import {RequestHemoglobicChart} from './request-hemoglobic-chart'
 import {IDefineAChartRequest} from './i-define-a-chart-request'
 import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
 
@@ -92,10 +92,10 @@ export class ChartData {
         requestedChart.requestedMonth,
         requestedChart.requestedYear,
       )
-    } else if (requestedChart instanceof RequestMultiMonthChart) {
+    } else if (requestedChart instanceof RequestHemoglobicChart) {
       this.dateAxis = DateAxis.CreateMostRecentMonthsFromBloodSugars(
         filteredReadings,
-        requestedChart.numberOfMonths,
+        12,
       )
     } else {
       throw new Error('Chart type is not handled')
@@ -120,7 +120,7 @@ export class ChartData {
     })
   }
 
-  private static hasReadingType(
+  public static hasReadingType(
     readings: BloodSugar[],
     type: BLOOD_SUGAR_TYPES,
   ): boolean {

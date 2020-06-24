@@ -3,6 +3,7 @@ import {
   BLOOD_SUGAR_TYPES,
 } from '../../redux/blood-sugar/blood-sugar.models'
 import {IDefineAChartRequest} from './i-define-a-chart-request'
+import {RequestHemoglobicChart} from './request-hemoglobic-chart'
 
 export class RequestSingleMonthChart implements IDefineAChartRequest {
   private readonly _chartType: BLOOD_SUGAR_TYPES
@@ -30,9 +31,10 @@ export class RequestSingleMonthChart implements IDefineAChartRequest {
 
   public static DefaultTypeFromAvailableReadings(
     readings: BloodSugar[],
-    requestedMonth?: number,
-    requestedYear?: number,
   ): RequestSingleMonthChart {
+    const requestedMonth = 6
+    const requestedYear = 2020
+
     return new RequestSingleMonthChart(
       BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
       requestedMonth,
@@ -40,11 +42,13 @@ export class RequestSingleMonthChart implements IDefineAChartRequest {
     )
   }
 
-  public static FromUserSelected(
+  public static ForRequestedType(
     chartType: BLOOD_SUGAR_TYPES,
-    requestedMonth?: number,
-    requestedYear?: number,
+    readings: BloodSugar[],
   ): RequestSingleMonthChart {
+    const requestedMonth = 6
+    const requestedYear = 2020
+
     return new RequestSingleMonthChart(chartType, requestedMonth, requestedYear)
   }
 
@@ -84,7 +88,16 @@ export class RequestSingleMonthChart implements IDefineAChartRequest {
 
   public changeRequestedType(
     requestedType: BLOOD_SUGAR_TYPES,
+    readings: BloodSugar[],
   ): IDefineAChartRequest {
+    if (requestedType === this._chartType) {
+      return this
+    }
+
+    if (requestedType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
+      return RequestHemoglobicChart.StartingState(readings)
+    }
+
     return new RequestSingleMonthChart(
       requestedType,
       this._requestedMonth,

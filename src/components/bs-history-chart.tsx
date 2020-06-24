@@ -21,7 +21,7 @@ import {colors} from '../styles'
 import {BodyText} from './text'
 import {IDefineAChartRequest} from './bs-history/i-define-a-chart-request'
 import {RequestSingleMonthChart} from './bs-history/request-single-month-chart'
-import {RequestMultiMonthChart} from './bs-history/request-multi-month-chart'
+import {RequestHemoglobicChart} from './bs-history/request-hemoglobic-chart'
 import {ChartData} from './bs-history/chart-data'
 import {ChartTypeSelectionPill} from './bs-history/chart-type-selection-pill'
 import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
@@ -34,13 +34,20 @@ type Props = {
 }
 
 export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
+  const getStartingChartRequest = (
+    readings: BloodSugar[],
+  ): IDefineAChartRequest => {
+    if (ChartData.hasReadingType(readings, BLOOD_SUGAR_TYPES.HEMOGLOBIC)) {
+      return RequestHemoglobicChart.StartingState(readings)
+    }
+
+    return RequestSingleMonthChart.DefaultTypeFromAvailableReadings(readings)
+  }
+
   const intl = useIntl()
 
   const [requestedChart, setRequestedChart] = useState<IDefineAChartRequest>(
-    RequestSingleMonthChart.DefaultTypeFromAvailableReadings(
-      bloodSugarReadings,
-    ),
-    // RequestMultiMonthChart.DefaultTypeFromAvailableReadings(bloodSugarReadings),
+    getStartingChartRequest(bloodSugarReadings),
   )
 
   const [chartData, setChartData] = useState<ChartData | null>(null)
@@ -111,7 +118,9 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
 
   const changeChartTypeHandler = (newChartType: BLOOD_SUGAR_TYPES): void => {
     setChartData(null)
-    setRequestedChart(requestedChart.changeRequestedType(newChartType))
+    setRequestedChart(
+      requestedChart.changeRequestedType(newChartType, bloodSugarReadings),
+    )
   }
 
   const thresholdLineTickLabel = (tick: any): any => {
