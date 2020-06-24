@@ -9,7 +9,7 @@
   "login.scan-passport": "ፓስፖርት ይቃኙ",
   "login.no-bp-passport": "የደም ግፊት ፓስፖርት የለዎትም?",
   "login.get-started": "ይጀምሩ",
-  "login.by-using-app": "ይህንን መተግበሪያ በመጠቀም፣ ከእኛ {ግለኝነት} እና {የአጠቃቀም ውሎች} ጋር ይስማማሉ።",
+  "login.by-using-app": "ይህንን መተግበሪያ በመጠቀም፣ ከእኛ {privacy} እና {terms} ጋር ይስማማሉ።",
   "login.privacy-policy-link": "የግላዊነት ፖሊሲ",
   "login.terms-of-use-link": "የአጠቃቀም ውሎች",
   "login.camera-access": "የካሜራ ተደራሽነት",
