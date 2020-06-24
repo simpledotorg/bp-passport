@@ -1,4 +1,5 @@
 import {DateRange} from '../../utils/dates'
+import {DateAxis} from './date-axis'
 
 export class ChartData {
   private readonly dateAxis: DateAxis
