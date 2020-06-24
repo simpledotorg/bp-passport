@@ -29,6 +29,8 @@ import {DayOfMonthAxisLabel} from './victory-chart-parts/day-of-month-axis-label
 import {MonthNameAxisLabel} from './victory-chart-parts/month-name-axis-label'
 import {MonthInitialAxisLabel} from './victory-chart-parts/month-initial-axis-label'
 import {MonthAndYearLabel} from './victory-chart-parts/month-and-year-label'
+import {MonthInitialLabel} from './victory-chart-parts/month-initial-label'
+import {DayOfMonthLabel} from './victory-chart-parts/day-of-month-label'
 
 type Props = {
   bloodSugarReadings: BloodSugar[]
@@ -135,62 +137,8 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
     )
   }
 
-  const thresholdLineTickLabel = (tick: any): any => {
-    return chartData?.getChartType() === BLOOD_SUGAR_TYPES.HEMOGLOBIC
-      ? `${tick}%`
-      : tick
-  }
-
   if (!chartData) {
     return <GraphLoadingPlaceholder />
-  }
-
-  const outputDayOfMonthAxisLabel = (
-    value: DayOfMonthAxisLabel,
-    index: number,
-  ) => {
-    return (
-      <View
-        key={index}
-        style={{
-          flex: 1,
-          flexShrink: 0,
-        }}>
-        <BodyText
-          style={{
-            color: colors.grey0,
-            fontWeight: '500',
-            fontSize: 14,
-            lineHeight: 18,
-          }}>
-          {value.dayOfMonth}
-        </BodyText>
-      </View>
-    )
-  }
-
-  const outputMonthInitialAxisLabel = (
-    value: MonthInitialAxisLabel,
-    index: number,
-  ) => {
-    return (
-      <View
-        key={index}
-        style={{
-          flex: 1,
-          flexShrink: 0,
-        }}>
-        <BodyText
-          style={{
-            color: colors.grey0,
-            fontWeight: '500',
-            fontSize: 14,
-            lineHeight: 18,
-          }}>
-          {value.monthInitial}
-        </BodyText>
-      </View>
-    )
   }
 
   return (
@@ -253,9 +201,9 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
             if (value instanceof MonthNameAxisLabel) {
               return <MonthAndYearLabel key={index} data={value} />
             } else if (value instanceof DayOfMonthAxisLabel) {
-              return outputDayOfMonthAxisLabel(value, index)
+              return <DayOfMonthLabel key={index} data={value} />
             } else if (value instanceof MonthInitialAxisLabel) {
-              return outputMonthInitialAxisLabel(value, index)
+              return <MonthInitialLabel key={index} data={value} />
             }
           })}
 
