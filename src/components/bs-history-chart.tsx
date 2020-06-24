@@ -37,11 +37,22 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
   const getStartingChartRequest = (
     readings: BloodSugar[],
   ): IDefineAChartRequest => {
+    if (
+      ChartData.hasReadingType(
+        readings,
+        BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
+      ) ||
+      ChartData.hasReadingType(readings, BLOOD_SUGAR_TYPES.POST_PRANDIAL) ||
+      ChartData.hasReadingType(readings, BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR)
+    ) {
+      return RequestSingleMonthChart.DefaultTypeFromAvailableReadings(readings)
+    }
+
     if (ChartData.hasReadingType(readings, BLOOD_SUGAR_TYPES.HEMOGLOBIC)) {
       return RequestHemoglobicChart.StartingState(readings)
     }
 
-    return RequestSingleMonthChart.DefaultTypeFromAvailableReadings(readings)
+    throw new Error('Unhandled blood sugar type')
   }
 
   const intl = useIntl()
