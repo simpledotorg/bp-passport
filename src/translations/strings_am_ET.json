@@ -61,7 +61,7 @@
   "page-titles.all-bs": "ሁሉም የደም ስኳር መጠኖች",
   "page-titles.new-bs": "የደም ስኳር መጠን ያክሉ",
   "page-titles.add-medicine": "መድኃኒት ያክሉ",
-  "general.sheet-high-disclaimer": "ከፍተኛ {መለያ} ከ{ገደብ} በላይ ነው። ማስታወሻ ፣ የእርስዎ የግል “ከፍተኛ” \\ {መለያ} የተለየ ሊሆን ይችላል። ከሐኪምዎ ጋር ይወያዩ።",
+  "general.sheet-high-disclaimer": "ከፍተኛ {label} ከ{limit} በላይ ነው። ማስታወሻ ፣ የእርስዎ የግል “ከፍተኛ” \\ {label} የተለየ ሊሆን ይችላል። ከሐኪምዎ ጋር ይወያዩ።",
   "general.sheet-normal-disclaimer": "መደበኛ {መለያ} በ {ገደብ} ላይ ወይም በታች ነው። ማስታወሻ ፣ የእርስዎ የግል \"መደበኛ\" {መለያ} የተለየ ሊሆን ይችላል። ከሐኪምዎ ጋር ይወያዩ።",
   "general.add-bs": "የደም ስኳር መጠን ያክሉ",
   "general.save": "አስቀምጥ",
