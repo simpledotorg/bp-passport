@@ -19,6 +19,7 @@ import {BodyText} from './text'
 import {dateLocale} from '../constants/languages'
 import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
 import {ChartData} from './bp-history/chart-data'
+import {GraphLoadingPlaceholder} from './victory-chart-parts/graph-loading-placeholder'
 
 type Props = {
   bps: BloodPressure[]
@@ -32,6 +33,10 @@ export const BpHistoryChart = ({bps}: Props) => {
   }
 
   const [chartData, setChartData] = useState<ChartData | null>(null)
+
+  useEffect(() => {
+    setChartData(new ChartData(bps))
+  }, [bps])
 
   const averageList = (value: DateRange) => {
     const list = [...value.list].slice(0, 2)
@@ -51,10 +56,6 @@ export const BpHistoryChart = ({bps}: Props) => {
       systolic: valuesAccumulator.systolic / list.length,
     }
   }
-
-  useEffect(() => {
-    setChartData(new ChartData())
-  }, [bps])
 
   const getMaxDomain = () => {
     const threshhold = 140
@@ -81,7 +82,7 @@ export const BpHistoryChart = ({bps}: Props) => {
   }
 
   if (!chartData) {
-    return null
+    return <GraphLoadingPlaceholder />
   }
 
   return (
@@ -193,15 +194,15 @@ export const BpHistoryChart = ({bps}: Props) => {
           }}
         />
         <VictoryLine
-          data={[...chartData.low, ...chartData.high].map((bp) => {
-            if (bp.list.length) {
-              return {
-                x: bp.index,
-                y: bp.averaged.systolic,
-              }
-            }
-            return null
-          })}
+          // data={[...chartData.low, ...chartData.high].map((bp) => {
+          //   if (bp.list.length) {
+          //     return {
+          //       x: bp.index,
+          //       y: bp.averaged.systolic,
+          //     }
+          //   }
+          //   return null
+          // })}
           style={{
             data: {
               stroke: colors.grey1,
@@ -210,15 +211,15 @@ export const BpHistoryChart = ({bps}: Props) => {
           }}
         />
         <VictoryLine
-          data={[...chartData.low, ...chartData.high].map((bp) => {
-            if (bp.list.length) {
-              return {
-                x: bp.index,
-                y: bp.averaged.diastolic,
-              }
-            }
-            return null
-          })}
+          // data={[...chartData.low, ...chartData.high].map((bp) => {
+          //   if (bp.list.length) {
+          //     return {
+          //       x: bp.index,
+          //       y: bp.averaged.diastolic,
+          //     }
+          //   }
+          //   return null
+          // })}
           style={{
             data: {
               stroke: colors.grey1,
@@ -228,60 +229,7 @@ export const BpHistoryChart = ({bps}: Props) => {
         />
         <VictoryScatter
           labelComponent={VictoryGraphToolTipHelper.getVictoryToolTip()}
-          data={[...chartData.low, ...chartData.high].flatMap(
-            (bp: DateRange) => {
-              return [
-                bp.averaged.systolic < 140
-                  ? {
-                      x: bp.index,
-                      y: bp.averaged.systolic,
-                      label: `${bp.averaged.systolic.toFixed(
-                        0,
-                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
-                        bp.date,
-                        'dd-MMM-yyyy',
-                      )}`,
-                    }
-                  : null,
-                bp.averaged.diastolic < 90
-                  ? {
-                      x: bp.index,
-                      y: bp.averaged.diastolic,
-                      label: `${bp.averaged.systolic.toFixed(
-                        0,
-                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
-                        bp.date,
-                        'dd-MMM-yyyy',
-                      )}`,
-                    }
-                  : null,
-                bp.averaged.systolic >= 140
-                  ? {
-                      x: bp.index,
-                      y: bp.averaged.systolic,
-                      label: `${bp.averaged.systolic.toFixed(
-                        0,
-                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
-                        bp.date,
-                        'dd-MMM-yyyy',
-                      )}`,
-                    }
-                  : null,
-                bp.averaged.diastolic >= 90
-                  ? {
-                      x: bp.index,
-                      y: bp.averaged.diastolic,
-                      label: `${bp.averaged.systolic.toFixed(
-                        0,
-                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
-                        bp.date,
-                        'dd-MMM-yyyy',
-                      )}`,
-                    }
-                  : null,
-              ]
-            },
-          )}
+          data={chartData.getScatterDataForGraph()}
           size={5}
           style={{
             data: {

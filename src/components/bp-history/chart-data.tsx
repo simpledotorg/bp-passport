@@ -1,6 +1,8 @@
 import {AggregatedBloodPressureData} from './aggregated-blood-pressure-data'
 import {DateRange} from '../../utils/dates'
 import {DateAxis} from './date-axis'
+import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
+import {ScatterGraphDataPoint} from '../bp-history/scatter-graph-data-point'
 
 export class ChartData {
   private readonly dateAxis: DateAxis
@@ -11,6 +13,44 @@ export class ChartData {
   high: DateRange[]
   min: null | number
   max: null | number
+
+  constructor(readings: BloodPressure[]) {
+    this.dateAxis = DateAxis.CreateMostRecentMonthsFromBloodPressures(
+      readings,
+      2,
+    )
+
+    readings.forEach((bloodPressureReading) => {
+      const dateEntry = this.dateAxis.getDateEntryForBloodPressure(
+        bloodPressureReading,
+      )
+      if (!dateEntry) {
+        return
+      }
+
+      let aggregateRecord = this.aggregatedData.find((record) => {
+        return record.getDateEntry() === dateEntry
+      })
+
+      if (aggregateRecord === undefined) {
+        aggregateRecord = new AggregatedBloodPressureData(dateEntry)
+        this.aggregatedData.push(aggregateRecord)
+      }
+
+      aggregateRecord.addReading(bloodPressureReading)
+    })
+  }
+
+  public getScatterDataForGraph(): ScatterGraphDataPoint[] {
+    const data: ScatterGraphDataPoint[] = []
+    this.aggregatedData.forEach((aggregateRecord) => {
+      const index = aggregateRecord.getDateEntry().getIndex()
+      aggregateRecord.getReadings().forEach((reading) => {
+        data.push(new ScatterGraphDataPoint(index, reading))
+      })
+    })
+    return data
+  }
 
   public getMinMaxDataForGraph(): {
     index: number
