@@ -127,7 +127,6 @@ export function getTestData(): BloodSugar[] {
   readings.push(randomBloodSugar('115', '2020-06-22T12:51:27.255Z'))
   readings.push(randomBloodSugar('90', '2020-06-22T18:51:27.255Z'))
 
-  /*
   readings.push(Hemoglobic('7', '2020-02-01T08:51:27.255Z'))
   readings.push(Hemoglobic('10', '2020-02-05T08:51:27.255Z'))
   readings.push(Hemoglobic('9', '2020-02-06T08:51:27.255Z'))
@@ -144,7 +143,7 @@ export function getTestData(): BloodSugar[] {
   readings.push(Hemoglobic('12', '2020-03-13T08:51:27.255Z'))
   readings.push(Hemoglobic('10', '2020-03-20T08:51:27.255Z'))
   readings.push(Hemoglobic('5', '2020-03-28T08:51:27.255Z'))
-  
+
   readings.push(Hemoglobic('7', '2020-05-01T08:51:27.255Z'))
   readings.push(Hemoglobic('6', '2020-05-10T08:51:27.255Z'))
   readings.push(Hemoglobic('6', '2020-05-20T08:51:27.255Z'))
@@ -152,10 +151,8 @@ export function getTestData(): BloodSugar[] {
   readings.push(Hemoglobic('8', '2020-05-25T08:51:27.255Z'))
   readings.push(Hemoglobic('6', '2020-05-26T08:51:27.255Z'))
   readings.push(Hemoglobic('10', '2020-05-28T08:51:27.255Z'))
-  readings.push(Hemoglobic('11', '2020-05-31T08:51:27.255Z'))
-
-  */
   readings.push(Hemoglobic('20', '2020-03-30T08:51:27.255Z'))
+  readings.push(Hemoglobic('11', '2020-05-31T08:51:27.255Z'))
 
   readings.push(Hemoglobic('6', '2019-03-04T08:51:27.255Z'))
   readings.push(Hemoglobic('6', '2019-03-05T08:51:27.255Z'))

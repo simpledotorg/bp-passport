@@ -93,8 +93,8 @@ export class DateAxis {
     requestedMonth: number,
     requestedYear: number,
   ): DateAxis {
-    const startDate = new Date(Date.UTC(requestedYear, requestedMonth - 12, 1))
-    const endDate = addDays(addMonths(startDate, 11), -1)
+    const startDate = new Date(Date.UTC(requestedYear, requestedMonth - 1, 1))
+    const endDate = addDays(addMonths(startDate, 1), -1)
 
     return new DateAxis(startDate, endDate)
   }
