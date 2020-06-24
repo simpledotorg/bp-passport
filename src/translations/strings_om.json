@@ -175,7 +175,7 @@
   "medicine.allow-notifications-body": "Yaadachiiftuuwwan dawaa fudhachuuf beeksisoota hayyamaa",
   "medicine.reminder-notification": "{guyyaa} {sa’aatii}, dawaa keessan fudhadhaa",
   "alert.title": "Gargaarsa fayyaa argadhuu",
-  "alert.description-high": " {label} ke baayee Ol aanaadha. daafii hakiima kee qunamii lalaamuuf   ",
+  "alert.description-high": " {label} ke baayee Ol aanaadha. daafii hakiima kee qunamii lalaamuuf.",
   "alert.description-low": "Sukaari dhiigaa kee gadi bu'aadha. sukaari dhiigaa kee ol'kaasuf sorataa sukaara qabu kan akka fuduraa soorachuun hatattamaan hakiima ke qunami",
   "health-reminders.title": "Yaadachiiftotta fayyaa",
   "health-reminders.app": "Appiikee daawwannaa doktoraa hundaafiyyuu geessi akka dubbisa isaa siif ilaaluf",
