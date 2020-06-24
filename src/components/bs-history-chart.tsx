@@ -28,6 +28,7 @@ import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-too
 import {DayOfMonthAxisLabel} from './victory-chart-parts/day-of-month-axis-label'
 import {MonthNameAxisLabel} from './victory-chart-parts/month-name-axis-label'
 import {MonthInitialAxisLabel} from './victory-chart-parts/month-initial-axis-label'
+import {MonthAndYearLabel} from './victory-chart-parts/month-and-year-label'
 
 type Props = {
   bloodSugarReadings: BloodSugar[]
@@ -144,39 +145,6 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
     return <GraphLoadingPlaceholder />
   }
 
-  const outputMonthNameAxisLabel = (
-    value: MonthNameAxisLabel,
-    index: number,
-  ) => {
-    return (
-      <View
-        key={index}
-        style={{
-          flex: 1,
-          flexShrink: 0,
-        }}>
-        <BodyText
-          style={{
-            color: colors.grey0,
-            fontWeight: '500',
-            fontSize: 14,
-            lineHeight: 18,
-          }}>
-          {value.monthName}
-        </BodyText>
-        <BodyText
-          style={{
-            color: colors.grey2,
-            fontWeight: '500',
-            fontSize: 14,
-            lineHeight: 18,
-          }}>
-          {value.year}
-        </BodyText>
-      </View>
-    )
-  }
-
   const outputDayOfMonthAxisLabel = (
     value: DayOfMonthAxisLabel,
     index: number,
@@ -283,7 +251,7 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
           }}>
           {chartData.getAxisTickValues().map((value, index) => {
             if (value instanceof MonthNameAxisLabel) {
-              return outputMonthNameAxisLabel(value, index)
+              return <MonthAndYearLabel key={index} data={value} />
             } else if (value instanceof DayOfMonthAxisLabel) {
               return outputDayOfMonthAxisLabel(value, index)
             } else if (value instanceof MonthInitialAxisLabel) {
