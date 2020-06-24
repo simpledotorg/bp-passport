@@ -36,7 +36,7 @@
   "add-bp.diastolic-less-than-error": "ድያስቶሊክ ከ 40 በታች መሆን አይችልም",
   "add-bp.diastolic-greater-than-error": "ድያስቶሊክ ከ 180 በታች መሆን አይችልም",
   "add-bp.please-enter-error": "እባክዎ የደም ግፊት እሴቶችን ያስገቡ",
-  "add-bs.bs-less-than-error": "እሴት ከ{ እሴት} በታች መሆን አይችልም",
+  "add-bs.bs-less-than-error": "እሴት ከ {value} በታች መሆን አይችልም",
   "add-bs.bs-more-than-error": "እሴት ከ {እሴት} በላይ መሆን አይችልም",
   "add-bs.please-enter-error": "እባክዎ የደም ስኳር መጠን ያስገቡ",
   "settings.profile": "መገለጫ",
