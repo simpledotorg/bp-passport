@@ -108,4 +108,3 @@ export class ChartData {
     return this.dateAxis.getAxisTickValues()
   }
 }
-}
