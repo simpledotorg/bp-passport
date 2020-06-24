@@ -9,6 +9,8 @@ import {BloodSugar} from '../../redux/blood-sugar/blood-sugar.models'
 import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
 import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
 import {MonthNameAxisLabel} from '../victory-chart-parts/month-name-axis-label'
+import {DayOfMonthAxisLabel} from '../victory-chart-parts/day-of-month-axis-label'
+import {MonthInitialAxisLabel} from '../victory-chart-parts/month-initial-axis-label'
 
 export class DateAxis {
   private dates: DateEntry[]
@@ -16,19 +18,23 @@ export class DateAxis {
 
   private static populateTickValuesForAMonth(
     dates: DateEntry[],
-  ): MonthNameAxisLabel[] {
-    const values: MonthNameAxisLabel[] = []
+  ): DayOfMonthAxisLabel[] {
+    const values: DayOfMonthAxisLabel[] = []
 
-    console.log(Math.floor(dates.length / 4))
-    values.push(new MonthNameAxisLabel(dates[0].getDate()))
+    const separator = Math.floor(dates.length / 4)
+
+    values.push(new DayOfMonthAxisLabel(1))
+    values.push(new DayOfMonthAxisLabel(1 + separator))
+    values.push(new DayOfMonthAxisLabel(1 + separator * 2))
+    values.push(new DayOfMonthAxisLabel(1 + separator * 3))
 
     return values
   }
 
   private static populateTickValuesForAYear(
     dateEntries: DateEntry[],
-  ): MonthNameAxisLabel[] {
-    const values: MonthNameAxisLabel[] = []
+  ): MonthInitialAxisLabel[] {
+    const values: MonthInitialAxisLabel[] = []
     dateEntries.forEach((dateEntry) => {
       if (
         !values.find((value) => {
@@ -38,7 +44,7 @@ export class DateAxis {
           )
         })
       ) {
-        values.push(new MonthNameAxisLabel(dateEntry.getDate()))
+        values.push(new MonthInitialAxisLabel(dateEntry.getDate()))
       }
     })
     return values
@@ -85,8 +91,8 @@ export class DateAxis {
     requestedMonth: number,
     requestedYear: number,
   ): DateAxis {
-    const startDate = new Date(Date.UTC(requestedYear, requestedMonth - 4, 1))
-    const endDate = addDays(addMonths(startDate, 1), -1)
+    const startDate = new Date(Date.UTC(requestedYear, requestedMonth - 12, 1))
+    const endDate = addDays(addMonths(startDate, 11), -1)
 
     return new DateAxis(startDate, endDate)
   }
