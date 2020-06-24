@@ -40,17 +40,14 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
     readings: BloodSugar[],
   ): IDefineAChartRequest => {
     if (
-      ChartData.hasReadingType(
-        readings,
-        BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
-      ) ||
-      ChartData.hasReadingType(readings, BLOOD_SUGAR_TYPES.POST_PRANDIAL) ||
-      ChartData.hasReadingType(readings, BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR)
+      readings.hasReadingType(BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR) ||
+      readings.hasReadingType(BLOOD_SUGAR_TYPES.POST_PRANDIAL) ||
+      readings.hasReadingType(BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR)
     ) {
       return RequestSingleMonthChart.DefaultTypeFromAvailableReadings(readings)
     }
 
-    if (ChartData.hasReadingType(readings, BLOOD_SUGAR_TYPES.HEMOGLOBIC)) {
+    if (readings.hasReadingType(BLOOD_SUGAR_TYPES.HEMOGLOBIC)) {
       return RequestHemoglobicChart.StartingState(readings)
     }
 

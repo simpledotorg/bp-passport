@@ -14,7 +14,7 @@ export const displayDate = (bsIn: BloodSugar) => {
     : null
 }
 
-export const showWarning = (bs: BloodSugar) => {
+export const showWarning = (bs: BloodSugar): boolean => {
   if (isLowBloodSugar(bs)) {
     return true
   }
@@ -24,7 +24,8 @@ export const showWarning = (bs: BloodSugar) => {
     return false
   }
 
-  return Number(bs.blood_sugar_value) >= warningHighBSValue
+  const value = Number(bs.blood_sugar_value)
+  return value !== undefined && value >= warningHighBSValue
 }
 
 export const isHighBloodSugar = (bs: BloodSugar) => {
@@ -135,9 +136,10 @@ if (!Array.prototype.filterForMonthAndYear) {
     month: number,
     year: number,
   ): T[] {
+    const monthToCheck = month - 1
     return this.filter((reading) => {
       const date = new Date(reading.recorded_at)
-      return date.getMonth() === month && date.getFullYear() === year
+      return date.getMonth() === monthToCheck && date.getFullYear() === year
     })
   }
 }
