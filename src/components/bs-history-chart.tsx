@@ -18,7 +18,6 @@ import {
   BLOOD_SUGAR_TYPES,
 } from '../redux/blood-sugar/blood-sugar.models'
 import {colors} from '../styles'
-import {BodyText} from './text'
 import {IDefineAChartRequest} from './bs-history/i-define-a-chart-request'
 import {RequestSingleMonthChart} from './bs-history/request-single-month-chart'
 import {RequestHemoglobicChart} from './bs-history/request-hemoglobic-chart'
