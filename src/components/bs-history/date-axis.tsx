@@ -56,6 +56,7 @@ export class DateAxis {
     const values: MonthNameAxisLabel[] = []
     dateEntries.forEach((dateEntry) => {
       if (
+        values.length === 0 ||
         !values.find((value) => {
           return (
             value.month === dateEntry.getDate().getMonth() &&
@@ -66,6 +67,7 @@ export class DateAxis {
         values.push(new MonthNameAxisLabel(dateEntry.getDate()))
       }
     })
+
     return values
   }
 
@@ -93,6 +95,13 @@ export class DateAxis {
   ): DateAxis {
     const startDate = new Date(Date.UTC(requestedYear, requestedMonth - 12, 1))
     const endDate = addDays(addMonths(startDate, 11), -1)
+
+    return new DateAxis(startDate, endDate)
+  }
+
+  public static CreateForYear(requestedYear: number) {
+    const startDate = new Date(Date.UTC(requestedYear, 0, 1))
+    const endDate = addDays(addMonths(startDate, 12), -1)
 
     return new DateAxis(startDate, endDate)
   }

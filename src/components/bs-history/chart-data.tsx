@@ -93,10 +93,7 @@ export class ChartData {
         requestedChart.requestedYear,
       )
     } else if (requestedChart instanceof RequestHemoglobicChart) {
-      this.dateAxis = DateAxis.CreateMostRecentMonthsFromBloodSugars(
-        filteredReadings,
-        12,
-      )
+      this.dateAxis = DateAxis.CreateForYear(requestedChart.yearToDisplay)
     } else {
       throw new Error('Chart type is not handled')
     }

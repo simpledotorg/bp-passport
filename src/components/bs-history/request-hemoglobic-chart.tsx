@@ -13,7 +13,15 @@ export class RequestHemoglobicChart implements IDefineAChartRequest {
   }
 
   public static StartingState(readings: BloodSugar[]): RequestHemoglobicChart {
-    return new RequestHemoglobicChart(2020)
+    const mostRecentReading = readings
+      .filter((reading) => {
+        return reading.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
+      })
+      .reduce((memo: Date | null, current: BloodSugar): Date => {
+        const currentDate = new Date(current.recorded_at)
+        return memo == null || currentDate > memo ? currentDate : memo
+      }, null)
+    return new RequestHemoglobicChart(mostRecentReading?.getFullYear() ?? 2019)
   }
 
   public changeRequestedType(
@@ -29,5 +37,9 @@ export class RequestHemoglobicChart implements IDefineAChartRequest {
 
   public get chartType(): BLOOD_SUGAR_TYPES {
     return BLOOD_SUGAR_TYPES.HEMOGLOBIC
+  }
+
+  public get yearToDisplay(): number {
+    return this._yearToDisplay
   }
 }
