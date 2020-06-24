@@ -21,7 +21,10 @@ export class RequestHemoglobicChart implements IDefineAChartRequest {
         const currentDate = new Date(current.recorded_at)
         return memo == null || currentDate > memo ? currentDate : memo
       }, null)
-    return new RequestHemoglobicChart(mostRecentReading?.getFullYear() ?? 2019)
+
+    return new RequestHemoglobicChart(
+      mostRecentReading?.getFullYear() ?? new Date().getFullYear(),
+    )
   }
 
   public changeRequestedType(

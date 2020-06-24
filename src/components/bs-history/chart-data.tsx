@@ -34,32 +34,43 @@ export class ChartData {
   }
 
   private static filterReadings(
-    chartType: BLOOD_SUGAR_TYPES,
+    chartRequest: IDefineAChartRequest,
     readings: BloodSugar[],
   ): BloodSugar[] {
-    switch (chartType) {
-      case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
-        return ChartData.filterReadingsByTypes(
-          [BLOOD_SUGAR_TYPES.HEMOGLOBIC],
-          readings,
+    if (chartRequest instanceof RequestHemoglobicChart) {
+      return ChartData.filterReadingsByTypes(
+        [BLOOD_SUGAR_TYPES.HEMOGLOBIC],
+        readings,
+      ).filter((reading) => {
+        return (
+          new Date(reading.recorded_at).getFullYear() ===
+          chartRequest.yearToDisplay
         )
-      case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
-        return ChartData.filterReadingsByTypes(
-          [BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR],
-          readings,
-        )
-      case BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR:
-      case BLOOD_SUGAR_TYPES.POST_PRANDIAL:
-        return ChartData.filterReadingsByTypes(
-          [
-            BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
-            BLOOD_SUGAR_TYPES.POST_PRANDIAL,
-          ],
-          readings,
-        )
-      default:
-        throw new Error('Requested blood sugar type not handled')
+      })
     }
+    if (chartRequest instanceof RequestSingleMonthChart) {
+      switch (chartRequest.chartType) {
+        case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
+          return ChartData.filterReadingsByTypes(
+            [BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR],
+            readings,
+          )
+        case BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR:
+        case BLOOD_SUGAR_TYPES.POST_PRANDIAL:
+          return ChartData.filterReadingsByTypes(
+            [
+              BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
+              BLOOD_SUGAR_TYPES.POST_PRANDIAL,
+            ],
+            readings,
+          )
+
+        default:
+          throw new Error('Requested blood sugar type not handled')
+      }
+    }
+
+    throw new Error('Requested chart type not handled')
   }
 
   constructor(requestedChart: IDefineAChartRequest, readings: BloodSugar[]) {
@@ -83,7 +94,7 @@ export class ChartData {
     )
 
     const filteredReadings = ChartData.filterReadings(
-      this._requestedChart.chartType,
+      this._requestedChart,
       readings,
     )
 
