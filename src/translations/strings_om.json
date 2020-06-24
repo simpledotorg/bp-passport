@@ -9,7 +9,7 @@
   "login.scan-passport": "Paaspoortii iskaanii godhi",
   "login.no-bp-passport": "BP Passport hin qabdanii?",
   "login.get-started": "Jalqabaa",
-  "login.by-using-app": "Fayyadama kana fayyadamuun, {mateenga} fi {waliigaltee} keenya waliin waliigaltu.",
+  "login.by-using-app": "Fayyadama kana fayyadamuun, {privacy} fi {terms} keenya waliin waliigaltu.",
   "login.privacy-policy-link": "Imaammata mateengaa",
   "login.terms-of-use-link": "Waliigaltee fayyadamiinsaa",
   "login.camera-access": "Gahiinsa kaameeraa",
