@@ -173,7 +173,7 @@
   "medicine.custom": "Maamiloo",
   "medicine.allow-notifications-title": "Beeksisoota hayyamaa",
   "medicine.allow-notifications-body": "Yaadachiiftuuwwan dawaa fudhachuuf beeksisoota hayyamaa",
-  "medicine.reminder-notification": "{guyyaa} {sa’aatii}, dawaa keessan fudhadhaa",
+  "medicine.reminder-notification": "{day} {time}, dawaa keessan fudhadhaa",
   "alert.title": "Gargaarsa fayyaa argadhuu",
   "alert.description-high": " {label} ke baayee Ol aanaadha. daafii hakiima kee qunamii lalaamuuf.",
   "alert.description-low": "Sukaari dhiigaa kee gadi bu'aadha. sukaari dhiigaa kee ol'kaasuf sorataa sukaara qabu kan akka fuduraa soorachuun hatattamaan hakiima ke qunami",
