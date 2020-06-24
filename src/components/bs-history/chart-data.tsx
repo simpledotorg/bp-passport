@@ -9,6 +9,7 @@ import {ScatterGraphDataPoint} from './scatter-graph-data-point'
 import {RequestSingleMonthChart} from './request-single-month-chart'
 import {RequestMultiMonthChart} from './request-multi-month-chart'
 import {IDefineAChartRequest} from './i-define-a-chart-request'
+import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
 
 export class ChartData {
   private readonly _requestedChart: IDefineAChartRequest
@@ -87,9 +88,9 @@ export class ChartData {
     )
 
     if (requestedChart instanceof RequestSingleMonthChart) {
-      this.dateAxis = DateAxis.CreateMostRecentMonthsFromBloodSugars(
-        filteredReadings,
-        1,
+      this.dateAxis = DateAxis.CreateForRequestedMonth(
+        requestedChart.requestedMonth,
+        requestedChart.requestedYear,
       )
     } else if (requestedChart instanceof RequestMultiMonthChart) {
       this.dateAxis = DateAxis.CreateMostRecentMonthsFromBloodSugars(
@@ -101,9 +102,7 @@ export class ChartData {
     }
 
     filteredReadings.forEach((bloodSugarReading) => {
-      const dateEntry = this.dateAxis.getDateEntryForBloodSugar(
-        bloodSugarReading,
-      )
+      const dateEntry = this.dateAxis.getDateEntryFor(bloodSugarReading)
       if (!dateEntry) {
         return
       }
@@ -238,11 +237,7 @@ export class ChartData {
     })
   }
 
-  public getAxisTickValues(): {
-    month: number
-    monthName: string
-    year: number
-  }[] {
+  public getAxisTickValues(): IDefineAdateAxisLabel[] {
     return this.dateAxis.getAxisTickValues()
   }
 }

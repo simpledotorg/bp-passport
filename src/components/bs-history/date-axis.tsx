@@ -1,14 +1,94 @@
-import {differenceInDays, addDays} from 'date-fns'
+import {
+  differenceInDays,
+  addDays,
+  addMonths,
+  differenceInMonths,
+} from 'date-fns'
 import {DateEntry} from './date-entry'
 import {BloodSugar} from '../../redux/blood-sugar/blood-sugar.models'
-import {format} from 'date-fns'
-import {dateLocale} from '../../constants/languages'
+import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
+import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
+import {MonthNameAxisLabel} from '../victory-chart-parts/month-name-axis-label'
 
 export class DateAxis {
   private dates: DateEntry[]
+  private tickValues: IDefineAdateAxisLabel[]
 
-  private constructor(dates: DateEntry[]) {
-    this.dates = dates
+  private static populateTickValuesForAMonth(
+    dates: DateEntry[],
+  ): MonthNameAxisLabel[] {
+    const values: MonthNameAxisLabel[] = []
+
+    console.log(Math.floor(dates.length / 4))
+    values.push(new MonthNameAxisLabel(dates[0].getDate()))
+
+    return values
+  }
+
+  private static populateTickValuesForAYear(
+    dateEntries: DateEntry[],
+  ): MonthNameAxisLabel[] {
+    const values: MonthNameAxisLabel[] = []
+    dateEntries.forEach((dateEntry) => {
+      if (
+        !values.find((value) => {
+          return (
+            value.month === dateEntry.getDate().getMonth() &&
+            value.year === dateEntry.getDate().getFullYear()
+          )
+        })
+      ) {
+        values.push(new MonthNameAxisLabel(dateEntry.getDate()))
+      }
+    })
+    return values
+  }
+
+  private static populateTickValuesForYears(
+    dateEntries: DateEntry[],
+  ): MonthNameAxisLabel[] {
+    const values: MonthNameAxisLabel[] = []
+    dateEntries.forEach((dateEntry) => {
+      if (
+        !values.find((value) => {
+          return (
+            value.month === dateEntry.getDate().getMonth() &&
+            value.year === dateEntry.getDate().getFullYear()
+          )
+        })
+      ) {
+        values.push(new MonthNameAxisLabel(dateEntry.getDate()))
+      }
+    })
+    return values
+  }
+
+  private constructor(startDate: Date, endDate: Date) {
+    const numberOfDays = differenceInDays(endDate, startDate) + 1
+
+    this.dates = [...Array(numberOfDays)].map((_, index) => {
+      return new DateEntry(addDays(startDate, index), index)
+    })
+
+    const months = Math.abs(differenceInMonths(endDate, startDate))
+
+    if (months === 0) {
+      this.tickValues = DateAxis.populateTickValuesForAMonth(this.dates)
+    } else if (months < 12) {
+      this.tickValues = DateAxis.populateTickValuesForAYear(this.dates)
+    } else {
+      this.tickValues = DateAxis.populateTickValuesForYears(this.dates)
+    }
+  }
+
+  public static CreateForRequestedMonth(
+    requestedMonth: number,
+    requestedYear: number,
+  ): DateAxis {
+    const startDate = new Date(Date.UTC(requestedYear, requestedMonth - 4, 1))
+    const endDate = addDays(addMonths(startDate, 1), -1)
+
+    return new DateAxis(startDate, endDate)
   }
 
   public static CreateMostRecentMonthsFromBloodSugars(
@@ -27,37 +107,26 @@ export class DateAxis {
       throw new Error('Can not find last date')
     }
 
-    const endDate = addDays(
-      new Date(
-        Date.UTC(
-          lastDateValue.getUTCFullYear(),
-          lastDateValue.getUTCMonth() + 1,
-          1,
-        ),
-      ),
-      -1,
-    )
-    const startDate = new Date(
-      Date.UTC(
-        endDate.getUTCFullYear(),
-        endDate.getUTCMonth() - (monthRange - 1),
-        1,
-      ),
+    const endDate = DateAxis.ceilingDate(lastDateValue)
+    const startDate = DateAxis.floorDate(
+      addMonths(endDate, (monthRange - 1) * -1),
     )
 
-    const numberOfDays = differenceInDays(endDate, startDate) + 1
-
-    const dates = [...Array(numberOfDays)].map((_, index) => {
-      return new DateEntry(addDays(startDate, index), index)
-    })
-
-    return new DateAxis(dates)
+    return new DateAxis(startDate, endDate)
   }
 
-  public getDateEntryForBloodSugar(
-    bloodSugar: BloodSugar,
+  private static ceilingDate(date: Date): Date {
+    return addDays(addMonths(DateAxis.floorDate(date), 1), -1)
+  }
+
+  private static floorDate(date: Date): Date {
+    return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1))
+  }
+
+  public getDateEntryFor(
+    record: BloodSugar | BloodPressure,
   ): DateEntry | undefined {
-    const dateToFind = new Date(bloodSugar.recorded_at)
+    const dateToFind = new Date(record.recorded_at)
 
     return this.dates.find((date) => {
       return date.isSameDate(dateToFind)
@@ -72,30 +141,7 @@ export class DateAxis {
     return this.dates.length
   }
 
-  public getAxisTickValues(): {
-    month: number
-    monthName: string
-    year: number
-  }[] {
-    const values: {month: number; monthName: string; year: number}[] = []
-    this.dates.forEach((date) => {
-      if (
-        !values.find((value) => {
-          return (
-            value.month === date.getDate().getMonth() &&
-            value.year === date.getDate().getFullYear()
-          )
-        })
-      ) {
-        values.push({
-          month: date.getDate().getMonth(),
-          monthName: format(date.getDate(), 'MMM', {
-            locale: dateLocale(),
-          }),
-          year: date.getDate().getFullYear(),
-        })
-      }
-    })
-    return values
+  public getAxisTickValues(): IDefineAdateAxisLabel[] {
+    return this.tickValues
   }
 }

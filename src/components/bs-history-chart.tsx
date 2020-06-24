@@ -25,6 +25,8 @@ import {RequestMultiMonthChart} from './bs-history/request-multi-month-chart'
 import {ChartData} from './bs-history/chart-data'
 import {ChartTypeSelectionPill} from './bs-history/chart-type-selection-pill'
 import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
+import {IDefineAdateAxisLabel} from './victory-chart-parts/i-define-a-date-axis-label'
+import {MonthNameAxisLabel} from './victory-chart-parts/month-name-axis-label'
 
 type Props = {
   bloodSugarReadings: BloodSugar[]
@@ -121,6 +123,36 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
     return <GraphLoadingPlaceholder />
   }
 
+  const outputMonthNameAxisLabel = (value, index) => {
+    return (
+      <View
+        key={index}
+        style={{
+          flex: 1,
+          flexShrink: 0,
+        }}>
+        <BodyText
+          style={{
+            color: colors.grey0,
+            fontWeight: '500',
+            fontSize: 14,
+            lineHeight: 18,
+          }}>
+          {value.monthName}
+        </BodyText>
+        <BodyText
+          style={{
+            color: colors.grey2,
+            fontWeight: '500',
+            fontSize: 14,
+            lineHeight: 18,
+          }}>
+          {value.year}
+        </BodyText>
+      </View>
+    )
+  }
+
   return (
     <>
       <View style={{flexDirection: 'row'}}>
@@ -178,34 +210,11 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
             paddingLeft: 6,
           }}>
           {chartData.getAxisTickValues().map((value, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  flex: 1,
-                  flexShrink: 0,
-                }}>
-                <BodyText
-                  style={{
-                    color: colors.grey0,
-                    fontWeight: '500',
-                    fontSize: 14,
-                    lineHeight: 18,
-                  }}>
-                  {value.monthName}
-                </BodyText>
-                <BodyText
-                  style={{
-                    color: colors.grey2,
-                    fontWeight: '500',
-                    fontSize: 14,
-                    lineHeight: 18,
-                  }}>
-                  {value.year}
-                </BodyText>
-              </View>
-            )
+            if (value instanceof MonthNameAxisLabel) {
+              return outputMonthNameAxisLabel(value, index)
+            }
           })}
+
           <View style={{width: 32}} />
         </View>
         <VictoryChart
