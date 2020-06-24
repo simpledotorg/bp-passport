@@ -37,7 +37,7 @@
   "add-bp.diastolic-greater-than-error": "Diyaastoolikiin 180 ol ta’uu hin danda’u",
   "add-bp.please-enter-error": "Maaloo gatiiwwan Dhiibbaa Dhiigaa galchaa",
   "add-bs.bs-less-than-error": "Gatiin {gatii} gadi ta’uu hin danda’u",
-  "add-bs.bs-more-than-error": "Gatiin {gatii} ol ta’uu hin danda’u",
+  "add-bs.bs-more-than-error": "Gatiin {value} ol ta’uu hin danda’u",
   "add-bs.please-enter-error": "Maaloo gatii sukkaara dhiiga keessaa galchaa",
   "settings.profile": "Danaa",
   "settings.name": "Maqaa",
