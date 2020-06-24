@@ -22,48 +22,35 @@ export class ChartData {
   private readonly dateAxis: DateAxis
   private readonly aggregatedData: AggregatedBloodSugarData[] = []
 
-  private static filterReadingsByTypes(
-    types: BLOOD_SUGAR_TYPES[],
-    readings: BloodSugar[],
-  ): BloodSugar[] {
-    return readings.filter((reading) => {
-      return types.find((type) => {
-        return type === reading.blood_sugar_type
-      })
-    })
-  }
-
   private static filterReadings(
     chartRequest: IDefineAChartRequest,
     readings: BloodSugar[],
   ): BloodSugar[] {
     if (chartRequest instanceof RequestHemoglobicChart) {
-      return ChartData.filterReadingsByTypes(
-        [BLOOD_SUGAR_TYPES.HEMOGLOBIC],
-        readings,
-      ).filter((reading) => {
-        return (
-          new Date(reading.recorded_at).getFullYear() ===
-          chartRequest.yearToDisplay
-        )
-      })
+      return readings
+        .filterByTypes([BLOOD_SUGAR_TYPES.HEMOGLOBIC])
+        .filterForYear(chartRequest.yearToDisplay)
     }
     if (chartRequest instanceof RequestSingleMonthChart) {
       switch (chartRequest.chartType) {
         case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
-          return ChartData.filterReadingsByTypes(
-            [BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR],
-            readings,
-          )
+          return readings
+            .filterByTypes([BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR])
+            .filterForMonthAndYear(
+              chartRequest.requestedMonth,
+              chartRequest.requestedYear,
+            )
         case BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR:
         case BLOOD_SUGAR_TYPES.POST_PRANDIAL:
-          return ChartData.filterReadingsByTypes(
-            [
+          return readings
+            .filterByTypes([
               BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
               BLOOD_SUGAR_TYPES.POST_PRANDIAL,
-            ],
-            readings,
-          )
+            ])
+            .filterForMonthAndYear(
+              chartRequest.requestedMonth,
+              chartRequest.requestedYear,
+            )
 
         default:
           throw new Error('Requested blood sugar type not handled')
@@ -76,20 +63,16 @@ export class ChartData {
   constructor(requestedChart: IDefineAChartRequest, readings: BloodSugar[]) {
     this._requestedChart = requestedChart
 
-    this.hasRandomReadings = ChartData.hasReadingType(
-      readings,
+    this.hasRandomReadings = readings.hasReadingType(
       BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
     )
-    this.hasPostPrandialReadings = ChartData.hasReadingType(
-      readings,
+    this.hasPostPrandialReadings = readings.hasReadingType(
       BLOOD_SUGAR_TYPES.POST_PRANDIAL,
     )
-    this.hasFastingReadings = ChartData.hasReadingType(
-      readings,
+    this.hasFastingReadings = readings.hasReadingType(
       BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR,
     )
-    this.hasHemoglobicReadings = ChartData.hasReadingType(
-      readings,
+    this.hasHemoglobicReadings = readings.hasReadingType(
       BLOOD_SUGAR_TYPES.HEMOGLOBIC,
     )
 
@@ -128,26 +111,8 @@ export class ChartData {
     })
   }
 
-  public static hasReadingType(
-    readings: BloodSugar[],
-    type: BLOOD_SUGAR_TYPES,
-  ): boolean {
-    return (
-      readings.find((reading) => {
-        return reading.blood_sugar_type === type
-      }) !== undefined
-    )
-  }
-
   public getScatterDataForGraph(): ScatterGraphDataPoint[] {
-    const data: ScatterGraphDataPoint[] = []
-    this.aggregatedData.forEach((aggregateRecord) => {
-      const index = aggregateRecord.getDateEntry().getIndex()
-      aggregateRecord.getReadings().forEach((reading) => {
-        data.push(new ScatterGraphDataPoint(index, reading))
-      })
-    })
-    return data
+    return this.aggregatedData.getScatterDataForGraph()
   }
 
   public getMinMaxDataForGraph(): {index: number; min: number; max: number}[] {

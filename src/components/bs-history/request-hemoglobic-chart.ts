@@ -32,7 +32,7 @@ export class RequestHemoglobicChart implements IDefineAChartRequest {
     readings: BloodSugar[],
   ): IDefineAChartRequest {
     if (requestedType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
-      return this
+      return RequestHemoglobicChart.StartingState(readings)
     }
 
     return RequestSingleMonthChart.ForRequestedType(requestedType, readings)

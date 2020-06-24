@@ -87,3 +87,57 @@ export const getBloodSugarDetails: (
     }
   }
 }
+
+declare global {
+  interface Array<T> {
+    // tslint:disable-next-line: array-type
+    filterByTypes(types: BLOOD_SUGAR_TYPES[]): Array<T>
+
+    hasReadingType(types: BLOOD_SUGAR_TYPES): boolean
+
+    // tslint:disable-next-line: array-type
+    filterForYear(year: number): Array<T>
+
+    // tslint:disable-next-line: array-type
+    filterForMonthAndYear(month: number, year: number): Array<T>
+  }
+}
+
+if (!Array.prototype.filterByTypes) {
+  Array.prototype.filterByTypes = function <T extends BloodSugar>(
+    this: T[],
+    types: BLOOD_SUGAR_TYPES[],
+  ): T[] {
+    return this.filter((reading) => {
+      return types.find((type) => {
+        return type === reading.blood_sugar_type
+      })
+    })
+  }
+}
+
+if (!Array.prototype.hasReadingType) {
+  Array.prototype.hasReadingType = function <T extends BloodSugar>(
+    this: T[],
+    type: BLOOD_SUGAR_TYPES,
+  ): boolean {
+    return (
+      this.find((reading) => {
+        return reading.blood_sugar_type === type
+      }) !== undefined
+    )
+  }
+}
+
+if (!Array.prototype.filterForMonthAndYear) {
+  Array.prototype.filterForMonthAndYear = function <T extends BloodSugar>(
+    this: T[],
+    month: number,
+    year: number,
+  ): T[] {
+    return this.filter((reading) => {
+      const date = new Date(reading.recorded_at)
+      return date.getMonth() === month && date.getFullYear() === year
+    })
+  }
+}

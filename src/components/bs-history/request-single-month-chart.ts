@@ -90,10 +90,6 @@ export class RequestSingleMonthChart implements IDefineAChartRequest {
     requestedType: BLOOD_SUGAR_TYPES,
     readings: BloodSugar[],
   ): IDefineAChartRequest {
-    if (requestedType === this._chartType) {
-      return this
-    }
-
     if (requestedType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
       return RequestHemoglobicChart.StartingState(readings)
     }

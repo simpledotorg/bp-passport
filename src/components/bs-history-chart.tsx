@@ -131,9 +131,16 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
 
   const changeChartTypeHandler = (newChartType: BLOOD_SUGAR_TYPES): void => {
     setChartData(null)
-    setRequestedChart(
-      requestedChart.changeRequestedType(newChartType, bloodSugarReadings),
-    )
+    if (
+      newChartType === BLOOD_SUGAR_TYPES.HEMOGLOBIC &&
+      requestedChart instanceof RequestSingleMonthChart
+    ) {
+      setRequestedChart(requestedChart.moveBackOnMonth())
+    } else {
+      setRequestedChart(
+        requestedChart.changeRequestedType(newChartType, bloodSugarReadings),
+      )
+    }
   }
 
   if (!chartData) {
