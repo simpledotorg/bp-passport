@@ -53,9 +53,7 @@ export const BpHistoryChart = ({bps}: Props) => {
   }
 
   useEffect(() => {
-    setChartData(
-      generateAverageChartData(bps, averageList, isBloodPressureHigh),
-    )
+    setChartData(new ChartData())
   }, [bps])
 
   const getMaxDomain = () => {
@@ -103,7 +101,7 @@ export const BpHistoryChart = ({bps}: Props) => {
           flexDirection: 'row',
           paddingLeft: 6,
         }}>
-        {[...Array(CHART_MONTH_RANGE)].map((value, index) => {
+        {chartData.getAxisTickValues().map((value, index) => {
           return (
             <View
               key={index}
@@ -118,9 +116,7 @@ export const BpHistoryChart = ({bps}: Props) => {
                   fontSize: 14,
                   lineHeight: 18,
                 }}>
-                {format(addMonths(chartData.dates[0].date, index), 'MMM', {
-                  locale: dateLocale(),
-                })}
+                {value.monthName}
               </BodyText>
               <BodyText
                 style={{
@@ -129,9 +125,7 @@ export const BpHistoryChart = ({bps}: Props) => {
                   fontSize: 14,
                   lineHeight: 18,
                 }}>
-                {format(addMonths(chartData.dates[0].date, index), 'yyy', {
-                  locale: dateLocale(),
-                })}
+                {value.year}
               </BodyText>
             </View>
           )
@@ -158,17 +152,11 @@ export const BpHistoryChart = ({bps}: Props) => {
         theme={VictoryTheme.material}
         containerComponent={<VictoryVoronoiContainer radius={30} />}>
         <VictoryAxis
-          tickCount={CHART_MONTH_RANGE}
+          tickCount={chartData.getAxisTickValues().length}
           tickFormat={(tick) => {
-            return format(
-              addMonths(chartData.dates[0].date, tick / 4),
-              'MMM-yy',
-              {
-                locale: dateLocale(),
-              },
-            )
+            return tick
           }}
-          tickValues={chartData.dates.map((date, index) => index)}
+          tickValues={chartData.getIndexValues()}
           style={{
             grid: {stroke: colors.grey3, strokeDasharray: 4},
             axis: {stroke: colors.grey3, opacity: 0},

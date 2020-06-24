@@ -22,8 +22,8 @@ export class AggregatedBloodPressureData {
       this.minReading = reading
     }
 
-    const readingValue = Number(reading.blood_sugar_value)
-    const currentMinValue = Number(this.minReading.blood_sugar_value)
+    const readingValue = Number(reading.diastolic)
+    const currentMinValue = Number(this.minReading.diastolic)
 
     if (currentMinValue > readingValue) {
       this.minReading = reading
@@ -36,8 +36,8 @@ export class AggregatedBloodPressureData {
       return
     }
 
-    const readingValue = Number(reading.blood_sugar_value)
-    const currentMaxValue = Number(this.maxReading.blood_sugar_value)
+    const readingValue = Number(reading.diastolic)
+    const currentMaxValue = Number(this.maxReading.diastolic)
 
     if (readingValue > currentMaxValue) {
       this.maxReading = reading

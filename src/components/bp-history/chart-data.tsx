@@ -1,3 +1,4 @@
+import {AggregatedBloodPressureData} from './aggregated-blood-pressure-data'
 import {DateRange} from '../../utils/dates'
 import {DateAxis} from './date-axis'
 
@@ -10,17 +11,6 @@ export class ChartData {
   high: DateRange[]
   min: null | number
   max: null | number
-
-  public getScatterDataForGraph(): ScatterGraphDataPoint[] {
-    const data: ScatterGraphDataPoint[] = []
-    this.aggregatedData.forEach((aggregateRecord) => {
-      const index = aggregateRecord.getDateEntry().getIndex()
-      aggregateRecord.getReadings().forEach((reading) => {
-        data.push(new ScatterGraphDataPoint(index, reading))
-      })
-    })
-    return data
-  }
 
   public getMinMaxDataForGraph(): {
     index: number
@@ -36,12 +26,8 @@ export class ChartData {
         return
       }
 
-      const minValue = Number(
-        aggregateRecord.getMinReading()?.blood_pressure_value,
-      )
-      const maxValue = Number(
-        aggregateRecord.getMaxReading()?.blood_pressure_value,
-      )
+      const minValue = Number(aggregateRecord.getMinReading()?.diastolic)
+      const maxValue = Number(aggregateRecord.getMaxReading()?.diastolic)
 
       if (minValue === maxValue) {
         return
@@ -68,7 +54,7 @@ export class ChartData {
           return memo
         }
 
-        const currentValue = Number(maxValueForCurrentDay.blood_pressure_value)
+        const currentValue = Number(maxValueForCurrentDay.diastolic)
 
         return !memo || currentValue > memo ? currentValue : memo
       },
@@ -87,7 +73,7 @@ export class ChartData {
           return memo
         }
 
-        const currentValue = Number(minValueForCurrentDay.blood_pressure_value)
+        const currentValue = Number(minValueForCurrentDay.diastolic)
 
         return !memo || currentValue < memo ? currentValue : memo
       },
