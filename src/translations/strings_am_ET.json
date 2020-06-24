@@ -175,7 +175,7 @@
   "medicine.allow-notifications-body": "የመድሃኒት ማስታወሻዎችን እንዲቀበሉ ለማሳወቂያዎች ይፍቀዱ",
   "medicine.reminder-notification": "{day} {time}፣ መድሃኒትዎን ይውሰዱ",
   "alert.title": "የሕክምና ዕርዳታ ያግኙ",
-  "alert.description-high": "የእርስዎ {መለያ} በጣም ከፍተኛ ነው። ጤናዎ እንዲመረምር በአፋጣኝ ዶክተር ያነጋግሩ።",
+  "alert.description-high": "የእርስዎ {label} በጣም ከፍተኛ ነው። ጤናዎ እንዲመረምር በአፋጣኝ ዶክተር ያነጋግሩ።",
   "alert.description-low": "የደም ስኳርዎ በጣም ዝቅተኛ ነው።  የደም ስኳርዎን ከፍ ለማድረግ እንደ ፍራፍሬ ያሉ የስኳር ምግቦችን ይመገቡ እና ዶክተርዎን በአፋጣኝ ያነጋግሩ።",
   "health-reminders.title": "የጤና አስታዋሾች",
   "health-reminders.app": "ንባብዎን ለማጋራት በእያንዳንዱ ሐኪም ጉብኝትዎ መተግበሪያዎን ይዘው ይምጡ",
