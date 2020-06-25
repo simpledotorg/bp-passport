@@ -182,6 +182,8 @@ function AddBpScreen({navigation, route}: Props) {
           keyboardShouldPersistTaps="handled">
           <View style={{flexDirection: 'row'}}>
             <TextInput
+              returnKeyType="done"
+              clearButtonMode="always"
               maxLength={6}
               placeholderTextColor={colors.grey1}
               autoFocus={true}
