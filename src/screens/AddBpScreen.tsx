@@ -212,6 +212,7 @@ function AddBpScreen({navigation, route}: Props) {
                 }
               }}
             />
+            <BodyText style={{paddingTop: 16}}> / </BodyText>
             <TextInput
               maxLength={6}
               placeholderTextColor={colors.grey1}
