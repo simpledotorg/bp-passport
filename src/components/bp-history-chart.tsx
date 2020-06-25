@@ -21,12 +21,15 @@ import {CHART_MONTH_RANGE} from '../utils/dates'
 import {DateRange} from '../utils/dates'
 import {BodyText} from './text'
 import {dateLocale} from '../constants/languages'
+import {useIntl} from 'react-intl'
 
 type Props = {
   bps: BloodPressure[]
 }
 
 export const BpHistoryChart = ({bps}: Props) => {
+  const intl = useIntl()
+
   const isBloodPressureHigh = (bpIn: BloodPressure) => {
     // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
     // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
@@ -88,6 +91,17 @@ export const BpHistoryChart = ({bps}: Props) => {
     }
 
     return base - difference
+  }
+
+  const displayDate = (date: Date) => {
+    return (
+      `${format(date, 'dd')}-` +
+      `${
+        intl.formatMessage({
+          id: `general.${format(date, 'MMM').toLowerCase()}`,
+        }) + `-${format(date, 'yyyy')}`
+      }`
+    )
   }
 
   if (!chartData) {
@@ -364,9 +378,8 @@ export const BpHistoryChart = ({bps}: Props) => {
                       y: bp.averaged.systolic,
                       label: `${bp.averaged.systolic.toFixed(
                         0,
-                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
                         bp.date,
-                        'dd-MMM-yyyy',
                       )}`,
                     }
                   : null,
@@ -376,9 +389,8 @@ export const BpHistoryChart = ({bps}: Props) => {
                       y: bp.averaged.diastolic,
                       label: `${bp.averaged.systolic.toFixed(
                         0,
-                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
                         bp.date,
-                        'dd-MMM-yyyy',
                       )}`,
                     }
                   : null,
@@ -388,9 +400,8 @@ export const BpHistoryChart = ({bps}: Props) => {
                       y: bp.averaged.systolic,
                       label: `${bp.averaged.systolic.toFixed(
                         0,
-                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
                         bp.date,
-                        'dd-MMM-yyyy',
                       )}`,
                     }
                   : null,
@@ -400,9 +411,8 @@ export const BpHistoryChart = ({bps}: Props) => {
                       y: bp.averaged.diastolic,
                       label: `${bp.averaged.systolic.toFixed(
                         0,
-                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${format(
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
                         bp.date,
-                        'dd-MMM-yyyy',
                       )}`,
                     }
                   : null,
