@@ -5,6 +5,8 @@ import {
 import {IDefineAChartRequest} from './i-define-a-chart-request'
 import {RequestHemoglobicChart} from './request-hemoglobic-chart'
 import {IDefineChartsAvailable} from './i-define-charts-available'
+import {dateLocale} from '../../constants/languages'
+import {format} from 'date-fns'
 
 export class RequestSingleMonthChart
   implements IDefineAChartRequest, IDefineChartsAvailable {
@@ -27,7 +29,12 @@ export class RequestSingleMonthChart
     requestedYear?: number,
   ) {
     this._chartType = chartType
-    this._chartTitle = '-'
+    this._chartTitle = RequestSingleMonthChart.populateChartTitle(
+      chartType,
+      readings,
+      requestedMonth,
+      requestedYear,
+    )
 
     if (requestedMonth === undefined) {
       this._requestedMonth = new Date().getMonth()
@@ -55,6 +62,50 @@ export class RequestSingleMonthChart
     this.hasHemoglobicReadings = readings.hasReadingType(
       BLOOD_SUGAR_TYPES.HEMOGLOBIC,
     )
+  }
+
+  private static populateChartTitle(
+    chartType: BLOOD_SUGAR_TYPES,
+    readings: BloodSugar[],
+    requestedMonth?: number,
+    requestedYear?: number,
+  ): string {
+    if (requestedMonth && requestedYear) {
+      const date = new Date(requestedYear, requestedMonth, 1)
+      return RequestSingleMonthChart.formatDateToTitle(date)
+    }
+
+    if (requestedMonth === undefined) {
+      const mostRecent = readings.filterByType(chartType).mostRecent()
+      if (mostRecent === null) {
+        return '-'
+      }
+
+      return RequestSingleMonthChart.formatDateToTitle(
+        new Date(mostRecent.recorded_at),
+      )
+    }
+
+    const bloodSugar = readings
+      .filterByType(chartType)
+      .filterForMonthAndYear(
+        requestedMonth,
+        requestedYear ?? new Date().getFullYear(),
+      )
+      .mostRecent()
+    if (bloodSugar === null) {
+      return '-'
+    }
+
+    return RequestSingleMonthChart.formatDateToTitle(
+      new Date(bloodSugar.recorded_at),
+    )
+  }
+
+  private static formatDateToTitle(date: Date): string {
+    return format(date, 'MMM-yyyy', {
+      locale: dateLocale(),
+    })
   }
 
   public static DefaultTypeFromAvailableReadings(
