@@ -12,7 +12,7 @@ export class ScatterGraphDataPoint {
 
   constructor(index: number, reading: BloodPressure) {
     this.x = index
-    this.y = Number(reading.systolic)
+    this.y = Number(reading.diastolic)
     this.label = `${reading.systolic.toFixed(0)} / ${reading.diastolic.toFixed(
       0,
     )}, ${format(new Date(reading.recorded_at), 'dd-MMM-yyyy')}`

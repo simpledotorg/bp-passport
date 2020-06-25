@@ -52,6 +52,7 @@ export class ChartData {
     max: number
   }[] {
     const values: {index: number; min: number; max: number}[] = []
+
     this.aggregatedData.forEach((aggregateRecord) => {
       if (
         !aggregateRecord.getMinReading() ||
@@ -60,7 +61,9 @@ export class ChartData {
         return
       }
 
-      const minValue = Number(aggregateRecord.getMinReading()?.diastolic)
+      aggregateRecord.getSystolicSum()
+
+      const minValue = Number(aggregateRecord.getMinReading()?.systolic)
       const maxValue = Number(aggregateRecord.getMaxReading()?.diastolic)
 
       if (minValue === maxValue) {
