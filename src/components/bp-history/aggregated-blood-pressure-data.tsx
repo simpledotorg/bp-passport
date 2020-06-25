@@ -22,8 +22,16 @@ export class AggregatedBloodPressureData {
       this.minReading = reading
     }
 
-    const readingValue = Number(reading.diastolic)
-    const currentMinValue = Number(this.minReading.diastolic)
+    const readingValue = Number(
+      reading.diastolic < reading.systolic
+        ? reading.diastolic
+        : reading.systolic,
+    )
+    const currentMinValue = Number(
+      this.minReading.diastolic < this.minReading.systolic
+        ? this.minReading.diastolic
+        : this.minReading.systolic,
+    )
 
     if (currentMinValue > readingValue) {
       this.minReading = reading
@@ -36,8 +44,16 @@ export class AggregatedBloodPressureData {
       return
     }
 
-    const readingValue = Number(reading.diastolic)
-    const currentMaxValue = Number(this.maxReading.diastolic)
+    const readingValue = Number(
+      reading.diastolic > reading.systolic
+        ? reading.diastolic
+        : reading.systolic,
+    )
+    const currentMaxValue = Number(
+      this.maxReading.diastolic > this.maxReading.systolic
+        ? this.maxReading.diastolic
+        : this.maxReading.systolic,
+    )
 
     if (readingValue > currentMaxValue) {
       this.maxReading = reading
