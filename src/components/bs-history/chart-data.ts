@@ -10,6 +10,8 @@ import {RequestSingleMonthChart} from './request-single-month-chart'
 import {RequestHemoglobicChart} from './request-hemoglobic-chart'
 import {IDefineAChartRequest} from './i-define-a-chart-request'
 import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
+import {format} from 'date-fns'
+import {dateLocale} from '../../constants/languages'
 
 export class ChartData {
   private readonly _requestedChart: IDefineAChartRequest
@@ -66,7 +68,9 @@ export class ChartData {
     requestedChart: IDefineAChartRequest,
     readings: BloodSugar[],
   ): boolean {
-    const oldestReading = readings.oldest()
+    const oldestReading = readings
+      .filterByType(requestedChart.chartType)
+      .oldest()
     if (oldestReading === null) {
       return false
     }
@@ -74,7 +78,14 @@ export class ChartData {
     const dateOfOldestReading = new Date(oldestReading.recorded_at)
 
     if (requestedChart instanceof RequestSingleMonthChart) {
-      return false
+      if (requestedChart.requestedYear < dateOfOldestReading.getFullYear()) {
+        return false
+      }
+      if (requestedChart.requestedYear > dateOfOldestReading.getFullYear()) {
+        return true
+      }
+
+      return requestedChart.requestedMonth > dateOfOldestReading.getMonth()
     } else if (requestedChart instanceof RequestHemoglobicChart) {
       return dateOfOldestReading.getFullYear() < requestedChart.yearToDisplay
     } else {
@@ -86,7 +97,9 @@ export class ChartData {
     requestedChart: IDefineAChartRequest,
     readings: BloodSugar[],
   ): boolean {
-    const mostRecentReading = readings.mostRecent()
+    const mostRecentReading = readings
+      .filterByType(requestedChart.chartType)
+      .mostRecent()
     if (mostRecentReading === null) {
       return false
     }
@@ -94,7 +107,18 @@ export class ChartData {
     const dateOfMostRecentReading = new Date(mostRecentReading.recorded_at)
 
     if (requestedChart instanceof RequestSingleMonthChart) {
-      return false
+      if (
+        requestedChart.requestedYear > dateOfMostRecentReading.getFullYear()
+      ) {
+        return false
+      }
+      if (
+        requestedChart.requestedYear < dateOfMostRecentReading.getFullYear()
+      ) {
+        return true
+      }
+
+      return requestedChart.requestedMonth < dateOfMostRecentReading.getMonth()
     } else if (requestedChart instanceof RequestHemoglobicChart) {
       return (
         dateOfMostRecentReading.getFullYear() > requestedChart.yearToDisplay
@@ -103,7 +127,11 @@ export class ChartData {
       throw new Error('Chart type is not handled')
     }
   }
-
+  private static getMonthName(month: number, year: number): string {
+    return format(new Date(year, month, 1), 'MMM', {
+      locale: dateLocale(),
+    })
+  }
   constructor(requestedChart: IDefineAChartRequest, readings: BloodSugar[]) {
     this._requestedChart = requestedChart
 
@@ -130,10 +158,16 @@ export class ChartData {
         requestedChart.requestedMonth,
         requestedChart.requestedYear,
       )
-      this._chartTitle = `${requestedChart.requestedMonth}-${requestedChart.requestedYear}`
+      const monthName = ChartData.getMonthName(
+        requestedChart.requestedMonth,
+        requestedChart.requestedYear,
+      )
+      this._chartTitle = `${monthName}-${requestedChart.requestedYear}`
     } else if (requestedChart instanceof RequestHemoglobicChart) {
       this.dateAxis = DateAxis.CreateForYear(requestedChart.yearToDisplay)
-      this._chartTitle = `Jan - Dec-${requestedChart.yearToDisplay}`
+      const jan = ChartData.getMonthName(0, requestedChart.yearToDisplay)
+      const dec = ChartData.getMonthName(11, requestedChart.yearToDisplay)
+      this._chartTitle = `${jan} - ${dec}-${requestedChart.yearToDisplay}`
     } else {
       throw new Error('Chart type is not handled')
     }

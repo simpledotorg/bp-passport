@@ -42,7 +42,7 @@ export function getTestData(): BloodSugar[] {
   readings.push(randomBloodSugar('125', '2019-11-22T08:51:27.255Z'))
   readings.push(randomBloodSugar('115', '2019-11-22T12:51:27.255Z'))
   readings.push(randomBloodSugar('90', '2019-11-22T18:51:27.255Z'))
-  /*
+
   readings.push(randomBloodSugar('250', '2020-02-01T08:51:27.255Z'))
   readings.push(randomBloodSugar('190', '2020-02-01T12:51:27.255Z'))
   readings.push(randomBloodSugar('180', '2020-02-01T18:51:27.255Z'))
@@ -63,7 +63,7 @@ export function getTestData(): BloodSugar[] {
   readings.push(randomBloodSugar('230', '2020-02-25T08:51:27.255Z'))
   readings.push(randomBloodSugar('150', '2020-02-28T12:51:27.255Z'))
   readings.push(randomBloodSugar('135', '2020-02-28T18:51:27.255Z'))
-
+  /*
   readings.push(randomBloodSugar('110', '2020-03-02T08:51:27.255Z'))
   readings.push(randomBloodSugar('100', '2020-03-03T12:51:27.255Z'))
   readings.push(randomBloodSugar('85', '2020-03-04T18:51:27.255Z'))

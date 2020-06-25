@@ -18,7 +18,7 @@ export class RequestSingleMonthChart implements IDefineAChartRequest {
   ) {
     this._chartType = chartType
     if (requestedMonth === undefined) {
-      this._requestedMonth = new Date().getMonth() + 1
+      this._requestedMonth = new Date().getMonth()
     } else {
       this._requestedMonth = requestedMonth
     }
@@ -51,7 +51,7 @@ export class RequestSingleMonthChart implements IDefineAChartRequest {
 
     return new RequestSingleMonthChart(
       chartType,
-      date ? date.getMonth() + 1 : undefined,
+      date ? date.getMonth() : undefined,
       date?.getFullYear(),
     )
   }

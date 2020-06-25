@@ -180,11 +180,9 @@ if (!Array.prototype.filterForMonthAndYear) {
     month: number,
     year: number,
   ): T[] {
-    const monthToCheck = month - 1
-    console.log({monthToCheck, month, year})
     return this.filter((reading) => {
       const date = new Date(reading.recorded_at)
-      return date.getMonth() === monthToCheck && date.getFullYear() === year
+      return date.getMonth() === month && date.getFullYear() === year
     })
   }
 }
