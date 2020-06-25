@@ -22,7 +22,6 @@ import {IDefineAChartRequest} from './bs-history/i-define-a-chart-request'
 import {RequestSingleMonthChart} from './bs-history/request-single-month-chart'
 import {RequestHemoglobicChart} from './bs-history/request-hemoglobic-chart'
 import {ChartData} from './bs-history/chart-data'
-import {ChartTypeSelectionPill} from './bs-history/chart-type-selection-pill'
 import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
 import {DayOfMonthAxisLabel} from './victory-chart-parts/day-of-month-axis-label'
 import {MonthNameAxisLabel} from './victory-chart-parts/month-name-axis-label'
@@ -31,6 +30,7 @@ import {MonthAndYearLabel} from './victory-chart-parts/month-and-year-label'
 import {MonthInitialLabel} from './victory-chart-parts/month-initial-label'
 import {DayOfMonthLabel} from './victory-chart-parts/day-of-month-label'
 import {TitleBar} from './victory-chart-parts/title-bar'
+import {ChartTypeSelection} from './bs-history/chart-type-selection'
 
 type Props = {
   bloodSugarReadings: BloodSugar[]
@@ -150,45 +150,6 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
 
   return (
     <>
-      <View style={{flexDirection: 'row'}}>
-        {(chartData.getHasRandomReadings() ||
-          chartData.getHasPostPrandialReadings()) && (
-          <ChartTypeSelectionPill
-            changeChartType={changeChartTypeHandler}
-            currentChartType={chartData.getChartType()}
-            newChartType={BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR}
-            pillLabel={
-              intl.formatMessage({
-                id: 'bs.random-blood-code',
-              }) +
-              '/' +
-              intl.formatMessage({
-                id: 'bs.post-prenial-code',
-              })
-            }
-          />
-        )}
-        {chartData.getHasFastingReadings() && (
-          <ChartTypeSelectionPill
-            changeChartType={changeChartTypeHandler}
-            currentChartType={chartData.getChartType()}
-            newChartType={BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR}
-            pillLabel={intl.formatMessage({
-              id: 'bs.fasting-code',
-            })}
-          />
-        )}
-        {chartData.getHasHemoglobicReadings() && (
-          <ChartTypeSelectionPill
-            changeChartType={changeChartTypeHandler}
-            currentChartType={chartData.getChartType()}
-            newChartType={BLOOD_SUGAR_TYPES.HEMOGLOBIC}
-            pillLabel={intl.formatMessage({
-              id: 'bs.hemoglobic-code',
-            })}
-          />
-        )}
-      </View>
       <TitleBar
         chartTitle={chartData.getTitle()}
         hasPreviousPeriod={chartData.hasPreviousPeriod()}
@@ -324,6 +285,10 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
           />
         </VictoryChart>
       </View>
+      <ChartTypeSelection
+        chartData={chartData}
+        changeChartTypeHandler={changeChartTypeHandler}
+      />
     </>
   )
 }
