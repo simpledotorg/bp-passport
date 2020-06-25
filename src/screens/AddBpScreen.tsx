@@ -231,6 +231,11 @@ function AddBpScreen({navigation, route}: Props) {
                 validateInput('diastolic', text)
                 getErrorGateway(systolic, text)
               }}
+              onKeyPress={({nativeEvent}) => {
+                if (nativeEvent.key === 'Backspace' && diastolic.length === 0) {
+                  systolicRef.current.focus()
+                }
+              }}
               placeholder={intl.formatMessage({id: 'general.diastolic'})}
               value={diastolic.toString()}
               keyboardType={'number-pad'}
