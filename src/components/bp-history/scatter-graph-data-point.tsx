@@ -1,6 +1,7 @@
 import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
 import {useIntl} from 'react-intl'
 import {format} from 'date-fns'
+import {AggregatedBloodPressureData} from './aggregated-blood-pressure-data'
 
 export class ScatterGraphDataPoint {
   private intl = useIntl()
@@ -10,11 +11,38 @@ export class ScatterGraphDataPoint {
   public label: string
   public showOutOfRange: boolean
 
-  constructor(index: number, reading: BloodPressure) {
+  private constructor(
+    index: number,
+    aggregateRecord: AggregatedBloodPressureData,
+    useDiastolic: boolean,
+  ) {
+    const diastolicAverage = aggregateRecord.getDiastolicAverage()
+    const systolicAverage = aggregateRecord.getSystolicAverage()
+
     this.x = index
-    this.y = Number(reading.diastolic)
-    this.label = `${reading.systolic.toFixed(0)} / ${reading.diastolic.toFixed(
+    this.y = useDiastolic ? diastolicAverage : systolicAverage
+    this.label = `${systolicAverage.toFixed(0)} / ${diastolicAverage.toFixed(
       0,
-    )}, ${format(new Date(reading.recorded_at), 'dd-MMM-yyyy')}`
+    )}, ${format(aggregateRecord.getDateEntry().getDate(), 'dd-MMM-yyyy')}`
+
+    if (useDiastolic) {
+      this.showOutOfRange = this.y >= 140
+    } else {
+      this.showOutOfRange = this.y >= 90
+    }
+  }
+
+  public static CreateForDiastolic(
+    index: number,
+    aggregateRecord: AggregatedBloodPressureData,
+  ): ScatterGraphDataPoint {
+    return new ScatterGraphDataPoint(index, aggregateRecord, true)
+  }
+
+  public static CreateForSystolic(
+    index: number,
+    aggregateRecord: AggregatedBloodPressureData,
+  ): ScatterGraphDataPoint {
+    return new ScatterGraphDataPoint(index, aggregateRecord, false)
   }
 }

@@ -81,9 +81,11 @@ export class AggregatedBloodPressureData {
     return this.minReading
   }
 
-  public getSystolicSum(): Number {
-    const readings = this.getReadings()
+  public getDiastolicAverage(): number {
+    return 140
+  }
 
-    console.log(readings)
+  public getSystolicAverage(): number {
+    return 89
   }
 }

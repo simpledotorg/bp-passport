@@ -39,46 +39,51 @@ export class ChartData {
     const data: ScatterGraphDataPoint[] = []
     this.aggregatedData.forEach((aggregateRecord) => {
       const index = aggregateRecord.getDateEntry().getIndex()
-      aggregateRecord.getReadings().forEach((reading) => {
-        data.push(new ScatterGraphDataPoint(index, reading))
-      })
+
+      // aggregateRecord.getReadings().forEach((reading) => {
+      data.push(
+        ScatterGraphDataPoint.CreateForDiastolic(index, aggregateRecord),
+      )
+      data.push(ScatterGraphDataPoint.CreateForSystolic(index, aggregateRecord))
+      //   data.push(new ScatterGraphDataPoint(index, reading))
+      // })
     })
     return data
   }
 
-  public getMinMaxDataForGraph(): {
-    index: number
-    min: number
-    max: number
-  }[] {
-    const values: {index: number; min: number; max: number}[] = []
+  // public getMinMaxDataForGraph(): {
+  //   index: number
+  //   min: number
+  //   max: number
+  // }[] {
+  //   const values: {index: number; min: number; max: number}[] = []
 
-    this.aggregatedData.forEach((aggregateRecord) => {
-      if (
-        !aggregateRecord.getMinReading() ||
-        !aggregateRecord.getMaxReading()
-      ) {
-        return
-      }
+  //   this.aggregatedData.forEach((aggregateRecord) => {
+  //     if (
+  //       !aggregateRecord.getMinReading() ||
+  //       !aggregateRecord.getMaxReading()
+  //     ) {
+  //       return
+  //     }
 
-      aggregateRecord.getSystolicSum()
+  //     aggregateRecord.getSystolicSum()
 
-      const minValue = Number(aggregateRecord.getMinReading()?.systolic)
-      const maxValue = Number(aggregateRecord.getMaxReading()?.diastolic)
+  //     const minValue = Number(aggregateRecord.getMinReading()?.systolic)
+  //     const maxValue = Number(aggregateRecord.getMaxReading()?.diastolic)
 
-      if (minValue === maxValue) {
-        return
-      }
+  //     if (minValue === maxValue) {
+  //       return
+  //     }
 
-      values.push({
-        index: aggregateRecord.getDateEntry().getIndex(),
-        min: minValue,
-        max: maxValue,
-      })
-    })
+  //     values.push({
+  //       index: aggregateRecord.getDateEntry().getIndex(),
+  //       min: minValue,
+  //       max: maxValue,
+  //     })
+  //   })
 
-    return values
-  }
+  //   return values
+  // }
 
   public getMaxReading(): number | null {
     return this.aggregatedData.reduce(
