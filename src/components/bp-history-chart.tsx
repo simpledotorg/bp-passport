@@ -57,10 +57,30 @@ export const BpHistoryChart = ({bps}: Props) => {
     }
   }
 
+  const getMaxThreshhold = (): number => {
+    if (!chartData) {
+      throw new Error('Unable to get max threshold as chart data is null')
+    }
+
+    return 140
+  }
+
+  const getMinThreshhold = (): number => {
+    if (!chartData) {
+      throw new Error('Unable to get min threshold as chart data is null')
+    }
+
+    return 90
+  }
+
   const getMaxDomain = () => {
-    const threshhold = 140
+    if (!chartData) {
+      throw new Error('Can not get max domain, not instance of chart data')
+    }
+
+    const threshhold = getMaxThreshhold()
     const difference = Math.round(threshhold / 10)
-    let base = chartData?.max ?? threshhold
+    let base = chartData.getMaxReading() ?? threshhold
 
     if (base < threshhold) {
       base = threshhold
@@ -70,9 +90,13 @@ export const BpHistoryChart = ({bps}: Props) => {
   }
 
   const getMinDomain = () => {
-    const threshhold = 90
+    if (!chartData) {
+      throw new Error('Can not get min domain, not instance of chart data')
+    }
+
+    const threshhold = getMinThreshhold()
     const difference = Math.round(threshhold / 10)
-    let base = chartData?.min ?? threshhold
+    let base = chartData.getMinReading() ?? threshhold
 
     if (base > threshhold) {
       base = threshhold

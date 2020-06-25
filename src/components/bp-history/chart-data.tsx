@@ -8,12 +8,6 @@ export class ChartData {
   private readonly dateAxis: DateAxis
   private readonly aggregatedData: AggregatedBloodPressureData[] = []
 
-  dates: DateRange[]
-  low: DateRange[]
-  high: DateRange[]
-  min: null | number
-  max: null | number
-
   constructor(readings: BloodPressure[]) {
     this.dateAxis = DateAxis.CreateMostRecentMonthsFromBloodPressures(
       readings,
