@@ -189,11 +189,13 @@ function AddBpScreen({navigation, route}: Props) {
               onFocus={() => {
                 systolicRef.current.setNativeProps({
                   borderColor: colors.blue2,
+                  placeholder: '',
                 })
               }}
               onBlur={() => {
                 systolicRef.current.setNativeProps({
                   borderColor: colors.grey2,
+                  placeholder: '0',
                 })
               }}
               style={[styles.input, {marginRight: 4}]}
@@ -201,7 +203,8 @@ function AddBpScreen({navigation, route}: Props) {
                 validateInput('systolic', text)
                 getErrorGateway(text, diastolic)
               }}
-              placeholder={intl.formatMessage({id: 'general.systolic'})}
+              // placeholder={intl.formatMessage({id: 'general.systolic'})}
+              placeholder="0"
               value={systolic.toString()}
               keyboardType={'number-pad'}
               onSubmitEditing={() => {
@@ -212,7 +215,7 @@ function AddBpScreen({navigation, route}: Props) {
                 }
               }}
             />
-            <BodyText style={{paddingTop: 16}}> / </BodyText>
+            <BodyText style={{padding: 16, color: colors.grey1}}>/</BodyText>
             <TextInput
               maxLength={6}
               placeholderTextColor={colors.grey1}
@@ -220,11 +223,13 @@ function AddBpScreen({navigation, route}: Props) {
               onFocus={() => {
                 diastolicRef.current.setNativeProps({
                   borderColor: colors.blue2,
+                  placeholder: '',
                 })
               }}
               onBlur={() => {
                 diastolicRef.current.setNativeProps({
                   borderColor: colors.grey2,
+                  placeholder: '0',
                 })
               }}
               style={[styles.input, {marginLeft: 4}]}
@@ -237,7 +242,8 @@ function AddBpScreen({navigation, route}: Props) {
                   systolicRef.current.focus()
                 }
               }}
-              placeholder={intl.formatMessage({id: 'general.diastolic'})}
+              // placeholder={intl.formatMessage({id: 'general.diastolic'})}
+              placeholder="0"
               value={diastolic.toString()}
               keyboardType={'number-pad'}
               returnKeyType={'done'}
@@ -248,18 +254,6 @@ function AddBpScreen({navigation, route}: Props) {
               }}
             />
           </View>
-          <Button
-            title={intl.formatMessage({id: 'general.save'})}
-            buttonType={ButtonType.Normal}
-            disabled={isSaveDisabled()}
-            style={{
-              marginTop: 24,
-            }}
-            onPress={() => {
-              // console.log('onPress')
-              save()
-            }}
-          />
           {errors && showErrors && (
             <BodyText
               style={{
@@ -270,6 +264,17 @@ function AddBpScreen({navigation, route}: Props) {
               {errors}
             </BodyText>
           )}
+          <Button
+            title={intl.formatMessage({id: 'general.save'})}
+            buttonType={ButtonType.Normal}
+            disabled={isSaveDisabled()}
+            style={{
+              marginTop: 24,
+            }}
+            onPress={() => {
+              save()
+            }}
+          />
         </ScrollView>
       </SafeAreaView>
     </View>
@@ -284,7 +289,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: colors.white100,
     borderStyle: 'solid',
-    borderWidth: 1,
+    borderBottomWidth: 2,
     borderColor: colors.grey2,
     padding: 16,
     fontSize: 16,
@@ -293,5 +298,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     color: colors.grey0,
     flex: 1,
+    textAlign: 'center',
   },
 })
