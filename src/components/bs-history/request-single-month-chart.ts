@@ -9,6 +9,8 @@ import {IDefineChartsAvailable} from './i-define-charts-available'
 export class RequestSingleMonthChart
   implements IDefineAChartRequest, IDefineChartsAvailable {
   private readonly _chartType: BLOOD_SUGAR_TYPES
+  private readonly _chartTitle: string
+
   private readonly _requestedMonth: number
   private readonly _requestedYear: number
 
@@ -25,6 +27,8 @@ export class RequestSingleMonthChart
     requestedYear?: number,
   ) {
     this._chartType = chartType
+    this._chartTitle = '-'
+
     if (requestedMonth === undefined) {
       this._requestedMonth = new Date().getMonth()
     } else {
@@ -141,7 +145,7 @@ export class RequestSingleMonthChart
   }
 
   public getTitle(): string {
-    return '-'
+    return this._chartTitle
   }
 
   public getChartType(): BLOOD_SUGAR_TYPES {

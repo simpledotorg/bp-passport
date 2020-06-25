@@ -9,6 +9,7 @@ import {IDefineChartsAvailable} from './i-define-charts-available'
 export class RequestHemoglobicChart
   implements IDefineAChartRequest, IDefineChartsAvailable {
   private readonly _yearToDisplay: number
+  private readonly _chartTitle: string
 
   private readonly _readings: BloodSugar[]
   private readonly hasRandomReadings: boolean
@@ -17,6 +18,8 @@ export class RequestHemoglobicChart
   private readonly hasHemoglobicReadings: boolean
 
   private constructor(yearToDisplay: number, readings: BloodSugar[]) {
+    this._chartTitle = '-'
+
     this._yearToDisplay = yearToDisplay
     this._readings = readings
 
@@ -78,7 +81,7 @@ export class RequestHemoglobicChart
   }
 
   public getTitle(): string {
-    return '-'
+    return this._chartTitle
   }
 
   public getChartType(): BLOOD_SUGAR_TYPES {
