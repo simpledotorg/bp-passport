@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-  View,
-  FlatList,
-  StyleSheet,
-  TouchableHighlight,
-  ScrollView,
-} from 'react-native'
+import {View, StyleSheet, TouchableHighlight, ScrollView} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {FormattedMessage} from 'react-intl'
@@ -56,7 +50,7 @@ function BsHistoryScreen({navigation, route}: Props) {
             </View>
           </View>
           <View style={{minHeight: 304}}>
-            <BsHistoryChart bloodSugarReadings={getTestData()} />
+            <BsHistoryChart bloodSugarReadings={bloodSugars ?? []} />
           </View>
         </View>
         <View

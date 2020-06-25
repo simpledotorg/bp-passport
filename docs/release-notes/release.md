@@ -1,5 +1,15 @@
 # BP Passport
 
+## Version 1.04
+
+### What's New
+
+- Increase android notification size
+- Tooltip formatted improved for blood pressure/blood sugar graphs
+- Tooltips now displaying in Android for blood pressure/blood sugar graphs
+- All data points displaying for blood sugar graph
+- Alerts showing for very high/low blood pressure/blood sugar
+
 ## Version 1.00
 
 ### Many changes and tweaks as per Claudio's priority list:

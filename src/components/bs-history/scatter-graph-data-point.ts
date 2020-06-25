@@ -17,16 +17,25 @@ export class ScatterGraphDataPoint {
   constructor(index: number, reading: BloodSugar) {
     this.x = index
     this.y = Number(reading.blood_sugar_value)
-    this.label = `${this.y.toFixed(0)}${
-      ScatterGraphDataPoint.showMGDL(reading)
-        ? this.intl.formatMessage({
-            id: 'bs.mgdl',
-          })
-        : '%,'
-    } ${this.getBloodSugarType(reading)}${format(
-      new Date(reading.recorded_at),
-      'dd-MMM-yyyy',
-    )}`
+    this.label =
+      `${this.y.toFixed(0)}${
+        ScatterGraphDataPoint.showMGDL(reading)
+          ? this.intl.formatMessage({
+              id: 'bs.mgdl',
+            })
+          : '%,'
+      } ${this.getBloodSugarType(reading)}${format(
+        new Date(reading.recorded_at),
+        'dd',
+      )}-` +
+      `${
+        this.intl.formatMessage({
+          id: `general.${format(
+            new Date(reading.recorded_at),
+            'MMM',
+          ).toLowerCase()}`,
+        }) + `-${format(new Date(reading.recorded_at), 'yyyy')}`
+      }`
 
     this.showOutOfRange = isHighBloodSugar(reading) || isLowBloodSugar(reading)
   }

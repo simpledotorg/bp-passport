@@ -17,15 +17,21 @@ import {CHART_MONTH_RANGE} from '../utils/dates'
 import {DateRange} from '../utils/dates'
 import {BodyText} from './text'
 import {dateLocale} from '../constants/languages'
+<<<<<<< HEAD
 import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
 import {ChartData} from './bp-history/chart-data'
 import {GraphLoadingPlaceholder} from './victory-chart-parts/graph-loading-placeholder'
+=======
+import {useIntl} from 'react-intl'
+>>>>>>> iteration-10
 
 type Props = {
   bps: BloodPressure[]
 }
 
 export const BpHistoryChart = ({bps}: Props) => {
+  const intl = useIntl()
+
   const isBloodPressureHigh = (bpIn: BloodPressure) => {
     // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
     // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
@@ -103,6 +109,17 @@ export const BpHistoryChart = ({bps}: Props) => {
     }
 
     return base - difference
+  }
+
+  const displayDate = (date: Date) => {
+    return (
+      `${format(date, 'dd')}-` +
+      `${
+        intl.formatMessage({
+          id: `general.${format(date, 'MMM').toLowerCase()}`,
+        }) + `-${format(date, 'yyyy')}`
+      }`
+    )
   }
 
   if (!chartData) {
@@ -252,8 +269,75 @@ export const BpHistoryChart = ({bps}: Props) => {
           }}
         />
         <VictoryScatter
+<<<<<<< HEAD
           labelComponent={VictoryGraphToolTipHelper.getVictoryToolTip()}
           data={chartData.getScatterDataForGraph()}
+=======
+          labelComponent={
+            <VictoryTooltip
+              renderInPortal={false}
+              constrainToVisibleArea={true}
+              cornerRadius={20}
+              pointerLength={5}
+              flyoutStyle={{
+                padding: 200,
+                height: 32,
+                fill: colors.grey0,
+              }}
+              style={{fill: colors.white}}
+            />
+          }
+          data={[...chartData.low, ...chartData.high].flatMap(
+            (bp: DateRange) => {
+              return [
+                bp.averaged.systolic < 140
+                  ? {
+                      x: bp.index,
+                      y: bp.averaged.systolic,
+                      label: `${bp.averaged.systolic.toFixed(
+                        0,
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
+                        bp.date,
+                      )}`,
+                    }
+                  : null,
+                bp.averaged.diastolic < 90
+                  ? {
+                      x: bp.index,
+                      y: bp.averaged.diastolic,
+                      label: `${bp.averaged.systolic.toFixed(
+                        0,
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
+                        bp.date,
+                      )}`,
+                    }
+                  : null,
+                bp.averaged.systolic >= 140
+                  ? {
+                      x: bp.index,
+                      y: bp.averaged.systolic,
+                      label: `${bp.averaged.systolic.toFixed(
+                        0,
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
+                        bp.date,
+                      )}`,
+                    }
+                  : null,
+                bp.averaged.diastolic >= 90
+                  ? {
+                      x: bp.index,
+                      y: bp.averaged.diastolic,
+                      label: `${bp.averaged.systolic.toFixed(
+                        0,
+                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
+                        bp.date,
+                      )}`,
+                    }
+                  : null,
+              ]
+            },
+          )}
+>>>>>>> iteration-10
           size={5}
           style={{
             data: {

@@ -18,29 +18,53 @@ import {
   BLOOD_SUGAR_TYPES,
 } from '../redux/blood-sugar/blood-sugar.models'
 import {colors} from '../styles'
-import {BodyText} from './text'
-import {RequestChart} from './bs-history/request-chart'
+import {IDefineAChartRequest} from './bs-history/i-define-a-chart-request'
+import {RequestSingleMonthChart} from './bs-history/request-single-month-chart'
+import {RequestHemoglobicChart} from './bs-history/request-hemoglobic-chart'
 import {ChartData} from './bs-history/chart-data'
 import {ChartTypeSelectionPill} from './bs-history/chart-type-selection-pill'
 import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
+import {DayOfMonthAxisLabel} from './victory-chart-parts/day-of-month-axis-label'
+import {MonthNameAxisLabel} from './victory-chart-parts/month-name-axis-label'
+import {MonthInitialAxisLabel} from './victory-chart-parts/month-initial-axis-label'
+import {MonthAndYearLabel} from './victory-chart-parts/month-and-year-label'
+import {MonthInitialLabel} from './victory-chart-parts/month-initial-label'
+import {DayOfMonthLabel} from './victory-chart-parts/day-of-month-label'
+import {TitleBar} from './victory-chart-parts/title-bar'
 
 type Props = {
   bloodSugarReadings: BloodSugar[]
 }
 
 export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
+  const getStartingChartRequest = (
+    readings: BloodSugar[],
+  ): IDefineAChartRequest => {
+    if (
+      readings.hasReadingType(BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR) ||
+      readings.hasReadingType(BLOOD_SUGAR_TYPES.POST_PRANDIAL) ||
+      readings.hasReadingType(BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR)
+    ) {
+      return RequestSingleMonthChart.DefaultTypeFromAvailableReadings(readings)
+    }
+
+    if (readings.hasReadingType(BLOOD_SUGAR_TYPES.HEMOGLOBIC)) {
+      return RequestHemoglobicChart.StartingState(readings)
+    }
+
+    throw new Error('Unhandled blood sugar type')
+  }
+
   const intl = useIntl()
 
-  const [requestedChart, setRequestedChart] = useState<RequestChart>(
-    RequestChart.DefaultTypeFromAvailableReadings(bloodSugarReadings),
+  const [requestedChart, setRequestedChart] = useState<IDefineAChartRequest>(
+    getStartingChartRequest(bloodSugarReadings),
   )
 
   const [chartData, setChartData] = useState<ChartData | null>(null)
 
   useEffect(() => {
-    setChartData(
-      new ChartData(requestedChart.getChartType(), bloodSugarReadings),
-    )
+    setChartData(new ChartData(requestedChart, bloodSugarReadings))
   }, [bloodSugarReadings, requestedChart])
 
   const getMaxThreshhold = (): number => {
@@ -105,13 +129,19 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
 
   const changeChartTypeHandler = (newChartType: BLOOD_SUGAR_TYPES): void => {
     setChartData(null)
-    setRequestedChart(RequestChart.FromUserSelected(newChartType))
+    setRequestedChart(
+      requestedChart.changeRequestedType(newChartType, bloodSugarReadings),
+    )
   }
 
-  const thresholdLineTickLabel = (tick: any): any => {
-    return chartData?.getChartType() === BLOOD_SUGAR_TYPES.HEMOGLOBIC
-      ? `${tick}%`
-      : tick
+  const movePreviousPeriod = (): void => {
+    setChartData(null)
+    setRequestedChart(requestedChart.moveToPreviousPeriod())
+  }
+
+  const moveNextPeriod = (): void => {
+    setChartData(null)
+    setRequestedChart(requestedChart.moveToNextPeriod())
   }
 
   if (!chartData) {
@@ -159,6 +189,13 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
           />
         )}
       </View>
+      <TitleBar
+        chartTitle={chartData.getTitle()}
+        hasPreviousPeriod={chartData.hasPreviousPeriod()}
+        moveToPreviousPeriodHandler={movePreviousPeriod}
+        hasNextPeriod={chartData.hasNextPeriod()}
+        moveToNextPeriodHandler={moveNextPeriod}
+      />
       <View
         style={{
           height: 260,
@@ -175,34 +212,15 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
             paddingLeft: 6,
           }}>
           {chartData.getAxisTickValues().map((value, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  flex: 1,
-                  flexShrink: 0,
-                }}>
-                <BodyText
-                  style={{
-                    color: colors.grey0,
-                    fontWeight: '500',
-                    fontSize: 14,
-                    lineHeight: 18,
-                  }}>
-                  {value.monthName}
-                </BodyText>
-                <BodyText
-                  style={{
-                    color: colors.grey2,
-                    fontWeight: '500',
-                    fontSize: 14,
-                    lineHeight: 18,
-                  }}>
-                  {value.year}
-                </BodyText>
-              </View>
-            )
+            if (value instanceof MonthNameAxisLabel) {
+              return <MonthAndYearLabel key={index} data={value} />
+            } else if (value instanceof DayOfMonthAxisLabel) {
+              return <DayOfMonthLabel key={index} data={value} />
+            } else if (value instanceof MonthInitialAxisLabel) {
+              return <MonthInitialLabel key={index} data={value} />
+            }
           })}
+
           <View style={{width: 32}} />
         </View>
         <VictoryChart
