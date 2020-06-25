@@ -137,9 +137,22 @@ if (!Array.prototype.filterForMonthAndYear) {
     year: number,
   ): T[] {
     const monthToCheck = month - 1
+    console.log({monthToCheck, month, year})
     return this.filter((reading) => {
       const date = new Date(reading.recorded_at)
       return date.getMonth() === monthToCheck && date.getFullYear() === year
+    })
+  }
+}
+
+if (!Array.prototype.filterForYear) {
+  Array.prototype.filterForYear = function <T extends BloodSugar>(
+    this: T[],
+    year: number,
+  ): T[] {
+    return this.filter((reading) => {
+      const date = new Date(reading.recorded_at)
+      return date.getFullYear() === year
     })
   }
 }

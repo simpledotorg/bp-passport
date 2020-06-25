@@ -9,4 +9,8 @@ export interface IDefineAChartRequest {
     requestedType: BLOOD_SUGAR_TYPES,
     readings: BloodSugar[],
   ): IDefineAChartRequest
+
+  moveToNextPeriod(): IDefineAChartRequest
+
+  moveToPreviousPeriod(): IDefineAChartRequest
 }

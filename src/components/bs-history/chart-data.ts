@@ -213,4 +213,16 @@ export class ChartData {
   public getAxisTickValues(): IDefineAdateAxisLabel[] {
     return this.dateAxis.getAxisTickValues()
   }
+
+  public getTitle(): string {
+    return 'Demo Graph'
+  }
+
+  public hasNextPeriod(): boolean {
+    return false
+  }
+
+  public hasPreviousPeriod(): boolean {
+    return true
+  }
 }

@@ -64,7 +64,7 @@ export class RequestSingleMonthChart implements IDefineAChartRequest {
     return this._requestedYear
   }
 
-  public moveForwardOneMonth(): RequestSingleMonthChart {
+  public moveToNextPeriod(): RequestSingleMonthChart {
     let newMonth = this._requestedMonth + 1
     let newYear = this._requestedYear
     if (newMonth > 12) {
@@ -75,7 +75,7 @@ export class RequestSingleMonthChart implements IDefineAChartRequest {
     return new RequestSingleMonthChart(this._chartType, newMonth, newYear)
   }
 
-  public moveBackOnMonth(): RequestSingleMonthChart {
+  public moveToPreviousPeriod(): RequestSingleMonthChart {
     let newMonth = this._requestedMonth - 1
     let newYear = this._requestedYear
     if (newMonth <= 0) {

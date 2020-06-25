@@ -30,6 +30,7 @@ import {MonthInitialAxisLabel} from './victory-chart-parts/month-initial-axis-la
 import {MonthAndYearLabel} from './victory-chart-parts/month-and-year-label'
 import {MonthInitialLabel} from './victory-chart-parts/month-initial-label'
 import {DayOfMonthLabel} from './victory-chart-parts/day-of-month-label'
+import {TitleBar} from './victory-chart-parts/title-bar'
 
 type Props = {
   bloodSugarReadings: BloodSugar[]
@@ -128,16 +129,19 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
 
   const changeChartTypeHandler = (newChartType: BLOOD_SUGAR_TYPES): void => {
     setChartData(null)
-    if (
-      newChartType === BLOOD_SUGAR_TYPES.HEMOGLOBIC &&
-      requestedChart instanceof RequestSingleMonthChart
-    ) {
-      setRequestedChart(requestedChart.moveBackOnMonth())
-    } else {
-      setRequestedChart(
-        requestedChart.changeRequestedType(newChartType, bloodSugarReadings),
-      )
-    }
+    setRequestedChart(
+      requestedChart.changeRequestedType(newChartType, bloodSugarReadings),
+    )
+  }
+
+  const movePreviousPeriod = (): void => {
+    setChartData(null)
+    setRequestedChart(requestedChart.moveToPreviousPeriod())
+  }
+
+  const moveNextPeriod = (): void => {
+    setChartData(null)
+    setRequestedChart(requestedChart.moveToNextPeriod())
   }
 
   if (!chartData) {
@@ -185,6 +189,13 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
           />
         )}
       </View>
+      <TitleBar
+        chartTitle={chartData.getTitle()}
+        hasPreviousPeriod={chartData.hasPreviousPeriod()}
+        moveToPreviousPeriodHandler={movePreviousPeriod}
+        hasNextPeriod={chartData.hasNextPeriod()}
+        moveToNextPeriodHandler={moveNextPeriod}
+      />
       <View
         style={{
           height: 260,
