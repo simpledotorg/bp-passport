@@ -1,5 +1,8 @@
 import {DateEntry} from './date-entry'
 import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
+import {getChartDateRange, DateRange} from '../../utils/dates'
+import {isSameDay} from 'date-fns'
+import {zonedTimeToUtc} from 'date-fns-tz'
 
 export class AggregatedBloodPressureData {
   private dateEntry: DateEntry
@@ -58,6 +61,73 @@ export class AggregatedBloodPressureData {
     if (readingValue > currentMaxValue) {
       this.maxReading = reading
     }
+  }
+
+  private getIndexFromBP = (
+    dates: DateRange[],
+    input: BloodPressure,
+  ): number | null => {
+    let index = 0
+    const found = dates.find((date, i) => {
+      index = i
+
+      return isSameDay(
+        new Date(input.recorded_at),
+        zonedTimeToUtc(new Date(date.date), 'UTC'),
+      )
+    })
+    if (found) {
+      return index
+    } else {
+      return null
+    }
+  }
+
+  public generateAverageChartData = (
+    input: BloodPressure[],
+    calculateAverage: (current: DateRange) => number | {},
+    isHigh: (value: any) => boolean,
+  ) => {
+    const dates: DateRange[] = getChartDateRange()
+
+    let min: number | null = null
+    let max: number | null = null
+
+    input.forEach((value: BloodPressure) => {
+      const index = this.getIndexFromBP(dates, value)
+
+      if (index) {
+        const valueMin = Number(this.getMinReading())
+        const valueMax = Number(this.getMaxReading())
+        if (!min || valueMin < min) {
+          min = valueMin
+        }
+        if (!max || valueMax > max) {
+          max = valueMax
+        }
+        if (dates[index]) {
+          dates[index].list.push(value)
+        }
+      }
+    })
+
+    const reduction = dates.reduce(
+      (memo: {high: []; low: []}, current) => {
+        if (current.list.length) {
+          const average: any = calculateAverage(current)
+
+          if (isHigh(average)) {
+            memo.high.push({...current, averaged: average})
+          } else {
+            memo.low.push({...current, averaged: average})
+          }
+        }
+        return memo
+      },
+      {high: [], low: []},
+    )
+
+    return {dates, low: reduction.low, high: reduction.high, min, max}
   }
 
   public addReading(reading: BloodPressure): void {
