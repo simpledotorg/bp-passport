@@ -1,5 +1,6 @@
 import {DateEntry} from './date-entry'
 import {BloodSugar} from '../../redux/blood-sugar/blood-sugar.models'
+import {ScatterGraphDataPoint} from './scatter-graph-data-point'
 
 export class AggregatedBloodSugarData {
   private dateEntry: DateEntry
@@ -60,5 +61,29 @@ export class AggregatedBloodSugarData {
 
   public getMinReading(): BloodSugar | null {
     return this.minReading
+  }
+}
+
+declare global {
+  interface Array<T> {
+    // tslint:disable-next-line: array-type
+    getScatterDataForGraph(): ScatterGraphDataPoint[]
+  }
+}
+
+if (!Array.prototype.getScatterDataForGraph) {
+  Array.prototype.getScatterDataForGraph = function <
+    T extends AggregatedBloodSugarData
+  >(this: T[]): ScatterGraphDataPoint[] {
+    const data: ScatterGraphDataPoint[] = []
+
+    this.forEach((aggregateRecord) => {
+      const index = aggregateRecord.getDateEntry().getIndex()
+      aggregateRecord.getReadings().forEach((reading) => {
+        data.push(new ScatterGraphDataPoint(index, reading))
+      })
+    })
+
+    return data
   }
 }

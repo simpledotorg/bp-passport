@@ -205,10 +205,7 @@ export const BsModal = ({bs, close}: Props) => {
                 </>
               )}
 
-              <>
-                {` `}
-                {getBSText()}
-              </>
+              <>{getBSText()}</>
             </BodyText>
             <BodyText
               style={{
