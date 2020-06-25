@@ -13,7 +13,7 @@ import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis
 
 export class ChartData {
   private readonly _requestedChart: IDefineAChartRequest
-
+  private readonly _chartTitle: string
   private readonly hasRandomReadings: boolean
   private readonly hasPostPrandialReadings: boolean
   private readonly hasFastingReadings: boolean
@@ -86,8 +86,10 @@ export class ChartData {
         requestedChart.requestedMonth,
         requestedChart.requestedYear,
       )
+      this._chartTitle = `${requestedChart.requestedMonth}-${requestedChart.requestedYear}`
     } else if (requestedChart instanceof RequestHemoglobicChart) {
       this.dateAxis = DateAxis.CreateForYear(requestedChart.yearToDisplay)
+      this._chartTitle = `Jan - Dec-${requestedChart.yearToDisplay}`
     } else {
       throw new Error('Chart type is not handled')
     }
@@ -215,7 +217,7 @@ export class ChartData {
   }
 
   public getTitle(): string {
-    return 'Demo Graph'
+    return this._chartTitle
   }
 
   public hasNextPeriod(): boolean {
