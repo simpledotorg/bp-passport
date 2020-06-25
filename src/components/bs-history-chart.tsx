@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {View, Dimensions} from 'react-native'
 import {useIntl} from 'react-intl'
-import {GraphLoadingPlaceholder} from './victory-chart-parts/graph-loading-placeholder'
+import {GraphLoadingPlaceholder} from './bs-history/graph-loading-placeholder'
 import {EmptyYLeftAxis} from './victory-chart-parts/empty-y-left-axis'
 
 import {
@@ -145,7 +145,7 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
   }
 
   if (!chartData) {
-    return <GraphLoadingPlaceholder />
+    return <GraphLoadingPlaceholder chartsAvailable={requestedChart} />
   }
 
   return (
@@ -286,7 +286,7 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
         </VictoryChart>
       </View>
       <ChartTypeSelection
-        chartData={chartData}
+        chartTypesAvailable={chartData}
         changeChartTypeHandler={changeChartTypeHandler}
       />
     </>

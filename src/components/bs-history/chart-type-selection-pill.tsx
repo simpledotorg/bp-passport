@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useDebugValue} from 'react'
 import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {BLOOD_SUGAR_TYPES} from '../../redux/blood-sugar/blood-sugar.models'
@@ -6,7 +6,7 @@ import {colors} from '../../styles'
 import {BodyText} from '../text'
 
 export class ChartTypeSelectionPillProps {
-  changeChartType: (newChartType: BLOOD_SUGAR_TYPES) => void
+  changeChartType?: (newChartType: BLOOD_SUGAR_TYPES) => void
   currentChartType: BLOOD_SUGAR_TYPES
   newChartType: BLOOD_SUGAR_TYPES
   pillLabel: string
@@ -19,6 +19,28 @@ export const ChartTypeSelectionPill = ({
   pillLabel,
 }: ChartTypeSelectionPillProps) => {
   const active = currentChartType === newChartType
+
+  if (changeChartType === undefined) {
+    return (
+      <View style={[styles.pill, styles.pillLoading]}>
+        {active && (
+          <Icon
+            name="done"
+            size={18}
+            style={{alignSelf: 'center', paddingRight: 6.4}}
+            color={colors.grey0}
+          />
+        )}
+        <BodyText
+          style={{
+            color: colors.grey0,
+          }}>
+          {pillLabel}
+        </BodyText>
+      </View>
+    )
+  }
+
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -57,5 +79,9 @@ const styles = StyleSheet.create({
   },
   pillActive: {
     backgroundColor: colors.blue2,
+  },
+  pillLoading: {
+    color: colors.grey0,
+    backgroundColor: colors.grey4,
   },
 })

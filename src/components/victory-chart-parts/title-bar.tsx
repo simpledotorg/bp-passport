@@ -14,7 +14,7 @@ import {colors} from '../../styles'
 type ButtonProps = {
   iconName: string
   enabled: boolean
-  moveToPeriod: () => void
+  moveToPeriod?: () => void
   style?: StyleProp<ViewStyle>
 }
 
@@ -22,8 +22,8 @@ type TitleBarProps = {
   chartTitle: string
   hasPreviousPeriod: boolean
   hasNextPeriod: boolean
-  moveToNextPeriodHandler: () => void
-  moveToPreviousPeriodHandler: () => void
+  moveToNextPeriodHandler?: () => void
+  moveToPreviousPeriodHandler?: () => void
 }
 
 const ChangePeriodButton = ({
@@ -32,7 +32,7 @@ const ChangePeriodButton = ({
   moveToPeriod,
   style,
 }: ButtonProps) => {
-  if (!enabled) {
+  if (!enabled || moveToPeriod === undefined) {
     return (
       <View style={[styles.pill, style]}>
         <Icon
