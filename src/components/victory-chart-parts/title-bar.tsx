@@ -1,12 +1,12 @@
 import React from 'react'
 import {View, TouchableWithoutFeedback, StyleSheet} from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {BodyText} from '../text'
 import {colors} from '../../styles'
-import {IDefineAChartRequest} from '../bs-history/i-define-a-chart-request'
 
 type ButtonProps = {
-  textToDisplay: string
+  iconName: string
   enabled: boolean
   moveToPeriod: () => void
 }
@@ -19,32 +19,28 @@ type TitleBarProps = {
   moveToPreviousPeriodHandler: () => void
 }
 
-const ChangePeriodButton = ({
-  textToDisplay,
-  enabled,
-  moveToPeriod,
-}: ButtonProps) => {
+const ChangePeriodButton = ({iconName, enabled, moveToPeriod}: ButtonProps) => {
   if (!enabled) {
     return (
       <View style={styles.pill}>
-        <BodyText
-          style={{
-            fontSize: 18,
-            color: colors.grey2,
-            textAlignVertical: 'center',
-            alignSelf: 'center',
-          }}>
-          {textToDisplay}
-        </BodyText>
+        <Icon
+          name={iconName}
+          size={18}
+          style={{alignSelf: 'center'}}
+          color={colors.grey2}
+        />
       </View>
     )
   }
   return (
     <TouchableWithoutFeedback onPress={() => moveToPeriod()}>
       <View style={[styles.pill, styles.pillActive]}>
-        <BodyText style={{fontSize: 18, color: colors.blue2}}>
-          {textToDisplay}
-        </BodyText>
+        <Icon
+          name={iconName}
+          size={18}
+          style={{alignSelf: 'center'}}
+          color={colors.blue2}
+        />
       </View>
     </TouchableWithoutFeedback>
   )
@@ -64,7 +60,7 @@ export const TitleBar = ({
         justifyContent: 'space-between',
       }}>
       <ChangePeriodButton
-        textToDisplay="<"
+        iconName="chevron-left"
         enabled={hasPreviousPeriod}
         moveToPeriod={moveToPreviousPeriodHandler}
       />
@@ -72,7 +68,7 @@ export const TitleBar = ({
         {chartTitle}
       </BodyText>
       <ChangePeriodButton
-        textToDisplay=">"
+        iconName="chevron-right"
         enabled={hasNextPeriod}
         moveToPeriod={moveToNextPeriodHandler}
       />
