@@ -21,6 +21,8 @@ export class ChartData {
 
   private readonly dateAxis: DateAxis
   private readonly aggregatedData: AggregatedBloodSugarData[] = []
+  private readonly _hasNextPeriod: boolean
+  private readonly _hasPreviousPeriod: boolean
 
   private static filterReadings(
     chartRequest: IDefineAChartRequest,
@@ -60,6 +62,48 @@ export class ChartData {
     throw new Error('Requested chart type not handled')
   }
 
+  private static determineIfHasPreviousPeriod(
+    requestedChart: IDefineAChartRequest,
+    readings: BloodSugar[],
+  ): boolean {
+    const oldestReading = readings.oldest()
+    if (oldestReading === null) {
+      return false
+    }
+
+    const dateOfOldestReading = new Date(oldestReading.recorded_at)
+
+    if (requestedChart instanceof RequestSingleMonthChart) {
+      return false
+    } else if (requestedChart instanceof RequestHemoglobicChart) {
+      return dateOfOldestReading.getFullYear() < requestedChart.yearToDisplay
+    } else {
+      throw new Error('Chart type is not handled')
+    }
+  }
+
+  private static determineIfHasNextPeriod(
+    requestedChart: IDefineAChartRequest,
+    readings: BloodSugar[],
+  ): boolean {
+    const mostRecentReading = readings.mostRecent()
+    if (mostRecentReading === null) {
+      return false
+    }
+
+    const dateOfMostRecentReading = new Date(mostRecentReading.recorded_at)
+
+    if (requestedChart instanceof RequestSingleMonthChart) {
+      return false
+    } else if (requestedChart instanceof RequestHemoglobicChart) {
+      return (
+        dateOfMostRecentReading.getFullYear() > requestedChart.yearToDisplay
+      )
+    } else {
+      throw new Error('Chart type is not handled')
+    }
+  }
+
   constructor(requestedChart: IDefineAChartRequest, readings: BloodSugar[]) {
     this._requestedChart = requestedChart
 
@@ -93,6 +137,15 @@ export class ChartData {
     } else {
       throw new Error('Chart type is not handled')
     }
+
+    this._hasPreviousPeriod = ChartData.determineIfHasPreviousPeriod(
+      requestedChart,
+      readings,
+    )
+    this._hasNextPeriod = ChartData.determineIfHasNextPeriod(
+      requestedChart,
+      readings,
+    )
 
     filteredReadings.forEach((bloodSugarReading) => {
       const dateEntry = this.dateAxis.getDateEntryFor(bloodSugarReading)
@@ -221,10 +274,10 @@ export class ChartData {
   }
 
   public hasNextPeriod(): boolean {
-    return false
+    return this._hasNextPeriod
   }
 
   public hasPreviousPeriod(): boolean {
-    return true
+    return this._hasPreviousPeriod
   }
 }

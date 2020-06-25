@@ -101,6 +101,36 @@ declare global {
 
     // tslint:disable-next-line: array-type
     filterForMonthAndYear(month: number, year: number): Array<T>
+
+    oldest(): T | null
+
+    mostRecent(): T | null
+  }
+}
+
+if (!Array.prototype.mostRecent) {
+  Array.prototype.mostRecent = function <T extends BloodSugar>(
+    this: T[],
+  ): T | null {
+    return this.reduce((memo: T | null, current: T): T => {
+      return memo == null ||
+        new Date(current.recorded_at) > new Date(memo.recorded_at)
+        ? current
+        : memo
+    }, null)
+  }
+}
+
+if (!Array.prototype.oldest) {
+  Array.prototype.oldest = function <T extends BloodSugar>(
+    this: T[],
+  ): T | null {
+    return this.reduce((memo: T | null, current: T): T => {
+      return memo == null ||
+        new Date(current.recorded_at) < new Date(memo.recorded_at)
+        ? current
+        : memo
+    }, null)
   }
 }
 
