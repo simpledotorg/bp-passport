@@ -94,6 +94,9 @@ declare global {
     // tslint:disable-next-line: array-type
     filterByTypes(types: BLOOD_SUGAR_TYPES[]): Array<T>
 
+    // tslint:disable-next-line: array-type
+    filterByType(type: BLOOD_SUGAR_TYPES): Array<T>
+
     hasReadingType(types: BLOOD_SUGAR_TYPES): boolean
 
     // tslint:disable-next-line: array-type
@@ -143,6 +146,17 @@ if (!Array.prototype.filterByTypes) {
       return types.find((type) => {
         return type === reading.blood_sugar_type
       })
+    })
+  }
+}
+
+if (!Array.prototype.filterByType) {
+  Array.prototype.filterByType = function <T extends BloodSugar>(
+    this: T[],
+    type: BLOOD_SUGAR_TYPES,
+  ): T[] {
+    return this.filter((reading) => {
+      return type === reading.blood_sugar_type
     })
   }
 }

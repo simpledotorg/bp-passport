@@ -4,6 +4,7 @@ import {
 } from '../../redux/blood-sugar/blood-sugar.models'
 import {IDefineAChartRequest} from './i-define-a-chart-request'
 import {RequestHemoglobicChart} from './request-hemoglobic-chart'
+import {read} from 'fs'
 
 export class RequestSingleMonthChart implements IDefineAChartRequest {
   private readonly _chartType: BLOOD_SUGAR_TYPES
@@ -17,7 +18,7 @@ export class RequestSingleMonthChart implements IDefineAChartRequest {
   ) {
     this._chartType = chartType
     if (requestedMonth === undefined) {
-      this._requestedMonth = new Date().getMonth()
+      this._requestedMonth = new Date().getMonth() + 1
     } else {
       this._requestedMonth = requestedMonth
     }
@@ -32,13 +33,9 @@ export class RequestSingleMonthChart implements IDefineAChartRequest {
   public static DefaultTypeFromAvailableReadings(
     readings: BloodSugar[],
   ): RequestSingleMonthChart {
-    const requestedMonth = 6
-    const requestedYear = 2020
-
-    return new RequestSingleMonthChart(
+    return RequestSingleMonthChart.ForRequestedType(
       BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
-      requestedMonth,
-      requestedYear,
+      readings,
     )
   }
 
@@ -46,10 +43,17 @@ export class RequestSingleMonthChart implements IDefineAChartRequest {
     chartType: BLOOD_SUGAR_TYPES,
     readings: BloodSugar[],
   ): RequestSingleMonthChart {
-    const requestedMonth = 6
-    const requestedYear = 2020
+    const mostRecentReading = readings.filterByType(chartType).mostRecent()
 
-    return new RequestSingleMonthChart(chartType, requestedMonth, requestedYear)
+    const date = mostRecentReading
+      ? new Date(mostRecentReading.recorded_at)
+      : undefined
+
+    return new RequestSingleMonthChart(
+      chartType,
+      date ? date.getMonth() + 1 : undefined,
+      date?.getFullYear(),
+    )
   }
 
   public get chartType(): BLOOD_SUGAR_TYPES {
