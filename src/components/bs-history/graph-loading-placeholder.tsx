@@ -13,7 +13,7 @@ export const GraphLoadingPlaceholder = ({chartsAvailable}: Props) => {
   return (
     <>
       <TitleBar
-        chartTitle="-"
+        chartTitle={chartsAvailable.getTitle()}
         hasPreviousPeriod={false}
         hasNextPeriod={false}
       />

@@ -140,6 +140,10 @@ export class RequestSingleMonthChart
     )
   }
 
+  public getTitle(): string {
+    return '-'
+  }
+
   public getChartType(): BLOOD_SUGAR_TYPES {
     return this._chartType
   }

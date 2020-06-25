@@ -77,6 +77,10 @@ export class RequestHemoglobicChart
     return this._yearToDisplay
   }
 
+  public getTitle(): string {
+    return '-'
+  }
+
   public getChartType(): BLOOD_SUGAR_TYPES {
     return BLOOD_SUGAR_TYPES.HEMOGLOBIC
   }
