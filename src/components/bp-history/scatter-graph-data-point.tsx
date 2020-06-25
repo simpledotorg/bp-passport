@@ -26,9 +26,9 @@ export class ScatterGraphDataPoint {
     )}, ${format(aggregateRecord.getDateEntry().getDate(), 'dd-MMM-yyyy')}`
 
     if (useDiastolic) {
-      this.showOutOfRange = this.y >= 140
-    } else {
       this.showOutOfRange = this.y >= 90
+    } else {
+      this.showOutOfRange = this.y >= 140
     }
   }
 

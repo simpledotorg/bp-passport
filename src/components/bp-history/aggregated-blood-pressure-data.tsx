@@ -1,8 +1,5 @@
 import {DateEntry} from './date-entry'
 import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
-import {getChartDateRange, DateRange} from '../../utils/dates'
-import {isSameDay} from 'date-fns'
-import {zonedTimeToUtc} from 'date-fns-tz'
 
 export class AggregatedBloodPressureData {
   private dateEntry: DateEntry
@@ -82,10 +79,18 @@ export class AggregatedBloodPressureData {
   }
 
   public getDiastolicAverage(): number {
-    return 140
+    return (
+      this.readings
+        .map((reading) => reading.diastolic)
+        .reduce((acc, cur) => acc + cur) / this.readings.length
+    )
   }
 
   public getSystolicAverage(): number {
-    return 89
+    return (
+      this.readings
+        .map((reading) => reading.systolic)
+        .reduce((acc, cur) => acc + cur) / this.readings.length
+    )
   }
 }
