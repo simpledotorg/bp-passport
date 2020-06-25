@@ -16,6 +16,7 @@ import {BodyHeader, BpInformation, BpHistoryChart, Line} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
+import {getTestData} from '../components/bp-history/test-data'
 
 type BpHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -74,7 +75,7 @@ function BpHistoryScreen({navigation, route}: Props) {
                 <ActivityIndicator size="large" color={colors.blue1} />
               </View>
             ) : (
-              <BpHistoryChart bps={bpsChart} />
+              <BpHistoryChart bps={getTestData()} />
             )}
           </View>
         </View>
