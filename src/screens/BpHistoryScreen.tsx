@@ -75,7 +75,7 @@ function BpHistoryScreen({navigation, route}: Props) {
                 <ActivityIndicator size="large" color={colors.blue1} />
               </View>
             ) : (
-              <BpHistoryChart bps={getTestData()} />
+              <BpHistoryChart bps={bps} />
             )}
           </View>
         </View>

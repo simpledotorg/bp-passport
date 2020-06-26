@@ -40,7 +40,7 @@ export class ChartData {
     this.aggregatedData.forEach((aggregateRecord) => {
       const index = aggregateRecord.getDateEntry().getIndex()
 
-      aggregateRecord.getReadings().forEach((reading) => {
+      aggregateRecord.getReadings().forEach(() => {
         data.push(
           ScatterGraphDataPoint.CreateForDiastolic(index, aggregateRecord),
         )
@@ -49,6 +49,7 @@ export class ChartData {
         )
       })
     })
+
     return data
   }
 
@@ -63,7 +64,7 @@ export class ChartData {
           return memo
         }
 
-        const currentValue = Number(maxValueForCurrentDay.diastolic)
+        const currentValue = Number(maxValueForCurrentDay.systolic)
 
         return !memo || currentValue > memo ? currentValue : memo
       },
@@ -82,7 +83,7 @@ export class ChartData {
           return memo
         }
 
-        const currentValue = Number(minValueForCurrentDay.diastolic)
+        const currentValue = Number(minValueForCurrentDay.systolic)
 
         return !memo || currentValue < memo ? currentValue : memo
       },
