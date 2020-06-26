@@ -64,6 +64,10 @@ export class RequestHemoglobicChart
     return RequestSingleMonthChart.ForRequestedType(requestedType, readings)
   }
 
+  public withUpdatedReadings(readings: BloodSugar[]): IDefineAChartRequest {
+    return new RequestHemoglobicChart(this._yearToDisplay, readings)
+  }
+
   public moveToNextPeriod(): RequestHemoglobicChart {
     return new RequestHemoglobicChart(this._yearToDisplay + 1, this._readings)
   }
@@ -78,6 +82,10 @@ export class RequestHemoglobicChart
 
   public get yearToDisplay(): number {
     return this._yearToDisplay
+  }
+
+  public get readings(): BloodSugar[] {
+    return this._readings
   }
 
   public getTitle(): string {

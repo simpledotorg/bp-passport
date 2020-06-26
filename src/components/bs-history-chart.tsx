@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import {View, Dimensions} from 'react-native'
-import {useIntl} from 'react-intl'
 import {GraphLoadingPlaceholder} from './bs-history/graph-loading-placeholder'
 import {
   VictoryChart,
@@ -49,8 +48,6 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
     throw new Error('Unhandled blood sugar type')
   }
 
-  const intl = useIntl()
-
   const [requestedChart, setRequestedChart] = useState<IDefineAChartRequest>(
     getStartingChartRequest(bloodSugarReadings),
   )
@@ -58,8 +55,16 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
   const [chartData, setChartData] = useState<ChartData | null>(null)
 
   useEffect(() => {
-    setChartData(new ChartData(requestedChart, bloodSugarReadings))
-  }, [bloodSugarReadings, requestedChart])
+    setChartData(null)
+    setRequestedChart(
+      requestedChart.withUpdatedReadings(bloodSugarReadings) ??
+        getStartingChartRequest(bloodSugarReadings),
+    )
+  }, [bloodSugarReadings])
+
+  useEffect(() => {
+    setChartData(new ChartData(requestedChart))
+  }, [requestedChart])
 
   const getMaxThreshhold = (): number => {
     if (!chartData) {

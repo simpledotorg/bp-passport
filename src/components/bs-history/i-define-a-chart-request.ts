@@ -11,7 +11,11 @@ export interface IDefineAChartRequest extends IDefineChartsAvailable {
     readings: BloodSugar[],
   ): IDefineAChartRequest
 
+  withUpdatedReadings(readings: BloodSugar[]): IDefineAChartRequest
+
   moveToNextPeriod(): IDefineAChartRequest
 
   moveToPreviousPeriod(): IDefineAChartRequest
+
+  readonly readings: BloodSugar[]
 }

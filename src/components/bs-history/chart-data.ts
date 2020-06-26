@@ -28,17 +28,16 @@ export class ChartData implements IDefineChartsAvailable {
 
   private static filterReadings(
     chartRequest: IDefineAChartRequest,
-    readings: BloodSugar[],
   ): BloodSugar[] {
     if (chartRequest instanceof RequestHemoglobicChart) {
-      return readings
+      return chartRequest.readings
         .filterByTypes([BLOOD_SUGAR_TYPES.HEMOGLOBIC])
         .filterForYear(chartRequest.yearToDisplay)
     }
     if (chartRequest instanceof RequestSingleMonthChart) {
       switch (chartRequest.chartType) {
         case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
-          return readings
+          return chartRequest.readings
             .filterByTypes([BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR])
             .filterForMonthAndYear(
               chartRequest.requestedMonth,
@@ -46,7 +45,7 @@ export class ChartData implements IDefineChartsAvailable {
             )
         case BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR:
         case BLOOD_SUGAR_TYPES.POST_PRANDIAL:
-          return readings
+          return chartRequest.readings
             .filterByTypes([
               BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
               BLOOD_SUGAR_TYPES.POST_PRANDIAL,
@@ -65,10 +64,9 @@ export class ChartData implements IDefineChartsAvailable {
   }
 
   private static determineIfHasPreviousPeriod(
-    requestedChart: IDefineAChartRequest,
-    readings: BloodSugar[],
+    requestedChart: IDefineAChartRequest
   ): boolean {
-    const oldestReading = readings
+    const oldestReading = requestedChart.readings
       .filterByType(requestedChart.chartType)
       .oldest()
     if (oldestReading === null) {
@@ -95,9 +93,8 @@ export class ChartData implements IDefineChartsAvailable {
 
   private static determineIfHasNextPeriod(
     requestedChart: IDefineAChartRequest,
-    readings: BloodSugar[],
   ): boolean {
-    const mostRecentReading = readings
+    const mostRecentReading = requestedChart.readings
       .filterByType(requestedChart.chartType)
       .mostRecent()
     if (mostRecentReading === null) {
@@ -128,26 +125,23 @@ export class ChartData implements IDefineChartsAvailable {
     }
   }
 
-  constructor(requestedChart: IDefineAChartRequest, readings: BloodSugar[]) {
+  constructor(requestedChart: IDefineAChartRequest) {
     this._requestedChart = requestedChart
 
-    this.hasRandomReadings = readings.hasReadingType(
+    this.hasRandomReadings = requestedChart.readings.hasReadingType(
       BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
     )
-    this.hasPostPrandialReadings = readings.hasReadingType(
+    this.hasPostPrandialReadings = requestedChart.readings.hasReadingType(
       BLOOD_SUGAR_TYPES.POST_PRANDIAL,
     )
-    this.hasFastingReadings = readings.hasReadingType(
+    this.hasFastingReadings = requestedChart.readings.hasReadingType(
       BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR,
     )
-    this.hasHemoglobicReadings = readings.hasReadingType(
+    this.hasHemoglobicReadings = requestedChart.readings.hasReadingType(
       BLOOD_SUGAR_TYPES.HEMOGLOBIC,
     )
 
-    const filteredReadings = ChartData.filterReadings(
-      this._requestedChart,
-      readings,
-    )
+    const filteredReadings = ChartData.filterReadings(this._requestedChart)
 
     if (requestedChart instanceof RequestSingleMonthChart) {
       this.dateAxis = DateAxis.CreateForRequestedMonth(
@@ -167,12 +161,8 @@ export class ChartData implements IDefineChartsAvailable {
 
     this._hasPreviousPeriod = ChartData.determineIfHasPreviousPeriod(
       requestedChart,
-      readings,
     )
-    this._hasNextPeriod = ChartData.determineIfHasNextPeriod(
-      requestedChart,
-      readings,
-    )
+    this._hasNextPeriod = ChartData.determineIfHasNextPeriod(requestedChart)
 
     filteredReadings.forEach((bloodSugarReading) => {
       const dateEntry = this.dateAxis.getDateEntryFor(bloodSugarReading)
