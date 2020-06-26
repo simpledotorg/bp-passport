@@ -1,9 +1,11 @@
 import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
 import {ChartData} from './chart-data'
+import {getMonthYearTitle} from '../../utils/dates'
 
 export class ChartRequest {
   private _readings: BloodPressure[]
 
+  private readonly _chartTitle: string
   private readonly _requestedMonth: number
   private readonly _requestedYear: number
 
@@ -25,6 +27,11 @@ export class ChartRequest {
     } else {
       this._requestedYear = requestedYear
     }
+
+    this._chartTitle = getMonthYearTitle(
+      this._requestedMonth,
+      this._requestedYear,
+    )
   }
 
   public static CreateFromAvailableReadings(
@@ -40,7 +47,7 @@ export class ChartRequest {
   }
 
   public getTitle(): string {
-    return '-'
+    return this._chartTitle
   }
 
   public get requestedMonth(): number {

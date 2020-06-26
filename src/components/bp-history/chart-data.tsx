@@ -4,8 +4,7 @@ import {ScatterGraphDataPoint} from '../bp-history/scatter-graph-data-point'
 import {LineGraphDataPoint} from '../bp-history/line-graph-data-point'
 import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
 import {ChartRequest} from './../bp-history/chart-request'
-import {format} from 'date-fns'
-import {dateLocale} from '../../constants/languages'
+import {getMonthYearTitle} from '../../utils/dates'
 
 export class ChartData {
   private readonly dateAxis: DateAxis
@@ -15,12 +14,6 @@ export class ChartData {
 
   private readonly _hasNextPeriod: boolean
   private readonly _hasPreviousPeriod: boolean
-
-  private static getMonthName(month: number, year: number): string {
-    return format(new Date(year, month, 1), 'MMM', {
-      locale: dateLocale(),
-    })
-  }
 
   private static determineIfHasPreviousPeriod(
     requestedChart: ChartRequest,
@@ -68,12 +61,10 @@ export class ChartData {
       requestedChart.requestedYear,
     )
 
-    const monthName = ChartData.getMonthName(
+    this._chartTitle = getMonthYearTitle(
       requestedChart.requestedMonth,
       requestedChart.requestedYear,
     )
-
-    this._chartTitle = `${monthName}-${requestedChart.requestedYear}`
 
     this._hasPreviousPeriod = ChartData.determineIfHasPreviousPeriod(
       requestedChart,
