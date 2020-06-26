@@ -10,8 +10,7 @@ import {RequestSingleMonthChart} from './request-single-month-chart'
 import {RequestHemoglobicChart} from './request-hemoglobic-chart'
 import {IDefineAChartRequest} from './i-define-a-chart-request'
 import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
-import {format} from 'date-fns'
-import {dateLocale} from '../../constants/languages'
+import {getMonthYearTitle, getYearTitle} from '../../utils/dates'
 import {IDefineChartsAvailable} from './i-define-charts-available'
 
 export class ChartData implements IDefineChartsAvailable {
@@ -128,11 +127,7 @@ export class ChartData implements IDefineChartsAvailable {
       throw new Error('Chart type is not handled')
     }
   }
-  private static getMonthName(month: number, year: number): string {
-    return format(new Date(year, month, 1), 'MMM', {
-      locale: dateLocale(),
-    })
-  }
+
   constructor(requestedChart: IDefineAChartRequest, readings: BloodSugar[]) {
     this._requestedChart = requestedChart
 
@@ -159,16 +154,13 @@ export class ChartData implements IDefineChartsAvailable {
         requestedChart.requestedMonth,
         requestedChart.requestedYear,
       )
-      const monthName = ChartData.getMonthName(
+      this._chartTitle = getMonthYearTitle(
         requestedChart.requestedMonth,
         requestedChart.requestedYear,
       )
-      this._chartTitle = `${monthName}-${requestedChart.requestedYear}`
     } else if (requestedChart instanceof RequestHemoglobicChart) {
       this.dateAxis = DateAxis.CreateForYear(requestedChart.yearToDisplay)
-      const jan = ChartData.getMonthName(0, requestedChart.yearToDisplay)
-      const dec = ChartData.getMonthName(11, requestedChart.yearToDisplay)
-      this._chartTitle = `${jan} - ${dec}-${requestedChart.yearToDisplay}`
+      this._chartTitle = getYearTitle(requestedChart.yearToDisplay)
     } else {
       throw new Error('Chart type is not handled')
     }

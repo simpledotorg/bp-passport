@@ -36,18 +36,8 @@ export class RequestSingleMonthChart
       requestedYear,
     )
 
-    if (requestedMonth === undefined) {
-      this._requestedMonth = new Date().getMonth()
-    } else {
-      this._requestedMonth = requestedMonth
-    }
-
-    if (requestedYear === undefined) {
-      this._requestedYear = new Date().getFullYear()
-    } else {
-      this._requestedYear = requestedYear
-    }
-
+    this._requestedMonth = requestedMonth ?? new Date().getMonth()
+    this._requestedYear = requestedYear ?? new Date().getFullYear()
     this._readings = readings
 
     this.hasRandomReadings = readings.hasReadingType(
