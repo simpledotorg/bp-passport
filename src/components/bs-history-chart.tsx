@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react'
 import {View, Dimensions} from 'react-native'
 import {useIntl} from 'react-intl'
 import {GraphLoadingPlaceholder} from './bs-history/graph-loading-placeholder'
-import {EmptyYLeftAxis} from './victory-chart-parts/empty-y-left-axis'
 
 import {
   VictoryChart,
@@ -216,7 +215,6 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
               tickLabels: {opacity: 0},
             }}
           />
-          <EmptyYLeftAxis />
           <VictoryAxis
             orientation="right"
             dependentAxis
