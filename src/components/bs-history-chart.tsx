@@ -15,9 +15,10 @@ import {
   BLOOD_SUGAR_TYPES,
 } from '../redux/blood-sugar/blood-sugar.models'
 import {colors} from '../styles'
-import {IDefineAChartRequest} from './bs-history/i-define-a-chart-request'
-import {RequestSingleMonthChart} from './bs-history/request-single-month-chart'
-import {RequestHemoglobicChart} from './bs-history/request-hemoglobic-chart'
+import {
+  IDefineAChartRequest,
+  getStartingChartRequest,
+} from './bs-history/i-define-a-chart-request'
 import {ChartData} from './bs-history/chart-data'
 import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
 import {DateAxisComponent} from './victory-chart-parts/date-axis-component'
@@ -30,24 +31,6 @@ type Props = {
 }
 
 export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
-  const getStartingChartRequest = (
-    readings: BloodSugar[],
-  ): IDefineAChartRequest => {
-    if (
-      readings.hasReadingType(BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR) ||
-      readings.hasReadingType(BLOOD_SUGAR_TYPES.POST_PRANDIAL) ||
-      readings.hasReadingType(BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR)
-    ) {
-      return RequestSingleMonthChart.DefaultTypeFromAvailableReadings(readings)
-    }
-
-    if (readings.hasReadingType(BLOOD_SUGAR_TYPES.HEMOGLOBIC)) {
-      return RequestHemoglobicChart.StartingState(readings)
-    }
-
-    throw new Error('Unhandled blood sugar type')
-  }
-
   const [requestedChart, setRequestedChart] = useState<IDefineAChartRequest>(
     getStartingChartRequest(bloodSugarReadings),
   )
@@ -63,7 +46,9 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
   }, [bloodSugarReadings])
 
   useEffect(() => {
-    setChartData(new ChartData(requestedChart))
+    if (requestedChart) {
+      setChartData(new ChartData(requestedChart))
+    }
   }, [requestedChart])
 
   const getMaxThreshhold = (): number => {
