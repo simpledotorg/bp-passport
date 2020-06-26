@@ -36,18 +36,8 @@ export class RequestSingleMonthChart
       requestedYear,
     )
 
-    if (requestedMonth === undefined) {
-      this._requestedMonth = new Date().getMonth()
-    } else {
-      this._requestedMonth = requestedMonth
-    }
-
-    if (requestedYear === undefined) {
-      this._requestedYear = new Date().getFullYear()
-    } else {
-      this._requestedYear = requestedYear
-    }
-
+    this._requestedMonth = requestedMonth ?? new Date().getMonth()
+    this._requestedYear = requestedYear ?? new Date().getFullYear()
     this._readings = readings
 
     this.hasRandomReadings = readings.hasReadingType(
@@ -147,6 +137,10 @@ export class RequestSingleMonthChart
     return this._requestedYear
   }
 
+  public get readings(): BloodSugar[] {
+    return this._readings
+  }
+
   public moveToNextPeriod(): RequestSingleMonthChart {
     let newMonth = this._requestedMonth + 1
     let newYear = this._requestedYear
@@ -189,6 +183,15 @@ export class RequestSingleMonthChart
 
     return new RequestSingleMonthChart(
       requestedType,
+      readings,
+      this._requestedMonth,
+      this._requestedYear,
+    )
+  }
+
+  public withUpdatedReadings(readings: BloodSugar[]): IDefineAChartRequest {
+    return new RequestSingleMonthChart(
+      this._chartType,
       readings,
       this._requestedMonth,
       this._requestedYear,

@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {View, Dimensions} from 'react-native'
-import {useIntl} from 'react-intl'
 import {GraphLoadingPlaceholder} from './bs-history/graph-loading-placeholder'
-
 import {
   VictoryChart,
   VictoryTheme,
@@ -17,17 +15,14 @@ import {
   BLOOD_SUGAR_TYPES,
 } from '../redux/blood-sugar/blood-sugar.models'
 import {colors} from '../styles'
-import {IDefineAChartRequest} from './bs-history/i-define-a-chart-request'
-import {RequestSingleMonthChart} from './bs-history/request-single-month-chart'
-import {RequestHemoglobicChart} from './bs-history/request-hemoglobic-chart'
+import {
+  IDefineAChartRequest,
+  getStartingChartRequest,
+} from './bs-history/i-define-a-chart-request'
 import {ChartData} from './bs-history/chart-data'
 import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
-import {DayOfMonthAxisLabel} from './victory-chart-parts/day-of-month-axis-label'
-import {MonthNameAxisLabel} from './victory-chart-parts/month-name-axis-label'
-import {MonthInitialAxisLabel} from './victory-chart-parts/month-initial-axis-label'
-import {MonthAndYearLabel} from './victory-chart-parts/month-and-year-label'
-import {MonthInitialLabel} from './victory-chart-parts/month-initial-label'
-import {DayOfMonthLabel} from './victory-chart-parts/day-of-month-label'
+import {DateAxisComponent} from './victory-chart-parts/date-axis-component'
+
 import {TitleBar} from './victory-chart-parts/title-bar'
 import {ChartTypeSelection} from './bs-history/chart-type-selection'
 
@@ -36,26 +31,6 @@ type Props = {
 }
 
 export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
-  const getStartingChartRequest = (
-    readings: BloodSugar[],
-  ): IDefineAChartRequest => {
-    if (
-      readings.hasReadingType(BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR) ||
-      readings.hasReadingType(BLOOD_SUGAR_TYPES.POST_PRANDIAL) ||
-      readings.hasReadingType(BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR)
-    ) {
-      return RequestSingleMonthChart.DefaultTypeFromAvailableReadings(readings)
-    }
-
-    if (readings.hasReadingType(BLOOD_SUGAR_TYPES.HEMOGLOBIC)) {
-      return RequestHemoglobicChart.StartingState(readings)
-    }
-
-    throw new Error('Unhandled blood sugar type')
-  }
-
-  const intl = useIntl()
-
   const [requestedChart, setRequestedChart] = useState<IDefineAChartRequest>(
     getStartingChartRequest(bloodSugarReadings),
   )
@@ -63,8 +38,18 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
   const [chartData, setChartData] = useState<ChartData | null>(null)
 
   useEffect(() => {
-    setChartData(new ChartData(requestedChart, bloodSugarReadings))
-  }, [bloodSugarReadings, requestedChart])
+    setChartData(null)
+    setRequestedChart(
+      requestedChart.withUpdatedReadings(bloodSugarReadings) ??
+        getStartingChartRequest(bloodSugarReadings),
+    )
+  }, [bloodSugarReadings])
+
+  useEffect(() => {
+    if (requestedChart) {
+      setChartData(new ChartData(requestedChart))
+    }
+  }, [requestedChart])
 
   const getMaxThreshhold = (): number => {
     if (!chartData) {
@@ -164,25 +149,7 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
           borderTopWidth: 1,
           position: 'relative',
         }}>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            flexDirection: 'row',
-            paddingLeft: 6,
-          }}>
-          {chartData.getAxisTickValues().map((value, index) => {
-            if (value instanceof MonthNameAxisLabel) {
-              return <MonthAndYearLabel key={index} data={value} />
-            } else if (value instanceof DayOfMonthAxisLabel) {
-              return <DayOfMonthLabel key={index} data={value} />
-            } else if (value instanceof MonthInitialAxisLabel) {
-              return <MonthInitialLabel key={index} data={value} />
-            }
-          })}
-
-          <View style={{width: 32}} />
-        </View>
+        <DateAxisComponent tickValues={chartData.getAxisTickValues()} />
         <VictoryChart
           maxDomain={{
             y: getMaxDomain(),
@@ -270,9 +237,21 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
               />
             )
           })}
+          {chartData.displayLineGraph && (
+            <VictoryLine
+              data={chartData.getLineGraphData()}
+              style={{
+                data: {
+                  stroke: colors.grey1,
+                  strokeWidth: 1,
+                },
+              }}
+            />
+          )}
+
           <VictoryScatter
             data={chartData.getScatterDataForGraph()}
-            size={5}
+            size={3}
             style={{
               data: {
                 fill: ({datum}) =>

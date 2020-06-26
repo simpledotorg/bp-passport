@@ -1,78 +1,55 @@
 import React, {useState, useEffect} from 'react'
 import {View, Dimensions} from 'react-native'
-import {format, addMonths} from 'date-fns'
-import {zonedTimeToUtc} from 'date-fns-tz'
 import {
   VictoryChart,
   VictoryTheme,
   VictoryLine,
   VictoryScatter,
   VictoryAxis,
-  VictoryTooltip,
-  VictoryBar,
   VictoryVoronoiContainer,
-  VictoryGroup,
 } from 'victory-native'
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {colors} from '../styles'
-import {generateAverageChartData} from '../utils/data-transform'
-import {CHART_MONTH_RANGE} from '../utils/dates'
-import {DateRange} from '../utils/dates'
-import {BodyText} from './text'
-import {dateLocale} from '../constants/languages'
-import {useIntl} from 'react-intl'
+import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
+import {ChartData} from './bp-history/chart-data'
+import {GraphLoadingPlaceholder} from './bp-history/graph-loading-placeholder'
+import {TitleBar} from './victory-chart-parts/title-bar'
+import {ChartRequest} from './bp-history/chart-request'
+import {DateAxisComponent} from './victory-chart-parts/date-axis-component'
 
 type Props = {
   bps: BloodPressure[]
 }
 
 export const BpHistoryChart = ({bps}: Props) => {
-  const intl = useIntl()
-
-  const isBloodPressureHigh = (bpIn: BloodPressure) => {
-    // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
-    // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
-    return bpIn.systolic >= 140 || bpIn.diastolic >= 90
-  }
-
-  const [chartData, setChartData] = useState<{
-    dates: DateRange[]
-    low: DateRange[]
-    high: DateRange[]
-    min: null | number
-    max: null | number
-  } | null>(null)
-
-  const averageList = (value: DateRange) => {
-    const list = [...value.list].slice(0, 2)
-
-    const valuesAccumulator = list.reduce(
-      (memo: {diastolic: number; systolic: number}, current: any) => {
-        return {
-          diastolic: memo.diastolic + current.diastolic,
-          systolic: memo.systolic + current.systolic,
-        }
-      },
-      {diastolic: 0, systolic: 0} as BloodPressure,
-    )
-
-    return {
-      diastolic: valuesAccumulator.diastolic / list.length,
-      systolic: valuesAccumulator.systolic / list.length,
-    }
-  }
+  const [requestedChart, setRequestedChart] = useState<ChartRequest>(
+    ChartRequest.CreateFromAvailableReadings(bps),
+  )
+  const [chartData, setChartData] = useState<ChartData | null>(null)
 
   useEffect(() => {
-    setChartData(
-      generateAverageChartData(bps, averageList, isBloodPressureHigh),
+    setChartData(null)
+    setRequestedChart(
+      requestedChart.withUpdatedReadings(bps) ??
+        ChartRequest.CreateFromAvailableReadings(bps),
     )
   }, [bps])
 
+  useEffect(() => {
+    if (requestedChart) {
+      setChartData(new ChartData(requestedChart))
+    }
+  }, [requestedChart])
+
   const getMaxDomain = () => {
-    const threshhold = 140
+    if (!chartData) {
+      throw new Error('Can not get max domain, not instance of chart data')
+    }
+
+    const threshhold = BloodPressure.diastolicUpperThreshold
     const difference = Math.round(threshhold / 10)
-    let base = chartData?.max ?? threshhold
+    let base = chartData.getMaxDataValue() ?? threshhold
 
     if (base < threshhold) {
       base = threshhold
@@ -82,9 +59,13 @@ export const BpHistoryChart = ({bps}: Props) => {
   }
 
   const getMinDomain = () => {
-    const threshhold = 90
+    if (!chartData) {
+      throw new Error('Can not get min domain, not instance of chart data')
+    }
+
+    const threshhold = BloodPressure.systolicUpperThreshold
     const difference = Math.round(threshhold / 10)
-    let base = chartData?.min ?? threshhold
+    let base = chartData.getMinDataValue() ?? threshhold
 
     if (base > threshhold) {
       base = threshhold
@@ -93,356 +74,113 @@ export const BpHistoryChart = ({bps}: Props) => {
     return base - difference
   }
 
-  const displayDate = (date: Date) => {
-    return (
-      `${format(date, 'dd')}-` +
-      `${
-        intl.formatMessage({
-          id: `general.${format(date, 'MMM').toLowerCase()}`,
-        }) + `-${format(date, 'yyyy')}`
-      }`
-    )
+  const movePreviousPeriod = (): void => {
+    setChartData(null)
+    setRequestedChart(requestedChart.moveToPreviousPeriod())
+  }
+
+  const moveNextPeriod = (): void => {
+    setChartData(null)
+    setRequestedChart(requestedChart.moveToNextPeriod())
   }
 
   if (!chartData) {
-    return null
+    return <GraphLoadingPlaceholder chartTitle={requestedChart.getTitle()} />
   }
 
   return (
-    <View
-      style={{
-        height: 260,
-        borderColor: colors.grey3,
-        borderLeftWidth: 1,
-        borderTopWidth: 1,
-        overflow: 'visible',
-        position: 'relative',
-      }}>
+    <>
+      <TitleBar
+        chartTitle={chartData.getTitle()}
+        hasPreviousPeriod={chartData.hasPreviousPeriod()}
+        moveToPreviousPeriodHandler={movePreviousPeriod}
+        hasNextPeriod={chartData.hasNextPeriod()}
+        moveToNextPeriodHandler={moveNextPeriod}
+      />
       <View
         style={{
-          position: 'absolute',
-          bottom: 0,
-          flexDirection: 'row',
-          paddingLeft: 6,
+          height: 260,
+          borderColor: colors.grey3,
+          borderLeftWidth: 1,
+          borderTopWidth: 1,
+          overflow: 'visible',
+          position: 'relative',
         }}>
-        {[...Array(CHART_MONTH_RANGE)].map((value, index) => {
-          return (
-            <View
-              key={index}
-              style={{
-                flex: 1,
-                flexShrink: 0,
-              }}>
-              <BodyText
-                style={{
-                  color: colors.grey0,
-                  fontWeight: '500',
-                  fontSize: 14,
-                  lineHeight: 18,
-                }}>
-                {format(addMonths(chartData.dates[0].date, index), 'MMM', {
-                  locale: dateLocale(),
-                })}
-              </BodyText>
-              <BodyText
-                style={{
-                  color: colors.grey2,
-                  fontWeight: '500',
-                  fontSize: 14,
-                  lineHeight: 18,
-                }}>
-                {format(addMonths(chartData.dates[0].date, index), 'yyy', {
-                  locale: dateLocale(),
-                })}
-              </BodyText>
-            </View>
-          )
-        })}
-        <View style={{width: 32}} />
+        <DateAxisComponent tickValues={chartData.getAxisTickValues()} />
+
+        <VictoryChart
+          width={Dimensions.get('window').width - 24}
+          height={310}
+          maxDomain={{
+            y: getMaxDomain(),
+          }}
+          minDomain={{
+            y: getMinDomain(),
+          }}
+          style={{
+            parent: {
+              position: 'relative',
+              left: -44,
+              top: -44,
+            },
+          }}
+          scale={{x: 'linear'}}
+          theme={VictoryTheme.material}
+          containerComponent={<VictoryVoronoiContainer radius={30} />}>
+          <VictoryAxis
+            tickCount={chartData.getAxisTickValues().length}
+            tickFormat={(tick) => {
+              return tick
+            }}
+            tickValues={chartData.getIndexValues()}
+            style={{
+              grid: {stroke: colors.grey3, strokeDasharray: 4},
+              axis: {stroke: colors.grey3, opacity: 0},
+              ticks: {opacity: 0},
+              tickLabels: {opacity: 0},
+            }}
+          />
+          <VictoryAxis
+            orientation="right"
+            dependentAxis
+            tickValues={[90, 140]}
+            style={{
+              grid: {stroke: colors.grey2, strokeDasharray: 4},
+              axis: {stroke: colors.grey3, strokeDasharray: 4, strokeWidth: 0},
+              ticks: {opacity: 0},
+            }}
+          />
+          <VictoryLine
+            data={chartData.getLineGraph(true)}
+            style={{
+              data: {
+                stroke: colors.grey1,
+                strokeWidth: 1,
+              },
+            }}
+          />
+          <VictoryLine
+            data={chartData.getLineGraph(false)}
+            style={{
+              data: {
+                stroke: colors.grey1,
+                strokeWidth: 1,
+              },
+            }}
+          />
+          <VictoryScatter
+            labelComponent={VictoryGraphToolTipHelper.getVictoryToolTip()}
+            data={chartData.getScatterDataForGraph()}
+            size={5}
+            style={{
+              data: {
+                fill: ({datum}) =>
+                  datum.showOutOfRange ? colors.red1 : colors.green1,
+              },
+            }}
+          />
+        </VictoryChart>
       </View>
-      <VictoryChart
-        width={Dimensions.get('window').width - 24}
-        height={310}
-        maxDomain={{
-          y: getMaxDomain(),
-        }}
-        minDomain={{
-          y: getMinDomain(),
-        }}
-        style={{
-          parent: {
-            position: 'relative',
-            left: -44,
-            top: -44,
-          },
-        }}
-        scale={{x: 'linear'}}
-        theme={VictoryTheme.material}
-        containerComponent={<VictoryVoronoiContainer radius={30} />}>
-        <VictoryAxis
-          tickCount={CHART_MONTH_RANGE}
-          tickFormat={(tick) => {
-            return format(
-              addMonths(chartData.dates[0].date, tick / 4),
-              'MMM-yy',
-              {
-                locale: dateLocale(),
-              },
-            )
-          }}
-          tickValues={chartData.dates.map((date, index) => index)}
-          style={{
-            grid: {stroke: colors.grey3, strokeDasharray: 4},
-            axis: {stroke: colors.grey3, opacity: 0},
-            ticks: {opacity: 0},
-            tickLabels: {opacity: 0},
-          }}
-        />
-        <VictoryAxis
-          orientation="left"
-          style={{
-            axis: {
-              strokeWidth: 2,
-              stroke: colors.white100,
-            },
-            tickLabels: {
-              opacity: 0,
-            },
-            ticks: {
-              opacity: 0,
-            },
-            grid: {
-              opacity: 0,
-            },
-          }}
-        />
-        <VictoryAxis
-          orientation="right"
-          dependentAxis
-          tickValues={[90, 140]}
-          style={{
-            grid: {stroke: colors.grey2, strokeDasharray: 4},
-            axis: {stroke: colors.grey3, strokeDasharray: 4, strokeWidth: 0},
-            ticks: {opacity: 0},
-          }}
-        />
-        {/* CANDLESTICK CHART */}
-        {/* <VictoryBar
-          data={chartData.high.map((bp, index) => {
-            return {
-              x: bp.index,
-              y: bp.averaged.systolic,
-              y0: bp.averaged.diastolic,
-            }
-          })}
-          style={{
-            data: {
-              fill: colors.red1,
-              width: 8,
-            },
-          }}
-        />
-
-        <VictoryBar
-          data={chartData.low.map((bp, index) => {
-            return {
-              x: bp.index,
-              y: bp.averaged.systolic,
-              y0: bp.averaged.diastolic,
-            }
-          })}
-          style={{
-            data: {
-              fill: colors.green1,
-              width: 8,
-            },
-          }}
-        />
-
-        <VictoryScatter
-          data={chartData.low.flatMap((bp) => {
-            return [
-              {x: bp.index, y: bp.averaged.systolic},
-              {x: bp.index, y: bp.averaged.diastolic},
-            ]
-          })}
-          size={1}
-          style={{
-            data: {fill: colors.green1, stroke: colors.green1, strokeWidth: 2},
-          }}
-        />
-
-        <VictoryScatter
-          data={chartData.high.flatMap((bp) => {
-            return [
-              {x: bp.index, y: bp.averaged.systolic},
-              {x: bp.index, y: bp.averaged.diastolic},
-            ]
-          })}
-          size={1}
-          style={{
-            data: {fill: colors.red1, stroke: colors.red1, strokeWidth: 2},
-          }}
-        /> */}
-        {/* LINE CHART */}
-        {/* <VictoryLine
-          data={[...chartData.low, ...chartData.high].map((bp, index) => {
-            try {
-              return {
-                x: bp.index,
-                y: bp.averaged.systolic,
-              }
-            } catch (e) {
-              return null
-            }
-          })}
-          style={{
-            data: {
-              stroke: colors.green1,
-            },
-          }}
-        />
-
-        <VictoryLine
-          data={[...chartData.low, ...chartData.high].map((bp) => {
-            try {
-              return {
-                x: bp.index,
-                y: bp.averaged.diastolic,
-              }
-            } catch (e) {
-              return null
-            }
-          })}
-          style={{
-            data: {
-              stroke: colors.green1,
-            },
-          }}
-        /> */}
-        <VictoryLine
-          data={[...chartData.low, ...chartData.high].map((bp) => {
-            if (bp.list.length) {
-              return {
-                x: bp.index,
-                y: bp.averaged.systolic,
-              }
-            }
-            return null
-          })}
-          style={{
-            data: {
-              stroke: colors.grey1,
-              strokeWidth: 1,
-            },
-          }}
-        />
-        <VictoryLine
-          data={[...chartData.low, ...chartData.high].map((bp) => {
-            if (bp.list.length) {
-              return {
-                x: bp.index,
-                y: bp.averaged.diastolic,
-              }
-            }
-            return null
-          })}
-          style={{
-            data: {
-              stroke: colors.grey1,
-              strokeWidth: 1,
-            },
-          }}
-        />
-        <VictoryScatter
-          labelComponent={
-            <VictoryTooltip
-              renderInPortal={false}
-              constrainToVisibleArea={true}
-              cornerRadius={20}
-              pointerLength={5}
-              flyoutStyle={{
-                padding: 200,
-                height: 32,
-                fill: colors.grey0,
-              }}
-              style={{fill: colors.white}}
-            />
-          }
-          data={[...chartData.low, ...chartData.high].flatMap(
-            (bp: DateRange) => {
-              return [
-                bp.averaged.systolic < 140
-                  ? {
-                      x: bp.index,
-                      y: bp.averaged.systolic,
-                      label: `${bp.averaged.systolic.toFixed(
-                        0,
-                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
-                        bp.date,
-                      )}`,
-                    }
-                  : null,
-                bp.averaged.diastolic < 90
-                  ? {
-                      x: bp.index,
-                      y: bp.averaged.diastolic,
-                      label: `${bp.averaged.systolic.toFixed(
-                        0,
-                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
-                        bp.date,
-                      )}`,
-                    }
-                  : null,
-                bp.averaged.systolic >= 140
-                  ? {
-                      x: bp.index,
-                      y: bp.averaged.systolic,
-                      label: `${bp.averaged.systolic.toFixed(
-                        0,
-                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
-                        bp.date,
-                      )}`,
-                    }
-                  : null,
-                bp.averaged.diastolic >= 90
-                  ? {
-                      x: bp.index,
-                      y: bp.averaged.diastolic,
-                      label: `${bp.averaged.systolic.toFixed(
-                        0,
-                      )} / ${bp.averaged.diastolic.toFixed(0)}, ${displayDate(
-                        bp.date,
-                      )}`,
-                    }
-                  : null,
-              ]
-            },
-          )}
-          size={5}
-          style={{
-            data: {
-              fill: (data: any) => {
-                const datum = data.datum.label.split(',')
-                const values = datum[0].split(' / ')
-                if (values[0] >= 140) {
-                  return colors.red1
-                }
-                if (values[0] < 140) {
-                  return colors.green1
-                }
-
-                if (values[1] >= 90) {
-                  return colors.red1
-                }
-                if (values[1] < 90) {
-                  return colors.green1
-                }
-              },
-            },
-          }}
-        />
-      </VictoryChart>
-    </View>
+    </>
   )
 }

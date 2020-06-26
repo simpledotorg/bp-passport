@@ -7,10 +7,10 @@ import {
 import {DateEntry} from './date-entry'
 import {BloodSugar} from '../../redux/blood-sugar/blood-sugar.models'
 import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
-import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
-import {MonthNameAxisLabel} from '../victory-chart-parts/month-name-axis-label'
-import {DayOfMonthAxisLabel} from '../victory-chart-parts/day-of-month-axis-label'
-import {MonthInitialAxisLabel} from '../victory-chart-parts/month-initial-axis-label'
+import {IDefineAdateAxisLabel} from './i-define-a-date-axis-label'
+import {MonthNameAxisLabel} from './month-name-axis-label'
+import {DayOfMonthAxisLabel} from './day-of-month-axis-label'
+import {MonthInitialAxisLabel} from './month-initial-axis-label'
 
 export class DateAxis {
   private dates: DateEntry[]

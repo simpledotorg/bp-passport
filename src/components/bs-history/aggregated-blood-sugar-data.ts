@@ -1,12 +1,13 @@
-import {DateEntry} from './date-entry'
+import {DateEntry} from '../victory-chart-parts/date-entry'
 import {BloodSugar} from '../../redux/blood-sugar/blood-sugar.models'
 import {ScatterGraphDataPoint} from './scatter-graph-data-point'
+import {LineGraphDataPoint} from './line-graph-data-point'
 
 export class AggregatedBloodSugarData {
   private dateEntry: DateEntry
 
-  private minReading: BloodSugar | null = null
-  private maxReading: BloodSugar | null = null
+  private _minReading: BloodSugar | null = null
+  private _maxReading: BloodSugar | null = null
 
   private readings: BloodSugar[] = []
 
@@ -18,49 +19,28 @@ export class AggregatedBloodSugarData {
     return this.dateEntry
   }
 
-  private updateMinReading(reading: BloodSugar): void {
-    if (!this.minReading) {
-      this.minReading = reading
-    }
-
-    const readingValue = Number(reading.blood_sugar_value)
-    const currentMinValue = Number(this.minReading.blood_sugar_value)
-
-    if (currentMinValue > readingValue) {
-      this.minReading = reading
-    }
-  }
-
-  private updateMaxReading(reading: BloodSugar): void {
-    if (!this.maxReading) {
-      this.maxReading = reading
-      return
-    }
-
-    const readingValue = Number(reading.blood_sugar_value)
-    const currentMaxValue = Number(this.maxReading.blood_sugar_value)
-
-    if (readingValue > currentMaxValue) {
-      this.maxReading = reading
-    }
-  }
-
   public addReading(reading: BloodSugar): void {
     this.readings.push(reading)
-    this.updateMinReading(reading)
-    this.updateMaxReading(reading)
+    this._maxReading = null
+    this._minReading = null
   }
 
   public getReadings(): BloodSugar[] {
     return this.readings
   }
 
-  public getMaxReading(): BloodSugar | null {
-    return this.maxReading
+  public get maxReading(): BloodSugar | null {
+    if (!this._maxReading) {
+      this._maxReading = this.readings.getMaxReading()
+    }
+    return this._maxReading
   }
 
-  public getMinReading(): BloodSugar | null {
-    return this.minReading
+  public get minReading(): BloodSugar | null {
+    if (!this._minReading) {
+      this._minReading = this.readings.getMinReading()
+    }
+    return this._minReading
   }
 }
 
@@ -68,6 +48,8 @@ declare global {
   interface Array<T> {
     // tslint:disable-next-line: array-type
     getScatterDataForGraph(): ScatterGraphDataPoint[]
+
+    getLineGraphData(): LineGraphDataPoint[]
   }
 }
 
@@ -84,6 +66,21 @@ if (!Array.prototype.getScatterDataForGraph) {
       })
     })
 
+    return data
+  }
+}
+
+if (!Array.prototype.getLineGraphData) {
+  Array.prototype.getLineGraphData = function <
+    T extends AggregatedBloodSugarData
+  >(this: T[]): LineGraphDataPoint[] {
+    const data: LineGraphDataPoint[] = []
+    this.forEach((aggregateRecord) => {
+      const index = aggregateRecord.getDateEntry().getIndex()
+      aggregateRecord.getReadings().forEach((reading) => {
+        data.push(new LineGraphDataPoint(index, reading))
+      })
+    })
     return data
   }
 }
