@@ -237,9 +237,21 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
               />
             )
           })}
+          {chartData.displayLineGraph && (
+            <VictoryLine
+              data={chartData.getLineGraphData()}
+              style={{
+                data: {
+                  stroke: colors.grey1,
+                  strokeWidth: 1,
+                },
+              }}
+            />
+          )}
+
           <VictoryScatter
             data={chartData.getScatterDataForGraph()}
-            size={5}
+            size={3}
             style={{
               data: {
                 fill: ({datum}) =>

@@ -1,6 +1,7 @@
 import {DateEntry} from '../victory-chart-parts/date-entry'
 import {BloodSugar} from '../../redux/blood-sugar/blood-sugar.models'
 import {ScatterGraphDataPoint} from './scatter-graph-data-point'
+import {LineGraphDataPoint} from './line-graph-data-point'
 
 export class AggregatedBloodSugarData {
   private dateEntry: DateEntry
@@ -47,6 +48,8 @@ declare global {
   interface Array<T> {
     // tslint:disable-next-line: array-type
     getScatterDataForGraph(): ScatterGraphDataPoint[]
+
+    getLineGraphData(): LineGraphDataPoint[]
   }
 }
 
@@ -63,6 +66,21 @@ if (!Array.prototype.getScatterDataForGraph) {
       })
     })
 
+    return data
+  }
+}
+
+if (!Array.prototype.getLineGraphData) {
+  Array.prototype.getLineGraphData = function <
+    T extends AggregatedBloodSugarData
+  >(this: T[]): LineGraphDataPoint[] {
+    const data: LineGraphDataPoint[] = []
+    this.forEach((aggregateRecord) => {
+      const index = aggregateRecord.getDateEntry().getIndex()
+      aggregateRecord.getReadings().forEach((reading) => {
+        data.push(new LineGraphDataPoint(index, reading))
+      })
+    })
     return data
   }
 }

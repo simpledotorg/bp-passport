@@ -14,6 +14,7 @@ import {
 import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
 import {getMonthYearTitle, getYearTitle} from '../../utils/dates'
 import {IDefineChartsAvailable} from './i-define-charts-available'
+import {LineGraphDataPoint} from './line-graph-data-point'
 
 export class ChartData implements IDefineChartsAvailable {
   private readonly _requestedChart: IDefineAChartRequest
@@ -190,5 +191,17 @@ export class ChartData implements IDefineChartsAvailable {
 
   public hasPreviousPeriod(): boolean {
     return this._hasPreviousPeriod
+  }
+
+  public get displayLineGraph(): boolean {
+    return this._requestedChart.chartType === BLOOD_SUGAR_TYPES.HEMOGLOBIC
+  }
+
+  public getLineGraphData(): LineGraphDataPoint[] {
+    if (this.displayLineGraph) {
+      return this.aggregatedData.getLineGraphData()
+    }
+
+    return []
   }
 }
