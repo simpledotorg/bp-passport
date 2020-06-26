@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import {View, Dimensions} from 'react-native'
-import {format, addMonths} from 'date-fns'
 import {
   VictoryChart,
   VictoryTheme,
@@ -12,13 +11,14 @@ import {
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {colors} from '../styles'
-import {DateRange} from '../utils/dates'
-import {BodyText} from './text'
 import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
 import {ChartData} from './bp-history/chart-data'
 import {GraphLoadingPlaceholder} from './victory-chart-parts/graph-loading-placeholder'
 import {useIntl} from 'react-intl'
 import {TitleBar} from './victory-chart-parts/title-bar'
+import {ChartRequest} from './bp-history/chart-request'
+import {DayOfMonthAxisLabel} from './victory-chart-parts/day-of-month-axis-label'
+import {DayOfMonthLabel} from './victory-chart-parts/day-of-month-label'
 
 type Props = {
   bps: BloodPressure[]
@@ -33,11 +33,16 @@ export const BpHistoryChart = ({bps}: Props) => {
     return bpIn.systolic >= 140 || bpIn.diastolic >= 90
   }
 
+  const [requestedChart, setRequestedChart] = useState<ChartRequest>(
+    ChartRequest.CreateFromAvailableReadings(bps),
+  )
   const [chartData, setChartData] = useState<ChartData | null>(null)
 
   useEffect(() => {
-    setChartData(new ChartData(bps))
-  }, [bps])
+    if (requestedChart) {
+      setChartData(new ChartData(requestedChart, bps))
+    }
+  }, [bps, requestedChart])
 
   const getMaxThreshhold = (): number => {
     return 140
@@ -79,6 +84,16 @@ export const BpHistoryChart = ({bps}: Props) => {
     return base - difference
   }
 
+  const movePreviousPeriod = (): void => {
+    setChartData(null)
+    setRequestedChart(requestedChart.moveToPreviousPeriod())
+  }
+
+  const moveNextPeriod = (): void => {
+    setChartData(null)
+    setRequestedChart(requestedChart.moveToNextPeriod())
+  }
+
   if (!chartData) {
     return <GraphLoadingPlaceholder />
   }
@@ -109,34 +124,11 @@ export const BpHistoryChart = ({bps}: Props) => {
             paddingLeft: 6,
           }}>
           {chartData.getAxisTickValues().map((value, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  flex: 1,
-                  flexShrink: 0,
-                }}>
-                <BodyText
-                  style={{
-                    color: colors.grey0,
-                    fontWeight: '500',
-                    fontSize: 14,
-                    lineHeight: 18,
-                  }}>
-                  {value.monthName}
-                </BodyText>
-                <BodyText
-                  style={{
-                    color: colors.grey2,
-                    fontWeight: '500',
-                    fontSize: 14,
-                    lineHeight: 18,
-                  }}>
-                  {value.year}
-                </BodyText>
-              </View>
-            )
+            if (value instanceof DayOfMonthAxisLabel) {
+              return <DayOfMonthLabel key={index} data={value} />
+            }
           })}
+
           <View style={{width: 32}} />
         </View>
         <VictoryChart

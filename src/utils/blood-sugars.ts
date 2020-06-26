@@ -5,6 +5,7 @@ import {
   BLOOD_SUGAR_TYPES,
 } from '../redux/blood-sugar/blood-sugar.models'
 import {dateLocale} from '../constants/languages'
+import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 
 export const displayDate = (bsIn: BloodSugar) => {
   return bsIn.recorded_at
@@ -112,7 +113,7 @@ declare global {
 }
 
 if (!Array.prototype.mostRecent) {
-  Array.prototype.mostRecent = function <T extends BloodSugar>(
+  Array.prototype.mostRecent = function <T extends BloodSugar | BloodPressure>(
     this: T[],
   ): T | null {
     return this.reduce((memo: T | null, current: T): T => {
@@ -125,7 +126,7 @@ if (!Array.prototype.mostRecent) {
 }
 
 if (!Array.prototype.oldest) {
-  Array.prototype.oldest = function <T extends BloodSugar>(
+  Array.prototype.oldest = function <T extends BloodSugar | BloodPressure>(
     this: T[],
   ): T | null {
     return this.reduce((memo: T | null, current: T): T => {

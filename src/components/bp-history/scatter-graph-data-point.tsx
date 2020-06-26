@@ -1,4 +1,3 @@
-import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
 import {useIntl} from 'react-intl'
 import {format} from 'date-fns'
 import {AggregatedBloodPressureData} from './aggregated-blood-pressure-data'

@@ -3,10 +3,14 @@ import {DateAxis} from './date-axis'
 import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
 import {ScatterGraphDataPoint} from '../bp-history/scatter-graph-data-point'
 import {LineGraphDataPoint} from '../bp-history/line-graph-data-point'
-import {IDefineAChartRequest} from './i-define-a-chart-request'
 import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
+import {ChartRequest} from './../bp-history/chart-request'
+import {format} from 'date-fns'
+import {dateLocale} from '../../constants/languages'
 
 export class ChartData {
+  private readonly _requestedChart: ChartRequest
+
   private readonly dateAxis: DateAxis
   private readonly aggregatedData: AggregatedBloodPressureData[] = []
 
@@ -15,10 +19,76 @@ export class ChartData {
   private readonly _hasNextPeriod: boolean
   private readonly _hasPreviousPeriod: boolean
 
-  constructor(requestedChart: IDefineAChartRequest, readings: BloodPressure[]) {
-    this.dateAxis = DateAxis.CreateMostRecentMonthsFromBloodPressures(
+  private static getMonthName(month: number, year: number): string {
+    return format(new Date(year, month, 1), 'MMM', {
+      locale: dateLocale(),
+    })
+  }
+
+  private static determineIfHasPreviousPeriod(
+    requestedChart: ChartRequest,
+    readings: BloodPressure[],
+  ): boolean {
+    const oldestReading = readings.oldest()
+    if (oldestReading === null) {
+      return false
+    }
+
+    const dateOfOldestReading = new Date(oldestReading.recorded_at)
+
+    if (requestedChart.requestedYear < dateOfOldestReading.getFullYear()) {
+      return false
+    }
+    if (requestedChart.requestedYear > dateOfOldestReading.getFullYear()) {
+      return true
+    }
+
+    return requestedChart.requestedMonth > dateOfOldestReading.getMonth()
+  }
+
+  private static determineIfHasNextPeriod(
+    requestedChart: ChartRequest,
+    readings: BloodPressure[],
+  ): boolean {
+    const mostRecentReading = readings.mostRecent()
+    if (mostRecentReading === null) {
+      return false
+    }
+
+    const dateOfMostRecentReading = new Date(mostRecentReading.recorded_at)
+
+    if (requestedChart.requestedYear > dateOfMostRecentReading.getFullYear()) {
+      return false
+    }
+    if (requestedChart.requestedYear < dateOfMostRecentReading.getFullYear()) {
+      return true
+    }
+
+    return requestedChart.requestedMonth < dateOfMostRecentReading.getMonth()
+  }
+
+  constructor(requestedChart: ChartRequest, readings: BloodPressure[]) {
+    this._requestedChart = requestedChart
+
+    this.dateAxis = DateAxis.CreateForRequestedMonth(
+      requestedChart.requestedMonth,
+      requestedChart.requestedYear,
+    )
+
+    const monthName = ChartData.getMonthName(
+      requestedChart.requestedMonth,
+      requestedChart.requestedYear,
+    )
+
+    this._chartTitle = `${monthName}-${requestedChart.requestedYear}`
+
+    this._hasPreviousPeriod = ChartData.determineIfHasPreviousPeriod(
+      requestedChart,
       readings,
-      2,
+    )
+    this._hasNextPeriod = ChartData.determineIfHasNextPeriod(
+      requestedChart,
+      readings,
     )
 
     readings.forEach((bloodPressureReading) => {
@@ -117,5 +187,17 @@ export class ChartData {
 
   public getAxisTickValues(): IDefineAdateAxisLabel[] {
     return this.dateAxis.getAxisTickValues()
+  }
+
+  public getTitle(): string {
+    return this._chartTitle
+  }
+
+  public hasNextPeriod(): boolean {
+    return this._hasNextPeriod
+  }
+
+  public hasPreviousPeriod(): boolean {
+    return this._hasPreviousPeriod
   }
 }
