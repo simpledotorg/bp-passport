@@ -9,7 +9,7 @@ import {BodyHeader, BsInformation, BsHistoryChart, Line} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
-import {getTestData} from '../components/bs-history/test-data'
+// import {getTestData} from '../components/bs-history/test-data'
 
 type BsHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -50,7 +50,7 @@ function BsHistoryScreen({navigation, route}: Props) {
             </View>
           </View>
           <View style={{minHeight: 304}}>
-            <BsHistoryChart bloodSugarReadings={getTestData() ?? []} />
+            <BsHistoryChart bloodSugarReadings={bloodSugars ?? []} />
           </View>
         </View>
         <View

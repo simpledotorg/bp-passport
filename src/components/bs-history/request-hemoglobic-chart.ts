@@ -5,6 +5,7 @@ import {
 import {IDefineAChartRequest} from './i-define-a-chart-request'
 import {RequestSingleMonthChart} from './request-single-month-chart'
 import {IDefineChartsAvailable} from './i-define-charts-available'
+import {getYearTitle} from '../../utils/dates'
 
 export class RequestHemoglobicChart
   implements IDefineAChartRequest, IDefineChartsAvailable {
@@ -18,7 +19,7 @@ export class RequestHemoglobicChart
   private readonly hasHemoglobicReadings: boolean
 
   private constructor(yearToDisplay: number, readings: BloodSugar[]) {
-    this._chartTitle = '-'
+    this._chartTitle = getYearTitle(yearToDisplay)
 
     this._yearToDisplay = yearToDisplay
     this._readings = readings
