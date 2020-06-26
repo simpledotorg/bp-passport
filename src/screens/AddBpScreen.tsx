@@ -188,6 +188,7 @@ function AddBpScreen({navigation, route}: Props) {
           <View style={{flexDirection: 'row'}}>
             <View style={{flexDirection: 'column', flex: 1}}>
               <TextInput
+                returnKeyType="done"
                 maxLength={6}
                 placeholderTextColor={colors.grey1}
                 autoFocus={true}
