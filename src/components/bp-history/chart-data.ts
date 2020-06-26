@@ -1,9 +1,9 @@
 import {AggregatedBloodPressureData} from './aggregated-blood-pressure-data'
 import {DateAxis} from '../victory-chart-parts/date-axis'
-import {ScatterGraphDataPoint} from '../bp-history/scatter-graph-data-point'
-import {LineGraphDataPoint} from '../bp-history/line-graph-data-point'
+import {ScatterGraphDataPoint} from './scatter-graph-data-point'
+import {LineGraphDataPoint} from './line-graph-data-point'
 import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
-import {ChartRequest} from './../bp-history/chart-request'
+import {ChartRequest} from './chart-request'
 import {getMonthYearTitle} from '../../utils/dates'
 
 export class ChartData {
