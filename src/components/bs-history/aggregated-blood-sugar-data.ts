@@ -5,8 +5,8 @@ import {ScatterGraphDataPoint} from './scatter-graph-data-point'
 export class AggregatedBloodSugarData {
   private dateEntry: DateEntry
 
-  private minReading: BloodSugar | null = null
-  private maxReading: BloodSugar | null = null
+  private _minReading: BloodSugar | null = null
+  private _maxReading: BloodSugar | null = null
 
   private readings: BloodSugar[] = []
 
@@ -18,49 +18,58 @@ export class AggregatedBloodSugarData {
     return this.dateEntry
   }
 
-  private updateMinReading(reading: BloodSugar): void {
-    if (!this.minReading) {
-      this.minReading = reading
-    }
+  private static getMinReading(readings: BloodSugar[]): BloodSugar | null {
+    return readings.reduce(
+      (memo: BloodSugar | null, current: BloodSugar): BloodSugar | null => {
+        const readingValue = Number(current.blood_sugar_value)
 
-    const readingValue = Number(reading.blood_sugar_value)
-    const currentMinValue = Number(this.minReading.blood_sugar_value)
+        if (!memo) {
+          return current
+        }
 
-    if (currentMinValue > readingValue) {
-      this.minReading = reading
-    }
+        return Number(memo.blood_sugar_value) < readingValue ? memo : current
+      },
+      null,
+    )
   }
 
-  private updateMaxReading(reading: BloodSugar): void {
-    if (!this.maxReading) {
-      this.maxReading = reading
-      return
-    }
+  private static getMaxReading(readings: BloodSugar[]): BloodSugar | null {
+    return readings.reduce(
+      (memo: BloodSugar | null, current: BloodSugar): BloodSugar | null => {
+        const readingValue = Number(current.blood_sugar_value)
 
-    const readingValue = Number(reading.blood_sugar_value)
-    const currentMaxValue = Number(this.maxReading.blood_sugar_value)
+        if (!memo) {
+          return current
+        }
 
-    if (readingValue > currentMaxValue) {
-      this.maxReading = reading
-    }
+        return Number(memo.blood_sugar_value) > readingValue ? memo : current
+      },
+      null,
+    )
   }
 
   public addReading(reading: BloodSugar): void {
     this.readings.push(reading)
-    this.updateMinReading(reading)
-    this.updateMaxReading(reading)
+    this._maxReading = null
+    this._minReading = null
   }
 
   public getReadings(): BloodSugar[] {
     return this.readings
   }
 
-  public getMaxReading(): BloodSugar | null {
-    return this.maxReading
+  public get maxReading(): BloodSugar | null {
+    if (!this._maxReading) {
+      this._maxReading = AggregatedBloodSugarData.getMaxReading(this.readings)
+    }
+    return this._maxReading
   }
 
-  public getMinReading(): BloodSugar | null {
-    return this.minReading
+  public get minReading(): BloodSugar | null {
+    if (!this._minReading) {
+      this._minReading = AggregatedBloodSugarData.getMinReading(this.readings)
+    }
+    return this._minReading
   }
 }
 

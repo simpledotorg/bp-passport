@@ -1,4 +1,4 @@
-import React, {useDebugValue} from 'react'
+import React from 'react'
 import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {BLOOD_SUGAR_TYPES} from '../../redux/blood-sugar/blood-sugar.models'

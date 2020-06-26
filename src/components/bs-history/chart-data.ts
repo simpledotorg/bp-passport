@@ -208,19 +208,12 @@ export class ChartData implements IDefineChartsAvailable {
   public getMinMaxDataForGraph(): {index: number; min: number; max: number}[] {
     const values: {index: number; min: number; max: number}[] = []
     this.aggregatedData.forEach((aggregateRecord) => {
-      if (
-        !aggregateRecord.getMinReading() ||
-        !aggregateRecord.getMaxReading()
-      ) {
+      if (!aggregateRecord.minReading || !aggregateRecord.maxReading) {
         return
       }
 
-      const minValue = Number(
-        aggregateRecord.getMinReading()?.blood_sugar_value,
-      )
-      const maxValue = Number(
-        aggregateRecord.getMaxReading()?.blood_sugar_value,
-      )
+      const minValue = Number(aggregateRecord.minReading?.blood_sugar_value)
+      const maxValue = Number(aggregateRecord.maxReading?.blood_sugar_value)
 
       if (minValue === maxValue) {
         return
@@ -262,7 +255,7 @@ export class ChartData implements IDefineChartsAvailable {
         memo: number | null,
         current: AggregatedBloodSugarData,
       ): number | null => {
-        const maxValueForCurrentDay = current.getMaxReading()
+        const maxValueForCurrentDay = current.maxReading
         if (!maxValueForCurrentDay) {
           return memo
         }
@@ -281,7 +274,7 @@ export class ChartData implements IDefineChartsAvailable {
         memo: number | null,
         current: AggregatedBloodSugarData,
       ): number | null => {
-        const minValueForCurrentDay = current.getMinReading()
+        const minValueForCurrentDay = current.minReading
         if (!minValueForCurrentDay) {
           return memo
         }
