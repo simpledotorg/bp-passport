@@ -12,8 +12,9 @@ import {IDefineAChartRequest} from './i-define-a-chart-request'
 import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
 import {format} from 'date-fns'
 import {dateLocale} from '../../constants/languages'
+import {IDefineChartsAvailable} from './i-define-charts-available'
 
-export class ChartData {
+export class ChartData implements IDefineChartsAvailable {
   private readonly _requestedChart: IDefineAChartRequest
   private readonly _chartTitle: string
   private readonly hasRandomReadings: boolean
