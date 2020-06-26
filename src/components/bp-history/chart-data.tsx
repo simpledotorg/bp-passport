@@ -1,8 +1,8 @@
 import {AggregatedBloodPressureData} from './aggregated-blood-pressure-data'
-import {DateRange} from '../../utils/dates'
 import {DateAxis} from './date-axis'
 import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
 import {ScatterGraphDataPoint} from '../bp-history/scatter-graph-data-point'
+import {LineGraphDataPoint} from '../bp-history/line-graph-data-point'
 
 export class ChartData {
   private readonly dateAxis: DateAxis
@@ -40,14 +40,25 @@ export class ChartData {
     this.aggregatedData.forEach((aggregateRecord) => {
       const index = aggregateRecord.getDateEntry().getIndex()
 
-      aggregateRecord.getReadings().forEach(() => {
-        data.push(
-          ScatterGraphDataPoint.CreateForDiastolic(index, aggregateRecord),
-        )
-        data.push(
-          ScatterGraphDataPoint.CreateForSystolic(index, aggregateRecord),
-        )
-      })
+      data.push(
+        ScatterGraphDataPoint.CreateForDiastolic(index, aggregateRecord),
+      )
+      data.push(ScatterGraphDataPoint.CreateForSystolic(index, aggregateRecord))
+    })
+
+    return data
+  }
+
+  public getLineGraph(useDiastolic: boolean): LineGraphDataPoint[] {
+    const data: LineGraphDataPoint[] = []
+    this.aggregatedData.forEach((aggregateRecord) => {
+      const index = aggregateRecord.getDateEntry().getIndex()
+
+      if (useDiastolic) {
+        data.push(LineGraphDataPoint.CreateForDiastolic(index, aggregateRecord))
+      } else {
+        data.push(LineGraphDataPoint.CreateForSystolic(index, aggregateRecord))
+      }
     })
 
     return data

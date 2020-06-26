@@ -200,15 +200,7 @@ export const BpHistoryChart = ({bps}: Props) => {
             }}
           />
           <VictoryLine
-            // data={[...chartData.low, ...chartData.high].map((bp) => {
-            //   if (bp.list.length) {
-            //     return {
-            //       x: bp.index,
-            //       y: bp.averaged.systolic,
-            //     }
-            //   }
-            //   return null
-            // })}
+            data={chartData.getLineGraph(true)}
             style={{
               data: {
                 stroke: colors.grey1,
@@ -217,15 +209,7 @@ export const BpHistoryChart = ({bps}: Props) => {
             }}
           />
           <VictoryLine
-            // data={[...chartData.low, ...chartData.high].map((bp) => {
-            //   if (bp.list.length) {
-            //     return {
-            //       x: bp.index,
-            //       y: bp.averaged.diastolic,
-            //     }
-            //   }
-            //   return null
-            // })}
+            data={chartData.getLineGraph(false)}
             style={{
               data: {
                 stroke: colors.grey1,
