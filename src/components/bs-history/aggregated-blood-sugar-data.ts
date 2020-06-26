@@ -18,36 +18,6 @@ export class AggregatedBloodSugarData {
     return this.dateEntry
   }
 
-  private static getMinReading(readings: BloodSugar[]): BloodSugar | null {
-    return readings.reduce(
-      (memo: BloodSugar | null, current: BloodSugar): BloodSugar | null => {
-        const readingValue = Number(current.blood_sugar_value)
-
-        if (!memo) {
-          return current
-        }
-
-        return Number(memo.blood_sugar_value) < readingValue ? memo : current
-      },
-      null,
-    )
-  }
-
-  private static getMaxReading(readings: BloodSugar[]): BloodSugar | null {
-    return readings.reduce(
-      (memo: BloodSugar | null, current: BloodSugar): BloodSugar | null => {
-        const readingValue = Number(current.blood_sugar_value)
-
-        if (!memo) {
-          return current
-        }
-
-        return Number(memo.blood_sugar_value) > readingValue ? memo : current
-      },
-      null,
-    )
-  }
-
   public addReading(reading: BloodSugar): void {
     this.readings.push(reading)
     this._maxReading = null
@@ -60,14 +30,14 @@ export class AggregatedBloodSugarData {
 
   public get maxReading(): BloodSugar | null {
     if (!this._maxReading) {
-      this._maxReading = AggregatedBloodSugarData.getMaxReading(this.readings)
+      this._maxReading = this.readings.getMaxReading()
     }
     return this._maxReading
   }
 
   public get minReading(): BloodSugar | null {
     if (!this._minReading) {
-      this._minReading = AggregatedBloodSugarData.getMinReading(this.readings)
+      this._minReading = this.readings.getMinReading()
     }
     return this._minReading
   }

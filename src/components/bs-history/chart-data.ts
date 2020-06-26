@@ -1,14 +1,16 @@
-import {
-  BloodSugar,
-  BLOOD_SUGAR_TYPES,
-} from '../../redux/blood-sugar/blood-sugar.models'
+import {BLOOD_SUGAR_TYPES} from '../../redux/blood-sugar/blood-sugar.models'
 
 import {AggregatedBloodSugarData} from './aggregated-blood-sugar-data'
 import {DateAxis} from '../victory-chart-parts/date-axis'
 import {ScatterGraphDataPoint} from './scatter-graph-data-point'
 import {RequestSingleMonthChart} from './request-single-month-chart'
 import {RequestHemoglobicChart} from './request-hemoglobic-chart'
-import {IDefineAChartRequest} from './i-define-a-chart-request'
+import {
+  IDefineAChartRequest,
+  filterReadings,
+  determineIfHasPreviousPeriod,
+  determineIfHasNextPeriod,
+} from './i-define-a-chart-request'
 import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
 import {getMonthYearTitle, getYearTitle} from '../../utils/dates'
 import {IDefineChartsAvailable} from './i-define-charts-available'
@@ -26,105 +28,6 @@ export class ChartData implements IDefineChartsAvailable {
   private readonly _hasNextPeriod: boolean
   private readonly _hasPreviousPeriod: boolean
 
-  private static filterReadings(
-    chartRequest: IDefineAChartRequest,
-  ): BloodSugar[] {
-    if (chartRequest instanceof RequestHemoglobicChart) {
-      return chartRequest.readings
-        .filterByTypes([BLOOD_SUGAR_TYPES.HEMOGLOBIC])
-        .filterForYear(chartRequest.yearToDisplay)
-    }
-    if (chartRequest instanceof RequestSingleMonthChart) {
-      switch (chartRequest.chartType) {
-        case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
-          return chartRequest.readings
-            .filterByTypes([BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR])
-            .filterForMonthAndYear(
-              chartRequest.requestedMonth,
-              chartRequest.requestedYear,
-            )
-        case BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR:
-        case BLOOD_SUGAR_TYPES.POST_PRANDIAL:
-          return chartRequest.readings
-            .filterByTypes([
-              BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
-              BLOOD_SUGAR_TYPES.POST_PRANDIAL,
-            ])
-            .filterForMonthAndYear(
-              chartRequest.requestedMonth,
-              chartRequest.requestedYear,
-            )
-
-        default:
-          throw new Error('Requested blood sugar type not handled')
-      }
-    }
-
-    throw new Error('Requested chart type not handled')
-  }
-
-  private static determineIfHasPreviousPeriod(
-    requestedChart: IDefineAChartRequest
-  ): boolean {
-    const oldestReading = requestedChart.readings
-      .filterByType(requestedChart.chartType)
-      .oldest()
-    if (oldestReading === null) {
-      return false
-    }
-
-    const dateOfOldestReading = new Date(oldestReading.recorded_at)
-
-    if (requestedChart instanceof RequestSingleMonthChart) {
-      if (requestedChart.requestedYear < dateOfOldestReading.getFullYear()) {
-        return false
-      }
-      if (requestedChart.requestedYear > dateOfOldestReading.getFullYear()) {
-        return true
-      }
-
-      return requestedChart.requestedMonth > dateOfOldestReading.getMonth()
-    } else if (requestedChart instanceof RequestHemoglobicChart) {
-      return dateOfOldestReading.getFullYear() < requestedChart.yearToDisplay
-    } else {
-      throw new Error('Chart type is not handled')
-    }
-  }
-
-  private static determineIfHasNextPeriod(
-    requestedChart: IDefineAChartRequest,
-  ): boolean {
-    const mostRecentReading = requestedChart.readings
-      .filterByType(requestedChart.chartType)
-      .mostRecent()
-    if (mostRecentReading === null) {
-      return false
-    }
-
-    const dateOfMostRecentReading = new Date(mostRecentReading.recorded_at)
-
-    if (requestedChart instanceof RequestSingleMonthChart) {
-      if (
-        requestedChart.requestedYear > dateOfMostRecentReading.getFullYear()
-      ) {
-        return false
-      }
-      if (
-        requestedChart.requestedYear < dateOfMostRecentReading.getFullYear()
-      ) {
-        return true
-      }
-
-      return requestedChart.requestedMonth < dateOfMostRecentReading.getMonth()
-    } else if (requestedChart instanceof RequestHemoglobicChart) {
-      return (
-        dateOfMostRecentReading.getFullYear() > requestedChart.yearToDisplay
-      )
-    } else {
-      throw new Error('Chart type is not handled')
-    }
-  }
-
   constructor(requestedChart: IDefineAChartRequest) {
     this._requestedChart = requestedChart
 
@@ -141,7 +44,7 @@ export class ChartData implements IDefineChartsAvailable {
       BLOOD_SUGAR_TYPES.HEMOGLOBIC,
     )
 
-    const filteredReadings = ChartData.filterReadings(this._requestedChart)
+    const filteredReadings = filterReadings(this._requestedChart)
 
     if (requestedChart instanceof RequestSingleMonthChart) {
       this.dateAxis = DateAxis.CreateForRequestedMonth(
@@ -159,10 +62,8 @@ export class ChartData implements IDefineChartsAvailable {
       throw new Error('Chart type is not handled')
     }
 
-    this._hasPreviousPeriod = ChartData.determineIfHasPreviousPeriod(
-      requestedChart,
-    )
-    this._hasNextPeriod = ChartData.determineIfHasNextPeriod(requestedChart)
+    this._hasPreviousPeriod = determineIfHasPreviousPeriod(requestedChart)
+    this._hasNextPeriod = determineIfHasNextPeriod(requestedChart)
 
     filteredReadings.forEach((bloodSugarReading) => {
       const dateEntry = this.dateAxis.getDateEntryFor(bloodSugarReading)

@@ -91,4 +91,40 @@ export class ChartRequest {
   public createChartData(): ChartData {
     return new ChartData(this)
   }
+
+  public determineIfHasPreviousPeriod(): boolean {
+    const oldestReading = this.readings.oldest()
+    if (oldestReading === null) {
+      return false
+    }
+
+    const dateOfOldestReading = new Date(oldestReading.recorded_at)
+
+    if (this.requestedYear < dateOfOldestReading.getFullYear()) {
+      return false
+    }
+    if (this.requestedYear > dateOfOldestReading.getFullYear()) {
+      return true
+    }
+
+    return this.requestedMonth > dateOfOldestReading.getMonth()
+  }
+
+  public determineIfHasNextPeriod(): boolean {
+    const mostRecentReading = this.readings.mostRecent()
+    if (mostRecentReading === null) {
+      return false
+    }
+
+    const dateOfMostRecentReading = new Date(mostRecentReading.recorded_at)
+
+    if (this.requestedYear > dateOfMostRecentReading.getFullYear()) {
+      return false
+    }
+    if (this.requestedYear < dateOfMostRecentReading.getFullYear()) {
+      return true
+    }
+
+    return this.requestedMonth < dateOfMostRecentReading.getMonth()
+  }
 }

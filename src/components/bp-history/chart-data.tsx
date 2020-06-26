@@ -15,46 +15,6 @@ export class ChartData {
   private readonly _hasNextPeriod: boolean
   private readonly _hasPreviousPeriod: boolean
 
-  private static determineIfHasPreviousPeriod(
-    requestedChart: ChartRequest,
-  ): boolean {
-    const oldestReading = requestedChart.readings.oldest()
-    if (oldestReading === null) {
-      return false
-    }
-
-    const dateOfOldestReading = new Date(oldestReading.recorded_at)
-
-    if (requestedChart.requestedYear < dateOfOldestReading.getFullYear()) {
-      return false
-    }
-    if (requestedChart.requestedYear > dateOfOldestReading.getFullYear()) {
-      return true
-    }
-
-    return requestedChart.requestedMonth > dateOfOldestReading.getMonth()
-  }
-
-  private static determineIfHasNextPeriod(
-    requestedChart: ChartRequest,
-  ): boolean {
-    const mostRecentReading = requestedChart.readings.mostRecent()
-    if (mostRecentReading === null) {
-      return false
-    }
-
-    const dateOfMostRecentReading = new Date(mostRecentReading.recorded_at)
-
-    if (requestedChart.requestedYear > dateOfMostRecentReading.getFullYear()) {
-      return false
-    }
-    if (requestedChart.requestedYear < dateOfMostRecentReading.getFullYear()) {
-      return true
-    }
-
-    return requestedChart.requestedMonth < dateOfMostRecentReading.getMonth()
-  }
-
   constructor(requestedChart: ChartRequest) {
     this.dateAxis = DateAxis.CreateForRequestedMonth(
       requestedChart.requestedMonth,
@@ -66,10 +26,8 @@ export class ChartData {
       requestedChart.requestedYear,
     )
 
-    this._hasPreviousPeriod = ChartData.determineIfHasPreviousPeriod(
-      requestedChart,
-    )
-    this._hasNextPeriod = ChartData.determineIfHasNextPeriod(requestedChart)
+    this._hasPreviousPeriod = requestedChart.determineIfHasPreviousPeriod()
+    this._hasNextPeriod = requestedChart.determineIfHasNextPeriod()
 
     requestedChart.readings.forEach((bloodPressureReading) => {
       const dateEntry = this.dateAxis.getDateEntryFor(bloodPressureReading)
@@ -129,7 +87,7 @@ export class ChartData {
     return returnValues
   }
 
-  public getMaxReading(): number | null {
+  public getMaxDataValue(): number | null {
     return this.aggregatedData.reduce(
       (
         memo: number | null,
@@ -147,7 +105,7 @@ export class ChartData {
     )
   }
 
-  public getMinReading(): number | null {
+  public getMinDataValue(): number | null {
     return this.aggregatedData.reduce(
       (
         memo: number | null,

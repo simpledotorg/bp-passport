@@ -49,7 +49,7 @@ export const BpHistoryChart = ({bps}: Props) => {
 
     const threshhold = BloodPressure.diastolicUpperThreshold
     const difference = Math.round(threshhold / 10)
-    let base = chartData.getMaxReading() ?? threshhold
+    let base = chartData.getMaxDataValue() ?? threshhold
 
     if (base < threshhold) {
       base = threshhold
@@ -65,7 +65,7 @@ export const BpHistoryChart = ({bps}: Props) => {
 
     const threshhold = BloodPressure.systolicUpperThreshold
     const difference = Math.round(threshhold / 10)
-    let base = chartData.getMinReading() ?? threshhold
+    let base = chartData.getMinDataValue() ?? threshhold
 
     if (base > threshhold) {
       base = threshhold

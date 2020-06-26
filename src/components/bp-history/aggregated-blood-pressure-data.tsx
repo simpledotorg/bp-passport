@@ -22,44 +22,6 @@ export class AggregatedBloodPressureData {
     return this.dateEntry
   }
 
-  private static getMinValue(
-    readings: BloodPressure[],
-    useDiastolic: boolean,
-  ): number | null {
-    return readings.reduce((memo: number | null, current: BloodPressure):
-      | number
-      | null => {
-      const readingValue = Number(
-        useDiastolic ? current.diastolic : current.systolic,
-      )
-
-      if (!memo) {
-        return readingValue
-      }
-
-      return memo < readingValue ? memo : readingValue
-    }, null)
-  }
-
-  private static getMaxValue(
-    readings: BloodPressure[],
-    useDiastolic: boolean,
-  ): number | null {
-    return readings.reduce((memo: number | null, current: BloodPressure):
-      | number
-      | null => {
-      const readingValue = Number(
-        useDiastolic ? current.diastolic : current.systolic,
-      )
-
-      if (!memo) {
-        return readingValue
-      }
-
-      return memo > readingValue ? memo : readingValue
-    }, null)
-  }
-
   public addReading(reading: BloodPressure): void {
     this.readings.push(reading)
 
@@ -78,10 +40,7 @@ export class AggregatedBloodPressureData {
 
   public getMaxDiastolicReading(): number | null {
     if (!this.maxDiastolicReading) {
-      this.maxDiastolicReading = AggregatedBloodPressureData.getMaxValue(
-        this.readings,
-        true,
-      )
+      this.maxDiastolicReading = this.readings.getMaxValue(true)
     }
 
     return this.maxDiastolicReading
@@ -89,10 +48,7 @@ export class AggregatedBloodPressureData {
 
   public getMinDiastolicReading(): number | null {
     if (!this.minDiastolicReading) {
-      this.minDiastolicReading = AggregatedBloodPressureData.getMinValue(
-        this.readings,
-        true,
-      )
+      this.minDiastolicReading = this.readings.getMinValue(true)
     }
 
     return this.minDiastolicReading
@@ -100,20 +56,14 @@ export class AggregatedBloodPressureData {
 
   public getMaxSystolicReading(): number | null {
     if (!this.maxSystolicReading) {
-      this.maxSystolicReading = AggregatedBloodPressureData.getMaxValue(
-        this.readings,
-        false,
-      )
+      this.maxSystolicReading = this.readings.getMaxValue(false)
     }
     return this.maxSystolicReading
   }
 
   public getMinSystolicReading(): number | null {
     if (!this.minSystolicReading) {
-      this.minSystolicReading = AggregatedBloodPressureData.getMinValue(
-        this.readings,
-        false,
-      )
+      this.minSystolicReading = this.readings.getMinValue(false)
     }
 
     return this.minSystolicReading
@@ -121,10 +71,7 @@ export class AggregatedBloodPressureData {
 
   public getDiastolicAverage(): number | null {
     if (!this.avgDiastolicReading) {
-      this.avgDiastolicReading =
-        this.readings
-          .map((reading) => reading.diastolic)
-          .reduce((acc, cur) => acc + cur) / this.readings.length
+      this.avgDiastolicReading = this.readings.getAvgValue(true)
     }
 
     return this.avgDiastolicReading
@@ -132,10 +79,7 @@ export class AggregatedBloodPressureData {
 
   public getSystolicAverage(): number | null {
     if (!this.avgSystolicReading) {
-      this.avgSystolicReading =
-        this.readings
-          .map((reading) => reading.systolic)
-          .reduce((acc, cur) => acc + cur) / this.readings.length
+      this.avgSystolicReading = this.readings.getAvgValue(false)
     }
 
     return this.avgSystolicReading
