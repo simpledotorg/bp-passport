@@ -128,20 +128,29 @@ export class ChartData {
     return data
   }
 
+  private static removeNulls = (values: (number | null)[]): number[] => {
+    const returnValues: number[] = []
+    values.forEach((value) => {
+      if (value) {
+        returnValues.push(value)
+      }
+    })
+    return returnValues
+  }
+
   public getMaxReading(): number | null {
     return this.aggregatedData.reduce(
       (
         memo: number | null,
         current: AggregatedBloodPressureData,
       ): number | null => {
-        const maxValueForCurrentDay = current.getMaxReading()
-        if (!maxValueForCurrentDay) {
-          return memo
-        }
-
-        const currentValue = Number(maxValueForCurrentDay.systolic)
-
-        return !memo || currentValue > memo ? currentValue : memo
+        return Math.max(
+          ...ChartData.removeNulls([
+            current.getMaxDiastolicReading(),
+            current.getMaxSystolicReading(),
+            memo,
+          ]),
+        )
       },
       null,
     )
@@ -153,14 +162,13 @@ export class ChartData {
         memo: number | null,
         current: AggregatedBloodPressureData,
       ): number | null => {
-        const minValueForCurrentDay = current.getMinReading()
-        if (!minValueForCurrentDay) {
-          return memo
-        }
-
-        const currentValue = Number(minValueForCurrentDay.systolic)
-
-        return !memo || currentValue < memo ? currentValue : memo
+        return Math.min(
+          ...ChartData.removeNulls([
+            current.getMinDiastolicReading(),
+            current.getMinSystolicReading(),
+            memo,
+          ]),
+        )
       },
       null,
     )
