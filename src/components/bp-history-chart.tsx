@@ -85,13 +85,13 @@ export const BpHistoryChart = ({bps}: Props) => {
 
   return (
     <>
-      {/* <TitleBar
+      <TitleBar
         chartTitle={chartData.getTitle()}
         hasPreviousPeriod={chartData.hasPreviousPeriod()}
         moveToPreviousPeriodHandler={movePreviousPeriod}
         hasNextPeriod={chartData.hasNextPeriod()}
         moveToNextPeriodHandler={moveNextPeriod}
-      /> */}
+      />
       <View
         style={{
           height: 260,

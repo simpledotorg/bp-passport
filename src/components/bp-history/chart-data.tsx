@@ -3,12 +3,19 @@ import {DateAxis} from './date-axis'
 import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
 import {ScatterGraphDataPoint} from '../bp-history/scatter-graph-data-point'
 import {LineGraphDataPoint} from '../bp-history/line-graph-data-point'
+import {IDefineAChartRequest} from './i-define-a-chart-request'
+import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
 
 export class ChartData {
   private readonly dateAxis: DateAxis
   private readonly aggregatedData: AggregatedBloodPressureData[] = []
 
-  constructor(readings: BloodPressure[]) {
+  private readonly _chartTitle: string
+
+  private readonly _hasNextPeriod: boolean
+  private readonly _hasPreviousPeriod: boolean
+
+  constructor(requestedChart: IDefineAChartRequest, readings: BloodPressure[]) {
     this.dateAxis = DateAxis.CreateMostRecentMonthsFromBloodPressures(
       readings,
       2,
@@ -108,11 +115,7 @@ export class ChartData {
     })
   }
 
-  public getAxisTickValues(): {
-    month: number
-    monthName: string
-    year: number
-  }[] {
+  public getAxisTickValues(): IDefineAdateAxisLabel[] {
     return this.dateAxis.getAxisTickValues()
   }
 }
