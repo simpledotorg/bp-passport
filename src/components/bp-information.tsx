@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import {colors, redHeart, smallWarningSign} from '../styles'
 import {BodyText} from './'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
-import {dateLocale, LanguageCode} from '../constants/languages'
+import {dateLocale} from '../constants/languages'
 
 type Props = {
   bp: BloodPressure
