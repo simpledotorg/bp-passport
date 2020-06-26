@@ -14,11 +14,11 @@ export class BloodPressure {
   }
   offline?: boolean
 
-  static getMaxThreshhold = (): number => {
+  static get diastolicUpperThreshold(): number {
     return 140
   }
 
-  static getMinThreshhold = (): number => {
+  static get systolicUpperThreshold(): number {
     return 90
   }
 }

@@ -1,10 +1,8 @@
-import {useIntl} from 'react-intl'
-import {format} from 'date-fns'
+import {getLocalisedShortDate} from '../../utils/dates'
+import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
 import {AggregatedBloodPressureData} from './aggregated-blood-pressure-data'
 
 export class ScatterGraphDataPoint {
-  private intl = useIntl()
-
   public x: number
   public y: number
   public label: string
@@ -19,15 +17,22 @@ export class ScatterGraphDataPoint {
     const systolicAverage = aggregateRecord.getSystolicAverage()
 
     this.x = index
-    this.y = useDiastolic ? diastolicAverage : systolicAverage
-    this.label = `${systolicAverage.toFixed(0)} / ${diastolicAverage.toFixed(
-      0,
-    )}, ${format(aggregateRecord.getDateEntry().getDate(), 'dd-MMM-yyyy')}`
 
-    if (useDiastolic) {
-      this.showOutOfRange = this.y >= 90
-    } else {
-      this.showOutOfRange = this.y >= 140
+    const value = useDiastolic ? diastolicAverage : systolicAverage
+    if (value) {
+      this.y = value
+
+      this.label = `${systolicAverage?.toFixed(
+        0,
+      )} / ${diastolicAverage?.toFixed(0)}, ${getLocalisedShortDate(
+        aggregateRecord.getDateEntry().getDate(),
+      )}`
+
+      this.showOutOfRange =
+        this.y >=
+        (useDiastolic
+          ? BloodPressure.diastolicUpperThreshold
+          : BloodPressure.systolicUpperThreshold)
     }
   }
 

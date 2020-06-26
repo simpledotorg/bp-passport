@@ -46,3 +46,9 @@ export const getMonthName = (monthIndex: number, year: number) => {
 export const getMonthYearTitle = (monthIndex: number, year: number) => {
   return `${getMonthName(monthIndex, year)}-${year}`
 }
+
+export const getLocalisedShortDate = (date: Date) => {
+  return format(date, 'dd-MMM-yyyy', {
+    locale: dateLocale(),
+  })
+}

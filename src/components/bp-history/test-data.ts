@@ -56,7 +56,7 @@ export function getTestData(): BloodPressure[] {
   readings.push(randomBloodPressure(92, 73, '2020-02-25T08:51:27.255Z'))
   readings.push(randomBloodPressure(157, 72, '2020-02-28T12:51:27.255Z'))
   readings.push(randomBloodPressure(137, 77, '2020-02-28T18:51:27.255Z'))
-  /*
+
   readings.push(randomBloodPressure(95, 93, '2020-03-02T08:51:27.255Z'))
   readings.push(randomBloodPressure(78, 122, '2020-03-03T12:51:27.255Z'))
   readings.push(randomBloodPressure(90, 114, '2020-03-04T18:51:27.255Z'))
@@ -76,9 +76,9 @@ export function getTestData(): BloodPressure[] {
   readings.push(randomBloodPressure(119, 136, '2020-03-25T18:51:27.255Z'))
   readings.push(randomBloodPressure(87, 180, '2020-03-26T08:51:27.255Z'))
   readings.push(randomBloodPressure(89, 95, '2020-03-29T12:51:27.255Z'))
-  readings.push(randomBloodPressure(123, 87, '2020-03-30T18:51:27.255Z'))*/
+  readings.push(randomBloodPressure(123, 87, '2020-03-30T18:51:27.255Z'))
 
-  /*readings.push(randomBloodPressur(14' '72', '2020-04-01T08:51:27.255Z'))
+  readings.push(randomBloodPressure(14, 72, '2020-04-01T08:51:27.255Z'))
   readings.push(randomBloodPressure(151, 61, '2020-04-01T12:51:27.255Z'))
   readings.push(randomBloodPressure(117, 151, '2020-04-01T18:51:27.255Z'))
   readings.push(randomBloodPressure(121, 150, '2020-04-02T08:51:27.255Z'))
@@ -97,9 +97,8 @@ export function getTestData(): BloodPressure[] {
   readings.push(randomBloodPressure(138, 66, '2020-04-21T18:51:27.255Z'))
   readings.push(randomBloodPressure(145, 53, '2020-04-22T08:51:27.255Z'))
   readings.push(randomBloodPressure(111, 70, '2020-04-22T12:51:27.255Z'))
-  readings.push(randomBloodPressure(71, 48, '2020-04-22T18:51:27.255Z'))*/
+  readings.push(randomBloodPressure(71, 48, '2020-04-22T18:51:27.255Z'))
 
-  /*
   readings.push(randomBloodPressure(148, 174, '2020-05-01T08:51:27.255Z'))
   readings.push(randomBloodPressure(81, 92, '2020-05-01T12:51:27.255Z'))
   readings.push(randomBloodPressure(155, 146, '2020-05-02T18:51:27.255Z'))
@@ -119,9 +118,9 @@ export function getTestData(): BloodPressure[] {
   readings.push(randomBloodPressure(155, 116, '2020-05-26T18:51:27.255Z'))
   readings.push(randomBloodPressure(145, 102, '2020-05-29T08:51:27.255Z'))
   readings.push(randomBloodPressure(141, 40, '2020-05-29T12:51:27.255Z'))
-  readings.push(randomBloodPressure(146, 55, '2020-05-31T18:51:27.255Z'))*/
+  readings.push(randomBloodPressure(146, 55, '2020-05-31T18:51:27.255Z'))
 
-  /*readings.push(randomBloodPressur(10' '76', '2020-06-01T08:51:27.255Z'))
+  readings.push(randomBloodPressure(10, 76, '2020-06-01T08:51:27.255Z'))
   readings.push(randomBloodPressure(118, 76, '2020-06-01T12:51:27.255Z'))
   readings.push(randomBloodPressure(133, 62, '2020-06-01T18:51:27.255Z'))
   readings.push(randomBloodPressure(117, 84, '2020-06-02T08:51:27.255Z'))
@@ -140,7 +139,7 @@ export function getTestData(): BloodPressure[] {
   readings.push(randomBloodPressure(70, 100, '2020-06-21T18:51:27.255Z'))
   readings.push(randomBloodPressure(71, 68, '2020-06-22T08:51:27.255Z'))
   readings.push(randomBloodPressure(148, 48, '2020-06-22T12:51:27.255Z'))
-  readings.push(randomBloodPressure(139, 179, '2020-06-22T18:51:27.255Z'))*/
+  readings.push(randomBloodPressure(139, 179, '2020-06-22T18:51:27.255Z'))
 
   return readings
 }

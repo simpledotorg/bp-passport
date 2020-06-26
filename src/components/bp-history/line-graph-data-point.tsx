@@ -2,7 +2,7 @@ import {AggregatedBloodPressureData} from './aggregated-blood-pressure-data'
 
 export class LineGraphDataPoint {
   public x: number
-  public y: number
+  public y: number | null
 
   private constructor(
     index: number,

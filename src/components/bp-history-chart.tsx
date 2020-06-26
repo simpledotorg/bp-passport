@@ -47,7 +47,7 @@ export const BpHistoryChart = ({bps}: Props) => {
       throw new Error('Can not get max domain, not instance of chart data')
     }
 
-    const threshhold = BloodPressure.getMaxThreshhold()
+    const threshhold = BloodPressure.diastolicUpperThreshold
     const difference = Math.round(threshhold / 10)
     let base = chartData.getMaxReading() ?? threshhold
 
@@ -63,7 +63,7 @@ export const BpHistoryChart = ({bps}: Props) => {
       throw new Error('Can not get min domain, not instance of chart data')
     }
 
-    const threshhold = BloodPressure.getMinThreshhold()
+    const threshhold = BloodPressure.systolicUpperThreshold
     const difference = Math.round(threshhold / 10)
     let base = chartData.getMinReading() ?? threshhold
 
