@@ -2,8 +2,6 @@ import React, {useState, useEffect} from 'react'
 import {View, Dimensions} from 'react-native'
 import {useIntl} from 'react-intl'
 import {GraphLoadingPlaceholder} from './bs-history/graph-loading-placeholder'
-import {EmptyYLeftAxis} from './victory-chart-parts/empty-y-left-axis'
-
 import {
   VictoryChart,
   VictoryTheme,
@@ -23,12 +21,8 @@ import {RequestSingleMonthChart} from './bs-history/request-single-month-chart'
 import {RequestHemoglobicChart} from './bs-history/request-hemoglobic-chart'
 import {ChartData} from './bs-history/chart-data'
 import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
-import {DayOfMonthAxisLabel} from './victory-chart-parts/day-of-month-axis-label'
-import {MonthNameAxisLabel} from './victory-chart-parts/month-name-axis-label'
-import {MonthInitialAxisLabel} from './victory-chart-parts/month-initial-axis-label'
-import {MonthAndYearLabel} from './victory-chart-parts/month-and-year-label'
-import {MonthInitialLabel} from './victory-chart-parts/month-initial-label'
-import {DayOfMonthLabel} from './victory-chart-parts/day-of-month-label'
+import {DateAxisComponent} from './victory-chart-parts/date-axis-component'
+
 import {TitleBar} from './victory-chart-parts/title-bar'
 import {ChartTypeSelection} from './bs-history/chart-type-selection'
 
@@ -165,25 +159,7 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
           borderTopWidth: 1,
           position: 'relative',
         }}>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            flexDirection: 'row',
-            paddingLeft: 6,
-          }}>
-          {chartData.getAxisTickValues().map((value, index) => {
-            if (value instanceof MonthNameAxisLabel) {
-              return <MonthAndYearLabel key={index} data={value} />
-            } else if (value instanceof DayOfMonthAxisLabel) {
-              return <DayOfMonthLabel key={index} data={value} />
-            } else if (value instanceof MonthInitialAxisLabel) {
-              return <MonthInitialLabel key={index} data={value} />
-            }
-          })}
-
-          <View style={{width: 32}} />
-        </View>
+        <DateAxisComponent tickValues={chartData.getAxisTickValues()} />
         <VictoryChart
           maxDomain={{
             y: getMaxDomain(),
@@ -216,7 +192,6 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
               tickLabels: {opacity: 0},
             }}
           />
-          <EmptyYLeftAxis />
           <VictoryAxis
             orientation="right"
             dependentAxis

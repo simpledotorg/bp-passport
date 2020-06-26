@@ -13,51 +13,41 @@ import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {colors} from '../styles'
 import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
 import {ChartData} from './bp-history/chart-data'
-import {GraphLoadingPlaceholder} from './victory-chart-parts/graph-loading-placeholder'
-import {useIntl} from 'react-intl'
+import {GraphLoadingPlaceholder} from './bp-history/graph-loading-placeholder'
 import {TitleBar} from './victory-chart-parts/title-bar'
 import {ChartRequest} from './bp-history/chart-request'
-import {DayOfMonthAxisLabel} from './victory-chart-parts/day-of-month-axis-label'
-import {DayOfMonthLabel} from './victory-chart-parts/day-of-month-label'
+import {DateAxisComponent} from './victory-chart-parts/date-axis-component'
 
 type Props = {
   bps: BloodPressure[]
 }
 
 export const BpHistoryChart = ({bps}: Props) => {
-  const intl = useIntl()
-
-  const isBloodPressureHigh = (bpIn: BloodPressure) => {
-    // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
-    // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
-    return bpIn.systolic >= 140 || bpIn.diastolic >= 90
-  }
-
   const [requestedChart, setRequestedChart] = useState<ChartRequest>(
     ChartRequest.CreateFromAvailableReadings(bps),
   )
   const [chartData, setChartData] = useState<ChartData | null>(null)
 
   useEffect(() => {
+    setChartData(null)
+    setRequestedChart(
+      requestedChart.withUpdatedReadings(bps) ??
+        ChartRequest.CreateFromAvailableReadings(bps),
+    )
+  }, [bps])
+
+  useEffect(() => {
     if (requestedChart) {
-      setChartData(new ChartData(requestedChart, bps))
+      setChartData(new ChartData(requestedChart))
     }
-  }, [bps, requestedChart])
-
-  const getMaxThreshhold = (): number => {
-    return 140
-  }
-
-  const getMinThreshhold = (): number => {
-    return 90
-  }
+  }, [requestedChart])
 
   const getMaxDomain = () => {
     if (!chartData) {
       throw new Error('Can not get max domain, not instance of chart data')
     }
 
-    const threshhold = getMaxThreshhold()
+    const threshhold = BloodPressure.getMaxThreshhold()
     const difference = Math.round(threshhold / 10)
     let base = chartData.getMaxReading() ?? threshhold
 
@@ -73,7 +63,7 @@ export const BpHistoryChart = ({bps}: Props) => {
       throw new Error('Can not get min domain, not instance of chart data')
     }
 
-    const threshhold = getMinThreshhold()
+    const threshhold = BloodPressure.getMinThreshhold()
     const difference = Math.round(threshhold / 10)
     let base = chartData.getMinReading() ?? threshhold
 
@@ -95,7 +85,7 @@ export const BpHistoryChart = ({bps}: Props) => {
   }
 
   if (!chartData) {
-    return <GraphLoadingPlaceholder />
+    return <GraphLoadingPlaceholder chartTitle={requestedChart.getTitle()} />
   }
 
   return (
@@ -116,21 +106,8 @@ export const BpHistoryChart = ({bps}: Props) => {
           overflow: 'visible',
           position: 'relative',
         }}>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            flexDirection: 'row',
-            paddingLeft: 6,
-          }}>
-          {chartData.getAxisTickValues().map((value, index) => {
-            if (value instanceof DayOfMonthAxisLabel) {
-              return <DayOfMonthLabel key={index} data={value} />
-            }
-          })}
+        <DateAxisComponent tickValues={chartData.getAxisTickValues()} />
 
-          <View style={{width: 32}} />
-        </View>
         <VictoryChart
           width={Dimensions.get('window').width - 24}
           height={310}
@@ -161,24 +138,6 @@ export const BpHistoryChart = ({bps}: Props) => {
               axis: {stroke: colors.grey3, opacity: 0},
               ticks: {opacity: 0},
               tickLabels: {opacity: 0},
-            }}
-          />
-          <VictoryAxis
-            orientation="left"
-            style={{
-              axis: {
-                strokeWidth: 2,
-                stroke: colors.white100,
-              },
-              tickLabels: {
-                opacity: 0,
-              },
-              ticks: {
-                opacity: 0,
-              },
-              grid: {
-                opacity: 0,
-              },
             }}
           />
           <VictoryAxis

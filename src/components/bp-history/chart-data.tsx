@@ -1,6 +1,5 @@
 import {AggregatedBloodPressureData} from './aggregated-blood-pressure-data'
 import {DateAxis} from './date-axis'
-import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
 import {ScatterGraphDataPoint} from '../bp-history/scatter-graph-data-point'
 import {LineGraphDataPoint} from '../bp-history/line-graph-data-point'
 import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
@@ -9,8 +8,6 @@ import {format} from 'date-fns'
 import {dateLocale} from '../../constants/languages'
 
 export class ChartData {
-  private readonly _requestedChart: ChartRequest
-
   private readonly dateAxis: DateAxis
   private readonly aggregatedData: AggregatedBloodPressureData[] = []
 
@@ -27,9 +24,8 @@ export class ChartData {
 
   private static determineIfHasPreviousPeriod(
     requestedChart: ChartRequest,
-    readings: BloodPressure[],
   ): boolean {
-    const oldestReading = readings.oldest()
+    const oldestReading = requestedChart.readings.oldest()
     if (oldestReading === null) {
       return false
     }
@@ -48,9 +44,8 @@ export class ChartData {
 
   private static determineIfHasNextPeriod(
     requestedChart: ChartRequest,
-    readings: BloodPressure[],
   ): boolean {
-    const mostRecentReading = readings.mostRecent()
+    const mostRecentReading = requestedChart.readings.mostRecent()
     if (mostRecentReading === null) {
       return false
     }
@@ -67,9 +62,7 @@ export class ChartData {
     return requestedChart.requestedMonth < dateOfMostRecentReading.getMonth()
   }
 
-  constructor(requestedChart: ChartRequest, readings: BloodPressure[]) {
-    this._requestedChart = requestedChart
-
+  constructor(requestedChart: ChartRequest) {
     this.dateAxis = DateAxis.CreateForRequestedMonth(
       requestedChart.requestedMonth,
       requestedChart.requestedYear,
@@ -84,14 +77,10 @@ export class ChartData {
 
     this._hasPreviousPeriod = ChartData.determineIfHasPreviousPeriod(
       requestedChart,
-      readings,
     )
-    this._hasNextPeriod = ChartData.determineIfHasNextPeriod(
-      requestedChart,
-      readings,
-    )
+    this._hasNextPeriod = ChartData.determineIfHasNextPeriod(requestedChart)
 
-    readings.forEach((bloodPressureReading) => {
+    requestedChart.readings.forEach((bloodPressureReading) => {
       const dateEntry = this.dateAxis.getDateEntryForBloodPressure(
         bloodPressureReading,
       )

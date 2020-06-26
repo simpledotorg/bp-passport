@@ -1,10 +1,19 @@
 import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
+import {ChartData} from './chart-data'
 
 export class ChartRequest {
+  private _readings: BloodPressure[]
+
   private readonly _requestedMonth: number
   private readonly _requestedYear: number
 
-  private constructor(requestedMonth?: number, requestedYear?: number) {
+  private constructor(
+    readings: BloodPressure[],
+    requestedMonth?: number,
+    requestedYear?: number,
+  ) {
+    this._readings = readings
+
     if (requestedMonth === undefined) {
       this._requestedMonth = new Date().getMonth()
     } else {
@@ -27,7 +36,7 @@ export class ChartRequest {
       ? new Date(mostRecentReading.recorded_at)
       : undefined
 
-    return new ChartRequest(date?.getMonth(), date?.getFullYear())
+    return new ChartRequest(readings, date?.getMonth(), date?.getFullYear())
   }
 
   public getTitle(): string {
@@ -42,6 +51,10 @@ export class ChartRequest {
     return this._requestedYear
   }
 
+  public get readings(): BloodPressure[] {
+    return this._readings
+  }
+
   public moveToNextPeriod(): ChartRequest {
     let newMonth = this._requestedMonth + 1
     let newYear = this._requestedYear
@@ -50,7 +63,7 @@ export class ChartRequest {
       newYear++
     }
 
-    return new ChartRequest(newMonth, newYear)
+    return new ChartRequest(this._readings, newMonth, newYear)
   }
 
   public moveToPreviousPeriod(): ChartRequest {
@@ -61,6 +74,14 @@ export class ChartRequest {
       newYear--
     }
 
-    return new ChartRequest(newMonth, newYear)
+    return new ChartRequest(this._readings, newMonth, newYear)
+  }
+
+  public withUpdatedReadings(readings: BloodPressure[]): ChartRequest {
+    return new ChartRequest(readings, this._requestedMonth, this._requestedYear)
+  }
+
+  public createChartData(): ChartData {
+    return new ChartData(this)
   }
 }
