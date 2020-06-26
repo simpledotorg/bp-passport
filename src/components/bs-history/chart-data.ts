@@ -4,7 +4,7 @@ import {
 } from '../../redux/blood-sugar/blood-sugar.models'
 
 import {AggregatedBloodSugarData} from './aggregated-blood-sugar-data'
-import {DateAxis} from './date-axis'
+import {DateAxis} from '../victory-chart-parts/date-axis'
 import {ScatterGraphDataPoint} from './scatter-graph-data-point'
 import {RequestSingleMonthChart} from './request-single-month-chart'
 import {RequestHemoglobicChart} from './request-hemoglobic-chart'

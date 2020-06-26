@@ -1,4 +1,4 @@
-import {DateEntry} from './date-entry'
+import {DateEntry} from '../victory-chart-parts/date-entry'
 import {BloodSugar} from '../../redux/blood-sugar/blood-sugar.models'
 import {ScatterGraphDataPoint} from './scatter-graph-data-point'
 

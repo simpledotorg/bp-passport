@@ -7,10 +7,10 @@ import {
 import {DateEntry} from './date-entry'
 import {BloodSugar} from '../../redux/blood-sugar/blood-sugar.models'
 import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
-import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
-import {MonthNameAxisLabel} from '../victory-chart-parts/month-name-axis-label'
-import {DayOfMonthAxisLabel} from '../victory-chart-parts/day-of-month-axis-label'
-import {MonthInitialAxisLabel} from '../victory-chart-parts/month-initial-axis-label'
+import {IDefineAdateAxisLabel} from './i-define-a-date-axis-label'
+import {MonthNameAxisLabel} from './month-name-axis-label'
+import {DayOfMonthAxisLabel} from './day-of-month-axis-label'
+import {MonthInitialAxisLabel} from './month-initial-axis-label'
 
 export class DateAxis {
   private dates: DateEntry[]
@@ -106,12 +106,12 @@ export class DateAxis {
     return new DateAxis(startDate, endDate)
   }
 
-  public static CreateMostRecentMonthsFromBloodPressures(
-    bloodPressures: BloodPressure[],
+  public static CreateMostRecentMonthsFromBloodSugars(
+    bloodSugars: BloodSugar[],
     monthRange: number,
   ): DateAxis {
-    const lastDateValue = bloodPressures.reduce(
-      (memo: Date | null, current: BloodPressure): Date => {
+    const lastDateValue = bloodSugars.reduce(
+      (memo: Date | null, current: BloodSugar): Date => {
         const currentDate = new Date(current.recorded_at)
         return memo == null || currentDate > memo ? currentDate : memo
       },
@@ -138,8 +138,8 @@ export class DateAxis {
     return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1))
   }
 
-  public getDateEntryForBloodPressure(
-    record: BloodPressure,
+  public getDateEntryFor(
+    record: BloodSugar | BloodPressure,
   ): DateEntry | undefined {
     const dateToFind = new Date(record.recorded_at)
 

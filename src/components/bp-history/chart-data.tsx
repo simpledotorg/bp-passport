@@ -1,5 +1,5 @@
 import {AggregatedBloodPressureData} from './aggregated-blood-pressure-data'
-import {DateAxis} from './date-axis'
+import {DateAxis} from '../victory-chart-parts/date-axis'
 import {ScatterGraphDataPoint} from '../bp-history/scatter-graph-data-point'
 import {LineGraphDataPoint} from '../bp-history/line-graph-data-point'
 import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis-label'
@@ -81,9 +81,7 @@ export class ChartData {
     this._hasNextPeriod = ChartData.determineIfHasNextPeriod(requestedChart)
 
     requestedChart.readings.forEach((bloodPressureReading) => {
-      const dateEntry = this.dateAxis.getDateEntryForBloodPressure(
-        bloodPressureReading,
-      )
+      const dateEntry = this.dateAxis.getDateEntryFor(bloodPressureReading)
       if (!dateEntry) {
         return
       }
