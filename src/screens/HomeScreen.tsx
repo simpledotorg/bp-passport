@@ -439,11 +439,8 @@ function Home({navigation, route}: Props) {
             }}
             contentContainerStyle={styles.scrollContentContainer}
             showsVerticalScrollIndicator={false}>
-            <MedicalDetailsSection />
-            <BloodPressureSection
-              bloodPressureReadings={bps}
-              navigation={navigation}
-            />
+            <MedicalDetailsSection meds={meds} navigation={navigation} />
+            <BloodPressureSection bps={bps} navigation={navigation} />
             <BloodSugarSection
               bloodSugarReadings={bss}
               navigation={navigation}
