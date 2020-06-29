@@ -59,6 +59,82 @@ const LanguagePicker = ({apiUser}: LanguagePickerProps) => {
   )
 }
 
+const ConnectSection = ({intl, navigation}: any) => {
+  return (
+    <>
+      <View style={styles.header}>
+        <BodyHeader>
+          <FormattedMessage id="settings.connect" />
+        </BodyHeader>
+      </View>
+      <View style={styles.item}>
+        <BodyText>
+          <FormattedMessage id="settings.have-a-passport" />
+        </BodyText>
+      </View>
+      <View>
+        <Button
+          style={[styles.bpButton, {}]}
+          buttonType={ButtonType.LightBlue}
+          title={intl.formatMessage({id: 'login.scan-passport'})}
+          onPress={() => {
+            navigation.navigate(SCREENS.SCAN_STACK)
+          }}
+        />
+      </View>
+    </>
+  )
+}
+
+const LegalSection = () => {
+  return (
+    <>
+      <BodyHeader style={styles.header}>
+        <FormattedMessage id="general.legal" />
+      </BodyHeader>
+      <BodyText
+        style={[styles.item, styles.linkText]}
+        onPress={() => {
+          Linking.openURL('https://www.simple.org/patient-privacy')
+        }}>
+        <FormattedMessage id="settings.privacy-policy-link" />
+      </BodyText>
+
+      <BodyText style={styles.subHeader}>
+        <FormattedMessage id="general.disclaimer" />
+      </BodyText>
+      <BodyText style={styles.item}>
+        <FormattedMessage id="consent.medical-disclaimer" />
+      </BodyText>
+    </>
+  )
+}
+
+const UserDetails = ({apiUser}: any) => {
+  return (
+    <>
+      <View style={[styles.header, apiUser ? {paddingTop: 24} : {}]}>
+        <BodyHeader>
+          <FormattedMessage id="settings.profile" />
+        </BodyHeader>
+      </View>
+      <View style={styles.item}>
+        <BodyHeader style={styles.itemText}>{apiUser?.full_name}</BodyHeader>
+        <BodyText style={styles.itemLabel}>
+          <FormattedMessage id="settings.name" />
+        </BodyText>
+      </View>
+      <View style={styles.item}>
+        <BodyHeader style={styles.itemText}>
+          {apiUser?.address?.state}
+        </BodyHeader>
+        <BodyText style={styles.itemLabel}>
+          <FormattedMessage id="settings.state" />
+        </BodyText>
+      </View>
+    </>
+  )
+}
 function SettingsScreen({navigation}: any) {
   const apiUser = patientSelector()
 
@@ -76,32 +152,10 @@ function SettingsScreen({navigation}: any) {
       <View style={[containerStyles.fill]}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.content}>
-            {apiUser && (
-              <>
-                <View style={[styles.header, apiUser ? {paddingTop: 24} : {}]}>
-                  <BodyHeader>
-                    <FormattedMessage id="settings.profile" />
-                  </BodyHeader>
-                </View>
-                <View style={styles.item}>
-                  <BodyHeader style={styles.itemText}>
-                    {apiUser?.full_name}
-                  </BodyHeader>
-                  <BodyText style={styles.itemLabel}>
-                    <FormattedMessage id="settings.name" />
-                  </BodyText>
-                </View>
-                <View style={styles.item}>
-                  <BodyHeader style={styles.itemText}>
-                    {apiUser?.address?.state}
-                  </BodyHeader>
-                  <BodyText style={styles.itemLabel}>
-                    <FormattedMessage id="settings.state" />
-                  </BodyText>
-                </View>
-              </>
+            {apiUser && <UserDetails apiUser={apiUser} />}
+            {!hasPassportLinked && (
+              <ConnectSection intl={intl} navigation={navigation} />
             )}
-
             <LanguagePicker apiUser={apiUser} />
 
             <View style={styles.header}>
@@ -109,15 +163,7 @@ function SettingsScreen({navigation}: any) {
                 <FormattedMessage id="settings.about" />
               </BodyHeader>
             </View>
-            <View style={styles.item}>
-              <BodyText
-                style={styles.linkText}
-                onPress={() => {
-                  Linking.openURL('https://www.simple.org/patient-privacy')
-                }}>
-                <FormattedMessage id="settings.privacy-policy-link" />
-              </BodyText>
-            </View>
+
             <View style={styles.item}>
               <BodyText
                 style={styles.linkText}
@@ -136,40 +182,8 @@ function SettingsScreen({navigation}: any) {
                 <FormattedMessage id="settings.about" />
               </BodyText>
             </View>
-            {!hasPassportLinked && (
-              <>
-                <View style={styles.header}>
-                  <BodyHeader>
-                    <FormattedMessage id="settings.connect" />
-                  </BodyHeader>
-                </View>
-                <View style={styles.item}>
-                  <BodyText>
-                    <FormattedMessage id="settings.have-a-passport" />
-                  </BodyText>
-                </View>
-                <View>
-                  <Button
-                    style={[styles.bpButton, {}]}
-                    buttonType={ButtonType.LightBlue}
-                    title={intl.formatMessage({id: 'login.scan-passport'})}
-                    onPress={() => {
-                      navigation.navigate(SCREENS.SCAN_STACK)
-                    }}
-                  />
-                </View>
-              </>
-            )}
-            <View style={styles.header}>
-              <BodyHeader>
-                <FormattedMessage id="general.disclaimer" />
-              </BodyHeader>
-            </View>
-            <View style={styles.item}>
-              <BodyText>
-                <FormattedMessage id="consent.medical-disclaimer" />
-              </BodyText>
-            </View>
+
+            <LegalSection />
           </View>
         </ScrollView>
       </View>
@@ -190,6 +204,17 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: 'bold',
     fontSize: 22,
+    lineHeight: 28,
+  },
+  subHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 16,
+    marginBottom: 8,
+    fontFamily: 'Roboto',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    fontSize: 18,
     lineHeight: 28,
   },
   item: {flexDirection: 'column', marginBottom: 16},
