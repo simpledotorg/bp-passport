@@ -21,16 +21,15 @@ type HomeScreenNavigationProp = StackNavigationProp<
   SCREENS.HOME
 >
 
-const HOME_PAGE_SHOW_LIMIT = 3
-
 type BPSProps = {
   navigation: HomeScreenNavigationProp
   bps: BloodPressure[]
+  showList: number
 }
 
-const BloodPressureSection = ({navigation, bps}: BPSProps) => {
+const BloodPressureSection = ({navigation, bps, showList}: BPSProps) => {
   const intl = useIntl()
-  const showBpHistoryButton = bps.length >= HOME_PAGE_SHOW_LIMIT
+  const showBpHistoryButton = bps.length >= showList
 
   return (
     <View style={[containerStyles.containerSegment]}>
@@ -60,7 +59,7 @@ const BloodPressureSection = ({navigation, bps}: BPSProps) => {
                   ]}>
                   <BpInformation bp={bp} />
                 </TouchableHighlight>
-                {index < bps.length - 1 && index < HOME_PAGE_SHOW_LIMIT - 1 && (
+                {index < bps.length - 1 && index < showList - 1 && (
                   <Line key={'bpline' + index} />
                 )}
               </View>

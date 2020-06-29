@@ -21,15 +21,18 @@ type HomeScreenNavigationProp = StackNavigationProp<
   SCREENS.HOME
 >
 
-const HOME_PAGE_SHOW_LIMIT = 3
-
 type BSSProps = {
   navigation: HomeScreenNavigationProp
   bloodSugarReadings: BloodSugar[]
+  showList: number
 }
-const BloodSugarSection = ({navigation, bloodSugarReadings}: BSSProps) => {
+const BloodSugarSection = ({
+  navigation,
+  bloodSugarReadings,
+  showList,
+}: BSSProps) => {
   const intl = useIntl()
-  const showBsHistoryButton = bloodSugarReadings.length >= HOME_PAGE_SHOW_LIMIT
+  const showBsHistoryButton = bloodSugarReadings.length >= showList
 
   return (
     <View style={[containerStyles.containerSegment]}>
@@ -66,9 +69,7 @@ const BloodSugarSection = ({navigation, bloodSugarReadings}: BSSProps) => {
                   <BsInformation bs={bs} />
                 </TouchableHighlight>
                 {index < bloodSugarReadings.length - 1 &&
-                  index < HOME_PAGE_SHOW_LIMIT - 1 && (
-                    <Line key={'line' + index} />
-                  )}
+                  index < showList - 1 && <Line key={'line' + index} />}
               </View>
             )
           })}
