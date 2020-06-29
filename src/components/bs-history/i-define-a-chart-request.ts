@@ -37,7 +37,10 @@ export const getStartingChartRequest = (
     return RequestHemoglobicChart.StartingState(readings)
   }
 
-  throw new Error('Unhandled blood sugar type')
+  return RequestSingleMonthChart.ForRequestedType(
+    BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
+    readings,
+  )
 }
 
 export const filterReadings = (
