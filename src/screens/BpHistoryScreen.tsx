@@ -50,7 +50,9 @@ function BpHistoryScreen({navigation, route}: Props) {
 
   return (
     <View style={{flex: 1}}>
-      <ScrollView contentContainerStyle={{paddingVertical: 18}}>
+      <ScrollView
+        contentContainerStyle={{paddingVertical: 18}}
+        scrollIndicatorInsets={{right: 1}}>
         <View
           style={[
             containerStyles.containerSegment,
