@@ -253,6 +253,9 @@ function AddBpScreen({navigation, route}: Props) {
                     diastolic.length === 0
                   ) {
                     systolicRef.current.focus()
+                    setSystolic(
+                      systolic.toString().substring(0, systolic.length - 1),
+                    )
                   }
                 }}
                 placeholder="0"
