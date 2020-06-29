@@ -124,6 +124,10 @@ function AddBpScreen({navigation, route}: Props) {
           ),
         })
       }, 250)
+    } else {
+      setTimeout(() => {
+        navigation.navigate(SCREENS.WRITE_A_REVIEW_MODAL_SCREEN)
+      }, 250)
     }
   }
 
