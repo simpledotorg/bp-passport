@@ -14,31 +14,24 @@ import {
 import {useIntl, FormattedMessage} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
 
-import {
-  containerStyles,
-  colors,
-  greyHeart,
-  medicineClock,
-  medicinePill,
-  grayDrop,
-} from '../styles'
+import {containerStyles, colors} from '../styles'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {
   Button,
   Line,
   BodyHeader,
-  BodyText,
   BpInformation,
   MedsInformation,
   ContentLoadingSegment,
+  ContentLoadingSegmentSize,
   BsInformation,
   ButtonType,
+  HomeHeader,
+  HealthReminders,
 } from '../components'
 
-import {ContentLoadingSegmentSize} from '../components/content-loading-segment'
-
-import {LoginState, PassportLinkedState} from '../redux/auth/auth.models'
+import {PassportLinkedState} from '../redux/auth/auth.models'
 import {useThunkDispatch} from '../redux/store'
 import {getPatient} from '../redux/patient/patient.actions'
 
@@ -52,8 +45,6 @@ import {medicationsSelector} from '../redux/medication/medication.selectors'
 import {Medication} from '../redux/medication/medication.models'
 import {refreshAllLocalPushReminders} from '../redux/medication/medication.actions'
 import {RouteProp} from '@react-navigation/native'
-
-import {HomeHeader} from '../components'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -73,8 +64,6 @@ function Home({navigation, route}: Props) {
   const dispatch = useThunkDispatch()
 
   const opacityNavAnim = useRef(new Animated.Value(1)).current
-  const [scrollContentOffset, setScrollContentOffset] = useState(0)
-  const [hideNav, setHideNav] = useState(false)
 
   const apiUser = patientSelector()
   const passportLinkedState = passportLinkedStateSelector()
@@ -425,6 +414,9 @@ function Home({navigation, route}: Props) {
                   />
                 )}
               </View>
+            </View>
+            <View style={[containerStyles.containerSegment]}>
+              <HealthReminders />
             </View>
           </ScrollView>
         )}

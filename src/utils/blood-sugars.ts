@@ -5,6 +5,7 @@ import {
   BLOOD_SUGAR_TYPES,
 } from '../redux/blood-sugar/blood-sugar.models'
 import {dateLocale} from '../constants/languages'
+import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 
 export const displayDate = (bsIn: BloodSugar) => {
   return bsIn.recorded_at
@@ -14,7 +15,7 @@ export const displayDate = (bsIn: BloodSugar) => {
     : null
 }
 
-export const showWarning = (bs: BloodSugar) => {
+export const showWarning = (bs: BloodSugar): boolean => {
   if (isLowBloodSugar(bs)) {
     return true
   }
@@ -24,7 +25,8 @@ export const showWarning = (bs: BloodSugar) => {
     return false
   }
 
-  return Number(bs.blood_sugar_value) >= warningHighBSValue
+  const value = Number(bs.blood_sugar_value)
+  return value !== undefined && value >= warningHighBSValue
 }
 
 export const isHighBloodSugar = (bs: BloodSugar) => {
@@ -85,5 +87,115 @@ export const getBloodSugarDetails: (
         languageTypeCode: 'bs.random-blood-code',
       }
     }
+  }
+}
+
+declare global {
+  interface Array<T> {
+    // tslint:disable-next-line: array-type
+    filterByTypes(types: BLOOD_SUGAR_TYPES[]): Array<T>
+
+    // tslint:disable-next-line: array-type
+    filterByType(type: BLOOD_SUGAR_TYPES): Array<T>
+
+    hasReadingType(types: BLOOD_SUGAR_TYPES): boolean
+
+    // tslint:disable-next-line: array-type
+    filterForYear(year: number): Array<T>
+
+    // tslint:disable-next-line: array-type
+    filterForMonthAndYear(month: number, year: number): Array<T>
+
+    oldest(): T | null
+
+    mostRecent(): T | null
+  }
+}
+
+if (!Array.prototype.mostRecent) {
+  Array.prototype.mostRecent = function <T extends BloodSugar | BloodPressure>(
+    this: T[],
+  ): T | null {
+    return this.reduce((memo: T | null, current: T): T => {
+      return memo == null ||
+        new Date(current.recorded_at) > new Date(memo.recorded_at)
+        ? current
+        : memo
+    }, null)
+  }
+}
+
+if (!Array.prototype.oldest) {
+  Array.prototype.oldest = function <T extends BloodSugar | BloodPressure>(
+    this: T[],
+  ): T | null {
+    return this.reduce((memo: T | null, current: T): T => {
+      return memo == null ||
+        new Date(current.recorded_at) < new Date(memo.recorded_at)
+        ? current
+        : memo
+    }, null)
+  }
+}
+
+if (!Array.prototype.filterByTypes) {
+  Array.prototype.filterByTypes = function <T extends BloodSugar>(
+    this: T[],
+    types: BLOOD_SUGAR_TYPES[],
+  ): T[] {
+    return this.filter((reading) => {
+      return types.find((type) => {
+        return type === reading.blood_sugar_type
+      })
+    })
+  }
+}
+
+if (!Array.prototype.filterByType) {
+  Array.prototype.filterByType = function <T extends BloodSugar>(
+    this: T[],
+    type: BLOOD_SUGAR_TYPES,
+  ): T[] {
+    return this.filter((reading) => {
+      return type === reading.blood_sugar_type
+    })
+  }
+}
+
+if (!Array.prototype.hasReadingType) {
+  Array.prototype.hasReadingType = function <T extends BloodSugar>(
+    this: T[],
+    type: BLOOD_SUGAR_TYPES,
+  ): boolean {
+    return (
+      this.find((reading) => {
+        return reading.blood_sugar_type === type
+      }) !== undefined
+    )
+  }
+}
+
+if (!Array.prototype.filterForMonthAndYear) {
+  Array.prototype.filterForMonthAndYear = function <T extends BloodSugar>(
+    this: T[],
+    month: number,
+    year: number,
+  ): T[] {
+    return this.filter((reading) => {
+      const date = new Date(reading.recorded_at)
+      return date.getMonth() === month && date.getFullYear() === year
+    })
+  }
+}
+
+if (!Array.prototype.filterForYear) {
+  Array.prototype.filterForYear = function <T extends BloodSugar>(
+    this: T[],
+    year: number,
+  ): T[] {
+    return this.filter((reading) => {
+      const date = new Date(reading.recorded_at)
+      return date.getFullYear() === year
+    })
   }
 }

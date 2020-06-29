@@ -194,8 +194,7 @@ export const BsModal = ({bs, close}: Props) => {
               {`${bs.blood_sugar_value}`}
               {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
                 <>
-                  <BodyText>%</BodyText>{' '}
-                  <FormattedMessage id={details.languageTypeCode} />
+                  % <FormattedMessage id={details.languageTypeCode} />
                 </>
               ) : (
                 <>
@@ -203,12 +202,8 @@ export const BsModal = ({bs, close}: Props) => {
                   <FormattedMessage id="bs.mgdl" />{' '}
                   <FormattedMessage id={details.languageTypeCode} />
                 </>
-              )}
-
-              <>
-                {` `}
-                {getBSText()}
-              </>
+              )}{' '}
+              {getBSText()}
             </BodyText>
             <BodyText
               style={{

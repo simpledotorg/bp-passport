@@ -100,7 +100,7 @@ export const BsInformation = ({bs, style = {}}: Props) => {
                 color: colors.grey0,
                 fontWeight: '500',
               }}>
-              {`${Number(bs.blood_sugar_value)}`}
+              {`${bs.blood_sugar_value}`}
               {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
                 <>
                   <BodyText>%</BodyText>{' '}

@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-  View,
-  FlatList,
-  StyleSheet,
-  TouchableHighlight,
-  ScrollView,
-} from 'react-native'
+import {View, StyleSheet, TouchableHighlight, ScrollView} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {FormattedMessage} from 'react-intl'
@@ -15,6 +9,7 @@ import {BodyHeader, BsInformation, BsHistoryChart, Line} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
+// import {getTestData} from '../components/bs-history/test-data'
 
 type BsHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
