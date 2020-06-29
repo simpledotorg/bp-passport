@@ -4,8 +4,6 @@ import {HealthReminder} from './health-reminder'
 import {HealthReminderModel} from './health-reminder-model'
 import Carousel, {Pagination} from 'react-native-snap-carousel'
 
-interface IProps {}
-
 interface IState {
   entries: HealthReminderModel[]
   activeSlide: number
@@ -21,7 +19,7 @@ export class HealthReminders extends Component<IState> {
     this.state = {entries: HealthReminderModel.All(), activeSlide: 0}
   }
 
-  _renderItem = ({item, index}) => {
+  _renderItem = ({item}: any) => {
     return <HealthReminder data={item} />
   }
 
