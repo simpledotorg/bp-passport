@@ -26,6 +26,33 @@ type BSSProps = {
   bloodSugarReadings: BloodSugar[]
   showList: number
 }
+
+const BloodSugarEntry = ({bs, navigation, showSeparator}: any) => {
+  return (
+    <>
+      <TouchableHighlight
+        underlayColor={colors.grey4}
+        onPress={() => {
+          navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+            bs,
+          })
+        }}
+        style={[
+          {
+            paddingVertical: 12,
+            marginHorizontal: -24,
+            paddingHorizontal: 24,
+          },
+          styles.historyItem,
+          // index === bloodSugarReadings.length - 1 ? {borderBottomWidth: 0} : {},
+        ]}>
+        <BsInformation bs={bs} />
+      </TouchableHighlight>
+      {showSeparator && <Line />}
+    </>
+  )
+}
+
 const BloodSugarSection = ({
   navigation,
   bloodSugarReadings,
@@ -47,30 +74,14 @@ const BloodSugarSection = ({
         <>
           {bloodSugarReadings.map((bs, index) => {
             return (
-              <View key={index}>
-                <TouchableHighlight
-                  underlayColor={colors.grey4}
-                  onPress={() => {
-                    navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
-                      bs,
-                    })
-                  }}
-                  style={[
-                    {
-                      paddingVertical: 12,
-                      marginHorizontal: -24,
-                      paddingHorizontal: 24,
-                    },
-                    styles.historyItem,
-                    index === bloodSugarReadings.length - 1
-                      ? {borderBottomWidth: 0}
-                      : {},
-                  ]}>
-                  <BsInformation bs={bs} />
-                </TouchableHighlight>
-                {index < bloodSugarReadings.length - 1 &&
-                  index < showList - 1 && <Line key={'line' + index} />}
-              </View>
+              <BloodSugarEntry
+                key={index}
+                bs={bs}
+                navigation={navigation}
+                showSeparator={
+                  index < bloodSugarReadings.length - 1 && index < showList - 1
+                }
+              />
             )
           })}
         </>
