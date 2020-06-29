@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {
   SafeAreaView,
   View,
@@ -135,6 +135,33 @@ const UserDetails = ({apiUser}: any) => {
     </>
   )
 }
+
+const SupportSection = () => {
+  return (
+    <>
+      <BodyHeader style={styles.header}>
+        <FormattedMessage id="general.support" />
+      </BodyHeader>
+
+      <BodyText
+        style={[styles.item, styles.linkText]}
+        onPress={() => {
+          Linking.openURL('https://www.simple.org/contact/')
+        }}>
+        <FormattedMessage id="settings.contact" />
+      </BodyText>
+
+      <BodyText
+        style={[styles.lastItem, styles.linkText]}
+        onPress={() => {
+          Linking.openURL('https://www.simple.org/bp-passport/')
+        }}>
+        <FormattedMessage id="settings.about" />
+      </BodyText>
+    </>
+  )
+}
+
 function SettingsScreen({navigation}: any) {
   const apiUser = patientSelector()
 
@@ -158,30 +185,7 @@ function SettingsScreen({navigation}: any) {
             )}
             <LanguagePicker apiUser={apiUser} />
 
-            <View style={styles.header}>
-              <BodyHeader>
-                <FormattedMessage id="settings.about" />
-              </BodyHeader>
-            </View>
-
-            <View style={styles.item}>
-              <BodyText
-                style={styles.linkText}
-                onPress={() => {
-                  Linking.openURL('https://www.simple.org/contact/')
-                }}>
-                <FormattedMessage id="settings.contact" />
-              </BodyText>
-            </View>
-            <View style={styles.lastItem}>
-              <BodyText
-                style={styles.linkText}
-                onPress={() => {
-                  Linking.openURL('https://www.simple.org/bp-passport/')
-                }}>
-                <FormattedMessage id="settings.about" />
-              </BodyText>
-            </View>
+            <SupportSection />
 
             <LegalSection />
           </View>
