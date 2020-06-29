@@ -16,7 +16,6 @@ import {
   AVAILABLE_TRANSLATIONS,
   languageCodeToDisplayTitle,
 } from '../constants/languages'
-import {useLocale} from '../effects/use-locale-messages.effect'
 import {patientSelector} from '../redux/patient/patient.selectors'
 import {setLanguage} from '../redux/patient/patient.actions'
 import SCREENS from '../constants/screens'
@@ -26,19 +25,10 @@ import {passportLinkedStateSelector} from '../redux/auth/auth.selectors'
 import {localeSelector} from '../redux/patient/patient.selectors'
 import {useThunkDispatch} from '../redux/store'
 
-function SettingsScreen({navigation}: any) {
-  const apiUser = patientSelector()
-
-  const intl = useIntl()
-  const dispatch = useThunkDispatch()
-
+type LanguagePickerProps = {apiUser: any}
+const LanguagePicker = ({apiUser}: LanguagePickerProps) => {
   const locale = localeSelector()
-  const passportLinkedState = passportLinkedStateSelector()
-  const hasPassportLinked =
-    passportLinkedState === PassportLinkedState.Linking ||
-    passportLinkedState === PassportLinkedState.Linked
-
-  useEffect(() => {}, [passportLinkedState, apiUser])
+  const dispatch = useThunkDispatch()
 
   const locales: Item[] = []
 
@@ -48,6 +38,36 @@ function SettingsScreen({navigation}: any) {
       value: languageCode,
     })
   })
+
+  return (
+    <>
+      <View style={[styles.header, apiUser ? {} : {paddingTop: 24}]}>
+        <BodyHeader>
+          <FormattedMessage id="settings.language" />
+        </BodyHeader>
+      </View>
+      <View>
+        <Picker
+          onValueChange={(language: string) => {
+            dispatch(setLanguage(language))
+          }}
+          items={locales}
+          value={locale}
+        />
+      </View>
+    </>
+  )
+}
+
+function SettingsScreen({navigation}: any) {
+  const apiUser = patientSelector()
+
+  const intl = useIntl()
+
+  const passportLinkedState = passportLinkedStateSelector()
+  const hasPassportLinked =
+    passportLinkedState === PassportLinkedState.Linking ||
+    passportLinkedState === PassportLinkedState.Linked
 
   return (
     <SafeAreaView
@@ -82,20 +102,7 @@ function SettingsScreen({navigation}: any) {
               </>
             )}
 
-            <View style={[styles.header, apiUser ? {} : {paddingTop: 24}]}>
-              <BodyHeader>
-                <FormattedMessage id="settings.language" />
-              </BodyHeader>
-            </View>
-            <View>
-              <Picker
-                onValueChange={(language: string) => {
-                  dispatch(setLanguage(language))
-                }}
-                items={locales}
-                value={locale}
-              />
-            </View>
+            <LanguagePicker apiUser={apiUser} />
 
             <View style={styles.header}>
               <BodyHeader>
