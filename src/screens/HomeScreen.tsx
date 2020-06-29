@@ -196,13 +196,12 @@ function Home({navigation}: Props) {
             }}
             contentContainerStyle={styles.scrollContentContainer}
             showsVerticalScrollIndicator={false}>
-            <MedicalDetailsSection meds={meds} navigation={navigation} />
             <BloodPressureSection bps={bps} navigation={navigation} />
             <BloodSugarSection
               bloodSugarReadings={bss}
               navigation={navigation}
             />
-
+            <MedicalDetailsSection meds={meds} navigation={navigation} />
             <View style={[containerStyles.containerSegment]}>
               <HealthReminders />
             </View>
