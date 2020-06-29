@@ -8,25 +8,17 @@ import {
   StyleSheet,
   AppState,
   Platform,
-  TouchableHighlight,
   Animated,
 } from 'react-native'
-import {useIntl, FormattedMessage} from 'react-intl'
+import {useIntl} from 'react-intl'
 import {StackNavigationProp} from '@react-navigation/stack'
 
 import {containerStyles, colors} from '../styles'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {
-  Button,
-  Line,
-  BodyHeader,
-  BpInformation,
-  MedsInformation,
   ContentLoadingSegment,
   ContentLoadingSegmentSize,
-  BsInformation,
-  ButtonType,
   HomeHeader,
   HealthReminders,
 } from '../components'
@@ -44,23 +36,21 @@ import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
 import {medicationsSelector} from '../redux/medication/medication.selectors'
 import {Medication} from '../redux/medication/medication.models'
 import {refreshAllLocalPushReminders} from '../redux/medication/medication.actions'
-import {RouteProp} from '@react-navigation/native'
+import BloodPressureSection from '../components/home-page/blood-pressure-section'
+import BloodSugarSection from '../components/home-page/blood-sugar-section'
+import MedicalDetailsSection from '../components/home-page/medicine-section'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   SCREENS.HOME
 >
-
-type HomeScreenRoute = RouteProp<RootStackParamList, SCREENS.HOME>
-
 type Props = {
   navigation: HomeScreenNavigationProp
-  route: HomeScreenRoute
 }
 
 const HOME_PAGE_SHOW_LIMIT = 3
 
-function Home({navigation, route}: Props) {
+function Home({navigation}: Props) {
   const dispatch = useThunkDispatch()
 
   const opacityNavAnim = useRef(new Animated.Value(1)).current
@@ -121,9 +111,6 @@ function Home({navigation, route}: Props) {
     }
     return ret
   }
-
-  const showBpHistoryButton = bps.length >= HOME_PAGE_SHOW_LIMIT
-  const showBsHistoryButton = bss.length >= HOME_PAGE_SHOW_LIMIT
 
   useEffect(() => {
     if (
@@ -209,212 +196,17 @@ function Home({navigation, route}: Props) {
             }}
             contentContainerStyle={styles.scrollContentContainer}
             showsVerticalScrollIndicator={false}>
-            <View style={[containerStyles.containerSegment]}>
-              <BodyHeader
-                style={[
-                  styles.sectionHeader,
-                  !meds.length ? {marginBottom: 8} : {},
-                ]}>
-                <FormattedMessage id="home.my-medicines" />
-              </BodyHeader>
-              {meds.length > 0 && (
-                <>
-                  {meds.map((med, index) => {
-                    return (
-                      <View key={index}>
-                        <TouchableHighlight
-                          underlayColor={colors.grey4}
-                          onPress={() => {
-                            navigation.navigate(SCREENS.MEDICATION_DETAILS, {
-                              medication: med,
-                              isEditing: true,
-                            })
-                          }}
-                          style={[
-                            {
-                              paddingVertical: 12,
-                              marginHorizontal: -24,
-                              paddingHorizontal: 24,
-                            },
-                            styles.historyItem,
-                          ]}>
-                          <MedsInformation meds={med} />
-                        </TouchableHighlight>
-                        {index < meds.length - 1 && (
-                          <Line key={'line' + index} />
-                        )}
-                      </View>
-                    )
-                  })}
-                </>
-              )}
-              <View style={{marginTop: 16, flexDirection: 'row'}}>
-                <Button
-                  style={[
-                    styles.bpButton,
-                    {
-                      marginRight: showBsHistoryButton ? 12 : 0,
-                    },
-                  ]}
-                  buttonType={ButtonType.LightBlue}
-                  title={intl.formatMessage({id: 'home.add-medicine'})}
-                  onPress={() => {
-                    navigation.navigate(SCREENS.ADD_MEDICINE)
-                  }}
-                />
-              </View>
-            </View>
-            <View style={[containerStyles.containerSegment]}>
-              <BodyHeader
-                style={[
-                  styles.sectionHeader,
-                  !bps.length ? {marginBottom: 8} : {},
-                ]}>
-                <FormattedMessage id="home.my-bp" />
-              </BodyHeader>
-              {bps.length > 0 && (
-                <>
-                  {bps.map((bp, index) => {
-                    return (
-                      <View key={index}>
-                        <TouchableHighlight
-                          underlayColor={colors.grey4}
-                          onPress={() => {
-                            navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
-                              bp,
-                            })
-                          }}
-                          style={[
-                            {
-                              paddingVertical: 12,
-                              marginHorizontal: -24,
-                              paddingHorizontal: 24,
-                            },
-                            styles.historyItem,
-                          ]}>
-                          <BpInformation bp={bp} />
-                        </TouchableHighlight>
-                        {index < bps.length - 1 &&
-                          index < HOME_PAGE_SHOW_LIMIT - 1 && (
-                            <Line key={'bpline' + index} />
-                          )}
-                      </View>
-                    )
-                  })}
-                </>
-              )}
-              <View style={{marginTop: 16, flexDirection: 'row'}}>
-                <Button
-                  style={[
-                    styles.bpButton,
-                    {
-                      marginRight: showBpHistoryButton ? 6 : 0,
-                    },
-                  ]}
-                  buttonType={ButtonType.LightBlue}
-                  title={intl.formatMessage({
-                    id: showBpHistoryButton ? 'home.add' : 'home.add-bp',
-                  })}
-                  onPress={() => {
-                    navigation.navigate(SCREENS.ADD_BP)
-                  }}
-                />
-                {showBpHistoryButton && (
-                  <Button
-                    style={[
-                      styles.bpButton,
-                      {
-                        marginLeft: 6,
-                      },
-                    ]}
-                    buttonType={ButtonType.LightBlue}
-                    title={intl.formatMessage({id: 'general.see-all'})}
-                    onPress={() => {
-                      navigation.navigate(SCREENS.BP_HISTORY, {
-                        bps,
-                      })
-                    }}
-                  />
-                )}
-              </View>
-            </View>
-            <View style={[containerStyles.containerSegment]}>
-              <BodyHeader
-                style={[
-                  styles.sectionHeader,
-                  !bss.length ? {marginBottom: 8} : {},
-                ]}>
-                <FormattedMessage id="home.my-blood-sugar" />
-              </BodyHeader>
-              {bss.length > 0 && (
-                <>
-                  {bss.map((bs, index) => {
-                    return (
-                      <View key={index}>
-                        <TouchableHighlight
-                          underlayColor={colors.grey4}
-                          onPress={() => {
-                            navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
-                              bs,
-                            })
-                          }}
-                          style={[
-                            {
-                              paddingVertical: 12,
-                              marginHorizontal: -24,
-                              paddingHorizontal: 24,
-                            },
-                            styles.historyItem,
-                            index === bss.length - 1
-                              ? {borderBottomWidth: 0}
-                              : {},
-                          ]}>
-                          <BsInformation bs={bs} />
-                        </TouchableHighlight>
-                        {index < bss.length - 1 &&
-                          index < HOME_PAGE_SHOW_LIMIT - 1 && (
-                            <Line key={'line' + index} />
-                          )}
-                      </View>
-                    )
-                  })}
-                </>
-              )}
-              <View style={{marginTop: 16, flexDirection: 'row'}}>
-                <Button
-                  style={[
-                    styles.bpButton,
-                    {
-                      marginRight: showBsHistoryButton ? 6 : 0,
-                    },
-                  ]}
-                  buttonType={ButtonType.LightBlue}
-                  title={intl.formatMessage({
-                    id: showBsHistoryButton ? 'home.add' : 'home.add-bs',
-                  })}
-                  onPress={() => {
-                    navigation.navigate(SCREENS.ADD_BS)
-                  }}
-                />
-                {showBsHistoryButton && (
-                  <Button
-                    style={[
-                      styles.bpButton,
-                      {
-                        marginLeft: 6,
-                      },
-                    ]}
-                    buttonType={ButtonType.LightBlue}
-                    title={intl.formatMessage({id: 'general.see-all'})}
-                    onPress={() => {
-                      navigation.navigate(SCREENS.BS_HISTORY, {
-                        bloodSugars: bss,
-                      })
-                    }}
-                  />
-                )}
-              </View>
-            </View>
+            <BloodPressureSection
+              bps={bps}
+              navigation={navigation}
+              showList={HOME_PAGE_SHOW_LIMIT}
+            />
+            <BloodSugarSection
+              bloodSugarReadings={bss}
+              navigation={navigation}
+              showList={HOME_PAGE_SHOW_LIMIT}
+            />
+            <MedicalDetailsSection meds={meds} navigation={navigation} />
             <View style={[containerStyles.containerSegment]}>
               <HealthReminders />
             </View>
