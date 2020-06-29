@@ -27,6 +27,30 @@ type BPSProps = {
   showList: number
 }
 
+const BloodPressureEntry = ({bp, showSeparator, navigation}: any) => {
+  return (
+    <>
+      <TouchableHighlight
+        underlayColor={colors.grey4}
+        onPress={() => {
+          navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+            bp,
+          })
+        }}
+        style={[
+          {
+            paddingVertical: 12,
+            marginHorizontal: -24,
+            paddingHorizontal: 24,
+          },
+          styles.historyItem,
+        ]}>
+        <BpInformation bp={bp} />
+      </TouchableHighlight>
+      {showSeparator && <Line />}
+    </>
+  )
+}
 const BloodPressureSection = ({navigation, bps, showList}: BPSProps) => {
   const intl = useIntl()
   const showBpHistoryButton = bps.length >= showList
@@ -37,36 +61,17 @@ const BloodPressureSection = ({navigation, bps, showList}: BPSProps) => {
         style={[styles.sectionHeader, !bps.length ? {marginBottom: 8} : {}]}>
         <FormattedMessage id="home.my-bp" />
       </BodyHeader>
-      {bps.length > 0 && (
-        <>
-          {bps.map((bp, index) => {
-            return (
-              <View key={index}>
-                <TouchableHighlight
-                  underlayColor={colors.grey4}
-                  onPress={() => {
-                    navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
-                      bp,
-                    })
-                  }}
-                  style={[
-                    {
-                      paddingVertical: 12,
-                      marginHorizontal: -24,
-                      paddingHorizontal: 24,
-                    },
-                    styles.historyItem,
-                  ]}>
-                  <BpInformation bp={bp} />
-                </TouchableHighlight>
-                {index < bps.length - 1 && index < showList - 1 && (
-                  <Line key={'bpline' + index} />
-                )}
-              </View>
-            )
-          })}
-        </>
-      )}
+      {bps.length > 0 &&
+        bps.map((bp, index) => {
+          return (
+            <BloodPressureEntry
+              key={index}
+              showSeparator={index < bps.length - 1 && index < showList - 1}
+              bp={bp}
+              navigation={navigation}
+            />
+          )
+        })}
       <View style={{marginTop: 16, flexDirection: 'row'}}>
         <Button
           style={[
