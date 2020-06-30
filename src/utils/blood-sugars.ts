@@ -28,12 +28,12 @@ export const showWarning = (bs: BloodSugar): boolean => {
     return false
   }
 
-  const value = Number(convertBloodSugarValue(bs, BloodSugarCode.MG_DL))
+  const value = Number(convertBloodSugarReading(bs, BloodSugarCode.MG_DL))
   return value !== undefined && value >= warningHighBSValue
 }
 
 export const isHighBloodSugar = (bs: BloodSugar) => {
-  const value = convertBloodSugarValue(bs, BloodSugarCode.MG_DL)
+  const value = convertBloodSugarReading(bs, BloodSugarCode.MG_DL)
   return Number(value) >= getBloodSugarDetails(bs).high
 }
 
@@ -43,7 +43,7 @@ export const isLowBloodSugar = (bs: BloodSugar) => {
     return false
   }
 
-  return Number(convertBloodSugarValue(bs, BloodSugarCode.MG_DL)) < lowBSValue
+  return Number(convertBloodSugarReading(bs, BloodSugarCode.MG_DL)) < lowBSValue
 }
 
 export const getBloodSugarDetails: (

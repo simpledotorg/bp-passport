@@ -54,7 +54,6 @@ enum INPUT_TYPES {
 
 function AddBsScreen({navigation, route}: Props) {
   const intl = useIntl()
-  console.log('rendering')
 
   const dispatch = useThunkDispatch()
 
