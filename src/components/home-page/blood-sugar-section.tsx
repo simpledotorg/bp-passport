@@ -15,19 +15,26 @@ import {
 } from '../../components'
 
 import {BloodSugar} from '../../redux/blood-sugar/blood-sugar.models'
+import {BloodSugarCode} from '../../utils/blood-sugars'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   SCREENS.HOME
 >
 
-type BSSProps = {
+type BSEntryProps = {
   navigation: HomeScreenNavigationProp
-  bloodSugarReadings: BloodSugar[]
-  showList: number
+  bs: BloodSugar
+  displayUnits: BloodSugarCode
+  showSeparator: boolean
 }
 
-const BloodSugarEntry = ({bs, navigation, showSeparator}: any) => {
+const BloodSugarEntry = ({
+  bs,
+  displayUnits,
+  navigation,
+  showSeparator,
+}: BSEntryProps) => {
   return (
     <>
       <TouchableHighlight
@@ -46,16 +53,24 @@ const BloodSugarEntry = ({bs, navigation, showSeparator}: any) => {
           styles.historyItem,
           // index === bloodSugarReadings.length - 1 ? {borderBottomWidth: 0} : {},
         ]}>
-        <BsInformation bs={bs} />
+        <BsInformation bs={bs} displayUnits={displayUnits} />
       </TouchableHighlight>
       {showSeparator && <Line />}
     </>
   )
 }
 
+type BSSProps = {
+  navigation: HomeScreenNavigationProp
+  bloodSugarReadings: BloodSugar[]
+  displayUnits: BloodSugarCode
+  showList: number
+}
+
 const BloodSugarSection = ({
   navigation,
   bloodSugarReadings,
+  displayUnits,
   showList,
 }: BSSProps) => {
   const intl = useIntl()
@@ -77,6 +92,7 @@ const BloodSugarSection = ({
               <BloodSugarEntry
                 key={index}
                 bs={bs}
+                displayUnits={displayUnits}
                 navigation={navigation}
                 showSeparator={
                   index < bloodSugarReadings.length - 1 && index < showList - 1

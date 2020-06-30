@@ -10,7 +10,7 @@ PushNotifications.configure({
 
   // (required) Called when a remote or local notification is opened or received
   onNotification(notification) {
-    console.log('NOTIFICATION:', notification)
+    // console.log('NOTIFICATION:', notification)
 
     // process the notification
 
@@ -49,7 +49,7 @@ let lastId: number = 2
 
 export const scheduleNotif = () => {
   lastId++
-  console.log('scheduleNotif...', lastId)
+  // console.log('scheduleNotif...', lastId)
 
   PushNotifications.localNotificationSchedule({
     date: new Date(Date.now() + 30 * 1000), // in 30 secs

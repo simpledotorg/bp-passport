@@ -2,7 +2,11 @@ import {
   BloodSugar,
   BLOOD_SUGAR_TYPES,
 } from '../../redux/blood-sugar/blood-sugar.models'
-import {isHighBloodSugar, isLowBloodSugar} from '../../utils/blood-sugars'
+import {
+  isHighBloodSugar,
+  isLowBloodSugar,
+  BloodSugarCode,
+} from '../../utils/blood-sugars'
 import {useIntl} from 'react-intl'
 import {format} from 'date-fns'
 
@@ -18,13 +22,9 @@ export class ScatterGraphDataPoint {
     this.x = index
     this.y = Number(reading.blood_sugar_value)
     this.label =
-      `${this.y.toFixed(0)}${
-        ScatterGraphDataPoint.showMGDL(reading)
-          ? this.intl.formatMessage({
-              id: 'bs.mgdl',
-            })
-          : '%,'
-      } ${this.getBloodSugarType(reading)}${format(
+      `${this.y.toFixed(0)}${this.getDisplayUnits(
+        reading,
+      )} ${this.getBloodSugarType(reading)}${format(
         new Date(reading.recorded_at),
         'dd',
       )}-` +
@@ -40,6 +40,18 @@ export class ScatterGraphDataPoint {
     this.showOutOfRange = isHighBloodSugar(reading) || isLowBloodSugar(reading)
   }
 
+  private getDisplayUnits(reading: BloodSugar): string {
+    switch (reading.blood_sugar_unit) {
+      case BloodSugarCode.PERCENT:
+        return '%'
+      case BloodSugarCode.MMOL_L:
+        return this.intl.formatMessage({id: 'bs.mmoll'})
+      default:
+        return this.intl.formatMessage({
+          id: 'bs.mgdl',
+        })
+    }
+  }
   private static showMGDL(reading: BloodSugar): boolean {
     return (
       reading.blood_sugar_type === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR ||

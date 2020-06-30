@@ -19,6 +19,7 @@ export interface BloodSugar {
     village_or_colony: string
   }
   offline?: boolean
+  blood_sugar_unit?: string
 }
 
 declare global {

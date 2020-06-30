@@ -26,13 +26,16 @@ import {DateAxisComponent} from './victory-chart-parts/date-axis-component'
 import {TitleBar} from './victory-chart-parts/title-bar'
 import {ChartTypeSelection} from './bs-history/chart-type-selection'
 
+import {convertBloodSugarValue, BloodSugarCode} from '../utils/blood-sugars'
+
 type Props = {
   bloodSugarReadings: BloodSugar[]
+  displayUnits: BloodSugarCode
 }
 
-export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
+export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
   const [requestedChart, setRequestedChart] = useState<IDefineAChartRequest>(
-    getStartingChartRequest(bloodSugarReadings),
+    getStartingChartRequest(bloodSugarReadings, displayUnits),
   )
 
   const [chartData, setChartData] = useState<ChartData | null>(null)
@@ -41,7 +44,7 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
     setChartData(null)
     setRequestedChart(
       requestedChart.withUpdatedReadings(bloodSugarReadings) ??
-        getStartingChartRequest(bloodSugarReadings),
+        getStartingChartRequest(bloodSugarReadings, displayUnits),
     )
   }, [bloodSugarReadings])
 
@@ -58,11 +61,32 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
 
     switch (chartData.getChartType()) {
       case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
-        return 126
+        return Number(
+          convertBloodSugarValue(
+            displayUnits,
+            chartData.getChartType(),
+            '126',
+            BloodSugarCode.MG_DL,
+          ),
+        )
       case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
-        return 7
+        return Number(
+          convertBloodSugarValue(
+            displayUnits,
+            chartData.getChartType(),
+            '7',
+            BloodSugarCode.MG_DL,
+          ),
+        )
       default:
-        return 200
+        return Number(
+          convertBloodSugarValue(
+            displayUnits,
+            chartData.getChartType(),
+            '200',
+            BloodSugarCode.MG_DL,
+          ),
+        )
     }
   }
 
@@ -75,7 +99,14 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
       case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
         return null
       default:
-        return 70
+        return Number(
+          convertBloodSugarValue(
+            displayUnits,
+            chartData.getChartType(),
+            '70',
+            BloodSugarCode.MG_DL,
+          ),
+        )
     }
   }
 
@@ -114,7 +145,11 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
   const changeChartTypeHandler = (newChartType: BLOOD_SUGAR_TYPES): void => {
     setChartData(null)
     setRequestedChart(
-      requestedChart.changeRequestedType(newChartType, bloodSugarReadings),
+      requestedChart.changeRequestedType(
+        newChartType,
+        bloodSugarReadings,
+        displayUnits,
+      ),
     )
   }
 

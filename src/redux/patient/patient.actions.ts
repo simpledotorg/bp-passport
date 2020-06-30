@@ -77,3 +77,8 @@ export const setLanguage = (locale: string) => ({
   type: PatientActionTypes.SET_LANGUAGE,
   payload: locale,
 })
+
+export const setBloodSugarUnit = (locale: string) => ({
+  type: PatientActionTypes.SET_BLOOD_SUGAR_UNIT,
+  payload: locale,
+})
