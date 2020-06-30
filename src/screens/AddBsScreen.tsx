@@ -29,6 +29,12 @@ import {
   isLowBloodSugar,
   showWarning,
 } from '../utils/blood-sugars'
+import {
+  hasReviewedSelector,
+  normalBpCountSelector,
+  normalBsCountSelector,
+} from '../redux/patient/patient.selectors'
+import {incrementNormalBsCount} from '../redux/patient/patient.actions'
 
 type AddBsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -55,6 +61,9 @@ enum INPUT_TYPES {
 
 function AddBsScreen({navigation, route}: Props) {
   const intl = useIntl()
+  const hasReviewed = hasReviewedSelector()
+  const normalBpCount = normalBpCountSelector()
+  const normalBsCount = normalBsCountSelector()
 
   const dispatch = useThunkDispatch()
 
@@ -246,6 +255,13 @@ function AddBsScreen({navigation, route}: Props) {
 
               dispatch(addBloodSugar(newBloodSugar))
 
+              if (
+                !isHighBloodSugar(newBloodSugar) ||
+                !isLowBloodSugar(newBloodSugar)
+              ) {
+                dispatch(incrementNormalBsCount())
+              }
+
               navigation.goBack()
 
               if (showWarning(newBloodSugar)) {
@@ -271,6 +287,12 @@ function AddBsScreen({navigation, route}: Props) {
                     })
                   }, 250)
                 }
+              }
+
+              if (normalBpCount + normalBsCount >= 5 && !hasReviewed) {
+                setTimeout(() => {
+                  navigation.navigate(SCREENS.WRITE_A_REVIEW_MODAL_SCREEN)
+                }, 250)
               }
             }}
           />
