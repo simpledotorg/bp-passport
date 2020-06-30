@@ -219,13 +219,12 @@ function SettingsScreen({navigation}: any) {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.content}>
             {apiUser && <UserDetails apiUser={apiUser} />}
-            {!hasPassportLinked && (
-              <ConnectSection intl={intl} navigation={navigation} />
-            )}
             <LanguagePicker apiUser={apiUser} />
             <BloodSugarUnitPicker />
             <SupportSection />
-
+            {!hasPassportLinked && (
+              <ConnectSection intl={intl} navigation={navigation} />
+            )}
             <LegalSection />
           </View>
         </ScrollView>
