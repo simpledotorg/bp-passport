@@ -103,18 +103,10 @@ export const BsInformation = ({bs, displayUnits, style = {}}: Props) => {
                 color: colors.grey0,
                 fontWeight: '500',
               }}>
-              {`${convertBloodSugarReading(bs, displayUnits)}`}
-              {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
-                <>
-                  % <FormattedMessage id={details.languageTypeCode} />{' '}
-                </>
-              ) : (
-                <>
-                  {' '}
-                  {getDisplayBloodSugarUnit(displayUnits)}{' '}
-                  <FormattedMessage id={details.languageTypeCode} />{' '}
-                </>
-              )}
+              {`${convertBloodSugarReading(bs, displayUnits)} `}
+              {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
+                ? '%'
+                : getDisplayBloodSugarUnit(displayUnits)}{' '}
             </BodyText>
             <View>{getBSText()}</View>
           </View>
@@ -123,7 +115,7 @@ export const BsInformation = ({bs, displayUnits, style = {}}: Props) => {
               fontSize: 16,
               color: colors.grey1,
             }}>
-            {displayDate(bs)}
+            <FormattedMessage id={details.languageTypeCode} /> {displayDate(bs)}
           </BodyText>
         </View>
       </View>

@@ -10,7 +10,7 @@ import {useIntl} from 'react-intl'
 
 export const displayDate = (bsIn: BloodSugar) => {
   return bsIn.recorded_at
-    ? format(new Date(bsIn.recorded_at), `dd-MMM-yyy',' h:mm a`, {
+    ? format(new Date(bsIn.recorded_at), `dd-MMM-yyy`, {
         locale: dateLocale(),
       })
     : null
