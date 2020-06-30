@@ -82,3 +82,13 @@ export const setHasReviewed = (hasReviewed: boolean) => ({
   type: PatientActionTypes.SET_HAS_REVIEWED,
   payload: hasReviewed,
 })
+
+export const incrementNormalBpCount = () => ({
+  type: PatientActionTypes.INCREMENT_NORMAL_BP_COUNT,
+  payload: 1,
+})
+
+export const incrementNormalBsCount = () => ({
+  type: PatientActionTypes.INCREMENT_NORMAL_BS_COUNT,
+  payload: 1,
+})

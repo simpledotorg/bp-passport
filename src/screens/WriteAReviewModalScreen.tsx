@@ -40,7 +40,9 @@ function WriteAReviewModalScreen({navigation}: Props) {
 
   const goToStore = () => {
     dispatch(setHasReviewed(true))
+
     navigation.pop()
+
     Platform.OS === 'ios'
       ? Linking.openURL(
           'itms-apps://apps.apple.com/us/app/bp-passport/id1510811893?action=write-review',

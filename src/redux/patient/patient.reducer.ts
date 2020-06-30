@@ -33,15 +33,15 @@ const patientReducer = (state = INITIAL_STATE, action: any) => {
         ...state,
         hasReviewed: action.payload,
       }
-    case PatientActionTypes.SET_NORMAL_BP_COUNT:
+    case PatientActionTypes.INCREMENT_NORMAL_BP_COUNT:
       return {
         ...state,
-        normalBpCount: action.payload,
+        normalBpCount: state.normalBpCount + action.payload,
       }
-    case PatientActionTypes.SET_NORMAL_BS_COUNT:
+    case PatientActionTypes.INCREMENT_NORMAL_BS_COUNT:
       return {
         ...state,
-        normalBsCount: action.payload,
+        normalBsCount: state.normalBsCount + action.payload,
       }
     case AuthActionTypes.LOG_OUT:
       return {
