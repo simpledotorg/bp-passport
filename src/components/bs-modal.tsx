@@ -7,8 +7,6 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
-import {format} from 'date-fns'
-
 import {colors, purpleDrop, mediumWarningSign} from '../styles'
 import {BodyHeader, BodyText, Button} from './'
 import {
@@ -21,6 +19,8 @@ import {
   isLowBloodSugar,
   showWarning,
   getBloodSugarDetails,
+  getDisplayBloodSugarUnit,
+  BloodSugarCode,
 } from '../utils/blood-sugars'
 import {useThunkDispatch} from '../redux/store'
 import {deleteBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
@@ -28,10 +28,11 @@ import {ButtonType} from './button'
 
 type Props = {
   bs: BloodSugar
+  displayUnits: BloodSugarCode
   close: () => void
 }
 
-export const BsModal = ({bs, close}: Props) => {
+export const BsModal = ({bs, displayUnits, close}: Props) => {
   const intl = useIntl()
   const dispatch = useThunkDispatch()
 
@@ -151,7 +152,7 @@ export const BsModal = ({bs, close}: Props) => {
                   </>
                 ) : (
                   <>
-                    {bsDetails.high} <FormattedMessage id="bs.mgdl" />
+                    {bsDetails.high} {getDisplayBloodSugarUnit(displayUnits)}
                   </>
                 )}
               </BodyText>
@@ -199,7 +200,7 @@ export const BsModal = ({bs, close}: Props) => {
               ) : (
                 <>
                   {' '}
-                  <FormattedMessage id="bs.mgdl" />{' '}
+                  {getDisplayBloodSugarUnit(displayUnits)}{' '}
                   <FormattedMessage id={details.languageTypeCode} />
                 </>
               )}{' '}
