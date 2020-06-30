@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react'
-import {View, TouchableWithoutFeedback, Image, Platform} from 'react-native'
+import {
+  View,
+  TouchableWithoutFeedback,
+  Image,
+  Platform,
+  Linking,
+} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 
@@ -10,6 +16,8 @@ import {RootStackParamList} from '../Navigation'
 import {BodyText, BodyHeader, Button, ButtonType} from '../components'
 
 import {FormattedMessage, useIntl} from 'react-intl'
+import {setHasReviewed} from '../redux/patient/patient.actions'
+import {useThunkDispatch} from '../redux/store'
 
 type WriteAReviewModalScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -28,6 +36,17 @@ type Props = {
 
 function WriteAReviewModalScreen({navigation}: Props) {
   const intl = useIntl()
+  const dispatch = useThunkDispatch()
+
+  const goToStore = () => {
+    dispatch(setHasReviewed(true))
+    navigation.pop()
+    Platform.OS === 'ios'
+      ? Linking.openURL(
+          'itms-apps://apps.apple.com/us/app/bp-passport/id1510811893?action=write-review',
+        )
+      : Linking.openURL('market://details?id=org.simple.bppassport')
+  }
 
   return (
     <TouchableWithoutFeedback
@@ -79,7 +98,7 @@ function WriteAReviewModalScreen({navigation}: Props) {
             buttonType={ButtonType.Normal}
             title={intl.formatMessage({id: 'general.write-a-review'})}
             onPress={() => {
-              navigation.pop()
+              goToStore()
             }}
             style={{marginBottom: 16}}
           />

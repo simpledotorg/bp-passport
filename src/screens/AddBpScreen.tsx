@@ -15,6 +15,7 @@ import {containerStyles, colors} from '../styles'
 import {Button, BodyText, ButtonType} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
+import {hasReviewedSelector} from '../redux/patient/patient.selectors'
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {useThunkDispatch} from '../redux/store'
@@ -40,6 +41,7 @@ const MAX_DIASTOLIC_BP = 180
 
 function AddBpScreen({navigation, route}: Props) {
   const intl = useIntl()
+  const hasReviewed = hasReviewedSelector()
 
   const systolicRef = useRef<null | any>(null)
   const diastolicRef = useRef<null | any>(null)
@@ -124,7 +126,9 @@ function AddBpScreen({navigation, route}: Props) {
           ),
         })
       }, 250)
-    } else {
+    }
+
+    if (!hasReviewed) {
       setTimeout(() => {
         navigation.navigate(SCREENS.WRITE_A_REVIEW_MODAL_SCREEN)
       }, 250)

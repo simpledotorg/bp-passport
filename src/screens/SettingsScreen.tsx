@@ -16,7 +16,6 @@ import {
   AVAILABLE_TRANSLATIONS,
   languageCodeToDisplayTitle,
 } from '../constants/languages'
-import {useLocale} from '../effects/use-locale-messages.effect'
 import {patientSelector} from '../redux/patient/patient.selectors'
 import {setLanguage} from '../redux/patient/patient.actions'
 import SCREENS from '../constants/screens'

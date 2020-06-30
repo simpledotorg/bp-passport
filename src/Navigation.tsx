@@ -100,7 +100,7 @@ export type RootStackParamList = {
     cancelCallback: () => void
   }
   ADD_DATA_WARNING_MODAL_SCREEN: {displayText: string}
-  WRITE_A_REVIEW_MODAL_SCREEN: {displayText: string}
+  WRITE_A_REVIEW_MODAL_SCREEN: undefined
 }
 
 const Stack = createStackNavigator<RootStackParamList>()

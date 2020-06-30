@@ -1,11 +1,19 @@
 import {PatientActionTypes} from './patient.types'
 import {AuthActionTypes} from '../auth/auth.types'
 import {Patient} from './patient.models'
-import {DEFAULT_LANGUAGE_CODE} from '../../constants/languages'
 
-const INITIAL_STATE: {patient?: Patient; locale?: string} = {
+const INITIAL_STATE: {
+  patient?: Patient
+  locale?: string
+  hasReviewed?: boolean
+  normalBpCount?: number
+  normalBsCount?: number
+} = {
   patient: undefined,
   locale: undefined,
+  hasReviewed: false,
+  normalBpCount: 0,
+  normalBsCount: 0,
 }
 
 const patientReducer = (state = INITIAL_STATE, action: any) => {
@@ -19,6 +27,21 @@ const patientReducer = (state = INITIAL_STATE, action: any) => {
       return {
         ...state,
         locale: action.payload,
+      }
+    case PatientActionTypes.SET_HAS_REVIEWED:
+      return {
+        ...state,
+        hasReviewed: action.payload,
+      }
+    case PatientActionTypes.SET_NORMAL_BP_COUNT:
+      return {
+        ...state,
+        normalBpCount: action.payload,
+      }
+    case PatientActionTypes.SET_NORMAL_BS_COUNT:
+      return {
+        ...state,
+        normalBsCount: action.payload,
       }
     case AuthActionTypes.LOG_OUT:
       return {
