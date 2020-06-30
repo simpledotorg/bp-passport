@@ -15,7 +15,7 @@ import {
   isLowBloodSugar,
   showWarning,
   getBloodSugarDetails,
-  convertBloodSugarValue,
+  convertBloodSugarReading,
   getDisplayBloodSugarUnit,
 } from '../utils/blood-sugars'
 
@@ -101,7 +101,7 @@ export const BsInformation = ({bs, style = {}}: Props) => {
                 color: colors.grey0,
                 fontWeight: '500',
               }}>
-              {`${convertBloodSugarValue(bs)}`}
+              {`${convertBloodSugarReading(bs)}`}
               {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
                 <>
                   % <FormattedMessage id={details.languageTypeCode} />{' '}

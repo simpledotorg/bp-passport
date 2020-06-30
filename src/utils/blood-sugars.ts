@@ -160,9 +160,7 @@ const convertBloodSugar = (
     bloodSugarUnit = bloodSugarReading.blood_sugar_unit
   }
 
-  console.log(bloodSugarType)
   if (bloodSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
-    console.log('here')
     return bloodSugarValue ?? ''
   }
 

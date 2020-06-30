@@ -15,6 +15,8 @@ import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis
 import {getMonthYearTitle, getYearTitle} from '../../utils/dates'
 import {IDefineChartsAvailable} from './i-define-charts-available'
 import {LineGraphDataPoint} from './line-graph-data-point'
+import ConvertedBloodSugarReading from '../../models/converted_blood_sugar_reading'
+import {BloodSugarCode} from '../../utils/blood-sugars'
 
 export class ChartData implements IDefineChartsAvailable {
   private readonly _requestedChart: IDefineAChartRequest
@@ -81,7 +83,12 @@ export class ChartData implements IDefineChartsAvailable {
         this.aggregatedData.push(aggregateRecord)
       }
 
-      aggregateRecord.addReading(bloodSugarReading)
+      aggregateRecord.addReading(
+        new ConvertedBloodSugarReading(
+          bloodSugarReading,
+          this._requestedChart.getDisplayUnits(),
+        ),
+      )
     })
   }
 
@@ -115,6 +122,10 @@ export class ChartData implements IDefineChartsAvailable {
 
   public getChartType(): BLOOD_SUGAR_TYPES {
     return this._requestedChart.chartType
+  }
+
+  public getDisplayUnits(): BloodSugarCode {
+    return this._requestedChart.getDisplayUnits()
   }
 
   public getHasRandomReadings(): boolean {
