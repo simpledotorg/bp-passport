@@ -32,7 +32,6 @@ export const showWarning = (bs: BloodSugar): boolean => {
 
 export const isHighBloodSugar = (bs: BloodSugar) => {
   const value = convertBloodSugarReading(bs, BloodSugarCode.MG_DL)
-  console.log({value, h: getBloodSugarDetails(bs).high})
   return value >= getBloodSugarDetails(bs).high
 }
 
@@ -43,13 +42,13 @@ export const isLowBloodSugar = (bs: BloodSugar) => {
   }
 
   const value = convertBloodSugarReading(bs, BloodSugarCode.MG_DL)
-  console.log({value, l: lowBSValue})
   return value < lowBSValue
 }
 
 export const getBloodSugarDetails: (
   bs: BloodSugar,
 ) => {
+  type: BLOOD_SUGAR_TYPES
   warningHigh?: number
   high: number
   low?: number
@@ -59,6 +58,7 @@ export const getBloodSugarDetails: (
   switch (bs.blood_sugar_type) {
     case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR: {
       return {
+        type: BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR,
         warningHigh: 300,
         high: 126,
         low: 70,
@@ -68,6 +68,7 @@ export const getBloodSugarDetails: (
     }
     case BLOOD_SUGAR_TYPES.POST_PRANDIAL: {
       return {
+        type: BLOOD_SUGAR_TYPES.POST_PRANDIAL,
         warningHigh: 300,
         high: 200,
         low: 70,
@@ -77,6 +78,7 @@ export const getBloodSugarDetails: (
     }
     case BLOOD_SUGAR_TYPES.HEMOGLOBIC: {
       return {
+        type: BLOOD_SUGAR_TYPES.HEMOGLOBIC,
         high: 7,
         languageKey: 'bs.hemoglobic',
         languageTypeCode: 'bs.hemoglobic-code',
@@ -85,6 +87,7 @@ export const getBloodSugarDetails: (
     case BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR:
     default: {
       return {
+        type: BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
         warningHigh: 300,
         high: 200,
         low: 70,
