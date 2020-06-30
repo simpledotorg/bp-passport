@@ -103,7 +103,7 @@ export const BsInformation = ({bs, displayUnits, style = {}}: Props) => {
                 color: colors.grey0,
                 fontWeight: '500',
               }}>
-              {`${convertBloodSugarReading(bs, displayUnits)} `}
+              {`${convertBloodSugarReading(bs, displayUnits).toFixed(0)} `}
               {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
                 ? '%'
                 : getDisplayBloodSugarUnit(displayUnits)}{' '}

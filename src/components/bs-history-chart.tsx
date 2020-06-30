@@ -67,7 +67,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
             chartData.getChartType(),
             '126',
             BloodSugarCode.MG_DL,
-          ),
+          ).toFixed(0),
         )
       case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
         return Number(
@@ -76,7 +76,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
             chartData.getChartType(),
             '7',
             BloodSugarCode.MG_DL,
-          ),
+          ).toFixed(0),
         )
       default:
         return Number(
@@ -85,7 +85,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
             chartData.getChartType(),
             '200',
             BloodSugarCode.MG_DL,
-          ),
+          ).toFixed(0),
         )
     }
   }
@@ -105,7 +105,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
             chartData.getChartType(),
             '70',
             BloodSugarCode.MG_DL,
-          ),
+          ).toFixed(0),
         )
     }
   }

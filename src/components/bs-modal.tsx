@@ -32,26 +32,25 @@ type Props = {
   close: () => void
 }
 
-export const BsModal = ({bs, displayUnits, close}: Props) => {
-  const intl = useIntl()
-  const dispatch = useThunkDispatch()
+const ValueStatusLabel = ({bs}: any) => {
+  console.log('ValueStatusLabel hc')
+  if (isHighBloodSugar(bs)) {
+    return (
+      <BodyText
+        style={[
+          styles.bsText,
+          {
+            color: colors.red1,
+          },
+        ]}>
+        <FormattedMessage id="general.high" />
+      </BodyText>
+    )
+  }
 
-  const getBSText = () => {
-    if (isHighBloodSugar(bs)) {
-      return (
-        <BodyText
-          style={[
-            styles.bsText,
-            {
-              color: colors.red1,
-            },
-          ]}>
-          <FormattedMessage id="general.high" />
-        </BodyText>
-      )
-    }
-
-    return isLowBloodSugar(bs) ? (
+  console.log('ValueStatusLabel lc')
+  if (isLowBloodSugar(bs)) {
+    return (
       <BodyText
         style={[
           styles.bsText,
@@ -61,19 +60,27 @@ export const BsModal = ({bs, displayUnits, close}: Props) => {
         ]}>
         <FormattedMessage id="general.low" />
       </BodyText>
-    ) : (
-      <BodyText
-        style={[
-          styles.bsText,
-          {
-            color: colors.green1,
-          },
-        ]}>
-        <FormattedMessage id="general.normal" />
-      </BodyText>
     )
   }
 
+  console.log('ValueStatusLabel ok')
+  return (
+    <BodyText
+      style={[
+        styles.bsText,
+        {
+          color: colors.green1,
+        },
+      ]}>
+      <FormattedMessage id="general.normal" />
+    </BodyText>
+  )
+}
+
+export const BsModal = ({bs, displayUnits, close}: Props) => {
+  const intl = useIntl()
+  const dispatch = useThunkDispatch()
+  console.log(bs)
   const getNotes = () => {
     const bsDetails = getBloodSugarDetails(bs)
     if (isHighBloodSugar(bs) && showWarning(bs)) {
@@ -192,7 +199,7 @@ export const BsModal = ({bs, displayUnits, close}: Props) => {
                 fontSize: 18,
                 color: colors.grey0,
               }}>
-              {`${bs.blood_sugar_value}`}
+              {`${Number(bs.blood_sugar_value).toFixed(0)}`}
               {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
                 <>
                   % <FormattedMessage id={details.languageTypeCode} />
@@ -204,7 +211,7 @@ export const BsModal = ({bs, displayUnits, close}: Props) => {
                   <FormattedMessage id={details.languageTypeCode} />
                 </>
               )}{' '}
-              {getBSText()}
+              <ValueStatusLabel bs={bs} />
             </BodyText>
             <BodyText
               style={{
