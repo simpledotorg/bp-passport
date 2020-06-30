@@ -17,14 +17,16 @@ import {
   getBloodSugarDetails,
   convertBloodSugarReading,
   getDisplayBloodSugarUnit,
+  BloodSugarCode,
 } from '../utils/blood-sugars'
 
 type Props = {
   bs: BloodSugar
+  displayUnits: BloodSugarCode
   style?: ViewStyle
 }
 
-export const BsInformation = ({bs, style = {}}: Props) => {
+export const BsInformation = ({bs, displayUnits, style = {}}: Props) => {
   const intl = useIntl()
 
   const getBSText = () => {
@@ -101,7 +103,7 @@ export const BsInformation = ({bs, style = {}}: Props) => {
                 color: colors.grey0,
                 fontWeight: '500',
               }}>
-              {`${convertBloodSugarReading(bs)}`}
+              {`${convertBloodSugarReading(bs, displayUnits)}`}
               {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
                 <>
                   % <FormattedMessage id={details.languageTypeCode} />{' '}
@@ -109,7 +111,7 @@ export const BsInformation = ({bs, style = {}}: Props) => {
               ) : (
                 <>
                   {' '}
-                  {getDisplayBloodSugarUnit()}{' '}
+                  {getDisplayBloodSugarUnit(displayUnits)}{' '}
                   <FormattedMessage id={details.languageTypeCode} />{' '}
                 </>
               )}

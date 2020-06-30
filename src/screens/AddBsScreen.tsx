@@ -206,9 +206,9 @@ function AddBsScreen({navigation, route}: Props) {
   }
 
   // need to do this way, beause if you change type then react complains that number of called hooks has changed
-  let displayUnit = getDisplayBloodSugarUnit()
+  let displayUnitLabel = getDisplayBloodSugarUnit(selectedBloodSugarUnit)
   if (type === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
-    displayUnit = '%'
+    displayUnitLabel = '%'
   }
 
   return (
@@ -258,7 +258,7 @@ function AddBsScreen({navigation, route}: Props) {
                 top: 14,
                 color: colors.grey1,
               }}>
-              {displayUnit}
+              {displayUnitLabel}
             </BodyText>
           </View>
           <Picker

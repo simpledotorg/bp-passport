@@ -26,21 +26,14 @@ import {DateAxisComponent} from './victory-chart-parts/date-axis-component'
 import {TitleBar} from './victory-chart-parts/title-bar'
 import {ChartTypeSelection} from './bs-history/chart-type-selection'
 
-import {
-  convertBloodSugarValue,
-  getDisplayBloodSugarUnit,
-  BloodSugarCode,
-} from '../utils/blood-sugars'
-
-import {bloodSugarUnitSelector} from '../redux/patient/patient.selectors'
+import {convertBloodSugarValue, BloodSugarCode} from '../utils/blood-sugars'
 
 type Props = {
   bloodSugarReadings: BloodSugar[]
+  displayUnits: BloodSugarCode
 }
 
-export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
-  const displayUnits = bloodSugarUnitSelector()
-
+export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
   const [requestedChart, setRequestedChart] = useState<IDefineAChartRequest>(
     getStartingChartRequest(bloodSugarReadings, displayUnits),
   )
@@ -70,28 +63,28 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
       case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
         return Number(
           convertBloodSugarValue(
+            displayUnits,
             chartData.getChartType(),
             '126',
             BloodSugarCode.MG_DL,
-            displayUnits,
           ),
         )
       case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
         return Number(
           convertBloodSugarValue(
+            displayUnits,
             chartData.getChartType(),
             '7',
             BloodSugarCode.MG_DL,
-            displayUnits,
           ),
         )
       default:
         return Number(
           convertBloodSugarValue(
+            displayUnits,
             chartData.getChartType(),
             '200',
             BloodSugarCode.MG_DL,
-            displayUnits,
           ),
         )
     }
@@ -108,10 +101,10 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
       default:
         return Number(
           convertBloodSugarValue(
+            displayUnits,
             chartData.getChartType(),
             '70',
             BloodSugarCode.MG_DL,
-            displayUnits,
           ),
         )
     }
