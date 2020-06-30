@@ -111,32 +111,36 @@ function AddBsScreen({navigation, route}: Props) {
     if (foundType) {
       const isPercentage = foundType.type === INPUT_TYPES.PERCENTAGE
 
-      const minValue = isPercentage
-        ? foundType.value
-        : convertBloodSugarValue(
-            foundType.value,
-            foundType.min.toString(),
-            BloodSugarCode.MG_DL,
-            selectedBloodSugarUnit,
+      const minValue: number = isPercentage
+        ? foundType.min
+        : Number(
+            convertBloodSugarValue(
+              foundType.value,
+              foundType.min.toString(),
+              BloodSugarCode.MG_DL,
+              selectedBloodSugarUnit,
+            ),
           )
 
-      if (Number(input) < Number(minValue)) {
+      if (Number(input) < minValue) {
         return intl.formatMessage(
           {id: 'add-bs.bs-less-than-error'},
           {value: `${minValue}${isPercentage ? '%' : ''}`},
         )
       }
 
-      const maxValue = isPercentage
-        ? foundType.value
-        : convertBloodSugarValue(
-            foundType.value,
-            foundType.max.toString(),
-            BloodSugarCode.MG_DL,
-            selectedBloodSugarUnit,
+      const maxValue: number = isPercentage
+        ? foundType.max
+        : Number(
+            convertBloodSugarValue(
+              foundType.value,
+              foundType.max.toString(),
+              BloodSugarCode.MG_DL,
+              selectedBloodSugarUnit,
+            ),
           )
 
-      if (Number(input) > Number(maxValue)) {
+      if (Number(input) > maxValue) {
         return intl.formatMessage(
           {id: 'add-bs.bs-more-than-error'},
           {value: `${maxValue}${isPercentage ? '%' : ''}`},
