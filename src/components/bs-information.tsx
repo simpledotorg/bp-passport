@@ -15,6 +15,8 @@ import {
   isLowBloodSugar,
   showWarning,
   getBloodSugarDetails,
+  convertBloodSugarValue,
+  getDisplayBloodSugarUnit,
 } from '../utils/blood-sugars'
 
 type Props = {
@@ -37,7 +39,6 @@ export const BsInformation = ({bs, style = {}}: Props) => {
               },
             ]}>
             <FormattedMessage id="general.high" />
-            {isHighBloodSugar(bs)}
           </BodyText>
           {showWarning(bs) && (
             <Image source={smallWarningSign} style={styles.warningIcon} />
@@ -100,16 +101,15 @@ export const BsInformation = ({bs, style = {}}: Props) => {
                 color: colors.grey0,
                 fontWeight: '500',
               }}>
-              {`${bs.blood_sugar_value}`}
+              {`${convertBloodSugarValue(bs)}`}
               {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
                 <>
-                  <BodyText>%</BodyText>{' '}
-                  <FormattedMessage id={details.languageTypeCode} />{' '}
+                  % <FormattedMessage id={details.languageTypeCode} />{' '}
                 </>
               ) : (
                 <>
                   {' '}
-                  <FormattedMessage id="bs.mgdl" />{' '}
+                  {getDisplayBloodSugarUnit()}{' '}
                   <FormattedMessage id={details.languageTypeCode} />{' '}
                 </>
               )}

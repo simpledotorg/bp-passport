@@ -8,6 +8,8 @@ import {dateLocale} from '../constants/languages'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {useIntl} from 'react-intl'
 
+import {bloodSugarUnitSelector} from '../redux/patient/patient.selectors'
+
 export const displayDate = (bsIn: BloodSugar) => {
   return bsIn.recorded_at
     ? format(new Date(bsIn.recorded_at), `dd-MMM-yyy',' h:mm a`, {
@@ -26,12 +28,13 @@ export const showWarning = (bs: BloodSugar): boolean => {
     return false
   }
 
-  const value = Number(bs.blood_sugar_value)
+  const value = Number(convertBloodSugarValue(bs, BloodSugarCode.MG_DL))
   return value !== undefined && value >= warningHighBSValue
 }
 
 export const isHighBloodSugar = (bs: BloodSugar) => {
-  return Number(bs.blood_sugar_value) >= getBloodSugarDetails(bs).high
+  const value = convertBloodSugarValue(bs, BloodSugarCode.MG_DL)
+  return Number(value) >= getBloodSugarDetails(bs).high
 }
 
 export const isLowBloodSugar = (bs: BloodSugar) => {
@@ -40,7 +43,7 @@ export const isLowBloodSugar = (bs: BloodSugar) => {
     return false
   }
 
-  return Number(bs.blood_sugar_value) < lowBSValue
+  return Number(convertBloodSugarValue(bs, BloodSugarCode.MG_DL)) < lowBSValue
 }
 
 export const getBloodSugarDetails: (
@@ -112,6 +115,46 @@ export const bloodSugarUnitToDisplayTitle = (code: BloodSugarCode) => {
     default:
       return code
   }
+}
+
+const UNIT_CONVERSION_FACTOR = 18
+export const convertBloodSugarValue = (
+  bloodSugarReading: BloodSugar,
+  convertTo?: BloodSugarCode,
+): string => {
+  const readingUnit = bloodSugarReading.blood_sugar_unit ?? BloodSugarCode.MG_DL
+  const displayUnit =
+    convertTo ?? bloodSugarUnitSelector() ?? BloodSugarCode.MG_DL
+
+  if (readingUnit === displayUnit) {
+    return bloodSugarReading.blood_sugar_value
+  }
+
+  if (
+    readingUnit === BloodSugarCode.MG_DL &&
+    displayUnit === BloodSugarCode.MMOL_L
+  ) {
+    return (
+      Number(bloodSugarReading.blood_sugar_value) / UNIT_CONVERSION_FACTOR
+    ).toFixed(0)
+  }
+
+  if (
+    readingUnit === BloodSugarCode.MMOL_L &&
+    displayUnit === BloodSugarCode.MG_DL
+  ) {
+    return (
+      Number(bloodSugarReading.blood_sugar_value) * UNIT_CONVERSION_FACTOR
+    ).toFixed(0)
+  }
+
+  throw new Error('Unhandled reading/display unit combination')
+}
+
+export const getDisplayBloodSugarUnit = (): string => {
+  return bloodSugarUnitToDisplayTitle(
+    bloodSugarUnitSelector() ?? BloodSugarCode.MG_DL,
+  )
 }
 
 declare global {

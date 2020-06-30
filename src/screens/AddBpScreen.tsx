@@ -1,12 +1,5 @@
-import React, {useState, useContext, useRef, useEffect} from 'react'
-import {
-  SafeAreaView,
-  View,
-  StyleSheet,
-  TextInput,
-  TouchableWithoutFeedback,
-  Alert,
-} from 'react-native'
+import React, {useState, useRef, useEffect} from 'react'
+import {SafeAreaView, View, StyleSheet, TextInput} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {useIntl} from 'react-intl'

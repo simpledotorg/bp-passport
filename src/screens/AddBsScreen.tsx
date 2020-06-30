@@ -1,11 +1,5 @@
-import React, {useState, useContext, useRef, useEffect} from 'react'
-import {
-  SafeAreaView,
-  View,
-  StyleSheet,
-  TextInput,
-  TouchableWithoutFeedback,
-} from 'react-native'
+import React, {useState, useRef, useEffect} from 'react'
+import {SafeAreaView, View, StyleSheet, TextInput} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {useIntl, FormattedMessage} from 'react-intl'
@@ -28,7 +22,10 @@ import {
   isHighBloodSugar,
   isLowBloodSugar,
   showWarning,
+  BloodSugarCode,
 } from '../utils/blood-sugars'
+
+import {bloodSugarUnitSelector} from '../redux/patient/patient.selectors'
 
 type AddBsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -161,6 +158,9 @@ function AddBsScreen({navigation, route}: Props) {
     return input.replace(/[^0-9]/g, '')
   }
 
+  const selectedBloodSugarUnit =
+    bloodSugarUnitSelector() ?? BloodSugarCode.MG_DL
+
   return (
     <View style={{flex: 1}}>
       <SafeAreaView
@@ -242,6 +242,7 @@ function AddBsScreen({navigation, route}: Props) {
                 blood_sugar_value: reading,
                 offline: true,
                 recorded_at: new Date().toISOString(),
+                blood_sugar_unit: selectedBloodSugarUnit,
               }
 
               dispatch(addBloodSugar(newBloodSugar))
