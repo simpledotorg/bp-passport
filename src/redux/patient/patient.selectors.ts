@@ -8,3 +8,7 @@ export const patientSelector = () => {
 export const localeSelector = () => {
   return useSelector((state: RootState) => state.patient.locale)
 }
+
+export const bloodSugarUnitSelector = () => {
+  return useSelector((state: RootState) => state.patient.bloodSugarUnit)
+}

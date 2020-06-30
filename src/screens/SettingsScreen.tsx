@@ -16,14 +16,21 @@ import {
   AVAILABLE_TRANSLATIONS,
   languageCodeToDisplayTitle,
 } from '../constants/languages'
-import {patientSelector} from '../redux/patient/patient.selectors'
-import {setLanguage} from '../redux/patient/patient.actions'
+import {
+  patientSelector,
+  localeSelector,
+  bloodSugarUnitSelector,
+} from '../redux/patient/patient.selectors'
+import {setLanguage, setBloodSugarUnit} from '../redux/patient/patient.actions'
 import SCREENS from '../constants/screens'
 
 import {PassportLinkedState} from '../redux/auth/auth.models'
 import {passportLinkedStateSelector} from '../redux/auth/auth.selectors'
-import {localeSelector} from '../redux/patient/patient.selectors'
 import {useThunkDispatch} from '../redux/store'
+import {
+  AVAILABLE_BLOOD_SUGAR_UNITS,
+  bloodSugarUnitToDisplayTitle,
+} from '../utils/blood-sugars'
 
 type LanguagePickerProps = {apiUser: any}
 const LanguagePicker = ({apiUser}: LanguagePickerProps) => {
@@ -53,6 +60,38 @@ const LanguagePicker = ({apiUser}: LanguagePickerProps) => {
           }}
           items={locales}
           value={locale}
+        />
+      </View>
+    </>
+  )
+}
+
+const BloodSugarUnitPicker = () => {
+  const selectedBloodSugarUnit = bloodSugarUnitSelector()
+  const dispatch = useThunkDispatch()
+
+  const bloodSugarUnits: Item[] = []
+  AVAILABLE_BLOOD_SUGAR_UNITS.forEach((bloodSugarUnit) => {
+    bloodSugarUnits.push({
+      label: bloodSugarUnitToDisplayTitle(bloodSugarUnit),
+      value: bloodSugarUnit,
+    })
+  })
+
+  return (
+    <>
+      <View style={{paddingTop: 24}}>
+        <BodyHeader>
+          <FormattedMessage id="settings.bs-units" />
+        </BodyHeader>
+      </View>
+      <View>
+        <Picker
+          onValueChange={(bloodSugarUnit: string) => {
+            dispatch(setBloodSugarUnit(bloodSugarUnit))
+          }}
+          items={bloodSugarUnits}
+          value={selectedBloodSugarUnit}
         />
       </View>
     </>
@@ -184,7 +223,7 @@ function SettingsScreen({navigation}: any) {
               <ConnectSection intl={intl} navigation={navigation} />
             )}
             <LanguagePicker apiUser={apiUser} />
-
+            <BloodSugarUnitPicker />
             <SupportSection />
 
             <LegalSection />

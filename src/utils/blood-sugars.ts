@@ -6,6 +6,7 @@ import {
 } from '../redux/blood-sugar/blood-sugar.models'
 import {dateLocale} from '../constants/languages'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
+import {useIntl} from 'react-intl'
 
 export const displayDate = (bsIn: BloodSugar) => {
   return bsIn.recorded_at
@@ -87,6 +88,29 @@ export const getBloodSugarDetails: (
         languageTypeCode: 'bs.random-blood-code',
       }
     }
+  }
+}
+
+export enum BloodSugarCode {
+  MMOL_L = 'mmol/L',
+  MG_DL = 'mg/dL',
+}
+
+export const AVAILABLE_BLOOD_SUGAR_UNITS: BloodSugarCode[] = [
+  BloodSugarCode.MG_DL,
+  BloodSugarCode.MMOL_L,
+]
+
+export const bloodSugarUnitToDisplayTitle = (code: BloodSugarCode) => {
+  const intl = useIntl()
+
+  switch (code) {
+    case BloodSugarCode.MMOL_L:
+      return intl.formatMessage({id: 'bs.mmoll'})
+    case BloodSugarCode.MG_DL:
+      return intl.formatMessage({id: 'bs.mgdl'})
+    default:
+      return code
   }
 }
 
