@@ -97,6 +97,7 @@ export const getBloodSugarDetails: (
 export enum BloodSugarCode {
   MMOL_L = 'mmol/L',
   MG_DL = 'mg/dL',
+  PERCENT = '%',
 }
 
 export const AVAILABLE_BLOOD_SUGAR_UNITS: BloodSugarCode[] = [
@@ -118,34 +119,73 @@ export const bloodSugarUnitToDisplayTitle = (code: BloodSugarCode) => {
 }
 
 const UNIT_CONVERSION_FACTOR = 18
-export const convertBloodSugarValue = (
+export const convertBloodSugarReading = (
   bloodSugarReading: BloodSugar,
   convertTo?: BloodSugarCode,
 ): string => {
-  const readingUnit = bloodSugarReading.blood_sugar_unit ?? BloodSugarCode.MG_DL
+  return convertBloodSugar(
+    bloodSugarReading,
+    undefined,
+    undefined,
+    undefined,
+    convertTo,
+  )
+}
+
+export const convertBloodSugarValue = (
+  bloodSugarType: string,
+  bloodSugarValue: string,
+  bloodSugarUnit?: string,
+  convertTo?: BloodSugarCode,
+): string => {
+  return convertBloodSugar(
+    undefined,
+    bloodSugarType,
+    bloodSugarValue,
+    bloodSugarUnit,
+    convertTo,
+  )
+}
+
+const convertBloodSugar = (
+  bloodSugarReading?: BloodSugar,
+  bloodSugarType?: string,
+  bloodSugarValue?: string,
+  bloodSugarUnit?: string,
+  convertTo?: BloodSugarCode,
+): string => {
+  if (bloodSugarReading) {
+    bloodSugarType = bloodSugarReading.blood_sugar_type
+    bloodSugarValue = bloodSugarReading.blood_sugar_value
+    bloodSugarUnit = bloodSugarReading.blood_sugar_unit
+  }
+
+  console.log(bloodSugarType)
+  if (bloodSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
+    console.log('here')
+    return bloodSugarValue ?? ''
+  }
+
+  const readingUnit = bloodSugarUnit ?? BloodSugarCode.MG_DL
   const displayUnit =
     convertTo ?? bloodSugarUnitSelector() ?? BloodSugarCode.MG_DL
 
   if (readingUnit === displayUnit) {
-    return bloodSugarReading.blood_sugar_value
+    return bloodSugarValue ?? ''
   }
 
   if (
     readingUnit === BloodSugarCode.MG_DL &&
     displayUnit === BloodSugarCode.MMOL_L
   ) {
-    return (
-      Number(bloodSugarReading.blood_sugar_value) / UNIT_CONVERSION_FACTOR
-    ).toFixed(0)
+    return (Number(bloodSugarValue) / UNIT_CONVERSION_FACTOR).toFixed(0)
   }
 
   if (
     readingUnit === BloodSugarCode.MMOL_L &&
     displayUnit === BloodSugarCode.MG_DL
   ) {
-    return (
-      Number(bloodSugarReading.blood_sugar_value) * UNIT_CONVERSION_FACTOR
-    ).toFixed(0)
+    return (Number(bloodSugarValue) * UNIT_CONVERSION_FACTOR).toFixed(0)
   }
 
   throw new Error('Unhandled reading/display unit combination')

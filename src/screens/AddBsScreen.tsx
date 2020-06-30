@@ -23,6 +23,8 @@ import {
   isLowBloodSugar,
   showWarning,
   BloodSugarCode,
+  convertBloodSugarValue,
+  getDisplayBloodSugarUnit,
 } from '../utils/blood-sugars'
 
 import {bloodSugarUnitSelector} from '../redux/patient/patient.selectors'
@@ -52,6 +54,7 @@ enum INPUT_TYPES {
 
 function AddBsScreen({navigation, route}: Props) {
   const intl = useIntl()
+  console.log('rendering')
 
   const dispatch = useThunkDispatch()
 
@@ -93,9 +96,10 @@ function AddBsScreen({navigation, route}: Props) {
 
   const [showErrors, setShowErrors] = useState(false)
 
-  const readingPrevious = useRef(reading)
+  const selectedBloodSugarUnit =
+    bloodSugarUnitSelector() ?? BloodSugarCode.MG_DL
 
-  const getErrors = (input: string) => {
+  const getErrors = (input: string): string | null => {
     if (input === '') {
       return null
     }
@@ -107,15 +111,35 @@ function AddBsScreen({navigation, route}: Props) {
     if (foundType) {
       const isPercentage = foundType.type === INPUT_TYPES.PERCENTAGE
 
-      if (Number(input) < foundType.min) {
+      const minValue = isPercentage
+        ? foundType.value
+        : convertBloodSugarValue(
+            foundType.value,
+            foundType.min.toString(),
+            BloodSugarCode.MG_DL,
+            selectedBloodSugarUnit,
+          )
+
+      if (Number(input) < Number(minValue)) {
         return intl.formatMessage(
           {id: 'add-bs.bs-less-than-error'},
-          {value: `${foundType.min}${isPercentage ? '%' : ''}`},
+          {value: `${minValue}${isPercentage ? '%' : ''}`},
         )
-      } else if (Number(input) > foundType.max) {
+      }
+
+      const maxValue = isPercentage
+        ? foundType.value
+        : convertBloodSugarValue(
+            foundType.value,
+            foundType.max.toString(),
+            BloodSugarCode.MG_DL,
+            selectedBloodSugarUnit,
+          )
+
+      if (Number(input) > Number(maxValue)) {
         return intl.formatMessage(
           {id: 'add-bs.bs-more-than-error'},
-          {value: `${foundType.max}${isPercentage ? '%' : ''}`},
+          {value: `${maxValue}${isPercentage ? '%' : ''}`},
         )
       }
     }
@@ -124,28 +148,48 @@ function AddBsScreen({navigation, route}: Props) {
   }
 
   useEffect(() => {
-    setErrors(getErrors(reading))
+    const newErrors = getErrors(reading)
+    if (newErrors !== errors) {
+      setErrors(newErrors)
+      setShowErrors(newErrors != null)
+    }
   }, [type])
 
   useEffect(() => {
-    let errorShowTimeout: any = null
-
-    if (reading !== readingPrevious.current) {
-      clearTimeout(errorShowTimeout)
+    if (reading === '') {
+      if (errors != null) {
+        setErrors(null)
+        setShowErrors(false)
+      }
+      return
     }
 
-    if (errors) {
-      errorShowTimeout = setTimeout(() => setShowErrors(true), 1500)
-    } else {
-      setShowErrors(false)
+    const newErrors = getErrors(reading)
+
+    if (newErrors === null) {
+      if (showErrors) {
+        setShowErrors(false)
+      }
+
+      if (errors != null) {
+        setErrors(null)
+      }
+
+      return
     }
 
-    readingPrevious.current = reading
+    if (newErrors !== errors) {
+      setErrors(newErrors)
+    }
+
+    const errorShowTimeout = setTimeout(() => {
+      setShowErrors(true)
+    }, 1500)
 
     return () => {
       clearTimeout(errorShowTimeout)
     }
-  }, [errors, reading])
+  }, [reading])
 
   const isSaveDisabled = (): boolean => {
     return !!(reading === '' || errors || isNaN(Number(reading)))
@@ -158,8 +202,11 @@ function AddBsScreen({navigation, route}: Props) {
     return input.replace(/[^0-9]/g, '')
   }
 
-  const selectedBloodSugarUnit =
-    bloodSugarUnitSelector() ?? BloodSugarCode.MG_DL
+  // need to do this way, beause if you change type then react complains that number of called hooks has changed
+  let displayUnit = getDisplayBloodSugarUnit()
+  if (type === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
+    displayUnit = '%'
+  }
 
   return (
     <View style={{flex: 1}}>
@@ -194,14 +241,7 @@ function AddBsScreen({navigation, route}: Props) {
               placeholderTextColor={colors.grey1}
               value={reading}
               onChangeText={(textIn) => {
-                const text = cleanText(textIn)
-
-                setReading(text)
-                if (text === '') {
-                  setErrors(null)
-                } else if (text !== '') {
-                  setErrors(getErrors(text))
-                }
+                const text = setReading(cleanText(textIn))
               }}
               keyboardType={
                 type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? 'numeric' : 'number-pad'
@@ -215,11 +255,7 @@ function AddBsScreen({navigation, route}: Props) {
                 top: 14,
                 color: colors.grey1,
               }}>
-              {type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
-                '%'
-              ) : (
-                <FormattedMessage id="bs.mgdl" />
-              )}
+              {displayUnit}
             </BodyText>
           </View>
           <Picker
