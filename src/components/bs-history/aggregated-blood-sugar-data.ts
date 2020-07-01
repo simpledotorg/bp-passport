@@ -58,7 +58,6 @@ if (!Array.prototype.getScatterDataForGraph) {
     T extends AggregatedBloodSugarData
   >(this: T[]): ScatterGraphDataPoint[] {
     const data: ScatterGraphDataPoint[] = []
-
     this.forEach((aggregateRecord) => {
       const index = aggregateRecord.getDateEntry().getIndex()
       aggregateRecord.getReadings().forEach((reading) => {

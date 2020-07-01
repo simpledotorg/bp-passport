@@ -13,8 +13,8 @@ type ChartSelectionProps = {
 
 const hasBeforeEatingTypes = (chartTypesAvailable: IDefineChartsAvailable) => {
   return (
-    chartTypesAvailable.getHasFastingReadings ||
-    chartTypesAvailable.getHasBeforeEatingReadings
+    chartTypesAvailable.getHasFastingReadings() ||
+    chartTypesAvailable.getHasBeforeEatingReadings()
   )
 }
 

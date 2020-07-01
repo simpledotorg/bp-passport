@@ -91,16 +91,14 @@ export class ChartData implements IDefineChartsAvailable {
         this.aggregatedData.push(aggregateRecord)
       }
 
-      aggregateRecord.addReading(
-        new ConvertedBloodSugarReading(
-          bloodSugarReading,
-          this._requestedChart.getDisplayUnits(),
-        ),
-      )
+      aggregateRecord.addReading(bloodSugarReading)
     })
   }
 
   public getScatterDataForGraph(): ScatterGraphDataPoint[] {
+    this.aggregatedData.getScatterDataForGraph().forEach((reading) => {
+      console.log({x: reading.x, y: reading.y, l: reading.label})
+    })
     return this.aggregatedData.getScatterDataForGraph()
   }
 

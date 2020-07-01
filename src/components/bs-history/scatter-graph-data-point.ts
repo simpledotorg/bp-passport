@@ -1,12 +1,8 @@
-import {
-  BloodSugar,
-  BLOOD_SUGAR_TYPES,
-} from '../../redux/blood-sugar/blood-sugar.models'
+import {BLOOD_SUGAR_TYPES} from '../../redux/blood-sugar/blood-sugar.models'
 import {
   isHighBloodSugar,
   isLowBloodSugar,
   BloodSugarCode,
-  determinePrecision,
 } from '../../utils/blood-sugars'
 import {useIntl} from 'react-intl'
 import {format} from 'date-fns'
@@ -21,15 +17,11 @@ export class ScatterGraphDataPoint {
   public showOutOfRange: boolean
 
   constructor(index: number, reading: ConvertedBloodSugarReading) {
-    const precision = !reading.blood_sugar_unit
-      ? 0
-      : determinePrecision(reading.blood_sugar_unit)
-
     this.x = index
     this.y = reading.value
 
     this.label =
-      `${this.y.toFixed(precision)}${this.getDisplayUnits(
+      `${reading.value}${this.getDisplayUnits(
         reading,
       )} ${this.getBloodSugarType(reading)}${format(
         new Date(reading.recorded_at),
