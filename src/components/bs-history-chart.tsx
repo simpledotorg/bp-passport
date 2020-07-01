@@ -10,10 +10,7 @@ import {
   VictoryVoronoiContainer,
 } from 'victory-native'
 
-import {
-  BloodSugar,
-  BLOOD_SUGAR_TYPES,
-} from '../redux/blood-sugar/blood-sugar.models'
+import {BLOOD_SUGAR_TYPES} from '../redux/blood-sugar/blood-sugar.models'
 import {colors} from '../styles'
 import {
   IDefineAChartRequest,
@@ -32,8 +29,10 @@ import {
   determinePrecision,
 } from '../utils/blood-sugars'
 
+import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
+
 type Props = {
-  bloodSugarReadings: BloodSugar[]
+  bloodSugarReadings: ConvertedBloodSugarReading[]
   displayUnits: BloodSugarCode
 }
 

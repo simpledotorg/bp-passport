@@ -10,6 +10,7 @@ import {
 } from '../../utils/blood-sugars'
 import {useIntl} from 'react-intl'
 import {format} from 'date-fns'
+import ConvertedBloodSugarReading from '../../models/converted_blood_sugar_reading'
 
 export class ScatterGraphDataPoint {
   private intl = useIntl()
@@ -19,7 +20,7 @@ export class ScatterGraphDataPoint {
   public label: string
   public showOutOfRange: boolean
 
-  constructor(index: number, reading: BloodSugar) {
+  constructor(index: number, reading: ConvertedBloodSugarReading) {
     const precision = !reading.blood_sugar_unit
       ? 0
       : determinePrecision(reading.blood_sugar_unit)
@@ -43,7 +44,8 @@ export class ScatterGraphDataPoint {
         }) + `-${format(new Date(reading.recorded_at), 'yyyy')}`
       }`
 
-    this.showOutOfRange = isHighBloodSugar(reading) || isLowBloodSugar(reading)
+    this.showOutOfRange =
+      isHighBloodSugar(reading, reading) || isLowBloodSugar(reading)
   }
 
   private getDisplayUnits(reading: BloodSugar): string {

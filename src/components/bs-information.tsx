@@ -5,16 +5,12 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {colors, purpleDrop, smallWarningSign} from '../styles'
 import {BodyText} from './'
-import {
-  BloodSugar,
-  BLOOD_SUGAR_TYPES,
-} from '../redux/blood-sugar/blood-sugar.models'
+import {BLOOD_SUGAR_TYPES} from '../redux/blood-sugar/blood-sugar.models'
 import {
   displayDate,
   isHighBloodSugar,
   isLowBloodSugar,
   showWarning,
-  getBloodSugarDetails,
   convertBloodSugarReading,
   getDisplayBloodSugarUnit,
   BloodSugarCode,
@@ -22,8 +18,10 @@ import {
   determinePrecision,
 } from '../utils/blood-sugars'
 
+import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
+
 type Props = {
-  bs: BloodSugar
+  bs: ConvertedBloodSugarReading
   displayUnits: BloodSugarCode
   style?: ViewStyle
 }
@@ -74,8 +72,6 @@ export const BsInformation = ({bs, displayUnits, style = {}}: Props) => {
       </BodyText>
     )
   }
-
-  const details = getBloodSugarDetails(bs)
 
   return (
     <View

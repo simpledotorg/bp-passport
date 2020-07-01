@@ -9,10 +9,7 @@ import {
 import {FormattedMessage, useIntl} from 'react-intl'
 import {colors, purpleDrop, mediumWarningSign} from '../styles'
 import {BodyHeader, BodyText, Button} from './'
-import {
-  BloodSugar,
-  BLOOD_SUGAR_TYPES,
-} from '../redux/blood-sugar/blood-sugar.models'
+import {BLOOD_SUGAR_TYPES} from '../redux/blood-sugar/blood-sugar.models'
 import {
   isHighBloodSugar,
   isLowBloodSugar,
@@ -30,14 +27,15 @@ import {deleteBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
 import {ButtonType} from './button'
 import {format} from 'date-fns'
 import {dateLocale} from '../constants/languages'
+import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
 
 type Props = {
-  bs: BloodSugar
+  bs: ConvertedBloodSugarReading
   displayUnits: BloodSugarCode
   close: () => void
 }
 
-const displayDateAndTime = (bsIn: BloodSugar) => {
+const displayDateAndTime = (bsIn: ConvertedBloodSugarReading) => {
   return bsIn.recorded_at
     ? format(new Date(bsIn.recorded_at), `dd-MMM-yyy, h:mm a`, {
         locale: dateLocale(),
@@ -243,13 +241,20 @@ const DeleteButton = ({intl, bs, close}: any) => {
   )
 }
 
-const getReadingUnits = (bloodSugar: BloodSugar, units: BloodSugarCode) => {
+const getReadingUnits = (
+  bloodSugar: ConvertedBloodSugarReading,
+  units: BloodSugarCode,
+) => {
   return bloodSugar.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
     ? '% '
     : getDisplayBloodSugarUnit(units)
 }
 
-export const BsModal = ({bs, displayUnits, close}: Props) => {
+export const BsModal: (Props: Props) => any = ({
+  bs,
+  displayUnits,
+  close,
+}: Props) => {
   const intl = useIntl()
 
   return (
