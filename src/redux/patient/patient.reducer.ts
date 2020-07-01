@@ -12,7 +12,7 @@ const INITIAL_STATE: {
   patient: undefined,
   locale: undefined,
   hasReviewed: false,
-  normalBpBsCount: 0,
+  normalBpBsCount: undefined,
   bloodSugarUnit: undefined,
 }
 
@@ -33,12 +33,12 @@ const patientReducer = (state = INITIAL_STATE, action: any) => {
         ...state,
         hasReviewed: action.payload,
       }
-    case PatientActionTypes.INCREMENT_NORMAL_BP_BS_COUNT:
+    case PatientActionTypes.SET_NORMAL_BP_BS_COUNT:
       return {
         ...state,
         // normalBpBsCount: 0,
         // hasReviewed: false,
-        normalBpBsCount: state.normalBpBsCount + action.payload,
+        normalBpBsCount: action.payload,
       }
     case PatientActionTypes.SET_BLOOD_SUGAR_UNIT:
       return {
