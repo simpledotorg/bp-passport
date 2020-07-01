@@ -60,7 +60,6 @@ export const getBloodSugarDetails: (
         warningHigh: 300,
         high: 126,
         low: 70,
-        languageKey: 'bs.fasting-blood-sugar',
       }
     }
     case BLOOD_SUGAR_TYPES.POST_PRANDIAL: {
@@ -69,7 +68,6 @@ export const getBloodSugarDetails: (
         warningHigh: 300,
         high: 200,
         low: 70,
-        languageKey: 'bs.post-prandial',
       }
     }
     case BLOOD_SUGAR_TYPES.HEMOGLOBIC: {
@@ -85,7 +83,6 @@ export const getBloodSugarDetails: (
         warningHigh: 300,
         high: 200,
         low: 70,
-        languageKey: 'bs.random-blood-sugar',
       }
     case BLOOD_SUGAR_TYPES.BEFORE_EATING:
       return {
@@ -93,7 +90,6 @@ export const getBloodSugarDetails: (
         warningHigh: 300,
         high: 200,
         low: 70,
-        languageKey: 'bs.before-eating-title',
       }
     case BLOOD_SUGAR_TYPES.AFTER_EATING:
     default:
@@ -102,7 +98,6 @@ export const getBloodSugarDetails: (
         warningHigh: 300,
         high: 200,
         low: 70,
-        languageKey: 'bs.after-eating-title',
       }
   }
 }
@@ -204,21 +199,24 @@ export const getDisplayBloodSugarUnit = (convertTo: BloodSugarCode): string => {
   return bloodSugarUnitToDisplayTitle(convertTo)
 }
 
-export const displayReadingType = (bs: BloodSugar): string => {
-  const intl = useIntl()
+export const getReadingType = (bs: BloodSugar): string => {
+  return useIntl().formatMessage({id: getReadingTypeId(bs)})
+}
+
+export const getReadingTypeId = (bs: BloodSugar): string => {
   switch (bs.blood_sugar_type) {
     case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
-      return intl.formatMessage({id: 'bs.hemoglobic'})
+      return 'bs.hemoglobic-code'
 
     case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
     case BLOOD_SUGAR_TYPES.BEFORE_EATING:
-      return intl.formatMessage({id: 'bs.before-eating-title'})
+      return 'bs.before-eating-title'
 
     case BLOOD_SUGAR_TYPES.POST_PRANDIAL:
     case BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR:
     case BLOOD_SUGAR_TYPES.AFTER_EATING:
     default:
-      return intl.formatMessage({id: 'bs.after-eating-title'})
+      return 'bs.after-eating-title'
   }
 }
 

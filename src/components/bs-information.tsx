@@ -18,7 +18,7 @@ import {
   convertBloodSugarReading,
   getDisplayBloodSugarUnit,
   BloodSugarCode,
-  displayReadingType,
+  getReadingType,
 } from '../utils/blood-sugars'
 
 type Props = {
@@ -114,7 +114,7 @@ export const BsInformation = ({bs, displayUnits, style = {}}: Props) => {
               fontSize: 16,
               color: colors.grey1,
             }}>
-            {`${displayReadingType(bs)}, ${displayDate(bs)}`}
+            {`${getReadingType(bs)}, ${displayDate(bs)}`}
           </BodyText>
         </View>
       </View>
