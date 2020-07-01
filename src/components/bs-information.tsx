@@ -104,13 +104,25 @@ export const BsInformation = ({bs, displayUnits, style = {}}: Props) => {
             </BodyText>
             <View>{getBSText()}</View>
           </View>
-          <BodyText
-            style={{
-              fontSize: 16,
-              color: colors.grey1,
-            }}>
-            {`${getReadingType(bs)}, ${displayDate(bs)}`}
-          </BodyText>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+            <BodyText
+              style={{
+                fontSize: 16,
+                lineHeight: 20,
+                color: colors.grey1,
+                fontWeight: '500',
+              }}>
+              {`${getReadingType(bs)}, `}
+            </BodyText>
+            <BodyText
+              style={{
+                fontSize: 16,
+                lineHeight: 20,
+                color: colors.grey1,
+              }}>
+              {displayDate(bs)}
+            </BodyText>
+          </View>
         </View>
       </View>
       <Icon name="chevron-right" size={24} color={colors.grey3} />
