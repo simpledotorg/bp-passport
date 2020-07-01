@@ -76,12 +76,12 @@ const getHistoricValues = (): number => {
 
 const getBpBsCount = (): number => {
   const count = normalBpBsCountSelector()
+  const historicCount = getHistoricValues()
 
   if (count) {
     return count
   }
 
-  const historicCount = getHistoricValues()
   const dispatch = useThunkDispatch()
 
   dispatch(setNormalBpBsCount(historicCount))
@@ -93,8 +93,6 @@ function AddBsScreen({navigation, route}: Props) {
   const intl = useIntl()
   const hasReviewed = hasReviewedSelector()
   const normalBpBsCount = getBpBsCount()
-
-  const dispatch = useThunkDispatch()
 
   const SUGAR_TYPES: PickerItemExtended[] = [
     {

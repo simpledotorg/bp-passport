@@ -55,13 +55,14 @@ const getHistoricValues = (): number => {
 }
 
 const getBpBsCount = (): number => {
+  const historicCount = getHistoricValues()
   const count = normalBpBsCountSelector()
 
+  console.log(count)
   if (count) {
     return count
   }
 
-  const historicCount = getHistoricValues()
   const dispatch = useThunkDispatch()
 
   dispatch(setNormalBpBsCount(historicCount))

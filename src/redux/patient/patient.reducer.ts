@@ -36,8 +36,6 @@ const patientReducer = (state = INITIAL_STATE, action: any) => {
     case PatientActionTypes.SET_NORMAL_BP_BS_COUNT:
       return {
         ...state,
-        // normalBpBsCount: 0,
-        // hasReviewed: false,
         normalBpBsCount: action.payload,
       }
     case PatientActionTypes.SET_BLOOD_SUGAR_UNIT:
