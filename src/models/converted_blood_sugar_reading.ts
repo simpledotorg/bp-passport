@@ -11,7 +11,10 @@ class ConvertedBloodSugarReading implements BloodSugar {
   private _bloodSugarUnit: BloodSugarCode
 
   constructor(originalReading: BloodSugar, convertTo: BloodSugarCode) {
-    this._bloodSugarValue = convertBloodSugarReading(originalReading, convertTo)
+    this._bloodSugarValue = convertBloodSugarReading(
+      originalReading,
+      convertTo,
+    ).toString()
     this._bloodSugarType = originalReading.blood_sugar_type
     this._recordedAt = originalReading.recorded_at
     this._facility = originalReading.facility
