@@ -1,4 +1,7 @@
-import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
+import {
+  BloodSugar,
+  BLOOD_SUGAR_TYPES,
+} from '../redux/blood-sugar/blood-sugar.models'
 
 import {convertBloodSugarReading, BloodSugarCode} from '../utils/blood-sugars'
 
@@ -11,7 +14,11 @@ class ConvertedBloodSugarReading {
   private _bloodSugarUnit: BloodSugarCode
 
   constructor(originalReading: BloodSugar, convertTo: BloodSugarCode) {
-    this._bloodSugarValue = convertBloodSugarReading(originalReading, convertTo)
+    this._bloodSugarValue =
+      originalReading.blood_sugar_type !== BLOOD_SUGAR_TYPES.HEMOGLOBIC
+        ? convertBloodSugarReading(originalReading, convertTo)
+        : Number(originalReading.blood_sugar_value)
+
     this._bloodSugarType = originalReading.blood_sugar_type
     this._recordedAt = originalReading.recorded_at
     this._facility = originalReading.facility

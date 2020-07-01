@@ -104,6 +104,7 @@ function Home({navigation}: Props) {
     (reading) =>
       new ConvertedBloodSugarReading(reading, bloodSugarDisplayUnits),
   )
+
   const meds: Medication[] = medications ?? []
 
   const medicationDisplayName = (medication: Medication) => {

@@ -149,7 +149,8 @@ export const bloodSugarUnitToDisplayTitle = (code: BloodSugarCode) => {
   }
 }
 
-const UNIT_CONVERSION_FACTOR = 18
+const UNIT_CONVERSION_FACTOR = 18.0
+
 export const convertBloodSugarReading = (
   bloodSugarReading: BloodSugar,
   convertTo: BloodSugarCode,
@@ -192,13 +193,13 @@ const convertBloodSugar = (
   }
 
   if (bloodSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
-    return toCorrectPrecision(bloodSugarValue, bloodSugarUnit)
+    return toCorrectPrecision(bloodSugarValue, convertTo)
   }
 
   const readingUnit = bloodSugarUnit ?? BloodSugarCode.MG_DL
 
   if (readingUnit === convertTo) {
-    return toCorrectPrecision(bloodSugarValue, bloodSugarUnit)
+    return toCorrectPrecision(bloodSugarValue, convertTo)
   }
 
   if (
@@ -207,7 +208,7 @@ const convertBloodSugar = (
   ) {
     return toCorrectPrecision(
       Number(bloodSugarValue) / UNIT_CONVERSION_FACTOR,
-      bloodSugarUnit,
+      convertTo,
     )
   }
 
@@ -217,7 +218,7 @@ const convertBloodSugar = (
   ) {
     return toCorrectPrecision(
       Number(bloodSugarValue) * UNIT_CONVERSION_FACTOR,
-      bloodSugarUnit,
+      convertTo,
     )
   }
 

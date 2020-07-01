@@ -15,7 +15,6 @@ import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis
 import {getMonthYearTitle, getYearTitle} from '../../utils/dates'
 import {IDefineChartsAvailable} from './i-define-charts-available'
 import {LineGraphDataPoint} from './line-graph-data-point'
-import ConvertedBloodSugarReading from '../../models/converted_blood_sugar_reading'
 import {BloodSugarCode, determinePrecision} from '../../utils/blood-sugars'
 
 export class ChartData implements IDefineChartsAvailable {
@@ -96,9 +95,6 @@ export class ChartData implements IDefineChartsAvailable {
   }
 
   public getScatterDataForGraph(): ScatterGraphDataPoint[] {
-    this.aggregatedData.getScatterDataForGraph().forEach((reading) => {
-      console.log({x: reading.x, y: reading.y, l: reading.label})
-    })
     return this.aggregatedData.getScatterDataForGraph()
   }
 
@@ -169,9 +165,9 @@ export class ChartData implements IDefineChartsAvailable {
           return memo
         }
 
-        const currentValue = Number(maxValueForCurrentDay.value)
-
-        return !memo || currentValue > memo ? currentValue : memo
+        return !memo || maxValueForCurrentDay.value > memo
+          ? maxValueForCurrentDay.value
+          : memo
       },
       null,
     )
@@ -196,9 +192,9 @@ export class ChartData implements IDefineChartsAvailable {
           return memo
         }
 
-        const currentValue = Number(minValueForCurrentDay.value)
-        value
-        return !memo || currentValue < memo ? currentValue : memo
+        return !memo || minValueForCurrentDay.value < memo
+          ? minValueForCurrentDay.value
+          : memo
       },
       null,
     )
