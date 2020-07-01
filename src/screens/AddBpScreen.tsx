@@ -17,15 +17,14 @@ import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {
   hasReviewedSelector,
-  normalBpCountSelector,
-  normalBsCountSelector,
+  normalBpBsCountSelector,
 } from '../redux/patient/patient.selectors'
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {useThunkDispatch} from '../redux/store'
 import {addBloodPressure} from '../redux/blood-pressure/blood-pressure.actions'
 import {ScrollView} from 'react-native-gesture-handler'
-import {incrementNormalBpCount} from '../redux/patient/patient.actions'
+import {incrementNormalBpBsCount} from '../redux/patient/patient.actions'
 
 type AddBpScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -47,8 +46,7 @@ const MAX_DIASTOLIC_BP = 180
 function AddBpScreen({navigation, route}: Props) {
   const intl = useIntl()
   const hasReviewed = hasReviewedSelector()
-  const normalBpCount = normalBpCountSelector()
-  const normalBsCount = normalBsCountSelector()
+  const normalBpBsCount = normalBpBsCountSelector()
 
   const systolicRef = useRef<null | any>(null)
   const diastolicRef = useRef<null | any>(null)
@@ -123,7 +121,7 @@ function AddBpScreen({navigation, route}: Props) {
     dispatch(addBloodPressure(newBloodPressure))
 
     if (!isBloodPressureHigh(newBloodPressure)) {
-      dispatch(incrementNormalBpCount())
+      dispatch(incrementNormalBpBsCount())
     }
 
     navigation.goBack()
@@ -139,7 +137,7 @@ function AddBpScreen({navigation, route}: Props) {
       }, 250)
     }
 
-    if (normalBpCount + normalBsCount >= 5 && !hasReviewed) {
+    if (normalBpBsCount >= 4 && !hasReviewed) {
       setTimeout(() => {
         navigation.navigate(SCREENS.WRITE_A_REVIEW_MODAL_SCREEN)
       }, 250)

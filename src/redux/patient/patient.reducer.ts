@@ -6,14 +6,12 @@ const INITIAL_STATE: {
   patient?: Patient
   locale?: string
   hasReviewed?: boolean
-  normalBpCount?: number
-  normalBsCount?: number
+  normalBpBsCount?: number
 } = {
   patient: undefined,
   locale: undefined,
   hasReviewed: false,
-  normalBpCount: 0,
-  normalBsCount: 0,
+  normalBpBsCount: 0,
 }
 
 const patientReducer = (state = INITIAL_STATE, action: any) => {
@@ -33,15 +31,12 @@ const patientReducer = (state = INITIAL_STATE, action: any) => {
         ...state,
         hasReviewed: action.payload,
       }
-    case PatientActionTypes.INCREMENT_NORMAL_BP_COUNT:
+    case PatientActionTypes.INCREMENT_NORMAL_BP_BS_COUNT:
       return {
         ...state,
-        normalBpCount: state.normalBpCount + action.payload,
-      }
-    case PatientActionTypes.INCREMENT_NORMAL_BS_COUNT:
-      return {
-        ...state,
-        normalBsCount: state.normalBsCount + action.payload,
+        // normalBpBsCount: 0,
+        // hasReviewed: false,
+        normalBpBsCount: state.normalBpBsCount + action.payload,
       }
     case AuthActionTypes.LOG_OUT:
       return {

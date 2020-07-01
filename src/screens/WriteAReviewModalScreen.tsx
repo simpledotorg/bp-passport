@@ -108,6 +108,7 @@ function WriteAReviewModalScreen({navigation}: Props) {
             buttonType={ButtonType.LightBlue}
             title={intl.formatMessage({id: 'general.later'})}
             onPress={() => {
+              dispatch(setHasReviewed(true))
               navigation.pop()
             }}
           />

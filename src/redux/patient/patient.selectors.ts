@@ -13,10 +13,6 @@ export const hasReviewedSelector = () => {
   return useSelector((state: RootState) => state.patient.hasReviewed)
 }
 
-export const normalBpCountSelector = () => {
-  return useSelector((state: RootState) => state.patient.normalBpCount)
-}
-
-export const normalBsCountSelector = () => {
-  return useSelector((state: RootState) => state.patient.normalBsCount)
+export const normalBpBsCountSelector = () => {
+  return useSelector((state: RootState) => state.patient.normalBpBsCount)
 }
