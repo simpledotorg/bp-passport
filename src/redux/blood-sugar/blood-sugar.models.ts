@@ -1,8 +1,10 @@
 export enum BLOOD_SUGAR_TYPES {
-  RANDOM_BLOOD_SUGAR = 'random',
-  FASTING_BLOOD_SUGAR = 'fasting',
-  POST_PRANDIAL = 'prandial',
+  RANDOM_BLOOD_SUGAR = 'random', // legacy, now becomes AFTER_EATING
+  FASTING_BLOOD_SUGAR = 'fasting', // legacy, now becomes BEFORE_EATING
+  POST_PRANDIAL = 'prandial', // legacy, now becomes AFTER_EATING
   HEMOGLOBIC = 'hemoglobic',
+  BEFORE_EATING = 'before_eating',
+  AFTER_EATING = 'after_eating',
 }
 
 export interface BloodSugar {

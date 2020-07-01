@@ -59,22 +59,24 @@ function AddBsScreen({navigation, route}: Props) {
 
   const SUGAR_TYPES: PickerItemExtended[] = [
     {
-      label: intl.formatMessage({id: 'bs.random-blood-sugar'}),
-      value: BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
+      label: `${intl.formatMessage({
+        id: 'bs.placeholder-title',
+      })} (${intl.formatMessage({id: 'bs.placeholder-description'})})`,
+      value: BLOOD_SUGAR_TYPES.BEFORE_EATING,
       min: 30,
       max: 1000,
       type: INPUT_TYPES.DECIMAL,
     },
     {
-      label: intl.formatMessage({id: 'bs.fasting-blood-sugar'}),
-      value: BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR,
+      label: intl.formatMessage({id: 'bs.after-eating-title'}),
+      value: BLOOD_SUGAR_TYPES.BEFORE_EATING,
       min: 30,
       max: 1000,
       type: INPUT_TYPES.DECIMAL,
     },
     {
-      label: intl.formatMessage({id: 'bs.post-prandial'}),
-      value: BLOOD_SUGAR_TYPES.POST_PRANDIAL,
+      label: intl.formatMessage({id: 'bs.before-eating-title'}),
+      value: BLOOD_SUGAR_TYPES.AFTER_EATING,
       min: 30,
       max: 1000,
       type: INPUT_TYPES.DECIMAL,
@@ -118,7 +120,7 @@ function AddBsScreen({navigation, route}: Props) {
               foundType.value,
               foundType.min.toString(),
               BloodSugarCode.MG_DL,
-            ),
+            ).toFixed(0),
           )
 
       if (Number(input) < minValue) {
@@ -136,7 +138,7 @@ function AddBsScreen({navigation, route}: Props) {
               foundType.value,
               foundType.max.toString(),
               BloodSugarCode.MG_DL,
-            ),
+            ).toFixed(0),
           )
 
       if (Number(input) > maxValue) {
