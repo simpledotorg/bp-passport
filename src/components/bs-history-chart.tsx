@@ -52,9 +52,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
   }, [bloodSugarReadings])
 
   useEffect(() => {
-    if (requestedChart) {
-      setChartData(new ChartData(requestedChart))
-    }
+    setChartData(new ChartData(requestedChart))
   }, [requestedChart])
 
   const getMaxThreshhold = (): number => {
