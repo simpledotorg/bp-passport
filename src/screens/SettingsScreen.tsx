@@ -200,27 +200,25 @@ const SupportSection = () => {
       </BodyText>
 
       <BodyText
-        style={[!hasReviewed ? styles.item : styles.lastItem, styles.linkText]}
+        style={[styles.item, styles.linkText]}
         onPress={() => {
           Linking.openURL('https://www.simple.org/bp-passport/')
         }}>
         <FormattedMessage id="settings.about" />
       </BodyText>
 
-      {!hasReviewed && (
-        <BodyText
-          style={[styles.lastItem, styles.linkText]}
-          onPress={() => {
-            dispatch(setHasReviewed(true))
-            Platform.OS === 'ios'
-              ? Linking.openURL(
-                  'itms-apps://apps.apple.com/us/app/bp-passport/id1510811893?action=write-review',
-                )
-              : Linking.openURL('market://details?id=org.simple.bppassport')
-          }}>
-          <FormattedMessage id="general.write-a-review" />
-        </BodyText>
-      )}
+      <BodyText
+        style={[styles.lastItem, styles.linkText]}
+        onPress={() => {
+          dispatch(setHasReviewed(true))
+          Platform.OS === 'ios'
+            ? Linking.openURL(
+                'itms-apps://apps.apple.com/us/app/bp-passport/id1510811893?action=write-review',
+              )
+            : Linking.openURL('market://details?id=org.simple.bppassport')
+        }}>
+        <FormattedMessage id="general.write-a-review" />
+      </BodyText>
     </>
   )
 }
