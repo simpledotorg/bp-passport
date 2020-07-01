@@ -14,5 +14,9 @@ export interface IDefineChartsAvailable {
 
   getHasHemoglobicReadings(): boolean
 
+  getHasBeforeEatingReadings(): boolean
+
+  getHasAfterEatingReadings(): boolean
+
   getDisplayUnits(): BloodSugarCode
 }

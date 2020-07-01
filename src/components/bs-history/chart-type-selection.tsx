@@ -1,5 +1,5 @@
 import React from 'react'
-import {View} from 'react-native'
+import {View, Dimensions} from 'react-native'
 
 import {ChartTypeSelectionPill} from './chart-type-selection-pill'
 import {BLOOD_SUGAR_TYPES} from '../../redux/blood-sugar/blood-sugar.models'
@@ -11,6 +11,21 @@ type ChartSelectionProps = {
   changeChartTypeHandler?: (newChartType: BLOOD_SUGAR_TYPES) => void
 }
 
+const hasBeforeEatingTypes = (chartTypesAvailable: IDefineChartsAvailable) => {
+  return (
+    chartTypesAvailable.getHasFastingReadings ||
+    chartTypesAvailable.getHasBeforeEatingReadings
+  )
+}
+
+const hasAfterEatingTypes = (chartTypesAvailable: IDefineChartsAvailable) => {
+  return (
+    chartTypesAvailable.getHasAfterEatingReadings() ||
+    chartTypesAvailable.getHasRandomReadings() ||
+    chartTypesAvailable.getHasPostPrandialReadings()
+  )
+}
+
 export const ChartTypeSelection = ({
   chartTypesAvailable,
   changeChartTypeHandler,
@@ -18,31 +33,30 @@ export const ChartTypeSelection = ({
   const intl = useIntl()
 
   return (
-    <View style={{flexDirection: 'row', paddingTop: 20}}>
-      {(chartTypesAvailable.getHasRandomReadings() ||
-        chartTypesAvailable.getHasPostPrandialReadings()) && (
+    <View
+      style={{
+        position: 'relative',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        paddingTop: 20,
+      }}>
+      {hasAfterEatingTypes(chartTypesAvailable) && (
         <ChartTypeSelectionPill
           changeChartType={changeChartTypeHandler}
           currentChartType={chartTypesAvailable.getChartType()}
-          newChartType={BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR}
-          pillLabel={
-            intl.formatMessage({
-              id: 'bs.random-blood-code',
-            }) +
-            '/' +
-            intl.formatMessage({
-              id: 'bs.post-prenial-code',
-            })
-          }
+          newChartType={BLOOD_SUGAR_TYPES.AFTER_EATING}
+          pillLabel={intl.formatMessage({
+            id: 'bs.after-eating-title',
+          })}
         />
       )}
-      {chartTypesAvailable.getHasFastingReadings() && (
+      {hasBeforeEatingTypes(chartTypesAvailable) && (
         <ChartTypeSelectionPill
           changeChartType={changeChartTypeHandler}
           currentChartType={chartTypesAvailable.getChartType()}
-          newChartType={BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR}
+          newChartType={BLOOD_SUGAR_TYPES.BEFORE_EATING}
           pillLabel={intl.formatMessage({
-            id: 'bs.fasting-code',
+            id: 'bs.before-eating-title',
           })}
         />
       )}

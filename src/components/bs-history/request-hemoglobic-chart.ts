@@ -18,6 +18,8 @@ export class RequestHemoglobicChart
   private readonly hasPostPrandialReadings: boolean
   private readonly hasFastingReadings: boolean
   private readonly hasHemoglobicReadings: boolean
+  private readonly hasBeforeEatingReadings: boolean
+  private readonly hasAfterEatingReadings: boolean
 
   private constructor(yearToDisplay: number, readings: BloodSugar[]) {
     this._chartTitle = getYearTitle(yearToDisplay)
@@ -36,6 +38,12 @@ export class RequestHemoglobicChart
     )
     this.hasHemoglobicReadings = readings.hasReadingType(
       BLOOD_SUGAR_TYPES.HEMOGLOBIC,
+    )
+    this.hasBeforeEatingReadings = readings.hasReadingType(
+      BLOOD_SUGAR_TYPES.BEFORE_EATING,
+    )
+    this.hasAfterEatingReadings = readings.hasReadingType(
+      BLOOD_SUGAR_TYPES.AFTER_EATING,
     )
   }
 
@@ -121,5 +129,13 @@ export class RequestHemoglobicChart
 
   public getHasHemoglobicReadings(): boolean {
     return this.hasHemoglobicReadings
+  }
+
+  public getHasBeforeEatingReadings(): boolean {
+    return this.hasBeforeEatingReadings
+  }
+
+  public getHasAfterEatingReadings(): boolean {
+    return this.hasAfterEatingReadings
   }
 }

@@ -52,13 +52,6 @@ export class ScatterGraphDataPoint {
         })
     }
   }
-  private static showMGDL(reading: BloodSugar): boolean {
-    return (
-      reading.blood_sugar_type === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR ||
-      reading.blood_sugar_type === BLOOD_SUGAR_TYPES.POST_PRANDIAL ||
-      reading.blood_sugar_type === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
-    )
-  }
 
   private getBloodSugarType(reading: BloodSugar): string {
     if (reading.blood_sugar_type === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR) {

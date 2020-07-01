@@ -25,7 +25,8 @@ export class ChartData implements IDefineChartsAvailable {
   private readonly hasPostPrandialReadings: boolean
   private readonly hasFastingReadings: boolean
   private readonly hasHemoglobicReadings: boolean
-
+  private readonly hasBeforeEatingReadings: boolean
+  private readonly hasAfterEatingReadings: boolean
   private readonly dateAxis: DateAxis
   private readonly aggregatedData: AggregatedBloodSugarData[] = []
   private readonly _hasNextPeriod: boolean
@@ -45,6 +46,13 @@ export class ChartData implements IDefineChartsAvailable {
     )
     this.hasHemoglobicReadings = requestedChart.readings.hasReadingType(
       BLOOD_SUGAR_TYPES.HEMOGLOBIC,
+    )
+
+    this.hasBeforeEatingReadings = requestedChart.readings.hasReadingType(
+      BLOOD_SUGAR_TYPES.BEFORE_EATING,
+    )
+    this.hasAfterEatingReadings = requestedChart.readings.hasReadingType(
+      BLOOD_SUGAR_TYPES.AFTER_EATING,
     )
 
     const filteredReadings = filterReadings(this._requestedChart)
@@ -138,6 +146,14 @@ export class ChartData implements IDefineChartsAvailable {
 
   public getHasFastingReadings(): boolean {
     return this.hasFastingReadings
+  }
+
+  public getHasBeforeEatingReadings(): boolean {
+    return this.hasBeforeEatingReadings
+  }
+
+  public getHasAfterEatingReadings(): boolean {
+    return this.hasAfterEatingReadings
   }
 
   public getHasHemoglobicReadings(): boolean {
