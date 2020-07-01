@@ -52,3 +52,51 @@ class ConvertedBloodSugarReading {
 }
 
 export default ConvertedBloodSugarReading
+
+declare global {
+  interface Array<T> {
+    getMinReading(this: T[]): T | null
+
+    getMaxReading(this: T[]): T | null
+  }
+}
+
+if (!Array.prototype.getMinReading) {
+  Array.prototype.getMinReading = function <
+    T extends ConvertedBloodSugarReading
+  >(this: T[]): ConvertedBloodSugarReading | null {
+    return this.reduce(
+      (
+        memo: ConvertedBloodSugarReading | null,
+        current: ConvertedBloodSugarReading,
+      ): ConvertedBloodSugarReading | null => {
+        if (!memo) {
+          return current
+        }
+
+        return memo.value < current.value ? memo : current
+      },
+      null,
+    )
+  }
+}
+
+if (!Array.prototype.getMaxReading) {
+  Array.prototype.getMaxReading = function <
+    T extends ConvertedBloodSugarReading
+  >(this: T[]): ConvertedBloodSugarReading | null {
+    return this.reduce(
+      (
+        memo: ConvertedBloodSugarReading | null,
+        current: ConvertedBloodSugarReading,
+      ): ConvertedBloodSugarReading | null => {
+        if (!memo) {
+          return current
+        }
+
+        return memo.value > current.value ? memo : current
+      },
+      null,
+    )
+  }
+}

@@ -105,9 +105,10 @@ export class ChartData implements IDefineChartsAvailable {
         return
       }
 
-      const minValue = Number(aggregateRecord.minReading?.value)
-      const maxValue = Number(aggregateRecord.maxReading?.value)
+      const minValue = aggregateRecord.minReading?.value
+      const maxValue = aggregateRecord.maxReading?.value
 
+      console.log({minValue, maxValue})
       if (minValue === maxValue) {
         return
       }
