@@ -26,8 +26,16 @@ import {
   convertBloodSugarValue,
   getDisplayBloodSugarUnit,
 } from '../utils/blood-sugars'
+import {
+  hasReviewedSelector,
+  normalBpBsCountSelector,
+} from '../redux/patient/patient.selectors'
+import {setNormalBpBsCount} from '../redux/patient/patient.actions'
 
 import {bloodSugarUnitSelector} from '../redux/patient/patient.selectors'
+import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
+import {isBloodPressureHigh} from '../utils/blood-pressures'
+import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
 
 type AddBsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -52,10 +60,40 @@ enum INPUT_TYPES {
   PERCENTAGE = 'PERCENTAGE',
 }
 
-function AddBsScreen({navigation, route}: Props) {
-  const intl = useIntl()
+const getHistoricValues = (): number => {
+  const bpsAll = bloodPressuresSelector() ?? []
+  const normalBpCount = bpsAll.filter((bp) => {
+    return !isBloodPressureHigh(bp)
+  })
+
+  const bsAll = bloodSugarsSelector() ?? []
+  const normalBsCount = bsAll.filter((bs) => {
+    return !isHighBloodSugar(bs) && !isLowBloodSugar(bs)
+  })
+
+  return normalBpCount.length + normalBsCount.length
+}
+
+const getBpBsCount = (): number => {
+  const count = normalBpBsCountSelector()
+  const historicCount = getHistoricValues()
+
+  if (count || count === 0) {
+    return count
+  }
 
   const dispatch = useThunkDispatch()
+
+  dispatch(setNormalBpBsCount(historicCount))
+
+  return historicCount
+}
+
+function AddBsScreen({navigation, route}: Props) {
+  const intl = useIntl()
+  const dispatch = useThunkDispatch()
+  const hasReviewed = hasReviewedSelector()
+  const normalBpBsCount = getBpBsCount()
 
   const SUGAR_TYPES: PickerItemExtended[] = [
     {
@@ -310,6 +348,19 @@ function AddBsScreen({navigation, route}: Props) {
                       }),
                     })
                   }, 250)
+                }
+              }
+
+              if (
+                !isHighBloodSugar(newBloodSugar) &&
+                !isLowBloodSugar(newBloodSugar)
+              ) {
+                if (normalBpBsCount >= 4 && !hasReviewed) {
+                  setTimeout(() => {
+                    navigation.navigate(SCREENS.WRITE_A_REVIEW_MODAL_SCREEN)
+                  }, 250)
+                } else {
+                  dispatch(setNormalBpBsCount(normalBpBsCount + 1))
                 }
               }
             }}

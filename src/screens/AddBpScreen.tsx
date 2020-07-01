@@ -8,11 +8,20 @@ import {containerStyles, colors} from '../styles'
 import {Button, BodyText, ButtonType} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
+import {
+  hasReviewedSelector,
+  normalBpBsCountSelector,
+} from '../redux/patient/patient.selectors'
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {useThunkDispatch} from '../redux/store'
 import {addBloodPressure} from '../redux/blood-pressure/blood-pressure.actions'
 import {ScrollView} from 'react-native-gesture-handler'
+import {setNormalBpBsCount} from '../redux/patient/patient.actions'
+import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
+import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
+import {isHighBloodSugar, isLowBloodSugar} from '../utils/blood-sugars'
+import {isBloodPressureHigh} from '../utils/blood-pressures'
 
 type AddBpScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -31,8 +40,39 @@ const MAX_SYSTOLIC_BP = 300
 const MIN_DIASTOLIC_BP = 40 // Potentially change to 40
 const MAX_DIASTOLIC_BP = 180
 
+const getHistoricValues = (): number => {
+  const bpsAll = bloodPressuresSelector() ?? []
+  const normalBpCount = bpsAll.filter((bp) => {
+    return !isBloodPressureHigh(bp)
+  })
+
+  const bsAll = bloodSugarsSelector() ?? []
+  const normalBsCount = bsAll.filter((bs) => {
+    return !isHighBloodSugar(bs) && !isLowBloodSugar(bs)
+  })
+
+  return normalBpCount.length + normalBsCount.length
+}
+
+const getBpBsCount = (): number => {
+  const count = normalBpBsCountSelector()
+  const historicCount = getHistoricValues()
+
+  if (count || count === 0) {
+    return count
+  }
+
+  const dispatch = useThunkDispatch()
+
+  dispatch(setNormalBpBsCount(historicCount))
+
+  return historicCount
+}
+
 function AddBpScreen({navigation, route}: Props) {
   const intl = useIntl()
+  const hasReviewed = hasReviewedSelector()
+  const normalBpBsCount = getBpBsCount()
 
   const systolicRef = useRef<null | any>(null)
   const diastolicRef = useRef<null | any>(null)
@@ -57,11 +97,17 @@ function AddBpScreen({navigation, route}: Props) {
     )
   }
 
-  const getErrorGateway = (systolicInput: string, diastolicInput: string) => {
+  const getErrorGateway = (
+    systolicInput: string,
+    diastolicInput: string,
+  ): void => {
     setErrors(getErrors(systolicInput, diastolicInput))
   }
 
-  const getErrors = (systolicInput: string, diastolicInput: string) => {
+  const getErrors = (
+    systolicInput: string,
+    diastolicInput: string,
+  ): string | null => {
     if (systolicInput === '' && diastolicInput === '') {
       return null
     }
@@ -90,12 +136,6 @@ function AddBpScreen({navigation, route}: Props) {
     return bpIn.systolic >= 180 || bpIn.diastolic >= 110
   }
 
-  const isBloodPressureHigh = (bpIn: BloodPressure) => {
-    // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
-    // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
-    return bpIn.systolic >= 140 || bpIn.diastolic >= 90
-  }
-
   const save = () => {
     const newBloodPressure: BloodPressure = {
       diastolic: Number(diastolic),
@@ -117,6 +157,16 @@ function AddBpScreen({navigation, route}: Props) {
           ),
         })
       }, 250)
+    }
+
+    if (!isBloodPressureHigh(newBloodPressure)) {
+      if (normalBpBsCount >= 4 && !hasReviewed) {
+        setTimeout(() => {
+          navigation.navigate(SCREENS.WRITE_A_REVIEW_MODAL_SCREEN)
+        }, 250)
+      } else {
+        dispatch(setNormalBpBsCount(normalBpBsCount + 1))
+      }
     }
   }
 

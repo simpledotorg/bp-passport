@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Linking,
   ScrollView,
+  Platform,
 } from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
 import {Item} from 'react-native-picker-select'
@@ -20,8 +21,13 @@ import {
   patientSelector,
   localeSelector,
   bloodSugarUnitSelector,
+  hasReviewedSelector,
 } from '../redux/patient/patient.selectors'
-import {setLanguage, setBloodSugarUnit} from '../redux/patient/patient.actions'
+import {
+  setLanguage,
+  setBloodSugarUnit,
+  setHasReviewed,
+} from '../redux/patient/patient.actions'
 import SCREENS from '../constants/screens'
 
 import {PassportLinkedState} from '../redux/auth/auth.models'
@@ -176,6 +182,9 @@ const UserDetails = ({apiUser}: any) => {
 }
 
 const SupportSection = () => {
+  const hasReviewed = hasReviewedSelector()
+  const dispatch = useThunkDispatch()
+
   return (
     <>
       <BodyHeader style={styles.header}>
@@ -191,12 +200,27 @@ const SupportSection = () => {
       </BodyText>
 
       <BodyText
-        style={[styles.lastItem, styles.linkText]}
+        style={[!hasReviewed ? styles.item : styles.lastItem, styles.linkText]}
         onPress={() => {
           Linking.openURL('https://www.simple.org/bp-passport/')
         }}>
         <FormattedMessage id="settings.about" />
       </BodyText>
+
+      {!hasReviewed && (
+        <BodyText
+          style={[styles.lastItem, styles.linkText]}
+          onPress={() => {
+            dispatch(setHasReviewed(true))
+            Platform.OS === 'ios'
+              ? Linking.openURL(
+                  'itms-apps://apps.apple.com/us/app/bp-passport/id1510811893?action=write-review',
+                )
+              : Linking.openURL('market://details?id=org.simple.bppassport')
+          }}>
+          <FormattedMessage id="general.write-a-review" />
+        </BodyText>
+      )}
     </>
   )
 }
