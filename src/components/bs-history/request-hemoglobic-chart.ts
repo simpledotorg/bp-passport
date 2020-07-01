@@ -6,6 +6,7 @@ import {IDefineAChartRequest} from './i-define-a-chart-request'
 import {RequestSingleMonthChart} from './request-single-month-chart'
 import {IDefineChartsAvailable} from './i-define-charts-available'
 import {getYearTitle} from '../../utils/dates'
+import {BloodSugarCode} from '../../utils/blood-sugars'
 
 export class RequestHemoglobicChart
   implements IDefineAChartRequest, IDefineChartsAvailable {
@@ -57,12 +58,17 @@ export class RequestHemoglobicChart
   public changeRequestedType(
     requestedType: BLOOD_SUGAR_TYPES,
     readings: BloodSugar[],
+    displayUnits: BloodSugarCode,
   ): IDefineAChartRequest {
     if (requestedType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
       return new RequestHemoglobicChart(this._yearToDisplay, this._readings)
     }
 
-    return RequestSingleMonthChart.ForRequestedType(requestedType, readings)
+    return RequestSingleMonthChart.ForRequestedType(
+      requestedType,
+      readings,
+      displayUnits,
+    )
   }
 
   public withUpdatedReadings(readings: BloodSugar[]): IDefineAChartRequest {
@@ -95,6 +101,10 @@ export class RequestHemoglobicChart
 
   public getChartType(): BLOOD_SUGAR_TYPES {
     return BLOOD_SUGAR_TYPES.HEMOGLOBIC
+  }
+
+  public getDisplayUnits(): BloodSugarCode {
+    return BloodSugarCode.PERCENT
   }
 
   public getHasRandomReadings(): boolean {

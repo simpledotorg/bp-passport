@@ -9,6 +9,7 @@ import {BodyHeader, BsInformation, BsHistoryChart, Line} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
+import {bloodSugarUnitSelector} from '../redux/patient/patient.selectors'
 // import {getTestData} from '../components/bs-history/test-data'
 
 type BsHistoryScreenNavigationProp = StackNavigationProp<
@@ -28,6 +29,7 @@ type Props = {
 
 function BsHistoryScreen({navigation, route}: Props) {
   const bloodSugars = bloodSugarsSelector()
+  const displayUnits = bloodSugarUnitSelector()
 
   return (
     <View style={{flex: 1}}>
@@ -52,7 +54,10 @@ function BsHistoryScreen({navigation, route}: Props) {
             </View>
           </View>
           <View style={{minHeight: 304}}>
-            <BsHistoryChart bloodSugarReadings={bloodSugars ?? []} />
+            <BsHistoryChart
+              bloodSugarReadings={bloodSugars ?? []}
+              displayUnits={displayUnits}
+            />
           </View>
         </View>
         <View
@@ -89,7 +94,7 @@ function BsHistoryScreen({navigation, route}: Props) {
                         ? {borderBottomWidth: 0}
                         : {},
                     ]}>
-                    <BsInformation bs={bs} />
+                    <BsInformation bs={bs} displayUnits={displayUnits} />
                   </TouchableHighlight>
                   {index < bloodSugars.length - 1 && (
                     <Line key={'line' + index} />

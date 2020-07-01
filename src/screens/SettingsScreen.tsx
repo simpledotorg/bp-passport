@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {
   SafeAreaView,
   View,
@@ -16,28 +16,26 @@ import {
   AVAILABLE_TRANSLATIONS,
   languageCodeToDisplayTitle,
 } from '../constants/languages'
-import {patientSelector} from '../redux/patient/patient.selectors'
-import {setLanguage} from '../redux/patient/patient.actions'
+import {
+  patientSelector,
+  localeSelector,
+  bloodSugarUnitSelector,
+} from '../redux/patient/patient.selectors'
+import {setLanguage, setBloodSugarUnit} from '../redux/patient/patient.actions'
 import SCREENS from '../constants/screens'
 
 import {PassportLinkedState} from '../redux/auth/auth.models'
 import {passportLinkedStateSelector} from '../redux/auth/auth.selectors'
-import {localeSelector} from '../redux/patient/patient.selectors'
 import {useThunkDispatch} from '../redux/store'
+import {
+  AVAILABLE_BLOOD_SUGAR_UNITS,
+  bloodSugarUnitToDisplayTitle,
+} from '../utils/blood-sugars'
 
-function SettingsScreen({navigation}: any) {
-  const apiUser = patientSelector()
-
-  const intl = useIntl()
-  const dispatch = useThunkDispatch()
-
+type LanguagePickerProps = {apiUser: any}
+const LanguagePicker = ({apiUser}: LanguagePickerProps) => {
   const locale = localeSelector()
-  const passportLinkedState = passportLinkedStateSelector()
-  const hasPassportLinked =
-    passportLinkedState === PassportLinkedState.Linking ||
-    passportLinkedState === PassportLinkedState.Linked
-
-  useEffect(() => {}, [passportLinkedState, apiUser])
+  const dispatch = useThunkDispatch()
 
   const locales: Item[] = []
 
@@ -49,119 +47,185 @@ function SettingsScreen({navigation}: any) {
   })
 
   return (
+    <>
+      <View style={[styles.header, apiUser ? {} : {paddingTop: 24}]}>
+        <BodyHeader>
+          <FormattedMessage id="settings.language" />
+        </BodyHeader>
+      </View>
+      <View>
+        <Picker
+          onValueChange={(language: string) => {
+            dispatch(setLanguage(language))
+          }}
+          items={locales}
+          value={locale}
+        />
+      </View>
+    </>
+  )
+}
+
+const BloodSugarUnitPicker = () => {
+  const selectedBloodSugarUnit = bloodSugarUnitSelector()
+  const dispatch = useThunkDispatch()
+
+  const bloodSugarUnits: Item[] = []
+  AVAILABLE_BLOOD_SUGAR_UNITS.forEach((bloodSugarUnit) => {
+    bloodSugarUnits.push({
+      label: bloodSugarUnitToDisplayTitle(bloodSugarUnit),
+      value: bloodSugarUnit,
+    })
+  })
+
+  return (
+    <>
+      <View style={{paddingTop: 24}}>
+        <BodyHeader>
+          <FormattedMessage id="settings.bs-units" />
+        </BodyHeader>
+      </View>
+      <View>
+        <Picker
+          onValueChange={(bloodSugarUnit: string) => {
+            dispatch(setBloodSugarUnit(bloodSugarUnit))
+          }}
+          items={bloodSugarUnits}
+          value={selectedBloodSugarUnit}
+        />
+      </View>
+    </>
+  )
+}
+
+const ConnectSection = ({intl, navigation}: any) => {
+  return (
+    <>
+      <View style={styles.header}>
+        <BodyHeader>
+          <FormattedMessage id="settings.connect" />
+        </BodyHeader>
+      </View>
+      <View style={styles.item}>
+        <BodyText>
+          <FormattedMessage id="settings.have-a-passport" />
+        </BodyText>
+      </View>
+      <View>
+        <Button
+          style={[styles.bpButton, {}]}
+          buttonType={ButtonType.LightBlue}
+          title={intl.formatMessage({id: 'login.scan-passport'})}
+          onPress={() => {
+            navigation.navigate(SCREENS.SCAN_STACK)
+          }}
+        />
+      </View>
+    </>
+  )
+}
+
+const LegalSection = () => {
+  return (
+    <>
+      <BodyHeader style={styles.header}>
+        <FormattedMessage id="general.legal" />
+      </BodyHeader>
+      <BodyText
+        style={[styles.item, styles.linkText]}
+        onPress={() => {
+          Linking.openURL('https://www.simple.org/patient-privacy')
+        }}>
+        <FormattedMessage id="settings.privacy-policy-link" />
+      </BodyText>
+
+      <BodyText style={styles.subHeader}>
+        <FormattedMessage id="general.disclaimer" />
+      </BodyText>
+      <BodyText style={styles.item}>
+        <FormattedMessage id="consent.medical-disclaimer" />
+      </BodyText>
+    </>
+  )
+}
+
+const UserDetails = ({apiUser}: any) => {
+  return (
+    <>
+      <View style={[styles.header, apiUser ? {paddingTop: 24} : {}]}>
+        <BodyHeader>
+          <FormattedMessage id="settings.profile" />
+        </BodyHeader>
+      </View>
+      <View style={styles.item}>
+        <BodyHeader style={styles.itemText}>{apiUser?.full_name}</BodyHeader>
+        <BodyText style={styles.itemLabel}>
+          <FormattedMessage id="settings.name" />
+        </BodyText>
+      </View>
+      <View style={styles.item}>
+        <BodyHeader style={styles.itemText}>
+          {apiUser?.address?.state}
+        </BodyHeader>
+        <BodyText style={styles.itemLabel}>
+          <FormattedMessage id="settings.state" />
+        </BodyText>
+      </View>
+    </>
+  )
+}
+
+const SupportSection = () => {
+  return (
+    <>
+      <BodyHeader style={styles.header}>
+        <FormattedMessage id="general.support" />
+      </BodyHeader>
+
+      <BodyText
+        style={[styles.item, styles.linkText]}
+        onPress={() => {
+          Linking.openURL('https://www.simple.org/contact/')
+        }}>
+        <FormattedMessage id="settings.contact" />
+      </BodyText>
+
+      <BodyText
+        style={[styles.lastItem, styles.linkText]}
+        onPress={() => {
+          Linking.openURL('https://www.simple.org/bp-passport/')
+        }}>
+        <FormattedMessage id="settings.about" />
+      </BodyText>
+    </>
+  )
+}
+
+function SettingsScreen({navigation}: any) {
+  const apiUser = patientSelector()
+
+  const intl = useIntl()
+
+  const passportLinkedState = passportLinkedStateSelector()
+  const hasPassportLinked =
+    passportLinkedState === PassportLinkedState.Linking ||
+    passportLinkedState === PassportLinkedState.Linked
+
+  return (
     <SafeAreaView
       style={[containerStyles.fill, {backgroundColor: colors.white}]}>
       <StatusBar barStyle="light-content" />
       <View style={[containerStyles.fill]}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.content}>
-            {apiUser && (
-              <>
-                <View style={[styles.header, apiUser ? {paddingTop: 24} : {}]}>
-                  <BodyHeader>
-                    <FormattedMessage id="settings.profile" />
-                  </BodyHeader>
-                </View>
-                <View style={styles.item}>
-                  <BodyHeader style={styles.itemText}>
-                    {apiUser?.full_name}
-                  </BodyHeader>
-                  <BodyText style={styles.itemLabel}>
-                    <FormattedMessage id="settings.name" />
-                  </BodyText>
-                </View>
-                <View style={styles.item}>
-                  <BodyHeader style={styles.itemText}>
-                    {apiUser?.address?.state}
-                  </BodyHeader>
-                  <BodyText style={styles.itemLabel}>
-                    <FormattedMessage id="settings.state" />
-                  </BodyText>
-                </View>
-              </>
-            )}
-
-            <View style={[styles.header, apiUser ? {} : {paddingTop: 24}]}>
-              <BodyHeader>
-                <FormattedMessage id="settings.language" />
-              </BodyHeader>
-            </View>
-            <View>
-              <Picker
-                onValueChange={(language: string) => {
-                  dispatch(setLanguage(language))
-                }}
-                items={locales}
-                value={locale}
-              />
-            </View>
-
-            <View style={styles.header}>
-              <BodyHeader>
-                <FormattedMessage id="settings.about" />
-              </BodyHeader>
-            </View>
-            <View style={styles.item}>
-              <BodyText
-                style={styles.linkText}
-                onPress={() => {
-                  Linking.openURL('https://www.simple.org/patient-privacy')
-                }}>
-                <FormattedMessage id="settings.privacy-policy-link" />
-              </BodyText>
-            </View>
-            <View style={styles.item}>
-              <BodyText
-                style={styles.linkText}
-                onPress={() => {
-                  Linking.openURL('https://www.simple.org/contact/')
-                }}>
-                <FormattedMessage id="settings.contact" />
-              </BodyText>
-            </View>
-            <View style={styles.lastItem}>
-              <BodyText
-                style={styles.linkText}
-                onPress={() => {
-                  Linking.openURL('https://www.simple.org/bp-passport/')
-                }}>
-                <FormattedMessage id="settings.about" />
-              </BodyText>
-            </View>
+            {apiUser && <UserDetails apiUser={apiUser} />}
+            <LanguagePicker apiUser={apiUser} />
+            <BloodSugarUnitPicker />
+            <SupportSection />
             {!hasPassportLinked && (
-              <>
-                <View style={styles.header}>
-                  <BodyHeader>
-                    <FormattedMessage id="settings.connect" />
-                  </BodyHeader>
-                </View>
-                <View style={styles.item}>
-                  <BodyText>
-                    <FormattedMessage id="settings.have-a-passport" />
-                  </BodyText>
-                </View>
-                <View>
-                  <Button
-                    style={[styles.bpButton, {}]}
-                    buttonType={ButtonType.LightBlue}
-                    title={intl.formatMessage({id: 'login.scan-passport'})}
-                    onPress={() => {
-                      navigation.navigate(SCREENS.SCAN_STACK)
-                    }}
-                  />
-                </View>
-              </>
+              <ConnectSection intl={intl} navigation={navigation} />
             )}
-            <View style={styles.header}>
-              <BodyHeader>
-                <FormattedMessage id="general.disclaimer" />
-              </BodyHeader>
-            </View>
-            <View style={styles.item}>
-              <BodyText>
-                <FormattedMessage id="consent.medical-disclaimer" />
-              </BodyText>
-            </View>
+            <LegalSection />
           </View>
         </ScrollView>
       </View>
@@ -182,6 +246,17 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: 'bold',
     fontSize: 22,
+    lineHeight: 28,
+  },
+  subHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 16,
+    marginBottom: 8,
+    fontFamily: 'Roboto',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    fontSize: 18,
     lineHeight: 28,
   },
   item: {flexDirection: 'column', marginBottom: 16},

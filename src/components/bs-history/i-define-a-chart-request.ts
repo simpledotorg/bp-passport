@@ -5,12 +5,14 @@ import {
 import {IDefineChartsAvailable} from './i-define-charts-available'
 import {RequestSingleMonthChart} from './request-single-month-chart'
 import {RequestHemoglobicChart} from './request-hemoglobic-chart'
+import {BloodSugarCode} from '../../utils/blood-sugars'
 
 export interface IDefineAChartRequest extends IDefineChartsAvailable {
   readonly chartType: BLOOD_SUGAR_TYPES
   changeRequestedType(
     requestedType: BLOOD_SUGAR_TYPES,
     readings: BloodSugar[],
+    displayUnits: BloodSugarCode,
   ): IDefineAChartRequest
 
   withUpdatedReadings(readings: BloodSugar[]): IDefineAChartRequest
@@ -24,20 +26,28 @@ export interface IDefineAChartRequest extends IDefineChartsAvailable {
 
 export const getStartingChartRequest = (
   readings: BloodSugar[],
+  displayUnits: BloodSugarCode,
 ): IDefineAChartRequest => {
   if (
     readings.hasReadingType(BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR) ||
     readings.hasReadingType(BLOOD_SUGAR_TYPES.POST_PRANDIAL) ||
     readings.hasReadingType(BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR)
   ) {
-    return RequestSingleMonthChart.DefaultTypeFromAvailableReadings(readings)
+    return RequestSingleMonthChart.DefaultTypeFromAvailableReadings(
+      readings,
+      displayUnits,
+    )
   }
 
   if (readings.hasReadingType(BLOOD_SUGAR_TYPES.HEMOGLOBIC)) {
     return RequestHemoglobicChart.StartingState(readings)
   }
 
-  throw new Error('Unhandled blood sugar type')
+  return RequestSingleMonthChart.ForRequestedType(
+    BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
+    readings,
+    displayUnits,
+  )
 }
 
 export const filterReadings = (

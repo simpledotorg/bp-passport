@@ -28,7 +28,10 @@ import {useThunkDispatch} from '../redux/store'
 import {getPatient} from '../redux/patient/patient.actions'
 
 import {passportLinkedStateSelector} from '../redux/auth/auth.selectors'
-import {patientSelector} from '../redux/patient/patient.selectors'
+import {
+  patientSelector,
+  bloodSugarUnitSelector,
+} from '../redux/patient/patient.selectors'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
@@ -59,7 +62,10 @@ function Home({navigation}: Props) {
   const passportLinkedState = passportLinkedStateSelector()
 
   const bloodPressures = bloodPressuresSelector()
+
   const bloodSugars = bloodSugarsSelector()
+  const bloodSugarDisplayUnits = bloodSugarUnitSelector()
+
   const medications = medicationsSelector()
   const intl = useIntl()
 
@@ -79,13 +85,6 @@ function Home({navigation}: Props) {
       })
     }
   }, [])
-
-  useEffect(() => {}, [
-    passportLinkedState,
-    apiUser,
-    bloodPressures,
-    medications,
-  ])
 
   const [appState, setAppState] = useState(AppState.currentState)
 
@@ -203,6 +202,7 @@ function Home({navigation}: Props) {
             />
             <BloodSugarSection
               bloodSugarReadings={bss}
+              displayUnits={bloodSugarDisplayUnits}
               navigation={navigation}
               showList={HOME_PAGE_SHOW_LIMIT}
             />

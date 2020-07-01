@@ -7,11 +7,13 @@ const INITIAL_STATE: {
   locale?: string
   hasReviewed?: boolean
   normalBpBsCount?: number
+  bloodSugarUnit?: string
 } = {
   patient: undefined,
   locale: undefined,
   hasReviewed: false,
   normalBpBsCount: 0,
+  bloodSugarUnit: undefined,
 }
 
 const patientReducer = (state = INITIAL_STATE, action: any) => {
@@ -37,6 +39,11 @@ const patientReducer = (state = INITIAL_STATE, action: any) => {
         // normalBpBsCount: 0,
         // hasReviewed: false,
         normalBpBsCount: state.normalBpBsCount + action.payload,
+      }
+    case PatientActionTypes.SET_BLOOD_SUGAR_UNIT:
+      return {
+        ...state,
+        bloodSugarUnit: action.payload,
       }
     case AuthActionTypes.LOG_OUT:
       return {

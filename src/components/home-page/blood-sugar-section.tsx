@@ -15,20 +15,62 @@ import {
 } from '../../components'
 
 import {BloodSugar} from '../../redux/blood-sugar/blood-sugar.models'
+import {BloodSugarCode} from '../../utils/blood-sugars'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   SCREENS.HOME
 >
 
+type BSEntryProps = {
+  navigation: HomeScreenNavigationProp
+  bs: BloodSugar
+  displayUnits: BloodSugarCode
+  showSeparator: boolean
+}
+
+const BloodSugarEntry = ({
+  bs,
+  displayUnits,
+  navigation,
+  showSeparator,
+}: BSEntryProps) => {
+  return (
+    <>
+      <TouchableHighlight
+        underlayColor={colors.grey4}
+        onPress={() => {
+          navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
+            bs,
+          })
+        }}
+        style={[
+          {
+            paddingVertical: 12,
+            marginHorizontal: -24,
+            paddingHorizontal: 24,
+          },
+          styles.historyItem,
+          // index === bloodSugarReadings.length - 1 ? {borderBottomWidth: 0} : {},
+        ]}>
+        <BsInformation bs={bs} displayUnits={displayUnits} />
+      </TouchableHighlight>
+      {showSeparator && <Line />}
+    </>
+  )
+}
+
 type BSSProps = {
   navigation: HomeScreenNavigationProp
   bloodSugarReadings: BloodSugar[]
+  displayUnits: BloodSugarCode
   showList: number
 }
+
 const BloodSugarSection = ({
   navigation,
   bloodSugarReadings,
+  displayUnits,
   showList,
 }: BSSProps) => {
   const intl = useIntl()
@@ -47,30 +89,15 @@ const BloodSugarSection = ({
         <>
           {bloodSugarReadings.map((bs, index) => {
             return (
-              <View key={index}>
-                <TouchableHighlight
-                  underlayColor={colors.grey4}
-                  onPress={() => {
-                    navigation.navigate(SCREENS.DETAILS_MODAL_SCREEN, {
-                      bs,
-                    })
-                  }}
-                  style={[
-                    {
-                      paddingVertical: 12,
-                      marginHorizontal: -24,
-                      paddingHorizontal: 24,
-                    },
-                    styles.historyItem,
-                    index === bloodSugarReadings.length - 1
-                      ? {borderBottomWidth: 0}
-                      : {},
-                  ]}>
-                  <BsInformation bs={bs} />
-                </TouchableHighlight>
-                {index < bloodSugarReadings.length - 1 &&
-                  index < showList - 1 && <Line key={'line' + index} />}
-              </View>
+              <BloodSugarEntry
+                key={index}
+                bs={bs}
+                displayUnits={displayUnits}
+                navigation={navigation}
+                showSeparator={
+                  index < bloodSugarReadings.length - 1 && index < showList - 1
+                }
+              />
             )
           })}
         </>

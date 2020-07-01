@@ -87,3 +87,8 @@ export const incrementNormalBpBsCount = () => ({
   type: PatientActionTypes.INCREMENT_NORMAL_BP_BS_COUNT,
   payload: 1,
 })
+
+export const setBloodSugarUnit = (locale: string) => ({
+  type: PatientActionTypes.SET_BLOOD_SUGAR_UNIT,
+  payload: locale,
+})

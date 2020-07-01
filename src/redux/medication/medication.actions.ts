@@ -31,7 +31,7 @@ export const refreshAllLocalPushReminders = (
   medications: Medication[],
   intl: IntlShape,
 ) => {
-  console.log('refreshAllLocalPushReminders!')
+  // console.log('refreshAllLocalPushReminders!')
   if (Platform.OS === 'ios') {
     PushNotificationIOS.cancelAllLocalNotifications()
   } else if (Platform.OS === 'android') {
