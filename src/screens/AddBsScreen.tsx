@@ -78,7 +78,7 @@ const getBpBsCount = (): number => {
   const count = normalBpBsCountSelector()
   const historicCount = getHistoricValues()
 
-  if (count) {
+  if (count || count === 0) {
     return count
   }
 
@@ -352,7 +352,7 @@ function AddBsScreen({navigation, route}: Props) {
               }
 
               if (
-                !isHighBloodSugar(newBloodSugar) ||
+                !isHighBloodSugar(newBloodSugar) &&
                 !isLowBloodSugar(newBloodSugar)
               ) {
                 if (normalBpBsCount >= 4 && !hasReviewed) {

@@ -55,11 +55,10 @@ const getHistoricValues = (): number => {
 }
 
 const getBpBsCount = (): number => {
-  const historicCount = getHistoricValues()
   const count = normalBpBsCountSelector()
+  const historicCount = getHistoricValues()
 
-  console.log(count)
-  if (count) {
+  if (count || count === 0) {
     return count
   }
 
