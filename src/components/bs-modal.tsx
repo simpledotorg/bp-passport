@@ -23,6 +23,7 @@ import {
   convertBloodSugarValue,
   getReadingTypeId,
   getReadingType,
+  determinePrecision,
 } from '../utils/blood-sugars'
 import {useThunkDispatch} from '../redux/store'
 import {deleteBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
@@ -164,7 +165,7 @@ const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
       bsDetails.type,
       bsDetails.high.toString(),
       BloodSugarCode.MG_DL,
-    ).toFixed(0)
+    ).toFixed(determinePrecision(displayUnits))
     return `${convertedValue} ${getDisplayBloodSugarUnit(displayUnits)}`
   }
   return (
@@ -242,16 +243,14 @@ const DeleteButton = ({intl, bs, close}: any) => {
   )
 }
 
+const getReadingUnits = (bloodSugar: BloodSugar, units: BloodSugarCode) => {
+  return bloodSugar.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
+    ? '% '
+    : getDisplayBloodSugarUnit(units)
+}
+
 export const BsModal = ({bs, displayUnits, close}: Props) => {
   const intl = useIntl()
-
-  const details = getBloodSugarDetails(bs)
-
-  const getReadingUnits = (bloodSugar: BloodSugar, units: BloodSugarCode) => {
-    return bloodSugar.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
-      ? '% '
-      : getDisplayBloodSugarUnit(units)
-  }
 
   return (
     <TouchableWithoutFeedback
@@ -280,10 +279,9 @@ export const BsModal = ({bs, displayUnits, close}: Props) => {
                 fontSize: 18,
                 color: colors.grey0,
               }}>
-              {`${Number(bs.blood_sugar_value).toFixed(0)} ${getReadingUnits(
-                bs,
-                displayUnits,
-              )} `}
+              {`${Number(bs.blood_sugar_value).toFixed(
+                determinePrecision(displayUnits),
+              )} ${getReadingUnits(bs, displayUnits)} `}
               <ValueStatusLabel bs={bs} />
             </BodyText>
             <BodyText

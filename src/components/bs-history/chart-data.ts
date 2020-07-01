@@ -16,7 +16,7 @@ import {getMonthYearTitle, getYearTitle} from '../../utils/dates'
 import {IDefineChartsAvailable} from './i-define-charts-available'
 import {LineGraphDataPoint} from './line-graph-data-point'
 import ConvertedBloodSugarReading from '../../models/converted_blood_sugar_reading'
-import {BloodSugarCode} from '../../utils/blood-sugars'
+import {BloodSugarCode, determinePrecision} from '../../utils/blood-sugars'
 
 export class ChartData implements IDefineChartsAvailable {
   private readonly _requestedChart: IDefineAChartRequest
@@ -178,7 +178,13 @@ export class ChartData implements IDefineChartsAvailable {
       null,
     )
 
-    return value ? Number(value.toFixed(0)) : null
+    return value
+      ? Number(
+          value.toFixed(
+            determinePrecision(this._requestedChart.getDisplayUnits()),
+          ),
+        )
+      : null
   }
 
   public getMinReading(): number | null {
@@ -199,7 +205,13 @@ export class ChartData implements IDefineChartsAvailable {
       null,
     )
 
-    return value ? Number(value.toFixed(0)) : null
+    return value
+      ? Number(
+          value.toFixed(
+            determinePrecision(this._requestedChart.getDisplayUnits()),
+          ),
+        )
+      : null
   }
 
   public getIndexValues(): number[] {

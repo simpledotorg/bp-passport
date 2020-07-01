@@ -1,6 +1,6 @@
 import React from 'react'
 import {View, StyleSheet, Image, ViewStyle} from 'react-native'
-import {FormattedMessage, useIntl} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {colors, purpleDrop, smallWarningSign} from '../styles'
@@ -19,6 +19,7 @@ import {
   getDisplayBloodSugarUnit,
   BloodSugarCode,
   getReadingType,
+  determinePrecision,
 } from '../utils/blood-sugars'
 
 type Props = {
@@ -102,7 +103,9 @@ export const BsInformation = ({bs, displayUnits, style = {}}: Props) => {
                 color: colors.grey0,
                 fontWeight: '500',
               }}>
-              {`${convertBloodSugarReading(bs, displayUnits).toFixed(0)} `}
+              {`${convertBloodSugarReading(bs, displayUnits).toFixed(
+                determinePrecision(displayUnits),
+              )} `}
               {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
                 ? '%'
                 : getDisplayBloodSugarUnit(displayUnits)}{' '}

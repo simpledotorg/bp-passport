@@ -108,6 +108,10 @@ export enum BloodSugarCode {
   PERCENT = '%',
 }
 
+export const determinePrecision = (
+  displayUnits: BloodSugarCode | string,
+): number => (displayUnits === BloodSugarCode.MMOL_L ? 1 : 0)
+
 export const AVAILABLE_BLOOD_SUGAR_UNITS: BloodSugarCode[] = [
   BloodSugarCode.MG_DL,
   BloodSugarCode.MMOL_L,

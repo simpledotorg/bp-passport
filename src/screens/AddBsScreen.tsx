@@ -25,6 +25,7 @@ import {
   BloodSugarCode,
   convertBloodSugarValue,
   getDisplayBloodSugarUnit,
+  determinePrecision,
 } from '../utils/blood-sugars'
 import {
   hasReviewedSelector,
@@ -100,21 +101,21 @@ function AddBsScreen({navigation, route}: Props) {
       label: `${intl.formatMessage({
         id: 'bs.placeholder-title',
       })} (${intl.formatMessage({id: 'bs.placeholder-description'})})`,
-      value: BLOOD_SUGAR_TYPES.BEFORE_EATING,
+      value: null,
       min: 30,
       max: 1000,
       type: INPUT_TYPES.DECIMAL,
     },
     {
       label: intl.formatMessage({id: 'bs.after-eating-title'}),
-      value: BLOOD_SUGAR_TYPES.BEFORE_EATING,
+      value: BLOOD_SUGAR_TYPES.AFTER_EATING,
       min: 30,
       max: 1000,
       type: INPUT_TYPES.DECIMAL,
     },
     {
       label: intl.formatMessage({id: 'bs.before-eating-title'}),
-      value: BLOOD_SUGAR_TYPES.AFTER_EATING,
+      value: BLOOD_SUGAR_TYPES.BEFORE_EATING,
       min: 30,
       max: 1000,
       type: INPUT_TYPES.DECIMAL,
@@ -158,7 +159,7 @@ function AddBsScreen({navigation, route}: Props) {
               foundType.value,
               foundType.min.toString(),
               BloodSugarCode.MG_DL,
-            ).toFixed(0),
+            ).toFixed(determinePrecision(selectedBloodSugarUnit)),
           )
 
       if (Number(input) < minValue) {
@@ -176,7 +177,7 @@ function AddBsScreen({navigation, route}: Props) {
               foundType.value,
               foundType.max.toString(),
               BloodSugarCode.MG_DL,
-            ).toFixed(0),
+            ).toFixed(determinePrecision(selectedBloodSugarUnit)),
           )
 
       if (Number(input) > maxValue) {
@@ -317,7 +318,7 @@ function AddBsScreen({navigation, route}: Props) {
             }}
             onPress={() => {
               const newBloodSugar: BloodSugar = {
-                blood_sugar_type: type,
+                blood_sugar_type: type ?? BLOOD_SUGAR_TYPES.AFTER_EATING,
                 blood_sugar_value: reading,
                 offline: true,
                 recorded_at: new Date().toISOString(),
