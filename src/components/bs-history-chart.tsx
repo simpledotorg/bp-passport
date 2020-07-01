@@ -10,10 +10,7 @@ import {
   VictoryVoronoiContainer,
 } from 'victory-native'
 
-import {
-  BloodSugar,
-  BLOOD_SUGAR_TYPES,
-} from '../redux/blood-sugar/blood-sugar.models'
+import {BLOOD_SUGAR_TYPES} from '../redux/blood-sugar/blood-sugar.models'
 import {colors} from '../styles'
 import {
   IDefineAChartRequest,
@@ -26,10 +23,16 @@ import {DateAxisComponent} from './victory-chart-parts/date-axis-component'
 import {TitleBar} from './victory-chart-parts/title-bar'
 import {ChartTypeSelection} from './bs-history/chart-type-selection'
 
-import {convertBloodSugarValue, BloodSugarCode} from '../utils/blood-sugars'
+import {
+  convertBloodSugarValue,
+  BloodSugarCode,
+  determinePrecision,
+} from '../utils/blood-sugars'
+
+import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
 
 type Props = {
-  bloodSugarReadings: BloodSugar[]
+  bloodSugarReadings: ConvertedBloodSugarReading[]
   displayUnits: BloodSugarCode
 }
 
@@ -49,9 +52,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
   }, [bloodSugarReadings])
 
   useEffect(() => {
-    if (requestedChart) {
-      setChartData(new ChartData(requestedChart))
-    }
+    setChartData(new ChartData(requestedChart))
   }, [requestedChart])
 
   const getMaxThreshhold = (): number => {
@@ -64,19 +65,19 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
         return Number(
           convertBloodSugarValue(
             displayUnits,
-            chartData.getChartType(),
+            BLOOD_SUGAR_TYPES.BEFORE_EATING,
             '126',
             BloodSugarCode.MG_DL,
-          ).toFixed(0),
+          ).toFixed(determinePrecision(displayUnits)),
         )
       case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
         return Number(
           convertBloodSugarValue(
             displayUnits,
-            chartData.getChartType(),
+            BLOOD_SUGAR_TYPES.HEMOGLOBIC,
             '7',
             BloodSugarCode.MG_DL,
-          ).toFixed(0),
+          ).toFixed(determinePrecision(displayUnits)),
         )
       default:
         return Number(
@@ -85,7 +86,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
             chartData.getChartType(),
             '200',
             BloodSugarCode.MG_DL,
-          ).toFixed(0),
+          ).toFixed(determinePrecision(displayUnits)),
         )
     }
   }
@@ -105,7 +106,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
             chartData.getChartType(),
             '70',
             BloodSugarCode.MG_DL,
-          ).toFixed(0),
+          ).toFixed(determinePrecision(displayUnits)),
         )
     }
   }

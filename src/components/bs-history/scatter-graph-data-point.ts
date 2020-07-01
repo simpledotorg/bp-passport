@@ -1,7 +1,4 @@
-import {
-  BloodSugar,
-  BLOOD_SUGAR_TYPES,
-} from '../../redux/blood-sugar/blood-sugar.models'
+import {BLOOD_SUGAR_TYPES} from '../../redux/blood-sugar/blood-sugar.models'
 import {
   isHighBloodSugar,
   isLowBloodSugar,
@@ -9,6 +6,7 @@ import {
 } from '../../utils/blood-sugars'
 import {useIntl} from 'react-intl'
 import {format} from 'date-fns'
+import ConvertedBloodSugarReading from '../../models/converted_blood_sugar_reading'
 
 export class ScatterGraphDataPoint {
   private intl = useIntl()
@@ -18,11 +16,12 @@ export class ScatterGraphDataPoint {
   public label: string
   public showOutOfRange: boolean
 
-  constructor(index: number, reading: BloodSugar) {
+  constructor(index: number, reading: ConvertedBloodSugarReading) {
     this.x = index
-    this.y = Number(reading.blood_sugar_value)
+    this.y = reading.value
+
     this.label =
-      `${this.y.toFixed(0)}${this.getDisplayUnits(
+      `${reading.value}${this.getDisplayUnits(
         reading,
       )} ${this.getBloodSugarType(reading)}${format(
         new Date(reading.recorded_at),
@@ -40,7 +39,7 @@ export class ScatterGraphDataPoint {
     this.showOutOfRange = isHighBloodSugar(reading) || isLowBloodSugar(reading)
   }
 
-  private getDisplayUnits(reading: BloodSugar): string {
+  private getDisplayUnits(reading: ConvertedBloodSugarReading): string {
     switch (reading.blood_sugar_unit) {
       case BloodSugarCode.PERCENT:
         return '%'
@@ -53,7 +52,7 @@ export class ScatterGraphDataPoint {
     }
   }
 
-  private getBloodSugarType(reading: BloodSugar): string {
+  private getBloodSugarType(reading: ConvertedBloodSugarReading): string {
     if (reading.blood_sugar_type === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR) {
       return (
         this.intl.formatMessage({

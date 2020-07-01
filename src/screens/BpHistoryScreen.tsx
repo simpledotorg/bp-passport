@@ -39,7 +39,6 @@ function BpHistoryScreen({navigation, route}: Props) {
   const bps = /*bpsAll.slice(0, 5)*/ isAnimating
     ? bpsAll.slice(0, 5)
     : [...bpsAll]
-  const bpsChart = /*bpsAll.slice(0, 5)*/ isAnimating ? [] : [...bpsAll]
 
   useFocusEffect(
     React.useCallback(() => {

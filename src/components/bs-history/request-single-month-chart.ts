@@ -1,13 +1,11 @@
-import {
-  BloodSugar,
-  BLOOD_SUGAR_TYPES,
-} from '../../redux/blood-sugar/blood-sugar.models'
+import {BLOOD_SUGAR_TYPES} from '../../redux/blood-sugar/blood-sugar.models'
 import {IDefineAChartRequest} from './i-define-a-chart-request'
 import {RequestHemoglobicChart} from './request-hemoglobic-chart'
 import {IDefineChartsAvailable} from './i-define-charts-available'
 import {dateLocale} from '../../constants/languages'
 import {format} from 'date-fns'
 import {BloodSugarCode} from '../../utils/blood-sugars'
+import ConvertedBloodSugarReading from '../../models/converted_blood_sugar_reading'
 
 export class RequestSingleMonthChart
   implements IDefineAChartRequest, IDefineChartsAvailable {
@@ -18,7 +16,7 @@ export class RequestSingleMonthChart
   private readonly _requestedMonth: number
   private readonly _requestedYear: number
 
-  private readonly _readings: BloodSugar[]
+  private readonly _readings: ConvertedBloodSugarReading[]
   private readonly hasRandomReadings: boolean
   private readonly hasPostPrandialReadings: boolean
   private readonly hasFastingReadings: boolean
@@ -28,7 +26,7 @@ export class RequestSingleMonthChart
 
   private constructor(
     chartType: BLOOD_SUGAR_TYPES,
-    readings: BloodSugar[],
+    readings: ConvertedBloodSugarReading[],
     displayUnits: BloodSugarCode,
     requestedMonth?: number,
     requestedYear?: number,
@@ -91,7 +89,7 @@ export class RequestSingleMonthChart
 
   private static populateChartTitle(
     chartType: BLOOD_SUGAR_TYPES,
-    readings: BloodSugar[],
+    readings: ConvertedBloodSugarReading[],
     requestedMonth?: number,
     requestedYear?: number,
   ): string {
@@ -137,7 +135,7 @@ export class RequestSingleMonthChart
 
   public static ForRequestedType(
     chartType: BLOOD_SUGAR_TYPES,
-    readings: BloodSugar[],
+    readings: ConvertedBloodSugarReading[],
     displayUnits: BloodSugarCode,
   ): RequestSingleMonthChart {
     const mostRecentReading = readings
@@ -173,7 +171,7 @@ export class RequestSingleMonthChart
     return this._requestedYear
   }
 
-  public get readings(): BloodSugar[] {
+  public get readings(): ConvertedBloodSugarReading[] {
     return this._readings
   }
 
@@ -213,7 +211,7 @@ export class RequestSingleMonthChart
 
   public changeRequestedType(
     requestedType: BLOOD_SUGAR_TYPES,
-    readings: BloodSugar[],
+    readings: ConvertedBloodSugarReading[],
     displayUnits: BloodSugarCode,
   ): IDefineAChartRequest {
     if (requestedType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
@@ -229,7 +227,9 @@ export class RequestSingleMonthChart
     )
   }
 
-  public withUpdatedReadings(readings: BloodSugar[]): IDefineAChartRequest {
+  public withUpdatedReadings(
+    readings: ConvertedBloodSugarReading[],
+  ): IDefineAChartRequest {
     return new RequestSingleMonthChart(
       this._chartType,
       readings,
