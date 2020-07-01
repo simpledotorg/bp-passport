@@ -15,6 +15,7 @@ const purpleDrop = require('../assets/images/purple-drop.png')
 const largeWarningSign = require('../assets/images/warning-sign-large.png')
 const mediumWarningSign = require('../assets/images/warning-sign-medium.png')
 const smallWarningSign = require('../assets/images/warning-sign-small.png')
+const reviewStar = require('../assets/images/star.png')
 
 export {
   iconLaunch,
@@ -34,4 +35,5 @@ export {
   largeWarningSign,
   mediumWarningSign,
   smallWarningSign,
+  reviewStar,
 }

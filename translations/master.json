@@ -184,5 +184,7 @@
   "health-reminders.healthy": "Watch your readings to eat healthier and exercise more",
   "health-reminders.doctor": "Talk to your doctor to set goals and learn how to take accurate BP and blood sugar readings",
   "write-a-review.title": "Write a review",
-  "write-a-review.description": "Rate us on the {store} and let us know what you think"
+  "write-a-review.description": "Rate us on the {store} and let us know what you think",
+  "write-a-review.google-play-store": "Google Play Store",
+  "write-a-review.apple-app-store": "App Store"
 }

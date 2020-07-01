@@ -10,6 +10,14 @@ export const localeSelector = () => {
   return useSelector((state: RootState) => state.patient.locale)
 }
 
+export const hasReviewedSelector = () => {
+  return useSelector((state: RootState) => state.patient.hasReviewed)
+}
+
+export const normalBpBsCountSelector = () => {
+  return useSelector((state: RootState) => state.patient.normalBpBsCount)
+}
+
 export const bloodSugarUnitSelector = () => {
   return useSelector(
     (state: RootState) => state.patient.bloodSugarUnit ?? BloodSugarCode.MG_DL,
