@@ -152,10 +152,10 @@ function AddBsScreen({navigation, route}: Props) {
         ? foundType.min
         : Number(
             convertBloodSugarValue(
+              selectedBloodSugarUnit,
               foundType.value,
               foundType.min.toString(),
               BloodSugarCode.MG_DL,
-              selectedBloodSugarUnit,
             ),
           )
 
@@ -170,10 +170,10 @@ function AddBsScreen({navigation, route}: Props) {
         ? foundType.max
         : Number(
             convertBloodSugarValue(
+              selectedBloodSugarUnit,
               foundType.value,
               foundType.max.toString(),
               BloodSugarCode.MG_DL,
-              selectedBloodSugarUnit,
             ),
           )
 

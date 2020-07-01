@@ -10,7 +10,7 @@ import {useIntl} from 'react-intl'
 
 export const displayDate = (bsIn: BloodSugar) => {
   return bsIn.recorded_at
-    ? format(new Date(bsIn.recorded_at), `dd-MMM-yyy',' h:mm a`, {
+    ? format(new Date(bsIn.recorded_at), `dd-MMM-yyy`, {
         locale: dateLocale(),
       })
     : null
@@ -32,7 +32,7 @@ export const showWarning = (bs: BloodSugar): boolean => {
 
 export const isHighBloodSugar = (bs: BloodSugar) => {
   const value = convertBloodSugarReading(bs, BloodSugarCode.MG_DL)
-  return Number(value) >= getBloodSugarDetails(bs).high
+  return value >= getBloodSugarDetails(bs).high
 }
 
 export const isLowBloodSugar = (bs: BloodSugar) => {
@@ -41,12 +41,14 @@ export const isLowBloodSugar = (bs: BloodSugar) => {
     return false
   }
 
-  return Number(convertBloodSugarReading(bs, BloodSugarCode.MG_DL)) < lowBSValue
+  const value = convertBloodSugarReading(bs, BloodSugarCode.MG_DL)
+  return value < lowBSValue
 }
 
 export const getBloodSugarDetails: (
   bs: BloodSugar,
 ) => {
+  type: BLOOD_SUGAR_TYPES
   warningHigh?: number
   high: number
   low?: number
@@ -56,6 +58,7 @@ export const getBloodSugarDetails: (
   switch (bs.blood_sugar_type) {
     case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR: {
       return {
+        type: BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR,
         warningHigh: 300,
         high: 126,
         low: 70,
@@ -65,6 +68,7 @@ export const getBloodSugarDetails: (
     }
     case BLOOD_SUGAR_TYPES.POST_PRANDIAL: {
       return {
+        type: BLOOD_SUGAR_TYPES.POST_PRANDIAL,
         warningHigh: 300,
         high: 200,
         low: 70,
@@ -74,6 +78,7 @@ export const getBloodSugarDetails: (
     }
     case BLOOD_SUGAR_TYPES.HEMOGLOBIC: {
       return {
+        type: BLOOD_SUGAR_TYPES.HEMOGLOBIC,
         high: 7,
         languageKey: 'bs.hemoglobic',
         languageTypeCode: 'bs.hemoglobic-code',
@@ -82,6 +87,7 @@ export const getBloodSugarDetails: (
     case BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR:
     default: {
       return {
+        type: BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
         warningHigh: 300,
         high: 200,
         low: 70,
@@ -120,7 +126,7 @@ const UNIT_CONVERSION_FACTOR = 18
 export const convertBloodSugarReading = (
   bloodSugarReading: BloodSugar,
   convertTo: BloodSugarCode,
-): string => {
+): number => {
   return convertBloodSugar(
     convertTo,
     bloodSugarReading,
@@ -135,7 +141,7 @@ export const convertBloodSugarValue = (
   bloodSugarType: string,
   bloodSugarValue: string,
   bloodSugarUnit?: string,
-): string => {
+): number => {
   return convertBloodSugar(
     convertTo,
     undefined,
@@ -151,7 +157,7 @@ const convertBloodSugar = (
   bloodSugarType?: string,
   bloodSugarValue?: string,
   bloodSugarUnit?: string,
-): string => {
+): number => {
   if (bloodSugarReading) {
     bloodSugarType = bloodSugarReading.blood_sugar_type
     bloodSugarValue = bloodSugarReading.blood_sugar_value
@@ -159,36 +165,29 @@ const convertBloodSugar = (
   }
 
   if (bloodSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
-    return bloodSugarValue ?? ''
+    return Number(bloodSugarValue) ?? 0
   }
 
   const readingUnit = bloodSugarUnit ?? BloodSugarCode.MG_DL
 
   if (readingUnit === convertTo) {
-    return bloodSugarValue ?? ''
+    return Number(bloodSugarValue) ?? 0
   }
 
   if (
     readingUnit === BloodSugarCode.MG_DL &&
     convertTo === BloodSugarCode.MMOL_L
   ) {
-    return (Number(bloodSugarValue) / UNIT_CONVERSION_FACTOR).toFixed(0)
+    return Number(bloodSugarValue) / UNIT_CONVERSION_FACTOR
   }
 
   if (
     readingUnit === BloodSugarCode.MMOL_L &&
     convertTo === BloodSugarCode.MG_DL
   ) {
-    return (Number(bloodSugarValue) * UNIT_CONVERSION_FACTOR).toFixed(0)
+    return Number(bloodSugarValue) * UNIT_CONVERSION_FACTOR
   }
 
-  console.debug({
-    convertTo,
-    //bloodSugarReading,
-    bloodSugarType,
-    bloodSugarValue,
-    bloodSugarUnit,
-  })
   throw new Error('Unhandled reading/display unit combination')
 }
 

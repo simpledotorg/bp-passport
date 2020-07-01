@@ -145,7 +145,7 @@ export class ChartData implements IDefineChartsAvailable {
   }
 
   public getMaxReading(): number | null {
-    return this.aggregatedData.reduce(
+    const value = this.aggregatedData.reduce(
       (
         memo: number | null,
         current: AggregatedBloodSugarData,
@@ -161,10 +161,12 @@ export class ChartData implements IDefineChartsAvailable {
       },
       null,
     )
+
+    return value ? Number(value.toFixed(0)) : null
   }
 
   public getMinReading(): number | null {
-    return this.aggregatedData.reduce(
+    const value = this.aggregatedData.reduce(
       (
         memo: number | null,
         current: AggregatedBloodSugarData,
@@ -180,6 +182,8 @@ export class ChartData implements IDefineChartsAvailable {
       },
       null,
     )
+
+    return value ? Number(value.toFixed(0)) : null
   }
 
   public getIndexValues(): number[] {
