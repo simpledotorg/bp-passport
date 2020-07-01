@@ -206,7 +206,13 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
           }}
           scale={{x: 'linear'}}
           theme={VictoryTheme.material}
-          containerComponent={<VictoryVoronoiContainer radius={30} />}>
+          containerComponent={
+            chartData.getScatterDataForGraph().length ? (
+              <VictoryVoronoiContainer radius={30} />
+            ) : (
+              <></>
+            )
+          }>
           <VictoryAxis
             tickCount={chartData.getAxisTickValues().length}
             tickFormat={(tick) => {
