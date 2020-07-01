@@ -91,6 +91,7 @@ const getBpBsCount = (): number => {
 
 function AddBsScreen({navigation, route}: Props) {
   const intl = useIntl()
+  const dispatch = useThunkDispatch()
   const hasReviewed = hasReviewedSelector()
   const normalBpBsCount = getBpBsCount()
 
