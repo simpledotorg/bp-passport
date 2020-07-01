@@ -51,11 +51,12 @@ export const getBloodSugarDetails: (
   high: number
   low?: number
 } = (bs: ConvertedBloodSugarReading) => {
-  const commonLow = bs.blood_sugar_unit === BloodSugarCode.MG_DL ? 70 : 0
+  const commonLow = bs.blood_sugar_unit === BloodSugarCode.MG_DL ? 70 : 3.9
   const commonWarningHight =
-    bs.blood_sugar_unit === BloodSugarCode.MG_DL ? 300 : 0
-  const afterEatingHigh = bs.blood_sugar_unit === BloodSugarCode.MG_DL ? 200 : 0
-  const beforeEatingLow = bs.blood_sugar_unit === BloodSugarCode.MG_DL ? 126 : 0
+    bs.blood_sugar_unit === BloodSugarCode.MG_DL ? 300 : 16.7
+  const afterEatingHigh =
+    bs.blood_sugar_unit === BloodSugarCode.MG_DL ? 200 : 11.1
+  const beforeEatingLow = bs.blood_sugar_unit === BloodSugarCode.MG_DL ? 126 : 7
 
   switch (bs.blood_sugar_type) {
     case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR: {
