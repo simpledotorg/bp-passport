@@ -18,6 +18,9 @@ import {useThunkDispatch} from '../redux/store'
 import {addBloodPressure} from '../redux/blood-pressure/blood-pressure.actions'
 import {ScrollView} from 'react-native-gesture-handler'
 import {incrementNormalBpBsCount} from '../redux/patient/patient.actions'
+import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
+import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
+import {isHighBloodSugar, isLowBloodSugar} from '../utils/blood-sugars'
 
 type AddBpScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -40,6 +43,8 @@ function AddBpScreen({navigation, route}: Props) {
   const intl = useIntl()
   const hasReviewed = hasReviewedSelector()
   const normalBpBsCount = normalBpBsCountSelector()
+  const bpsAll = bloodPressuresSelector() ?? []
+  const bsAll = bloodSugarsSelector() ?? []
 
   const systolicRef = useRef<null | any>(null)
   const diastolicRef = useRef<null | any>(null)
@@ -90,6 +95,16 @@ function AddBpScreen({navigation, route}: Props) {
     }
 
     return null
+  }
+
+  const checkHistoricValues = () => {
+    const normalBpCount = bpsAll.filter((bp) => {
+      return !isBloodPressureHigh(bp)
+    })
+
+    const normalBsCount = bsAll.filter((bs) => {
+      return !isHighBloodSugar(bs) && !isLowBloodSugar(bs)
+    })
   }
 
   const showWarning = (bpIn: BloodPressure) => {
