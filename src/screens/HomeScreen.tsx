@@ -42,6 +42,7 @@ import {refreshAllLocalPushReminders} from '../redux/medication/medication.actio
 import BloodPressureSection from '../components/home-page/blood-pressure-section'
 import BloodSugarSection from '../components/home-page/blood-sugar-section'
 import MedicalDetailsSection from '../components/home-page/medicine-section'
+import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -99,6 +100,10 @@ function Home({navigation}: Props) {
   const bps: BloodPressure[] =
     bloodPressures?.slice(0, HOME_PAGE_SHOW_LIMIT) ?? []
   const bss: BloodSugar[] = bloodSugars?.slice(0, HOME_PAGE_SHOW_LIMIT) ?? []
+  const convertedBloodSugarReadings = bss.map(
+    (reading) =>
+      new ConvertedBloodSugarReading(reading, bloodSugarDisplayUnits),
+  )
   const meds: Medication[] = medications ?? []
 
   const medicationDisplayName = (medication: Medication) => {
@@ -201,7 +206,7 @@ function Home({navigation}: Props) {
               showList={HOME_PAGE_SHOW_LIMIT}
             />
             <BloodSugarSection
-              bloodSugarReadings={bss}
+              bloodSugarReadings={convertedBloodSugarReadings}
               displayUnits={bloodSugarDisplayUnits}
               navigation={navigation}
               showList={HOME_PAGE_SHOW_LIMIT}

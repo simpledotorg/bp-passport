@@ -11,11 +11,9 @@ import {
   isHighBloodSugar,
   isLowBloodSugar,
   showWarning,
-  convertBloodSugarReading,
   getDisplayBloodSugarUnit,
   BloodSugarCode,
   getReadingType,
-  determinePrecision,
 } from '../utils/blood-sugars'
 
 import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
@@ -99,9 +97,7 @@ export const BsInformation = ({bs, displayUnits, style = {}}: Props) => {
                 color: colors.grey0,
                 fontWeight: '500',
               }}>
-              {`${convertBloodSugarReading(bs, displayUnits).toFixed(
-                determinePrecision(displayUnits),
-              )} `}
+              {`${bs.value}`}
               {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
                 ? '%'
                 : getDisplayBloodSugarUnit(displayUnits)}{' '}

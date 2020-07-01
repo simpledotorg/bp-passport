@@ -284,9 +284,7 @@ export const BsModal: (Props: Props) => any = ({
                 fontSize: 18,
                 color: colors.grey0,
               }}>
-              {`${Number(bs.blood_sugar_value).toFixed(
-                determinePrecision(displayUnits),
-              )} ${getReadingUnits(bs, displayUnits)} `}
+              {`${bs.value} ${getReadingUnits(bs, displayUnits)} `}
               <ValueStatusLabel bs={bs} />
             </BodyText>
             <BodyText

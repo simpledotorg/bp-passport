@@ -1,20 +1,15 @@
 import React, {useState, useEffect} from 'react'
-import {Alert, Platform, AppState, View} from 'react-native'
+import {Alert, Platform, AppState} from 'react-native'
 import {
   createStackNavigator,
   useHeaderHeight,
   StackNavigationProp,
   StackNavigationOptions,
 } from '@react-navigation/stack'
-import {useNavigationState, StackActions} from '@react-navigation/native'
-import {CommonActions} from '@react-navigation/native'
-import {
-  forFade,
-  forModalPresentationIOS,
-  forRevealFromBottomAndroid,
-} from './navigation/interpolators'
+import {useNavigationState} from '@react-navigation/native'
+import {forFade, forModalPresentationIOS} from './navigation/interpolators'
 import {CardStyleInterpolators} from '@react-navigation/stack'
-import {useIntl, FormattedMessage} from 'react-intl'
+import {useIntl} from 'react-intl'
 import {usePrevious} from './effects/use-previous.effect'
 
 import LaunchScreen from './screens/LaunchScreen'
@@ -39,16 +34,9 @@ import AddDataWarningModalScreen from './screens/AddDataWarningModalScreen'
 import WriteAReviewModalScreen from './screens/WriteAReviewModalScreen'
 
 import SCREENS from './constants/screens'
-import {
-  HomeHeaderTitle,
-  ButtonIcon,
-  LoadingOverlay,
-  BodyHeader,
-  BodyText,
-} from './components'
+import {ButtonIcon} from './components'
 import {colors, navigation as navigationStyle} from './styles'
 import {BloodPressure} from './redux/blood-pressure/blood-pressure.models'
-import {BloodSugar} from './redux/blood-sugar/blood-sugar.models'
 import {Medication, Reminder} from './redux/medication/medication.models'
 import {LoginState, PassportLinkedState} from './redux/auth/auth.models'
 import {
@@ -66,6 +54,7 @@ import {
 } from './redux/notifications/notifications.actions'
 import {Permission} from './redux/notifications/notifications.models'
 import {pushNotificationPermissionSelector} from './redux/notifications/notifications.selectors'
+import ConvertedBloodSugarReading from './models/converted_blood_sugar_reading'
 
 export type RootStackParamList = {
   LAUNCH: undefined
@@ -83,9 +72,9 @@ export type RootStackParamList = {
   BP_HISTORY: {bps: BloodPressure[]}
   ADD_BP: undefined
   ADD_BS: undefined
-  BS_HISTORY: {bloodSugars: BloodSugar[]}
+  BS_HISTORY: {bloodSugars: ConvertedBloodSugarReading[]}
   ADD_MEDICINE: undefined
-  DETAILS_MODAL_SCREEN: {bp?: BloodPressure; bs?: BloodSugar}
+  DETAILS_MODAL_SCREEN: {bp?: BloodPressure; bs?: ConvertedBloodSugarReading}
   MEDICATION_DETAILS: {medication: Medication; isEditing: boolean}
   MEDICATION_FREQUENCY: {
     updateDays: (days: string) => void

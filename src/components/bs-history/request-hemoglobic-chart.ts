@@ -1,19 +1,17 @@
-import {
-  BloodSugar,
-  BLOOD_SUGAR_TYPES,
-} from '../../redux/blood-sugar/blood-sugar.models'
+import {BLOOD_SUGAR_TYPES} from '../../redux/blood-sugar/blood-sugar.models'
 import {IDefineAChartRequest} from './i-define-a-chart-request'
 import {RequestSingleMonthChart} from './request-single-month-chart'
 import {IDefineChartsAvailable} from './i-define-charts-available'
 import {getYearTitle} from '../../utils/dates'
 import {BloodSugarCode} from '../../utils/blood-sugars'
+import ConvertedBloodSugarReading from '../../models/converted_blood_sugar_reading'
 
 export class RequestHemoglobicChart
   implements IDefineAChartRequest, IDefineChartsAvailable {
   private readonly _yearToDisplay: number
   private readonly _chartTitle: string
 
-  private readonly _readings: BloodSugar[]
+  private readonly _readings: ConvertedBloodSugarReading[]
   private readonly hasRandomReadings: boolean
   private readonly hasPostPrandialReadings: boolean
   private readonly hasFastingReadings: boolean
@@ -21,7 +19,10 @@ export class RequestHemoglobicChart
   private readonly hasBeforeEatingReadings: boolean
   private readonly hasAfterEatingReadings: boolean
 
-  private constructor(yearToDisplay: number, readings: BloodSugar[]) {
+  private constructor(
+    yearToDisplay: number,
+    readings: ConvertedBloodSugarReading[],
+  ) {
     this._chartTitle = getYearTitle(yearToDisplay)
 
     this._yearToDisplay = yearToDisplay
@@ -47,15 +48,20 @@ export class RequestHemoglobicChart
     )
   }
 
-  public static StartingState(readings: BloodSugar[]): RequestHemoglobicChart {
+  public static StartingState(
+    readings: ConvertedBloodSugarReading[],
+  ): RequestHemoglobicChart {
     const mostRecentReading = readings
       .filter((reading) => {
         return reading.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
       })
-      .reduce((memo: Date | null, current: BloodSugar): Date => {
-        const currentDate = new Date(current.recorded_at)
-        return memo == null || currentDate > memo ? currentDate : memo
-      }, null)
+      .reduce(
+        (memo: Date | null, current: ConvertedBloodSugarReading): Date => {
+          const currentDate = new Date(current.recorded_at)
+          return memo == null || currentDate > memo ? currentDate : memo
+        },
+        null,
+      )
 
     return new RequestHemoglobicChart(
       mostRecentReading?.getFullYear() ?? new Date().getFullYear(),
@@ -65,7 +71,7 @@ export class RequestHemoglobicChart
 
   public changeRequestedType(
     requestedType: BLOOD_SUGAR_TYPES,
-    readings: BloodSugar[],
+    readings: ConvertedBloodSugarReading[],
     displayUnits: BloodSugarCode,
   ): IDefineAChartRequest {
     if (requestedType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
@@ -79,7 +85,9 @@ export class RequestHemoglobicChart
     )
   }
 
-  public withUpdatedReadings(readings: BloodSugar[]): IDefineAChartRequest {
+  public withUpdatedReadings(
+    readings: ConvertedBloodSugarReading[],
+  ): IDefineAChartRequest {
     return new RequestHemoglobicChart(this._yearToDisplay, readings)
   }
 
@@ -99,7 +107,7 @@ export class RequestHemoglobicChart
     return this._yearToDisplay
   }
 
-  public get readings(): BloodSugar[] {
+  public get readings(): ConvertedBloodSugarReading[] {
     return this._readings
   }
 

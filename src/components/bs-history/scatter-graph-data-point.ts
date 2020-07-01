@@ -26,7 +26,7 @@ export class ScatterGraphDataPoint {
       : determinePrecision(reading.blood_sugar_unit)
 
     this.x = index
-    this.y = Number(Number(reading.blood_sugar_value).toFixed(precision))
+    this.y = reading.value
 
     this.label =
       `${this.y.toFixed(precision)}${this.getDisplayUnits(
@@ -44,11 +44,10 @@ export class ScatterGraphDataPoint {
         }) + `-${format(new Date(reading.recorded_at), 'yyyy')}`
       }`
 
-    this.showOutOfRange =
-      isHighBloodSugar(reading, reading) || isLowBloodSugar(reading)
+    this.showOutOfRange = isHighBloodSugar(reading) || isLowBloodSugar(reading)
   }
 
-  private getDisplayUnits(reading: BloodSugar): string {
+  private getDisplayUnits(reading: ConvertedBloodSugarReading): string {
     switch (reading.blood_sugar_unit) {
       case BloodSugarCode.PERCENT:
         return '%'
@@ -61,7 +60,7 @@ export class ScatterGraphDataPoint {
     }
   }
 
-  private getBloodSugarType(reading: BloodSugar): string {
+  private getBloodSugarType(reading: ConvertedBloodSugarReading): string {
     if (reading.blood_sugar_type === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR) {
       return (
         this.intl.formatMessage({

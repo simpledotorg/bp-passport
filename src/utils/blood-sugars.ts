@@ -9,7 +9,7 @@ import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {useIntl} from 'react-intl'
 import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
 
-export const displayDate = (bsIn: BloodSugar) => {
+export const displayDate = (bsIn: BloodSugar | ConvertedBloodSugarReading) => {
   return bsIn.recorded_at
     ? format(new Date(bsIn.recorded_at), `dd-MMM-yyy`, {
         locale: dateLocale(),
@@ -27,12 +27,11 @@ export const showWarning = (bs: ConvertedBloodSugarReading): boolean => {
     return false
   }
 
-  const value = Number(bs.blood_sugar_value)
-  return value !== undefined && value >= warningHighBSValue
+  return bs.value >= warningHighBSValue
 }
 
 export const isHighBloodSugar = (bs: ConvertedBloodSugarReading) => {
-  return Number(bs.blood_sugar_value) >= getBloodSugarDetails(bs).high
+  return bs.value >= getBloodSugarDetails(bs).high
 }
 
 export const isLowBloodSugar = (bs: ConvertedBloodSugarReading) => {
@@ -41,7 +40,7 @@ export const isLowBloodSugar = (bs: ConvertedBloodSugarReading) => {
     return false
   }
 
-  return Number(bs.blood_sugar_value) < lowBSValue
+  return bs.value < lowBSValue
 }
 
 export const getBloodSugarDetails: (
@@ -113,6 +112,21 @@ export enum BloodSugarCode {
   PERCENT = '%',
 }
 
+const toCorrectPrecision = (
+  value?: number | string,
+  displayUnits?: string,
+): number => {
+  const castValue = value
+    ? typeof value === 'string'
+      ? Number(value)
+      : value
+    : 0
+
+  return Number(
+    castValue.toFixed(determinePrecision(displayUnits ?? BloodSugarCode.MG_DL)),
+  )
+}
+
 export const determinePrecision = (
   displayUnits: BloodSugarCode | string,
 ): number => (displayUnits === BloodSugarCode.MMOL_L ? 1 : 0)
@@ -178,27 +192,33 @@ const convertBloodSugar = (
   }
 
   if (bloodSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
-    return Number(bloodSugarValue) ?? 0
+    return toCorrectPrecision(bloodSugarValue, bloodSugarUnit)
   }
 
   const readingUnit = bloodSugarUnit ?? BloodSugarCode.MG_DL
 
   if (readingUnit === convertTo) {
-    return Number(bloodSugarValue) ?? 0
+    return toCorrectPrecision(bloodSugarValue, bloodSugarUnit)
   }
 
   if (
     readingUnit === BloodSugarCode.MG_DL &&
     convertTo === BloodSugarCode.MMOL_L
   ) {
-    return Number(bloodSugarValue) / UNIT_CONVERSION_FACTOR
+    return toCorrectPrecision(
+      Number(bloodSugarValue) / UNIT_CONVERSION_FACTOR,
+      bloodSugarUnit,
+    )
   }
 
   if (
     readingUnit === BloodSugarCode.MMOL_L &&
     convertTo === BloodSugarCode.MG_DL
   ) {
-    return Number(bloodSugarValue) * UNIT_CONVERSION_FACTOR
+    return toCorrectPrecision(
+      Number(bloodSugarValue) * UNIT_CONVERSION_FACTOR,
+      bloodSugarUnit,
+    )
   }
 
   throw new Error('Unhandled reading/display unit combination')
@@ -208,11 +228,15 @@ export const getDisplayBloodSugarUnit = (convertTo: BloodSugarCode): string => {
   return bloodSugarUnitToDisplayTitle(convertTo)
 }
 
-export const getReadingType = (bs: BloodSugar): string => {
+export const getReadingType = (
+  bs: BloodSugar | ConvertedBloodSugarReading,
+): string => {
   return useIntl().formatMessage({id: getReadingTypeId(bs)})
 }
 
-export const getReadingTypeId = (bs: BloodSugar): string => {
+export const getReadingTypeId = (
+  bs: BloodSugar | ConvertedBloodSugarReading,
+): string => {
   switch (bs.blood_sugar_type) {
     case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
       return 'bs.hemoglobic-code'

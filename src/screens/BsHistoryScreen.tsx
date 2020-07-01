@@ -77,7 +77,7 @@ function BsHistoryScreen({navigation, route}: Props) {
             </BodyHeader>
             <Line />
             <View>
-              {bloodSugars?.map((bs, index) => (
+              {convertedReadings?.map((bs, index) => (
                 <View key={index}>
                   <TouchableHighlight
                     underlayColor={colors.grey4}

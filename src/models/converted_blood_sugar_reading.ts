@@ -3,7 +3,7 @@ import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
 import {convertBloodSugarReading, BloodSugarCode} from '../utils/blood-sugars'
 
 class ConvertedBloodSugarReading {
-  private _bloodSugarValue: string
+  private _bloodSugarValue: number
   private _bloodSugarType: string
   private _recordedAt: string
   private _facility: any | undefined
@@ -11,10 +11,7 @@ class ConvertedBloodSugarReading {
   private _bloodSugarUnit: BloodSugarCode
 
   constructor(originalReading: BloodSugar, convertTo: BloodSugarCode) {
-    this._bloodSugarValue = convertBloodSugarReading(
-      originalReading,
-      convertTo,
-    ).toString()
+    this._bloodSugarValue = convertBloodSugarReading(originalReading, convertTo)
     this._bloodSugarType = originalReading.blood_sugar_type
     this._recordedAt = originalReading.recorded_at
     this._facility = originalReading.facility
@@ -22,7 +19,7 @@ class ConvertedBloodSugarReading {
     this._bloodSugarUnit = convertTo
   }
 
-  public get blood_sugar_value(): string {
+  public get value(): number {
     return this._bloodSugarValue
   }
 

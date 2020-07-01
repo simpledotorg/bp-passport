@@ -111,8 +111,8 @@ export class ChartData implements IDefineChartsAvailable {
         return
       }
 
-      const minValue = Number(aggregateRecord.minReading?.blood_sugar_value)
-      const maxValue = Number(aggregateRecord.maxReading?.blood_sugar_value)
+      const minValue = Number(aggregateRecord.minReading?.value)
+      const maxValue = Number(aggregateRecord.maxReading?.value)
 
       if (minValue === maxValue) {
         return
@@ -171,7 +171,7 @@ export class ChartData implements IDefineChartsAvailable {
           return memo
         }
 
-        const currentValue = Number(maxValueForCurrentDay.blood_sugar_value)
+        const currentValue = Number(maxValueForCurrentDay.value)
 
         return !memo || currentValue > memo ? currentValue : memo
       },
@@ -198,8 +198,8 @@ export class ChartData implements IDefineChartsAvailable {
           return memo
         }
 
-        const currentValue = Number(minValueForCurrentDay.blood_sugar_value)
-
+        const currentValue = Number(minValueForCurrentDay.value)
+        value
         return !memo || currentValue < memo ? currentValue : memo
       },
       null,
