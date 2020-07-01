@@ -236,9 +236,13 @@ function AddBsScreen({navigation, route}: Props) {
   }
 
   const cleanText = (input: string) => {
-    if (type === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
+    if (
+      type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ||
+      selectedBloodSugarUnit === BloodSugarCode.MMOL_L
+    ) {
       return input.replace(/[^0-9.]/g, '')
     }
+
     return input.replace(/[^0-9]/g, '')
   }
 
