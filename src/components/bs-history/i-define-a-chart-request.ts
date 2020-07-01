@@ -31,9 +31,33 @@ export const getStartingChartRequest = (
   if (
     readings.hasReadingType(BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR) ||
     readings.hasReadingType(BLOOD_SUGAR_TYPES.POST_PRANDIAL) ||
+    readings.hasReadingType(BLOOD_SUGAR_TYPES.AFTER_EATING)
+  ) {
+    return RequestSingleMonthChart.ForRequestedType(
+      BLOOD_SUGAR_TYPES.AFTER_EATING,
+      readings,
+      displayUnits,
+    )
+  }
+
+  if (
+    readings.hasReadingType(BLOOD_SUGAR_TYPES.BEFORE_EATING) ||
     readings.hasReadingType(BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR)
   ) {
-    return RequestSingleMonthChart.DefaultTypeFromAvailableReadings(
+    return RequestSingleMonthChart.ForRequestedType(
+      BLOOD_SUGAR_TYPES.BEFORE_EATING,
+      readings,
+      displayUnits,
+    )
+  }
+
+  if (
+    readings.hasReadingType(BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR) ||
+    readings.hasReadingType(BLOOD_SUGAR_TYPES.POST_PRANDIAL) ||
+    readings.hasReadingType(BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR)
+  ) {
+    return RequestSingleMonthChart.ForRequestedType(
+      BLOOD_SUGAR_TYPES.AFTER_EATING,
       readings,
       displayUnits,
     )
@@ -44,7 +68,7 @@ export const getStartingChartRequest = (
   }
 
   return RequestSingleMonthChart.ForRequestedType(
-    BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
+    BLOOD_SUGAR_TYPES.AFTER_EATING,
     readings,
     displayUnits,
   )
@@ -60,17 +84,23 @@ export const filterReadings = (
   }
   if (chartRequest instanceof RequestSingleMonthChart) {
     switch (chartRequest.chartType) {
+      case BLOOD_SUGAR_TYPES.BEFORE_EATING:
       case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
         return chartRequest.readings
-          .filterByTypes([BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR])
+          .filterByTypes([
+            BLOOD_SUGAR_TYPES.BEFORE_EATING,
+            BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR,
+          ])
           .filterForMonthAndYear(
             chartRequest.requestedMonth,
             chartRequest.requestedYear,
           )
+      case BLOOD_SUGAR_TYPES.AFTER_EATING:
       case BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR:
       case BLOOD_SUGAR_TYPES.POST_PRANDIAL:
         return chartRequest.readings
           .filterByTypes([
+            BLOOD_SUGAR_TYPES.AFTER_EATING,
             BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
             BLOOD_SUGAR_TYPES.POST_PRANDIAL,
           ])

@@ -52,8 +52,6 @@ export const getBloodSugarDetails: (
   warningHigh?: number
   high: number
   low?: number
-  languageKey: string
-  languageTypeCode: string
 } = (bs: BloodSugar) => {
   switch (bs.blood_sugar_type) {
     case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR: {
@@ -62,8 +60,6 @@ export const getBloodSugarDetails: (
         warningHigh: 300,
         high: 126,
         low: 70,
-        languageKey: 'bs.fasting-blood-sugar',
-        languageTypeCode: 'bs.fasting-code',
       }
     }
     case BLOOD_SUGAR_TYPES.POST_PRANDIAL: {
@@ -72,8 +68,6 @@ export const getBloodSugarDetails: (
         warningHigh: 300,
         high: 200,
         low: 70,
-        languageKey: 'bs.post-prandial',
-        languageTypeCode: 'bs.post-prenial-code',
       }
     }
     case BLOOD_SUGAR_TYPES.HEMOGLOBIC: {
@@ -81,20 +75,30 @@ export const getBloodSugarDetails: (
         type: BLOOD_SUGAR_TYPES.HEMOGLOBIC,
         high: 7,
         languageKey: 'bs.hemoglobic',
-        languageTypeCode: 'bs.hemoglobic-code',
       }
     }
     case BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR:
-    default: {
       return {
         type: BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
         warningHigh: 300,
         high: 200,
         low: 70,
-        languageKey: 'bs.random-blood-sugar',
-        languageTypeCode: 'bs.random-blood-code',
       }
-    }
+    case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+      return {
+        type: BLOOD_SUGAR_TYPES.BEFORE_EATING,
+        warningHigh: 300,
+        high: 200,
+        low: 70,
+      }
+    case BLOOD_SUGAR_TYPES.AFTER_EATING:
+    default:
+      return {
+        type: BLOOD_SUGAR_TYPES.AFTER_EATING,
+        warningHigh: 300,
+        high: 200,
+        low: 70,
+      }
   }
 }
 
@@ -193,6 +197,27 @@ const convertBloodSugar = (
 
 export const getDisplayBloodSugarUnit = (convertTo: BloodSugarCode): string => {
   return bloodSugarUnitToDisplayTitle(convertTo)
+}
+
+export const getReadingType = (bs: BloodSugar): string => {
+  return useIntl().formatMessage({id: getReadingTypeId(bs)})
+}
+
+export const getReadingTypeId = (bs: BloodSugar): string => {
+  switch (bs.blood_sugar_type) {
+    case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
+      return 'bs.hemoglobic-code'
+
+    case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
+    case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+      return 'bs.before-eating-title'
+
+    case BLOOD_SUGAR_TYPES.POST_PRANDIAL:
+    case BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR:
+    case BLOOD_SUGAR_TYPES.AFTER_EATING:
+    default:
+      return 'bs.after-eating-title'
+  }
 }
 
 declare global {

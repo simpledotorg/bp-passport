@@ -60,7 +60,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
     }
 
     switch (chartData.getChartType()) {
-      case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
+      case BLOOD_SUGAR_TYPES.BEFORE_EATING:
         return Number(
           convertBloodSugarValue(
             displayUnits,

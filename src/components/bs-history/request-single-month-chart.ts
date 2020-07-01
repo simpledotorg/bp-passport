@@ -23,6 +23,8 @@ export class RequestSingleMonthChart
   private readonly hasPostPrandialReadings: boolean
   private readonly hasFastingReadings: boolean
   private readonly hasHemoglobicReadings: boolean
+  private readonly hasBeforeEatingReadings: boolean
+  private readonly hasAfterEatingReadings: boolean
 
   private constructor(
     chartType: BLOOD_SUGAR_TYPES,
@@ -57,6 +59,34 @@ export class RequestSingleMonthChart
     this.hasHemoglobicReadings = readings.hasReadingType(
       BLOOD_SUGAR_TYPES.HEMOGLOBIC,
     )
+    this.hasBeforeEatingReadings = readings.hasReadingType(
+      BLOOD_SUGAR_TYPES.BEFORE_EATING,
+    )
+    this.hasAfterEatingReadings = readings.hasReadingType(
+      BLOOD_SUGAR_TYPES.AFTER_EATING,
+    )
+  }
+
+  private static getFilterTypes = (chartType: BLOOD_SUGAR_TYPES) => {
+    switch (chartType) {
+      case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+      case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
+        return [
+          BLOOD_SUGAR_TYPES.BEFORE_EATING,
+          BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR,
+        ]
+      case BLOOD_SUGAR_TYPES.AFTER_EATING:
+      case BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR:
+      case BLOOD_SUGAR_TYPES.POST_PRANDIAL:
+        return [
+          BLOOD_SUGAR_TYPES.AFTER_EATING,
+          BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
+          BLOOD_SUGAR_TYPES.POST_PRANDIAL,
+        ]
+
+      default:
+        throw new Error('Requested blood sugar type not handled')
+    }
   }
 
   private static populateChartTitle(
@@ -71,7 +101,9 @@ export class RequestSingleMonthChart
     }
 
     if (requestedMonth === undefined) {
-      const mostRecent = readings.filterByType(chartType).mostRecent()
+      const mostRecent = readings
+        .filterByTypes(RequestSingleMonthChart.getFilterTypes(chartType))
+        .mostRecent()
       if (mostRecent === null) {
         return '-'
       }
@@ -103,23 +135,14 @@ export class RequestSingleMonthChart
     })
   }
 
-  public static DefaultTypeFromAvailableReadings(
-    readings: BloodSugar[],
-    displayUnits: BloodSugarCode,
-  ): RequestSingleMonthChart {
-    return RequestSingleMonthChart.ForRequestedType(
-      BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
-      readings,
-      displayUnits,
-    )
-  }
-
   public static ForRequestedType(
     chartType: BLOOD_SUGAR_TYPES,
     readings: BloodSugar[],
     displayUnits: BloodSugarCode,
   ): RequestSingleMonthChart {
-    const mostRecentReading = readings.filterByType(chartType).mostRecent()
+    const mostRecentReading = readings
+      .filterByTypes(RequestSingleMonthChart.getFilterTypes(chartType))
+      .mostRecent()
 
     const date = mostRecentReading
       ? new Date(mostRecentReading.recorded_at)
@@ -238,5 +261,13 @@ export class RequestSingleMonthChart
 
   public getHasHemoglobicReadings(): boolean {
     return this.hasHemoglobicReadings
+  }
+
+  public getHasBeforeEatingReadings(): boolean {
+    return this.hasBeforeEatingReadings
+  }
+
+  public getHasAfterEatingReadings(): boolean {
+    return this.hasAfterEatingReadings
   }
 }

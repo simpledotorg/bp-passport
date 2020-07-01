@@ -21,6 +21,8 @@ import {
   getDisplayBloodSugarUnit,
   BloodSugarCode,
   convertBloodSugarValue,
+  getReadingTypeId,
+  getReadingType,
 } from '../utils/blood-sugars'
 import {useThunkDispatch} from '../redux/store'
 import {deleteBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
@@ -170,7 +172,7 @@ const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
       <FormattedMessage
         id="general.sheet-normal-disclaimer"
         values={{
-          label: <FormattedMessage id={bsDetails.languageTypeCode} />,
+          label: <FormattedMessage id={getReadingTypeId(bs)} />,
           limit: <BodyText>{getNormalLimit()}</BodyText>,
         }}
       />
@@ -245,10 +247,6 @@ export const BsModal = ({bs, displayUnits, close}: Props) => {
 
   const details = getBloodSugarDetails(bs)
 
-  const getReadingType = (bsDetails: any) => {
-    return <FormattedMessage id={bsDetails.languageTypeCode} />
-  }
-
   const getReadingUnits = (bloodSugar: BloodSugar, units: BloodSugarCode) => {
     return bloodSugar.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
       ? '% '
@@ -295,7 +293,7 @@ export const BsModal = ({bs, displayUnits, close}: Props) => {
                 color: colors.grey1,
                 fontWeight: 'bold',
               }}>
-              {getReadingType(details)}
+              {getReadingType(bs)}
             </BodyText>
             <BodyText
               style={{

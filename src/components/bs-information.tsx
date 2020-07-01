@@ -18,6 +18,7 @@ import {
   convertBloodSugarReading,
   getDisplayBloodSugarUnit,
   BloodSugarCode,
+  getReadingType,
 } from '../utils/blood-sugars'
 
 type Props = {
@@ -27,8 +28,6 @@ type Props = {
 }
 
 export const BsInformation = ({bs, displayUnits, style = {}}: Props) => {
-  const intl = useIntl()
-
   const getBSText = () => {
     if (isHighBloodSugar(bs)) {
       return (
@@ -115,7 +114,7 @@ export const BsInformation = ({bs, displayUnits, style = {}}: Props) => {
               fontSize: 16,
               color: colors.grey1,
             }}>
-            <FormattedMessage id={details.languageTypeCode} /> {displayDate(bs)}
+            {`${getReadingType(bs)}, ${displayDate(bs)}`}
           </BodyText>
         </View>
       </View>
