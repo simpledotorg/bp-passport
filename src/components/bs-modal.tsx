@@ -279,7 +279,6 @@ export const BsModal = ({bs, displayUnits, close}: Props) => {
             <BodyText
               style={{
                 lineHeight: 26,
-                paddingTop: 12,
                 fontSize: 18,
                 color: colors.grey0,
               }}>
@@ -291,13 +290,20 @@ export const BsModal = ({bs, displayUnits, close}: Props) => {
             </BodyText>
             <BodyText
               style={{
-                lineHeight: 26,
-                paddingTop: 8,
+                lineHeight: 20,
+                fontSize: 14,
+                color: colors.grey1,
+                fontWeight: 'bold',
+              }}>
+              {getReadingType(details)}
+            </BodyText>
+            <BodyText
+              style={{
+                lineHeight: 20,
                 fontSize: 14,
                 color: colors.grey1,
               }}>
-              {getReadingType(details)}
-              {`, ${displayDateAndTime(bs)}`}
+              {`${displayDateAndTime(bs)}`}
             </BodyText>
             {bs.facility && (
               <BodyText style={{lineHeight: 26, paddingTop: 8}}>
