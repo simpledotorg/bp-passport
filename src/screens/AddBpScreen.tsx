@@ -20,8 +20,6 @@ import {ScrollView} from 'react-native-gesture-handler'
 import {setNormalBpBsCount} from '../redux/patient/patient.actions'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
 import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
-import {isHighBloodSugar, isLowBloodSugar} from '../utils/blood-sugars'
-import {isBloodPressureHigh} from '../utils/blood-pressures'
 
 type AddBpScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

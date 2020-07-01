@@ -182,7 +182,6 @@ const UserDetails = ({apiUser}: any) => {
 }
 
 const SupportSection = () => {
-  const hasReviewed = hasReviewedSelector()
   const dispatch = useThunkDispatch()
 
   return (

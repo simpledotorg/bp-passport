@@ -34,7 +34,6 @@ import {setNormalBpBsCount} from '../redux/patient/patient.actions'
 
 import {bloodSugarUnitSelector} from '../redux/patient/patient.selectors'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
-import {isBloodPressureHigh} from '../utils/blood-pressures'
 import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
 
 type AddBsScreenNavigationProp = StackNavigationProp<
