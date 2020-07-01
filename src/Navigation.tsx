@@ -72,7 +72,7 @@ export type RootStackParamList = {
   BP_HISTORY: {bps: BloodPressure[]}
   ADD_BP: undefined
   ADD_BS: undefined
-  BS_HISTORY: {bloodSugars: ConvertedBloodSugarReading[]}
+  BS_HISTORY: undefined
   ADD_MEDICINE: undefined
   DETAILS_MODAL_SCREEN: {bp?: BloodPressure; bs?: ConvertedBloodSugarReading}
   MEDICATION_DETAILS: {medication: Medication; isEditing: boolean}

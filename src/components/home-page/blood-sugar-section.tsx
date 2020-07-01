@@ -129,9 +129,7 @@ const BloodSugarSection = ({
             buttonType={ButtonType.LightBlue}
             title={intl.formatMessage({id: 'general.see-all'})}
             onPress={() => {
-              navigation.navigate(SCREENS.BS_HISTORY, {
-                bloodSugars: bloodSugarReadings,
-              })
+              navigation.navigate(SCREENS.BS_HISTORY)
             }}
           />
         )}
