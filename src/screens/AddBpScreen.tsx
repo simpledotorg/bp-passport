@@ -26,9 +26,9 @@ type Props = {
   route: AddBpScreen
 }
 
-const MIN_SYSTOLIC_BP = 70 // Potentially change to 70
+const MIN_SYSTOLIC_BP = 70
 const MAX_SYSTOLIC_BP = 300
-const MIN_DIASTOLIC_BP = 40 // Potentially change to 40
+const MIN_DIASTOLIC_BP = 40
 const MAX_DIASTOLIC_BP = 180
 
 function AddBpScreen({navigation, route}: Props) {
