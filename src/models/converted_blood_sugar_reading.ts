@@ -2,7 +2,7 @@ import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
 
 import {convertBloodSugarReading, BloodSugarCode} from '../utils/blood-sugars'
 
-class ConvertedBloodSugarReading implements BloodSugar {
+class ConvertedBloodSugarReading {
   private _bloodSugarValue: string
   private _bloodSugarType: string
   private _recordedAt: string
