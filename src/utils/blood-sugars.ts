@@ -88,7 +88,7 @@ export const getBloodSugarDetails: (
       return {
         type: BLOOD_SUGAR_TYPES.BEFORE_EATING,
         warningHigh: 300,
-        high: 200,
+        high: 126,
         low: 70,
       }
     case BLOOD_SUGAR_TYPES.AFTER_EATING:
