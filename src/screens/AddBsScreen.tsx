@@ -62,16 +62,12 @@ enum INPUT_TYPES {
 
 const getHistoricValues = (): number => {
   const bpsAll = bloodPressuresSelector() ?? []
-  const normalBpCount = bpsAll.filter((bp) => {
-    return !isBloodPressureHigh(bp)
-  })
+  const normalBpCount = bpsAll.length
 
   const bsAll = bloodSugarsSelector() ?? []
-  const normalBsCount = bsAll.filter((bs) => {
-    return !isHighBloodSugar(bs) && !isLowBloodSugar(bs)
-  })
+  const normalBsCount = bsAll.length
 
-  return normalBpCount.length + normalBsCount.length
+  return normalBpCount + normalBsCount
 }
 
 const getBpBsCount = (): number => {
@@ -353,10 +349,7 @@ function AddBsScreen({navigation, route}: Props) {
                 }
               }
 
-              if (
-                !isHighBloodSugar(newBloodSugar) &&
-                !isLowBloodSugar(newBloodSugar)
-              ) {
+              if (!showWarning(newBloodSugar)) {
                 if (normalBpBsCount >= 4 && !hasReviewed) {
                   setTimeout(() => {
                     navigation.navigate(SCREENS.WRITE_A_REVIEW_MODAL_SCREEN)
