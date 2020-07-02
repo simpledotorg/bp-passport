@@ -86,6 +86,13 @@ const getBpBsCount = (): number => {
   return historicCount
 }
 
+const allowDecimalPoint = (
+  type: string,
+  selectedBloodSugarUnit: BloodSugarCode,
+) =>
+  type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ||
+  selectedBloodSugarUnit === BloodSugarCode.MMOL_L
+
 function AddBsScreen({navigation, route}: Props) {
   const intl = useIntl()
   const dispatch = useThunkDispatch()
@@ -236,10 +243,7 @@ function AddBsScreen({navigation, route}: Props) {
   }
 
   const cleanText = (input: string) => {
-    if (
-      type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ||
-      selectedBloodSugarUnit === BloodSugarCode.MMOL_L
-    ) {
+    if (allowDecimalPoint(type, selectedBloodSugarUnit)) {
       return input.replace(/[^0-9.]/g, '')
     }
 
@@ -288,7 +292,9 @@ function AddBsScreen({navigation, route}: Props) {
                 const text = setReading(cleanText(textIn))
               }}
               keyboardType={
-                type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? 'numeric' : 'number-pad'
+                allowDecimalPoint(type, selectedBloodSugarUnit)
+                  ? 'numeric'
+                  : 'number-pad'
               }
               maxLength={6}
             />
@@ -371,16 +377,6 @@ function AddBsScreen({navigation, route}: Props) {
               }
             }}
           />
-          {!errors && !showErrors && reading === '' && (
-            <BodyText
-              style={{
-                textAlign: 'center',
-                marginTop: 24,
-                color: colors.grey1,
-              }}>
-              <FormattedMessage id="bs.select-rbs-if-unsure" />
-            </BodyText>
-          )}
           {errors && showErrors && (
             <BodyText
               style={{
