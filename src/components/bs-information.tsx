@@ -110,7 +110,7 @@ export const BsInformation = ({bs, displayUnits, style = {}}: Props) => {
                 fontSize: 16,
                 lineHeight: 20,
                 color: colors.grey1,
-                fontWeight: '500',
+                fontWeight: 'bold',
               }}>
               {`${getReadingType(bs)}, `}
             </BodyText>
