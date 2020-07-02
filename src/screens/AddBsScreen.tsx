@@ -36,6 +36,7 @@ import {setNormalBpBsCount} from '../redux/patient/patient.actions'
 import {bloodSugarUnitSelector} from '../redux/patient/patient.selectors'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
 import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
+import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
 
 type AddBsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -324,12 +325,20 @@ function AddBsScreen({navigation, route}: Props) {
                 blood_sugar_unit: selectedBloodSugarUnit,
               }
 
+              const convertedValue = new ConvertedBloodSugarReading(
+                newBloodSugar,
+                selectedBloodSugarUnit,
+              )
+
               dispatch(addBloodSugar(newBloodSugar))
 
               navigation.goBack()
 
-              if (showWarning(newBloodSugar)) {
-                if (isHighBloodSugar(newBloodSugar)) {
+              if (showWarning(convertedValue)) {
+                if (normalBpBsCount < 4) {
+                  dispatch(setNormalBpBsCount(normalBpBsCount + 1))
+                }
+                if (isHighBloodSugar(convertedValue)) {
                   setTimeout(() => {
                     navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN, {
                       displayText: intl.formatMessage(
@@ -342,7 +351,7 @@ function AddBsScreen({navigation, route}: Props) {
                       ),
                     })
                   }, 250)
-                } else if (isLowBloodSugar(newBloodSugar)) {
+                } else if (isLowBloodSugar(convertedValue)) {
                   setTimeout(() => {
                     navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN, {
                       displayText: intl.formatMessage({
@@ -351,10 +360,8 @@ function AddBsScreen({navigation, route}: Props) {
                     })
                   }, 250)
                 }
-              }
-
-              if (!showWarning(newBloodSugar)) {
-                if (normalBpBsCount >= 4 && !hasReviewed) {
+              } else if (!hasReviewed) {
+                if (normalBpBsCount >= 4) {
                   setTimeout(() => {
                     navigation.navigate(SCREENS.WRITE_A_REVIEW_MODAL_SCREEN)
                   }, 250)

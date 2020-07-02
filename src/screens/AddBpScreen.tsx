@@ -143,6 +143,9 @@ function AddBpScreen({navigation, route}: Props) {
     navigation.goBack()
 
     if (showWarning(newBloodPressure)) {
+      if (normalBpBsCount < 4) {
+        dispatch(setNormalBpBsCount(normalBpBsCount + 1))
+      }
       setTimeout(() => {
         navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN, {
           displayText: intl.formatMessage(
@@ -151,10 +154,8 @@ function AddBpScreen({navigation, route}: Props) {
           ),
         })
       }, 250)
-    }
-
-    if (!showWarning(newBloodPressure)) {
-      if (normalBpBsCount >= 4 && !hasReviewed) {
+    } else if (!hasReviewed) {
+      if (normalBpBsCount >= 4) {
         setTimeout(() => {
           navigation.navigate(SCREENS.WRITE_A_REVIEW_MODAL_SCREEN)
         }, 250)
