@@ -9,10 +9,7 @@ import {
 import {FormattedMessage, useIntl} from 'react-intl'
 import {colors, purpleDrop, mediumWarningSign} from '../styles'
 import {BodyHeader, BodyText, Button} from './'
-import {
-  BloodSugar,
-  BLOOD_SUGAR_TYPES,
-} from '../redux/blood-sugar/blood-sugar.models'
+import {BLOOD_SUGAR_TYPES} from '../redux/blood-sugar/blood-sugar.models'
 import {
   isHighBloodSugar,
   isLowBloodSugar,
@@ -23,20 +20,22 @@ import {
   convertBloodSugarValue,
   getReadingTypeId,
   getReadingType,
+  determinePrecision,
 } from '../utils/blood-sugars'
 import {useThunkDispatch} from '../redux/store'
 import {deleteBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
 import {ButtonType} from './button'
 import {format} from 'date-fns'
 import {dateLocale} from '../constants/languages'
+import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
 
 type Props = {
-  bs: BloodSugar
+  bs: ConvertedBloodSugarReading
   displayUnits: BloodSugarCode
   close: () => void
 }
 
-const displayDateAndTime = (bsIn: BloodSugar) => {
+const displayDateAndTime = (bsIn: ConvertedBloodSugarReading) => {
   return bsIn.recorded_at
     ? format(new Date(bsIn.recorded_at), `dd-MMM-yyy, h:mm a`, {
         locale: dateLocale(),
@@ -164,7 +163,7 @@ const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
       bsDetails.type,
       bsDetails.high.toString(),
       BloodSugarCode.MG_DL,
-    ).toFixed(0)
+    ).toFixed(determinePrecision(displayUnits))
     return `${convertedValue} ${getDisplayBloodSugarUnit(displayUnits)}`
   }
   return (
@@ -242,16 +241,21 @@ const DeleteButton = ({intl, bs, close}: any) => {
   )
 }
 
-export const BsModal = ({bs, displayUnits, close}: Props) => {
+const getReadingUnits = (
+  bloodSugar: ConvertedBloodSugarReading,
+  units: BloodSugarCode,
+) => {
+  return bloodSugar.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
+    ? '% '
+    : getDisplayBloodSugarUnit(units)
+}
+
+export const BsModal: (Props: Props) => any = ({
+  bs,
+  displayUnits,
+  close,
+}: Props) => {
   const intl = useIntl()
-
-  const details = getBloodSugarDetails(bs)
-
-  const getReadingUnits = (bloodSugar: BloodSugar, units: BloodSugarCode) => {
-    return bloodSugar.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
-      ? '% '
-      : getDisplayBloodSugarUnit(units)
-  }
 
   return (
     <TouchableWithoutFeedback
@@ -280,10 +284,7 @@ export const BsModal = ({bs, displayUnits, close}: Props) => {
                 fontSize: 18,
                 color: colors.grey0,
               }}>
-              {`${Number(bs.blood_sugar_value).toFixed(0)} ${getReadingUnits(
-                bs,
-                displayUnits,
-              )} `}
+              {`${bs.value} ${getReadingUnits(bs, displayUnits)} `}
               <ValueStatusLabel bs={bs} />
             </BodyText>
             <BodyText

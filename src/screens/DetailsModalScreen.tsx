@@ -57,7 +57,7 @@ function DetailsModalScreen({navigation, route}: Props) {
           )}
           {bs && (
             <BsModal
-              bs={new ConvertedBloodSugarReading(bs, displayUnits)}
+              bs={bs}
               displayUnits={displayUnits}
               close={() => {
                 navigation.goBack()

@@ -7,8 +7,9 @@ import {
 import {dateLocale} from '../constants/languages'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {useIntl} from 'react-intl'
+import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
 
-export const displayDate = (bsIn: BloodSugar) => {
+export const displayDate = (bsIn: BloodSugar | ConvertedBloodSugarReading) => {
   return bsIn.recorded_at
     ? format(new Date(bsIn.recorded_at), `dd-MMM-yyy`, {
         locale: dateLocale(),
@@ -16,7 +17,7 @@ export const displayDate = (bsIn: BloodSugar) => {
     : null
 }
 
-export const showWarning = (bs: BloodSugar): boolean => {
+export const showWarning = (bs: ConvertedBloodSugarReading): boolean => {
   if (isLowBloodSugar(bs)) {
     return true
   }
@@ -26,48 +27,52 @@ export const showWarning = (bs: BloodSugar): boolean => {
     return false
   }
 
-  const value = Number(convertBloodSugarReading(bs, BloodSugarCode.MG_DL))
-  return value !== undefined && value >= warningHighBSValue
+  return bs.value >= warningHighBSValue
 }
 
-export const isHighBloodSugar = (bs: BloodSugar) => {
-  const value = convertBloodSugarReading(bs, BloodSugarCode.MG_DL)
-  return value >= getBloodSugarDetails(bs).high
+export const isHighBloodSugar = (bs: ConvertedBloodSugarReading) => {
+  return bs.value >= getBloodSugarDetails(bs).high
 }
 
-export const isLowBloodSugar = (bs: BloodSugar) => {
+export const isLowBloodSugar = (bs: ConvertedBloodSugarReading) => {
   const lowBSValue = getBloodSugarDetails(bs).low
   if (lowBSValue === undefined || lowBSValue === null) {
     return false
   }
 
-  const value = convertBloodSugarReading(bs, BloodSugarCode.MG_DL)
-  return value < lowBSValue
+  return bs.value < lowBSValue
 }
 
 export const getBloodSugarDetails: (
-  bs: BloodSugar,
+  bs: ConvertedBloodSugarReading,
 ) => {
   type: BLOOD_SUGAR_TYPES
   warningHigh?: number
   high: number
   low?: number
-} = (bs: BloodSugar) => {
+} = (bs: ConvertedBloodSugarReading) => {
+  const commonLow = bs.blood_sugar_unit === BloodSugarCode.MG_DL ? 70 : 3.9
+  const commonWarningHight =
+    bs.blood_sugar_unit === BloodSugarCode.MG_DL ? 300 : 16.7
+  const afterEatingHigh =
+    bs.blood_sugar_unit === BloodSugarCode.MG_DL ? 200 : 11.1
+  const beforeEatingLow = bs.blood_sugar_unit === BloodSugarCode.MG_DL ? 126 : 7
+
   switch (bs.blood_sugar_type) {
     case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR: {
       return {
         type: BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR,
-        warningHigh: 300,
-        high: 126,
-        low: 70,
+        warningHigh: commonWarningHight,
+        high: beforeEatingLow,
+        low: commonLow,
       }
     }
     case BLOOD_SUGAR_TYPES.POST_PRANDIAL: {
       return {
         type: BLOOD_SUGAR_TYPES.POST_PRANDIAL,
-        warningHigh: 300,
-        high: 200,
-        low: 70,
+        warningHigh: commonWarningHight,
+        high: afterEatingHigh,
+        low: commonLow,
       }
     }
     case BLOOD_SUGAR_TYPES.HEMOGLOBIC: {
@@ -80,24 +85,24 @@ export const getBloodSugarDetails: (
     case BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR:
       return {
         type: BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
-        warningHigh: 300,
-        high: 200,
-        low: 70,
+        warningHigh: commonWarningHight,
+        high: afterEatingHigh,
+        low: commonLow,
       }
     case BLOOD_SUGAR_TYPES.BEFORE_EATING:
       return {
         type: BLOOD_SUGAR_TYPES.BEFORE_EATING,
-        warningHigh: 300,
-        high: 200,
-        low: 70,
+        warningHigh: commonWarningHight,
+        high: beforeEatingLow,
+        low: commonLow,
       }
     case BLOOD_SUGAR_TYPES.AFTER_EATING:
     default:
       return {
         type: BLOOD_SUGAR_TYPES.AFTER_EATING,
-        warningHigh: 300,
-        high: 200,
-        low: 70,
+        warningHigh: commonWarningHight,
+        high: afterEatingHigh,
+        low: commonLow,
       }
   }
 }
@@ -107,6 +112,25 @@ export enum BloodSugarCode {
   MG_DL = 'mg/dL',
   PERCENT = '%',
 }
+
+const toCorrectPrecision = (
+  value?: number | string,
+  displayUnits?: string,
+): number => {
+  const castValue = value
+    ? typeof value === 'string'
+      ? Number(value)
+      : value
+    : 0
+
+  return Number(
+    castValue.toFixed(determinePrecision(displayUnits ?? BloodSugarCode.MG_DL)),
+  )
+}
+
+export const determinePrecision = (
+  displayUnits: BloodSugarCode | string,
+): number => (displayUnits === BloodSugarCode.MMOL_L ? 1 : 0)
 
 export const AVAILABLE_BLOOD_SUGAR_UNITS: BloodSugarCode[] = [
   BloodSugarCode.MG_DL,
@@ -126,7 +150,8 @@ export const bloodSugarUnitToDisplayTitle = (code: BloodSugarCode) => {
   }
 }
 
-const UNIT_CONVERSION_FACTOR = 18
+const UNIT_CONVERSION_FACTOR = 18.0
+
 export const convertBloodSugarReading = (
   bloodSugarReading: BloodSugar,
   convertTo: BloodSugarCode,
@@ -169,27 +194,33 @@ const convertBloodSugar = (
   }
 
   if (bloodSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
-    return Number(bloodSugarValue) ?? 0
+    return toCorrectPrecision(bloodSugarValue, convertTo)
   }
 
   const readingUnit = bloodSugarUnit ?? BloodSugarCode.MG_DL
 
   if (readingUnit === convertTo) {
-    return Number(bloodSugarValue) ?? 0
+    return toCorrectPrecision(bloodSugarValue, convertTo)
   }
 
   if (
     readingUnit === BloodSugarCode.MG_DL &&
     convertTo === BloodSugarCode.MMOL_L
   ) {
-    return Number(bloodSugarValue) / UNIT_CONVERSION_FACTOR
+    return toCorrectPrecision(
+      Number(bloodSugarValue) / UNIT_CONVERSION_FACTOR,
+      convertTo,
+    )
   }
 
   if (
     readingUnit === BloodSugarCode.MMOL_L &&
     convertTo === BloodSugarCode.MG_DL
   ) {
-    return Number(bloodSugarValue) * UNIT_CONVERSION_FACTOR
+    return toCorrectPrecision(
+      Number(bloodSugarValue) * UNIT_CONVERSION_FACTOR,
+      convertTo,
+    )
   }
 
   throw new Error('Unhandled reading/display unit combination')
@@ -199,11 +230,15 @@ export const getDisplayBloodSugarUnit = (convertTo: BloodSugarCode): string => {
   return bloodSugarUnitToDisplayTitle(convertTo)
 }
 
-export const getReadingType = (bs: BloodSugar): string => {
+export const getReadingType = (
+  bs: BloodSugar | ConvertedBloodSugarReading,
+): string => {
   return useIntl().formatMessage({id: getReadingTypeId(bs)})
 }
 
-export const getReadingTypeId = (bs: BloodSugar): string => {
+export const getReadingTypeId = (
+  bs: BloodSugar | ConvertedBloodSugarReading,
+): string => {
   switch (bs.blood_sugar_type) {
     case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
       return 'bs.hemoglobic-code'

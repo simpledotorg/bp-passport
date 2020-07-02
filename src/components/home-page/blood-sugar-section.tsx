@@ -14,7 +14,7 @@ import {
   ButtonType,
 } from '../../components'
 
-import {BloodSugar} from '../../redux/blood-sugar/blood-sugar.models'
+import ConvertedBloodSugarReading from '../../models/converted_blood_sugar_reading'
 import {BloodSugarCode} from '../../utils/blood-sugars'
 
 type HomeScreenNavigationProp = StackNavigationProp<
@@ -24,7 +24,7 @@ type HomeScreenNavigationProp = StackNavigationProp<
 
 type BSEntryProps = {
   navigation: HomeScreenNavigationProp
-  bs: BloodSugar
+  bs: ConvertedBloodSugarReading
   displayUnits: BloodSugarCode
   showSeparator: boolean
 }
@@ -62,7 +62,7 @@ const BloodSugarEntry = ({
 
 type BSSProps = {
   navigation: HomeScreenNavigationProp
-  bloodSugarReadings: BloodSugar[]
+  bloodSugarReadings: ConvertedBloodSugarReading[]
   displayUnits: BloodSugarCode
   showList: number
 }
@@ -129,9 +129,7 @@ const BloodSugarSection = ({
             buttonType={ButtonType.LightBlue}
             title={intl.formatMessage({id: 'general.see-all'})}
             onPress={() => {
-              navigation.navigate(SCREENS.BS_HISTORY, {
-                bloodSugars: bloodSugarReadings,
-              })
+              navigation.navigate(SCREENS.BS_HISTORY)
             }}
           />
         )}

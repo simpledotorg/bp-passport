@@ -15,8 +15,7 @@ import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis
 import {getMonthYearTitle, getYearTitle} from '../../utils/dates'
 import {IDefineChartsAvailable} from './i-define-charts-available'
 import {LineGraphDataPoint} from './line-graph-data-point'
-import ConvertedBloodSugarReading from '../../models/converted_blood_sugar_reading'
-import {BloodSugarCode} from '../../utils/blood-sugars'
+import {BloodSugarCode, determinePrecision} from '../../utils/blood-sugars'
 
 export class ChartData implements IDefineChartsAvailable {
   private readonly _requestedChart: IDefineAChartRequest
@@ -91,12 +90,7 @@ export class ChartData implements IDefineChartsAvailable {
         this.aggregatedData.push(aggregateRecord)
       }
 
-      aggregateRecord.addReading(
-        new ConvertedBloodSugarReading(
-          bloodSugarReading,
-          this._requestedChart.getDisplayUnits(),
-        ),
-      )
+      aggregateRecord.addReading(bloodSugarReading)
     })
   }
 
@@ -111,8 +105,8 @@ export class ChartData implements IDefineChartsAvailable {
         return
       }
 
-      const minValue = Number(aggregateRecord.minReading?.blood_sugar_value)
-      const maxValue = Number(aggregateRecord.maxReading?.blood_sugar_value)
+      const minValue = aggregateRecord.minReading?.value
+      const maxValue = aggregateRecord.maxReading?.value
 
       if (minValue === maxValue) {
         return
@@ -171,14 +165,20 @@ export class ChartData implements IDefineChartsAvailable {
           return memo
         }
 
-        const currentValue = Number(maxValueForCurrentDay.blood_sugar_value)
-
-        return !memo || currentValue > memo ? currentValue : memo
+        return !memo || maxValueForCurrentDay.value > memo
+          ? maxValueForCurrentDay.value
+          : memo
       },
       null,
     )
 
-    return value ? Number(value.toFixed(0)) : null
+    return value
+      ? Number(
+          value.toFixed(
+            determinePrecision(this._requestedChart.getDisplayUnits()),
+          ),
+        )
+      : null
   }
 
   public getMinReading(): number | null {
@@ -192,14 +192,20 @@ export class ChartData implements IDefineChartsAvailable {
           return memo
         }
 
-        const currentValue = Number(minValueForCurrentDay.blood_sugar_value)
-
-        return !memo || currentValue < memo ? currentValue : memo
+        return !memo || minValueForCurrentDay.value < memo
+          ? minValueForCurrentDay.value
+          : memo
       },
       null,
     )
 
-    return value ? Number(value.toFixed(0)) : null
+    return value
+      ? Number(
+          value.toFixed(
+            determinePrecision(this._requestedChart.getDisplayUnits()),
+          ),
+        )
+      : null
   }
 
   public getIndexValues(): number[] {

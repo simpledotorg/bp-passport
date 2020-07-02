@@ -1,9 +1,12 @@
-import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
+import {
+  BloodSugar,
+  BLOOD_SUGAR_TYPES,
+} from '../redux/blood-sugar/blood-sugar.models'
 
 import {convertBloodSugarReading, BloodSugarCode} from '../utils/blood-sugars'
 
-class ConvertedBloodSugarReading implements BloodSugar {
-  private _bloodSugarValue: string
+class ConvertedBloodSugarReading {
+  private _bloodSugarValue: number
   private _bloodSugarType: string
   private _recordedAt: string
   private _facility: any | undefined
@@ -11,10 +14,11 @@ class ConvertedBloodSugarReading implements BloodSugar {
   private _bloodSugarUnit: BloodSugarCode
 
   constructor(originalReading: BloodSugar, convertTo: BloodSugarCode) {
-    this._bloodSugarValue = convertBloodSugarReading(
-      originalReading,
-      convertTo,
-    ).toString()
+    this._bloodSugarValue =
+      originalReading.blood_sugar_type !== BLOOD_SUGAR_TYPES.HEMOGLOBIC
+        ? convertBloodSugarReading(originalReading, convertTo)
+        : Number(originalReading.blood_sugar_value)
+
     this._bloodSugarType = originalReading.blood_sugar_type
     this._recordedAt = originalReading.recorded_at
     this._facility = originalReading.facility
@@ -22,7 +26,7 @@ class ConvertedBloodSugarReading implements BloodSugar {
     this._bloodSugarUnit = convertTo
   }
 
-  public get blood_sugar_value(): string {
+  public get value(): number {
     return this._bloodSugarValue
   }
 
@@ -48,3 +52,51 @@ class ConvertedBloodSugarReading implements BloodSugar {
 }
 
 export default ConvertedBloodSugarReading
+
+declare global {
+  interface Array<T> {
+    getMinReading(this: T[]): T | null
+
+    getMaxReading(this: T[]): T | null
+  }
+}
+
+if (!Array.prototype.getMinReading) {
+  Array.prototype.getMinReading = function <
+    T extends ConvertedBloodSugarReading
+  >(this: T[]): ConvertedBloodSugarReading | null {
+    return this.reduce(
+      (
+        memo: ConvertedBloodSugarReading | null,
+        current: ConvertedBloodSugarReading,
+      ): ConvertedBloodSugarReading | null => {
+        if (!memo) {
+          return current
+        }
+
+        return memo.value < current.value ? memo : current
+      },
+      null,
+    )
+  }
+}
+
+if (!Array.prototype.getMaxReading) {
+  Array.prototype.getMaxReading = function <
+    T extends ConvertedBloodSugarReading
+  >(this: T[]): ConvertedBloodSugarReading | null {
+    return this.reduce(
+      (
+        memo: ConvertedBloodSugarReading | null,
+        current: ConvertedBloodSugarReading,
+      ): ConvertedBloodSugarReading | null => {
+        if (!memo) {
+          return current
+        }
+
+        return memo.value > current.value ? memo : current
+      },
+      null,
+    )
+  }
+}
