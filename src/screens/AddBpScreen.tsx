@@ -20,8 +20,6 @@ import {ScrollView} from 'react-native-gesture-handler'
 import {setNormalBpBsCount} from '../redux/patient/patient.actions'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
 import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
-import {isHighBloodSugar, isLowBloodSugar} from '../utils/blood-sugars'
-import {isBloodPressureHigh} from '../utils/blood-pressures'
 
 type AddBpScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -145,6 +143,9 @@ function AddBpScreen({navigation, route}: Props) {
     navigation.goBack()
 
     if (showWarning(newBloodPressure)) {
+      if (normalBpBsCount < 4) {
+        dispatch(setNormalBpBsCount(normalBpBsCount + 1))
+      }
       setTimeout(() => {
         navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN, {
           displayText: intl.formatMessage(
@@ -153,10 +154,8 @@ function AddBpScreen({navigation, route}: Props) {
           ),
         })
       }, 250)
-    }
-
-    if (!showWarning(newBloodPressure)) {
-      if (normalBpBsCount >= 4 && !hasReviewed) {
+    } else if (!hasReviewed) {
+      if (normalBpBsCount >= 4) {
         setTimeout(() => {
           navigation.navigate(SCREENS.WRITE_A_REVIEW_MODAL_SCREEN)
         }, 250)

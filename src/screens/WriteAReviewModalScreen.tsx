@@ -16,10 +16,7 @@ import {RootStackParamList} from '../Navigation'
 import {BodyText, BodyHeader, Button, ButtonType} from '../components'
 
 import {FormattedMessage, useIntl} from 'react-intl'
-import {
-  setHasReviewed,
-  setNormalBpBsCount,
-} from '../redux/patient/patient.actions'
+import {setHasReviewed} from '../redux/patient/patient.actions'
 import {useThunkDispatch} from '../redux/store'
 
 type WriteAReviewModalScreenNavigationProp = StackNavigationProp<
@@ -111,7 +108,7 @@ function WriteAReviewModalScreen({navigation}: Props) {
             buttonType={ButtonType.LightBlue}
             title={intl.formatMessage({id: 'general.later'})}
             onPress={() => {
-              dispatch(setNormalBpBsCount(0))
+              dispatch(setHasReviewed(true))
               navigation.pop()
             }}
           />
