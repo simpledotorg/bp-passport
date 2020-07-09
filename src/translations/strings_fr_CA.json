@@ -59,7 +59,7 @@
   "page-titles.new-bp": "Ajouter une PA",
   "page-titles.details": "Détails",
   "page-titles.all-bs": "Toutes les glycémies",
-  "page-titles.new-bs": "Ajouter glycémie",
+  "page-titles.new-bs": "Ajouter une glycémie",
   "page-titles.add-medicine": "Ajouter médicament",
   "general.sheet-high-disclaimer": "{label} élevée est à ou au-dessus de {limit}. Remarque : votre {label} de valeur « élevée » pourrait être différente. Parlez à votre médecin.",
   "general.sheet-normal-disclaimer": "{label} normale est en-dessous de {limit}. Remarque : votre {label} de valeur « normale » pourrait être différente. Parlez à votre médecin.",
