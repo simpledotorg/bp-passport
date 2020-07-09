@@ -14,7 +14,7 @@
   "login.terms-of-use-link": "modalités",
   "login.camera-access": "Accès à l'appareil photo",
   "login.allow-camera-access": "Veuillez autoriser l'accès à l'appareil photo dans les paramètres",
-  "scan-bp-passport.hold-camera": "Tenir l'appareil photo devant ce symbole sur le BP Passport",
+  "scan-bp-passport.hold-camera": "Tenez l'appareil photo devant ce symbole sur le BP Passport",
   "scan-bp-passport.cant-verify-account": "Impossible de vérifier le compte",
   "scan-bp-passport.dont-have-phone-number": "Il n'y a pas de numéro de téléphone associé à votre BP Passport. Veuillez réessayer dans quelques minutes.",
   "verify-pin.please-verify": "Veuillez saisir le code de vérification à 6 caractères que vous avez reçu par message texte",
