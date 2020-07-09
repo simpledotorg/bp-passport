@@ -176,7 +176,7 @@
   "medicine.reminder-notification": "{day} {time}, prenez votre médicament",
   "alert.title": "Aide médicale nécessaire",
   "alert.description-high": "Votre {label} est très élevée. Communiquez rapidement avec un médecin pour faire évaluer votre état de santé.",
-  "alert.description-low": "Votre glycémie est très basse. Mangez quelque chose de sucré, comme un fruit, afin d'élever votre glycémie et communiquez avec un médecin rapidement.",
+  "alert.description-low": "Votre glycémie est très basse. Mangez un aliment sucré, comme un fruit, afin d'élever votre glycémie et communiquez avec un médecin rapidement.",
   "health-reminders.title": "Rappels de santé",
   "health-reminders.app": "Apportez votre application lors de chacune de vos visites médicales pour partager vos mesures",
   "health-reminders.check": "Vérifiez (n'essayez pas de deviner) si votre PA ou glycémie est trop élevée ou trop basse",
