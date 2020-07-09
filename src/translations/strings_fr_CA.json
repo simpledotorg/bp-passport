@@ -174,7 +174,7 @@
   "medicine.allow-notifications-title": "Autoriser les notifications",
   "medicine.allow-notifications-body": "Autorisez les notifications pour recevoir des rappels de médicaments",
   "medicine.reminder-notification": "{day} {time}, prenez votre médicament",
-  "alert.title": "Obtenir de l'aide médicale",
+  "alert.title": "Aide médicale nécessaire",
   "alert.description-high": "Votre {label} est très élevée. Communiquez rapidement avec un médecin pour faire évaluer votre état de santé.",
   "alert.description-low": "Votre glycémie est très basse. Mangez quelque chose de sucré, comme un fruit, afin d'élever votre glycémie et communiquez avec un médecin rapidement.",
   "health-reminders.title": "Rappels de santé",
