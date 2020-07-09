@@ -178,7 +178,7 @@
   "alert.description-high": "Votre {label} est très élevée. Communiquez rapidement avec un médecin pour faire évaluer votre état de santé.",
   "alert.description-low": "Votre glycémie est très basse. Mangez un aliment sucré, comme un fruit, afin d'élever votre glycémie et communiquez avec un médecin rapidement.",
   "health-reminders.title": "Rappels de santé",
-  "health-reminders.app": "Apportez votre application lors de chacune de vos visites médicales pour partager vos mesures",
+  "health-reminders.app": "Montrez votre application lors de chacune de vos visites médicales pour partager vos mesures",
   "health-reminders.check": "Vérifiez (n'essayez pas de deviner) si votre PA ou glycémie est trop élevée ou trop basse",
   "health-reminders.sugar": "Ayez toujours des aliments sucrés, comme des fruits, à portée de la main pour traiter une glycémie basse",
   "health-reminders.healthy": "Vérifiez vos mesures pour manger plus sainement et faire plus d'exercice",
