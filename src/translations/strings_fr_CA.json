@@ -139,7 +139,7 @@
   "bs.random-blood-code": "GAH",
   "bs.fasting-blood-sugar": "Glycémie à jeun (GAJ)",
   "bs.fasting-code": "GAJ",
-  "bs.fasting-description": "8 heures sans manger",
+  "bs.fasting-description": "8 heures à jeun",
   "bs.post-prandial": "Glycémie postprandiale (GP)",
   "bs.post-prenial-code": "GP",
   "bs.post-prandial-description": "2 heures après le repas",
