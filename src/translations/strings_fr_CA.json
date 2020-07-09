@@ -6,7 +6,7 @@
   "consent.medical-disclaimer": "L'utilisation de cette application ne constitue pas un conseil médical et ne remplace pas la consultation d'un médecin ou de tout autre professionnel des soins de la santé. Toutes les étiquettes de pression artérielle et de glycémie, comme « élevée », « normale » et « basse », représentent les mesures généralement acceptées pour définir la pression artérielle et la glycémie et ne sont pas données en guise de conseil médical aux particuliers. Veuillez consulter votre médecin pendant ou avant l'utilisation de cette application.",
   "consent.here-link": "ici",
   "login.have-a-paper": "Avez-vous reçu une carte en papier BP Passport de votre médecin?",
-  "login.scan-passport": "Scanner le passeport",
+  "login.scan-passport": "Scanner le Passport",
   "login.no-bp-passport": "Vous n'avez pas de BP passport?",
   "login.get-started": "Commencer",
   "login.by-using-app": "En utilisant cette application, vous acceptez notre {politique de confidentialité} et nos {modalités}.",
