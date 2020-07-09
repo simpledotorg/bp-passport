@@ -172,7 +172,7 @@
   "medicine.weekends": "Fins de semaine",
   "medicine.custom": "Personnalisé",
   "medicine.allow-notifications-title": "Autoriser les notifications",
-  "medicine.allow-notifications-body": "Autoriser les notifications pour recevoir des rappels de médicaments",
+  "medicine.allow-notifications-body": "Autorisez les notifications pour recevoir des rappels de médicaments",
   "medicine.reminder-notification": "{day} {time}, prenez votre médicament",
   "alert.title": "Obtenir de l'aide médicale",
   "alert.description-high": "Votre {label} est très élevée. Communiquez rapidement avec un médecin pour faire évaluer votre état de santé.",
