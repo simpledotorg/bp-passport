@@ -147,7 +147,7 @@
   "bs.hemoglobic-code": "HbA1C",
   "bs.hemoglobic-description": "Test en laboratoire de votre médecin",
   "bs.after-eating-title": "Après le repas",
-  "bs.after-eating-description": "J'ai mangé ou bu au cours des 7 heures",
+  "bs.after-eating-description": "J'ai mangé ou bu au cours des 7 dernières heures",
   "bs.before-eating-title": "Avant le repas",
   "bs.before-eating-description": "Aucune nourriture et boisson pendant 8 heures",
   "bs.placeholder-title": "Choisir le type",
