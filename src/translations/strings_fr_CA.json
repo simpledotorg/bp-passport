@@ -63,7 +63,7 @@
   "page-titles.add-medicine": "Ajouter un médicament",
   "general.sheet-high-disclaimer": "{label} élevée est à ou au-dessus de {limit}. Remarque : votre {label} de valeur « élevée » pourrait être différente. Parlez à votre médecin.",
   "general.sheet-normal-disclaimer": "{label} normale est en-dessous de {limit}. Remarque : votre {label} de valeur « normale » pourrait être différente. Parlez à votre médecin.",
-  "general.add-bs": "Ajouter glycémie",
+  "general.add-bs": "Ajouter une glycémie",
   "general.save": "Enregistrer",
   "general.done": "Terminé",
   "general.next": "Suivant",
