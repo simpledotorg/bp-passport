@@ -157,7 +157,7 @@
   "bs.select-rbs-if-unsure": "Sélectionnez GAH si vous êtes incertain(e)",
   "bs.bs-trend": "Tendance glycémie",
   "bs.bs-details": "Détails de glycémie",
-  "bs.delete-bs": "Supprimer glycémie",
+  "bs.delete-bs": "Supprimer la glycémie",
   "bs.delete-bs-confirm": "Êtes-vous certain(e) de vouloir supprimer cette glycémie?",
   "medicine.enter-name": "Saisir le nom du médicament",
   "medicine.reminder": "Rappel",
