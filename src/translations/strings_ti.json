@@ -61,7 +61,7 @@
   "page-titles.all-bs": "ኩሉ ዓቐን ሽኮር ኣብ ደም",
   "page-titles.new-bs": "ዓቐን ሽኮር ደም ወስኽ",
   "page-titles.add-medicine": "መድሓኒታት ወስኽ",
-  "general.sheet-high-disclaimer": "ዝላዓለ {label} ኣብ ወይ ልዕሊ {label} እዩ። ኣስተውዕል፣ ናትካ ውልቃዊ \"ዝለዓለ\" {label} ዝተፈለየ ክኸውን ይኽእል እዩ። ምስ ዶክተርካ ተዘራረብ።",
+  "general.sheet-high-disclaimer": "ዝላዓለ {መጠን} ኣብ ወይ ልዕሊ {ገደብ} እዩ። ኣስተውዕል፣ ናትካ ውልቃዊ \"ዝለዓለ\" {መጠን} ዝተፈለየ ክኸውን ይኽእል እዩ። ምስ ዶክተርካ ተዘራረብ።",
   "general.sheet-normal-disclaimer": "ንቡር {መጠን} ካብ {ገደብ} ዝተሓተ እዩ። ኣስተውዕል፣ ናትካ ውልቃዊ \"ንቡር\" {መጠን} ዝተፈለየ ክኸውን ይኽእል እዩ። ምስ ዶክተርካ ተዘራረብ።",
   "general.add-bs": "ዓቐን ሽኮር ደም ወስኽ",
   "general.save": "ምዕቃብ",
