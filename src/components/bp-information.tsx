@@ -5,7 +5,7 @@ import {format} from 'date-fns'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {colors, redHeart, smallWarningSign} from '../styles'
-import {BodyText} from './'
+import {BodyText} from './text'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {dateLocale} from '../constants/languages'
 

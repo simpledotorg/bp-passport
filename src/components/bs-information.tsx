@@ -4,7 +4,7 @@ import {FormattedMessage} from 'react-intl'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {colors, purpleDrop, smallWarningSign} from '../styles'
-import {BodyText} from './'
+export {BodyText} from './text'
 import {BLOOD_SUGAR_TYPES} from '../redux/blood-sugar/blood-sugar.models'
 import {
   displayDate,

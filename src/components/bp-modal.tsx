@@ -10,7 +10,8 @@ import {FormattedMessage, useIntl} from 'react-intl'
 import {format} from 'date-fns'
 
 import {colors, redHeart, mediumWarningSign} from '../styles'
-import {BodyText, BodyHeader, Button} from './'
+export {BodyText, BodyHeader} from './text'
+export {Button} from './button'
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {useThunkDispatch} from '../redux/store'
