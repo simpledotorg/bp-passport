@@ -268,12 +268,49 @@ function AddBsScreen({navigation, route}: Props) {
           keyboardShouldPersistTaps="handled">
           <View
             style={{
-              position: 'relative',
+              flexDirection: 'column',
+              flex: 1,
+              alignItems: 'center',
+              marginBottom: 32,
+            }}>
+            <TextInput
+              maxLength={6}
+              placeholderTextColor={colors.grey1}
+              autoFocus={true}
+              ref={inputRef}
+              onFocus={() => {
+                inputRef.current.setNativeProps({
+                  borderColor: colors.blue2,
+                  placeholder: '',
+                })
+              }}
+              onBlur={() => {
+                inputRef.current.setNativeProps({
+                  borderColor: colors.grey2,
+                })
+              }}
+              style={[styles.input, {marginRight: 4}]}
+              onChangeText={(textIn) => {
+                const text = setReading(cleanText(textIn))
+              }}
+              // placeholder={}
+
+              value={reading}
+              keyboardType={
+                allowDecimalPoint(type, selectedBloodSugarUnit)
+                  ? 'numeric'
+                  : 'number-pad'
+              }
+            />
+            <BodyText style={styles.label}>{displayUnitLabel}</BodyText>
+          </View>
+          {/*
+          <View
+            style={{
               marginBottom: 24,
             }}>
             <TextInput
               style={[styles.input]}
-              ref={inputRef}
               onFocus={() => {
                 inputRef.current.setNativeProps({
                   borderColor: colors.blue2,
@@ -306,8 +343,8 @@ function AddBsScreen({navigation, route}: Props) {
                 color: colors.grey1,
               }}>
               {displayUnitLabel}
-            </BodyText>
-          </View>
+            </BodyText> 
+          </View>*/}
           <Picker
             value={type}
             items={SUGAR_TYPES}
@@ -397,18 +434,26 @@ export default AddBsScreen
 
 const styles = StyleSheet.create({
   input: {
-    position: 'relative',
     height: 56,
+    width: 144,
     borderRadius: 4,
     backgroundColor: colors.white100,
     borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: colors.grey3,
+    borderBottomWidth: 2,
+    borderColor: colors.grey2,
     padding: 16,
     fontSize: 16,
     fontWeight: 'normal',
     fontStyle: 'normal',
     letterSpacing: 0.5,
     color: colors.grey0,
+    textAlign: 'center',
+  },
+  label: {
+    marginTop: 6,
+    color: colors.grey1,
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: 'center',
   },
 })
