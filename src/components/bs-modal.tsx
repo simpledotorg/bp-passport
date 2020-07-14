@@ -8,8 +8,7 @@ import {
 } from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
 import {colors, purpleDrop, mediumWarningSign} from '../styles'
-export {BodyText, BodyHeader} from './text'
-export {Button} from './button'
+import {BodyHeader, BodyText, Button} from './'
 import {BLOOD_SUGAR_TYPES} from '../redux/blood-sugar/blood-sugar.models'
 import {
   isHighBloodSugar,

@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import {useIntl} from 'react-intl'
 
 import {colors, medicinePill} from '../styles'
-export {BodyText} from './text'
+import {BodyText} from './'
 import {
   Medication,
   frequencyText,
