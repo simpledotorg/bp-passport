@@ -1,5 +1,12 @@
 import React, {useState, useRef, useEffect} from 'react'
-import {SafeAreaView, View, StyleSheet, TextInput} from 'react-native'
+import {
+  SafeAreaView,
+  View,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  TouchableHighlight,
+} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {useIntl, FormattedMessage} from 'react-intl'
@@ -9,6 +16,7 @@ import {containerStyles, colors} from '../styles'
 import {Picker, BodyText, Button, ButtonType} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {
   BLOOD_SUGAR_TYPES,
@@ -16,7 +24,6 @@ import {
 } from '../redux/blood-sugar/blood-sugar.models'
 import {useThunkDispatch} from '../redux/store'
 import {addBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
-import {ScrollView} from 'react-native-gesture-handler'
 
 import {
   isHighBloodSugar,
@@ -132,10 +139,42 @@ function AddBsScreen({navigation, route}: Props) {
     },
   ]
 
-  const [type, setType] = useState<string>(SUGAR_TYPES[0].value)
+  // const [type, setType] = useState<string>(SUGAR_TYPES[0].value)
   const [reading, setReading] = useState<string>('')
   const [errors, setErrors] = useState<null | string>(null)
   const inputRef = useRef<null | any>(null)
+  const [type, setType] = useState<BLOOD_SUGAR_TYPES | undefined>(undefined)
+
+  // BLOOD_SUGAR_TYPES
+
+  const typeToTitle = (t: BLOOD_SUGAR_TYPES | undefined): string => {
+    if (t) {
+      switch (t) {
+        case BLOOD_SUGAR_TYPES.AFTER_EATING:
+          return intl.formatMessage({
+            id: 'bs.after-eating-title',
+          })
+        case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+          return intl.formatMessage({
+            id: 'bs.before-eating-title',
+          })
+        case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
+          return intl.formatMessage({
+            id: 'bs.hemoglobic',
+          })
+      }
+    }
+    return (
+      intl.formatMessage({
+        id: 'bs.placeholder-title',
+      }) +
+      ' (' +
+      intl.formatMessage({id: 'bs.placeholder-description'}) +
+      ')'
+    )
+  }
+
+  const dropdownTitle = typeToTitle(type)
 
   const [showErrors, setShowErrors] = useState(false)
 
@@ -304,54 +343,29 @@ function AddBsScreen({navigation, route}: Props) {
             />
             <BodyText style={styles.label}>{displayUnitLabel}</BodyText>
           </View>
-          {/*
-          <View
-            style={{
-              marginBottom: 24,
-            }}>
-            <TextInput
-              style={[styles.input]}
-              onFocus={() => {
-                inputRef.current.setNativeProps({
-                  borderColor: colors.blue2,
-                })
+          <View style={styles.dropdownBorder}>
+            <TouchableHighlight
+              onPress={() => {
+                console.log('todo!')
               }}
-              onBlur={() => {
-                inputRef.current.setNativeProps({
-                  borderColor: colors.grey2,
-                })
-              }}
-              autoFocus={true}
-              placeholder={intl.formatMessage({id: 'bs.blood-sugar'})}
-              placeholderTextColor={colors.grey1}
-              value={reading}
-              onChangeText={(textIn) => {
-                const text = setReading(cleanText(textIn))
-              }}
-              keyboardType={
-                allowDecimalPoint(type, selectedBloodSugarUnit)
-                  ? 'numeric'
-                  : 'number-pad'
-              }
-              maxLength={6}
-            />
-            <BodyText
-              style={{
-                position: 'absolute',
-                right: 12,
-                top: 14,
-                color: colors.grey1,
-              }}>
-              {displayUnitLabel}
-            </BodyText> 
-          </View>*/}
+              underlayColor={colors.grey4}>
+              <View style={styles.dropdown}>
+                <BodyText style={styles.dropdownLabel}>
+                  {dropdownTitle}
+                </BodyText>
+                <BodyText style={styles.label}>{type}</BodyText>
+                <Icon name="expand-more" size={30} color={colors.grey1} />
+              </View>
+            </TouchableHighlight>
+          </View>
+          {/* 
           <Picker
             value={type}
             items={SUGAR_TYPES}
             onValueChange={(value: string) => {
               setType(value)
             }}
-          />
+          />*/}
           <Button
             title={intl.formatMessage({id: 'general.save'})}
             disabled={isSaveDisabled()}
@@ -455,5 +469,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     textAlign: 'center',
+  },
+  dropdownBorder: {
+    borderColor: colors.grey3,
+    borderWidth: 1,
+    borderRadius: 4,
+  },
+  dropdown: {
+    height: 56,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: colors.grey3,
+    borderWidth: 1,
+    borderRadius: 4,
+  },
+  dropdownLabel: {
+    color: colors.grey0,
+    fontSize: 16,
+    flex: 1,
   },
 })
