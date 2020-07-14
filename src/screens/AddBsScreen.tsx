@@ -295,6 +295,10 @@ function AddBsScreen({navigation, route}: Props) {
     displayUnitLabel = '%'
   }
 
+  const updateType = (t: BLOOD_SUGAR_TYPES) => {
+    setType(t)
+  }
+
   return (
     <View style={{flex: 1}}>
       <SafeAreaView
@@ -346,7 +350,7 @@ function AddBsScreen({navigation, route}: Props) {
           <View style={styles.dropdownBorder}>
             <TouchableHighlight
               onPress={() => {
-                console.log('todo!')
+                navigation.navigate(SCREENS.BS_TYPE, {updateType, type})
               }}
               underlayColor={colors.grey4}>
               <View style={styles.dropdown}>

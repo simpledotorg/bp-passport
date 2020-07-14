@@ -55,6 +55,7 @@ import {
 import {Permission} from './redux/notifications/notifications.models'
 import {pushNotificationPermissionSelector} from './redux/notifications/notifications.selectors'
 import ConvertedBloodSugarReading from './models/converted_blood_sugar_reading'
+import {BLOOD_SUGAR_TYPES} from './redux/blood-sugar/blood-sugar.models'
 
 export type RootStackParamList = {
   LAUNCH: undefined
@@ -90,6 +91,10 @@ export type RootStackParamList = {
   }
   ADD_DATA_WARNING_MODAL_SCREEN: {displayText: string}
   WRITE_A_REVIEW_MODAL_SCREEN: undefined
+  BS_TYPE: {
+    updateType: (type: BLOOD_SUGAR_TYPES) => void
+    type?: BLOOD_SUGAR_TYPES
+  }
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -155,6 +160,11 @@ const Navigation = () => {
         <Stack.Screen
           name={SCREENS.MEDICATION_TIME}
           component={MedicationTimeScreen}
+          options={getModalOptions()}
+        />
+        <Stack.Screen
+          name={SCREENS.BS_TYPE}
+          component={DetailsModalScreen}
           options={getModalOptions()}
         />
         <Stack.Screen
