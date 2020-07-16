@@ -1,5 +1,12 @@
 import React, {useState, useRef, useEffect} from 'react'
-import {SafeAreaView, View, StyleSheet, TextInput} from 'react-native'
+import {
+  SafeAreaView,
+  View,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  TouchableHighlight,
+} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {useIntl, FormattedMessage} from 'react-intl'
@@ -9,14 +16,15 @@ import {containerStyles, colors} from '../styles'
 import {Picker, BodyText, Button, ButtonType} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {
   BLOOD_SUGAR_TYPES,
   BloodSugar,
+  BLOOD_SUGAR_INPUT_TYPES,
 } from '../redux/blood-sugar/blood-sugar.models'
 import {useThunkDispatch} from '../redux/store'
 import {addBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
-import {ScrollView} from 'react-native-gesture-handler'
 
 import {
   isHighBloodSugar,
@@ -56,11 +64,6 @@ interface PickerItemExtended extends Item {
   type: string
 }
 
-enum INPUT_TYPES {
-  DECIMAL = 'DECIMAL',
-  PERCENTAGE = 'PERCENTAGE',
-}
-
 const getHistoricValues = (): number => {
   const bpsAll = bloodPressuresSelector() ?? []
   const normalBpCount = bpsAll.length
@@ -87,11 +90,9 @@ const getBpBsCount = (): number => {
 }
 
 const allowDecimalPoint = (
-  type: string,
+  type: BLOOD_SUGAR_TYPES | undefined,
   selectedBloodSugarUnit: BloodSugarCode,
-) =>
-  type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ||
-  selectedBloodSugarUnit === BloodSugarCode.MMOL_L
+) => type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
 
 function AddBsScreen({navigation, route}: Props) {
   const intl = useIntl()
@@ -107,35 +108,67 @@ function AddBsScreen({navigation, route}: Props) {
       value: null,
       min: 30,
       max: 1000,
-      type: INPUT_TYPES.DECIMAL,
+      type: BLOOD_SUGAR_INPUT_TYPES.DECIMAL,
     },
     {
       label: intl.formatMessage({id: 'bs.after-eating-title'}),
       value: BLOOD_SUGAR_TYPES.AFTER_EATING,
       min: 30,
       max: 1000,
-      type: INPUT_TYPES.DECIMAL,
+      type: BLOOD_SUGAR_INPUT_TYPES.DECIMAL,
     },
     {
       label: intl.formatMessage({id: 'bs.before-eating-title'}),
       value: BLOOD_SUGAR_TYPES.BEFORE_EATING,
       min: 30,
       max: 1000,
-      type: INPUT_TYPES.DECIMAL,
+      type: BLOOD_SUGAR_INPUT_TYPES.DECIMAL,
     },
     {
       label: intl.formatMessage({id: 'bs.hemoglobic'}),
       value: BLOOD_SUGAR_TYPES.HEMOGLOBIC,
       min: 3,
       max: 25,
-      type: INPUT_TYPES.PERCENTAGE,
+      type: BLOOD_SUGAR_INPUT_TYPES.PERCENTAGE,
     },
   ]
 
-  const [type, setType] = useState<string>(SUGAR_TYPES[0].value)
+  // const [type, setType] = useState<string>(SUGAR_TYPES[0].value)
   const [reading, setReading] = useState<string>('')
   const [errors, setErrors] = useState<null | string>(null)
   const inputRef = useRef<null | any>(null)
+  const [type, setType] = useState<BLOOD_SUGAR_TYPES | undefined>(undefined)
+
+  // BLOOD_SUGAR_TYPES
+
+  const typeToTitle = (t: BLOOD_SUGAR_TYPES | undefined): string => {
+    if (t) {
+      switch (t) {
+        case BLOOD_SUGAR_TYPES.AFTER_EATING:
+          return intl.formatMessage({
+            id: 'bs.after-eating-title',
+          })
+        case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+          return intl.formatMessage({
+            id: 'bs.before-eating-title',
+          })
+        case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
+          return intl.formatMessage({
+            id: 'bs.hemoglobic',
+          })
+      }
+    }
+    return (
+      intl.formatMessage({
+        id: 'bs.placeholder-title',
+      }) +
+      ' (' +
+      intl.formatMessage({id: 'bs.placeholder-description'}) +
+      ')'
+    )
+  }
+
+  const dropdownTitle = typeToTitle(type)
 
   const [showErrors, setShowErrors] = useState(false)
 
@@ -152,7 +185,7 @@ function AddBsScreen({navigation, route}: Props) {
     })
 
     if (foundType) {
-      const isPercentage = foundType.type === INPUT_TYPES.PERCENTAGE
+      const isPercentage = foundType.type === BLOOD_SUGAR_INPUT_TYPES.PERCENTAGE
 
       const minValue: number = isPercentage
         ? foundType.min
@@ -243,7 +276,7 @@ function AddBsScreen({navigation, route}: Props) {
   }
 
   const cleanText = (input: string) => {
-    if (allowDecimalPoint(type, selectedBloodSugarUnit)) {
+    if (type && allowDecimalPoint(type, selectedBloodSugarUnit)) {
       return input.replace(/[^0-9.]/g, '')
     }
 
@@ -254,6 +287,10 @@ function AddBsScreen({navigation, route}: Props) {
   let displayUnitLabel = getDisplayBloodSugarUnit(selectedBloodSugarUnit)
   if (type === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
     displayUnitLabel = '%'
+  }
+
+  const updateType = (t: BLOOD_SUGAR_TYPES) => {
+    setType(t)
   }
 
   return (
@@ -268,15 +305,20 @@ function AddBsScreen({navigation, route}: Props) {
           keyboardShouldPersistTaps="handled">
           <View
             style={{
-              position: 'relative',
-              marginBottom: 24,
+              flexDirection: 'column',
+              flex: 1,
+              alignItems: 'center',
+              marginBottom: 32,
             }}>
             <TextInput
-              style={[styles.input]}
+              maxLength={6}
+              placeholderTextColor={colors.grey1}
+              autoFocus={true}
               ref={inputRef}
               onFocus={() => {
                 inputRef.current.setNativeProps({
                   borderColor: colors.blue2,
+                  placeholder: '',
                 })
               }}
               onBlur={() => {
@@ -284,37 +326,44 @@ function AddBsScreen({navigation, route}: Props) {
                   borderColor: colors.grey2,
                 })
               }}
-              autoFocus={true}
-              placeholder={intl.formatMessage({id: 'bs.blood-sugar'})}
-              placeholderTextColor={colors.grey1}
-              value={reading}
+              style={[styles.input, {marginRight: 4}]}
               onChangeText={(textIn) => {
                 const text = setReading(cleanText(textIn))
               }}
+              // placeholder={}
+
+              value={reading}
               keyboardType={
+                type !== undefined &&
                 allowDecimalPoint(type, selectedBloodSugarUnit)
                   ? 'numeric'
                   : 'number-pad'
               }
-              maxLength={6}
             />
-            <BodyText
-              style={{
-                position: 'absolute',
-                right: 12,
-                top: 14,
-                color: colors.grey1,
-              }}>
-              {displayUnitLabel}
-            </BodyText>
+            <BodyText style={styles.label}>{displayUnitLabel}</BodyText>
           </View>
+          <View style={styles.dropdownBorder}>
+            <TouchableHighlight
+              onPress={() => {
+                navigation.navigate(SCREENS.BS_TYPE, {updateType, type})
+              }}
+              underlayColor={colors.grey4}>
+              <View style={styles.dropdown}>
+                <BodyText style={styles.dropdownLabel}>
+                  {dropdownTitle}
+                </BodyText>
+                <Icon name="expand-more" size={30} color={colors.grey1} />
+              </View>
+            </TouchableHighlight>
+          </View>
+          {/* 
           <Picker
             value={type}
             items={SUGAR_TYPES}
             onValueChange={(value: string) => {
               setType(value)
             }}
-          />
+          />*/}
           <Button
             title={intl.formatMessage({id: 'general.save'})}
             disabled={isSaveDisabled()}
@@ -397,18 +446,45 @@ export default AddBsScreen
 
 const styles = StyleSheet.create({
   input: {
-    position: 'relative',
     height: 56,
+    width: 144,
     borderRadius: 4,
     backgroundColor: colors.white100,
     borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: colors.grey3,
+    borderBottomWidth: 2,
+    borderColor: colors.grey2,
     padding: 16,
     fontSize: 16,
     fontWeight: 'normal',
     fontStyle: 'normal',
     letterSpacing: 0.5,
     color: colors.grey0,
+    textAlign: 'center',
+  },
+  label: {
+    marginTop: 6,
+    color: colors.grey1,
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: 'center',
+  },
+  dropdownBorder: {
+    borderColor: colors.grey3,
+    borderWidth: 1,
+    borderRadius: 4,
+  },
+  dropdown: {
+    height: 56,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: colors.grey3,
+    borderWidth: 1,
+    borderRadius: 4,
+  },
+  dropdownLabel: {
+    color: colors.grey0,
+    fontSize: 16,
+    flex: 1,
   },
 })

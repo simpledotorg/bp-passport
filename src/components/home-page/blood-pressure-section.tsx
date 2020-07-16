@@ -85,7 +85,7 @@ const BloodPressureSection = ({navigation, bps, showList}: BPSProps) => {
             id: showBpHistoryButton ? 'home.add' : 'home.add-bp',
           })}
           onPress={() => {
-            navigation.navigate(SCREENS.ADD_BP)
+            navigation.navigate(SCREENS.ADD_BP_STACK)
           }}
         />
         {showBpHistoryButton && (

@@ -115,7 +115,7 @@ const BloodSugarSection = ({
             id: showBsHistoryButton ? 'home.add' : 'home.add-bs',
           })}
           onPress={() => {
-            navigation.navigate(SCREENS.ADD_BS)
+            navigation.navigate(SCREENS.ADD_BS_STACK)
           }}
         />
         {showBsHistoryButton && (
