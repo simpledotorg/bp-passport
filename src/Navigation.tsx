@@ -28,6 +28,7 @@ import AddMedicineScreen from './screens/AddMedicineScreen'
 import DetailsModalScreen from './screens/DetailsModalScreen'
 import MedicationDetailScreen from './screens/MedicationDetailScreen'
 import MedicationFrequencyScreen from './screens/MedicineFrequencyScreen'
+import BSTypeScreen from './screens/BSTypeScreen'
 import MedicationTimeScreen from './screens/MedicationTimeScreen'
 import AllowNotificationsModalScreen from './screens/AllowNotificationsModalScreen'
 import AddDataWarningModalScreen from './screens/AddDataWarningModalScreen'
@@ -71,6 +72,8 @@ export type RootStackParamList = {
   CONTACT_A_DOCTOR: undefined
   HOME: undefined
   BP_HISTORY: {bps: BloodPressure[]}
+  ADD_BP_STACK: undefined
+  ADD_BS_STACK: undefined
   ADD_BP: undefined
   ADD_BS: undefined
   BS_HISTORY: undefined
@@ -99,15 +102,16 @@ export type RootStackParamList = {
 
 const Stack = createStackNavigator<RootStackParamList>()
 
+const getModalOptions = () => {
+  return {
+    cardStyleInterpolator: forModalPresentationIOS,
+    cardOverlayEnabled: true,
+  }
+}
+
 const Navigation = () => {
   const intl = useIntl()
 
-  const getModalOptions = () => {
-    return {
-      cardStyleInterpolator: forModalPresentationIOS,
-      cardOverlayEnabled: true,
-    }
-  }
   return (
     <>
       <Stack.Navigator
@@ -162,19 +166,15 @@ const Navigation = () => {
           component={MedicationTimeScreen}
           options={getModalOptions()}
         />
-        <Stack.Screen
-          name={SCREENS.BS_TYPE}
-          component={DetailsModalScreen}
-          options={getModalOptions()}
-        />
+
         <Stack.Screen
           name={SCREENS.MAIN_STACK}
           component={MainStack}
           options={{cardStyleInterpolator: forFade}}
         />
         <Stack.Screen name={SCREENS.SCAN_STACK} component={ScanStack} />
-        <Stack.Screen name={SCREENS.ADD_BP} component={AddBPStack} />
-        <Stack.Screen name={SCREENS.ADD_BS} component={AddBSStack} />
+        <Stack.Screen name={SCREENS.ADD_BP_STACK} component={AddBPStack} />
+        <Stack.Screen name={SCREENS.ADD_BS_STACK} component={AddBSStack} />
       </Stack.Navigator>
     </>
   )
@@ -521,6 +521,7 @@ function AddBSStack({navigation}: Props) {
 
   return (
     <Stack.Navigator
+      mode="modal"
       screenOptions={{
         ...navigationStyle,
         headerStyle: {
@@ -528,7 +529,10 @@ function AddBSStack({navigation}: Props) {
           height: headerHeightIncludingSafeArea + 6,
         },
         ...sharedNavigationOptions,
-        gestureEnabled: true,
+        gestureEnabled: false,
+        cardStyle: {backgroundColor: 'rgba(47, 54, 61, 0.0)'},
+        animationEnabled: true,
+        ...getModalOptions(),
       }}>
       <Stack.Screen
         name={SCREENS.ADD_BS}
@@ -545,7 +549,15 @@ function AddBSStack({navigation}: Props) {
               />
             )
           },
-          gestureEnabled: false,
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.BS_TYPE}
+        component={BSTypeScreen}
+        options={{
+          headerShown: false,
+          animationEnabled: true,
+          cardStyleInterpolator: forModalPresentationIOS,
         }}
       />
     </Stack.Navigator>

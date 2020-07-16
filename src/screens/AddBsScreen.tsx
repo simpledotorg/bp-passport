@@ -21,6 +21,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import {
   BLOOD_SUGAR_TYPES,
   BloodSugar,
+  BLOOD_SUGAR_INPUT_TYPES,
 } from '../redux/blood-sugar/blood-sugar.models'
 import {useThunkDispatch} from '../redux/store'
 import {addBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
@@ -63,11 +64,6 @@ interface PickerItemExtended extends Item {
   type: string
 }
 
-enum INPUT_TYPES {
-  DECIMAL = 'DECIMAL',
-  PERCENTAGE = 'PERCENTAGE',
-}
-
 const getHistoricValues = (): number => {
   const bpsAll = bloodPressuresSelector() ?? []
   const normalBpCount = bpsAll.length
@@ -94,11 +90,9 @@ const getBpBsCount = (): number => {
 }
 
 const allowDecimalPoint = (
-  type: string,
+  type: BLOOD_SUGAR_TYPES | undefined,
   selectedBloodSugarUnit: BloodSugarCode,
-) =>
-  type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ||
-  selectedBloodSugarUnit === BloodSugarCode.MMOL_L
+) => type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
 
 function AddBsScreen({navigation, route}: Props) {
   const intl = useIntl()
@@ -114,28 +108,28 @@ function AddBsScreen({navigation, route}: Props) {
       value: null,
       min: 30,
       max: 1000,
-      type: INPUT_TYPES.DECIMAL,
+      type: BLOOD_SUGAR_INPUT_TYPES.DECIMAL,
     },
     {
       label: intl.formatMessage({id: 'bs.after-eating-title'}),
       value: BLOOD_SUGAR_TYPES.AFTER_EATING,
       min: 30,
       max: 1000,
-      type: INPUT_TYPES.DECIMAL,
+      type: BLOOD_SUGAR_INPUT_TYPES.DECIMAL,
     },
     {
       label: intl.formatMessage({id: 'bs.before-eating-title'}),
       value: BLOOD_SUGAR_TYPES.BEFORE_EATING,
       min: 30,
       max: 1000,
-      type: INPUT_TYPES.DECIMAL,
+      type: BLOOD_SUGAR_INPUT_TYPES.DECIMAL,
     },
     {
       label: intl.formatMessage({id: 'bs.hemoglobic'}),
       value: BLOOD_SUGAR_TYPES.HEMOGLOBIC,
       min: 3,
       max: 25,
-      type: INPUT_TYPES.PERCENTAGE,
+      type: BLOOD_SUGAR_INPUT_TYPES.PERCENTAGE,
     },
   ]
 
@@ -191,7 +185,7 @@ function AddBsScreen({navigation, route}: Props) {
     })
 
     if (foundType) {
-      const isPercentage = foundType.type === INPUT_TYPES.PERCENTAGE
+      const isPercentage = foundType.type === BLOOD_SUGAR_INPUT_TYPES.PERCENTAGE
 
       const minValue: number = isPercentage
         ? foundType.min
@@ -282,7 +276,7 @@ function AddBsScreen({navigation, route}: Props) {
   }
 
   const cleanText = (input: string) => {
-    if (allowDecimalPoint(type, selectedBloodSugarUnit)) {
+    if (type && allowDecimalPoint(type, selectedBloodSugarUnit)) {
       return input.replace(/[^0-9.]/g, '')
     }
 
@@ -340,6 +334,7 @@ function AddBsScreen({navigation, route}: Props) {
 
               value={reading}
               keyboardType={
+                type !== undefined &&
                 allowDecimalPoint(type, selectedBloodSugarUnit)
                   ? 'numeric'
                   : 'number-pad'
@@ -357,7 +352,6 @@ function AddBsScreen({navigation, route}: Props) {
                 <BodyText style={styles.dropdownLabel}>
                   {dropdownTitle}
                 </BodyText>
-                <BodyText style={styles.label}>{type}</BodyText>
                 <Icon name="expand-more" size={30} color={colors.grey1} />
               </View>
             </TouchableHighlight>
