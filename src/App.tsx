@@ -1,6 +1,10 @@
 import React, {useContext} from 'react'
 import {NavigationContainer} from '@react-navigation/native'
-import {IntlProvider} from 'react-intl'
+import {
+  IntlProvider,
+  MissingTranslationError,
+  ReactIntlErrorCode,
+} from 'react-intl'
 import {PersistGate} from 'redux-persist/es/integration/react'
 import {Provider} from 'react-redux'
 import {store, persistor} from './redux/store'
@@ -33,8 +37,19 @@ const PersistGateConsumer = () => {
       ?.languageTag ||
       DEFAULT_LANGUAGE_CODE)
 
+  // addLocaleData({ locale: languageCode, pluralRuleFunction: () => {}, });
+
   return (
-    <IntlProvider locale={locale} messages={translationsForCode(locale)}>
+    <IntlProvider
+      locale={locale}
+      messages={translationsForCode(locale)}
+      defaultLocale={DEFAULT_LANGUAGE_CODE}
+      onError={(err) => {
+        if (err.code === 'MISSING_TRANSLATION') {
+          throw err
+        }
+        console.log('IntlProvider Err', err)
+      }}>
       <NavigationContainer>
         <Navigation />
       </NavigationContainer>

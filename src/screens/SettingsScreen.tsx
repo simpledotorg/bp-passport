@@ -37,10 +37,16 @@ import {
   AVAILABLE_BLOOD_SUGAR_UNITS,
   bloodSugarUnitToDisplayTitle,
 } from '../utils/blood-sugars'
+import * as RNLocalize from 'react-native-localize'
+import {DEFAULT_LANGUAGE_CODE} from '../constants/languages'
 
-type LanguagePickerProps = {apiUser: any}
-const LanguagePicker = ({apiUser}: LanguagePickerProps) => {
-  const locale = localeSelector()
+const LanguagePicker = () => {
+  const localeStored = localeSelector()
+  const locale =
+    localeStored ??
+    (RNLocalize.findBestAvailableLanguage(AVAILABLE_TRANSLATIONS)
+      ?.languageTag ||
+      DEFAULT_LANGUAGE_CODE)
   const dispatch = useThunkDispatch()
 
   const locales: Item[] = []
@@ -54,7 +60,7 @@ const LanguagePicker = ({apiUser}: LanguagePickerProps) => {
 
   return (
     <>
-      <View style={[styles.header, apiUser ? {} : {paddingTop: 24}]}>
+      <View style={{paddingTop: 24}}>
         <BodyHeader>
           <FormattedMessage id="settings.language" />
         </BodyHeader>
@@ -72,7 +78,9 @@ const LanguagePicker = ({apiUser}: LanguagePickerProps) => {
   )
 }
 
-const BloodSugarUnitPicker = () => {
+type BloodSugarUnitPickerProps = {apiUser: any}
+
+const BloodSugarUnitPicker = ({apiUser}: BloodSugarUnitPickerProps) => {
   const selectedBloodSugarUnit = bloodSugarUnitSelector()
   const dispatch = useThunkDispatch()
 
@@ -86,7 +94,7 @@ const BloodSugarUnitPicker = () => {
 
   return (
     <>
-      <View style={{paddingTop: 24}}>
+      <View style={[styles.header, apiUser ? {} : {paddingTop: 24}]}>
         <BodyHeader>
           <FormattedMessage id="settings.bs-units" />
         </BodyHeader>
@@ -240,12 +248,14 @@ function SettingsScreen({navigation}: any) {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.content}>
             {apiUser && <UserDetails apiUser={apiUser} />}
-            <LanguagePicker apiUser={apiUser} />
-            <BloodSugarUnitPicker />
-            <SupportSection />
+
+            <BloodSugarUnitPicker apiUser={apiUser} />
+            <LanguagePicker />
+
             {!hasPassportLinked && (
               <ConnectSection intl={intl} navigation={navigation} />
             )}
+            <SupportSection />
             <LegalSection />
           </View>
         </ScrollView>
