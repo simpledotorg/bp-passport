@@ -10,7 +10,8 @@ type Props = {
 
 export const HealthReminder = ({data}: Props) => {
   return (
-    <View style={{marginBottom: 8, alignItems: 'center'}}>
+    <View
+      style={{marginBottom: 8, alignItems: 'center', paddingHorizontal: 24}}>
       <Image source={data.image} style={styles.image} />
       <BodyText
         style={{
