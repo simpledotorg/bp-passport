@@ -1,20 +1,15 @@
 import React, {useState, useEffect} from 'react'
-import {Alert, Platform, AppState, View} from 'react-native'
+import {Alert, Platform, AppState} from 'react-native'
 import {
   createStackNavigator,
   useHeaderHeight,
   StackNavigationProp,
   StackNavigationOptions,
 } from '@react-navigation/stack'
-import {useNavigationState, StackActions} from '@react-navigation/native'
-import {CommonActions} from '@react-navigation/native'
-import {
-  forFade,
-  forModalPresentationIOS,
-  forRevealFromBottomAndroid,
-} from './navigation/interpolators'
+import {useNavigationState} from '@react-navigation/native'
+import {forFade, forModalPresentationIOS} from './navigation/interpolators'
 import {CardStyleInterpolators} from '@react-navigation/stack'
-import {useIntl, FormattedMessage} from 'react-intl'
+import {useIntl} from 'react-intl'
 import {usePrevious} from './effects/use-previous.effect'
 
 import LaunchScreen from './screens/LaunchScreen'
@@ -33,21 +28,16 @@ import AddMedicineScreen from './screens/AddMedicineScreen'
 import DetailsModalScreen from './screens/DetailsModalScreen'
 import MedicationDetailScreen from './screens/MedicationDetailScreen'
 import MedicationFrequencyScreen from './screens/MedicineFrequencyScreen'
+import BSTypeScreen from './screens/BSTypeScreen'
 import MedicationTimeScreen from './screens/MedicationTimeScreen'
 import AllowNotificationsModalScreen from './screens/AllowNotificationsModalScreen'
 import AddDataWarningModalScreen from './screens/AddDataWarningModalScreen'
+import WriteAReviewModalScreen from './screens/WriteAReviewModalScreen'
 
 import SCREENS from './constants/screens'
-import {
-  HomeHeaderTitle,
-  ButtonIcon,
-  LoadingOverlay,
-  BodyHeader,
-  BodyText,
-} from './components'
+import {ButtonIcon} from './components'
 import {colors, navigation as navigationStyle} from './styles'
 import {BloodPressure} from './redux/blood-pressure/blood-pressure.models'
-import {BloodSugar} from './redux/blood-sugar/blood-sugar.models'
 import {Medication, Reminder} from './redux/medication/medication.models'
 import {LoginState, PassportLinkedState} from './redux/auth/auth.models'
 import {
@@ -65,6 +55,8 @@ import {
 } from './redux/notifications/notifications.actions'
 import {Permission} from './redux/notifications/notifications.models'
 import {pushNotificationPermissionSelector} from './redux/notifications/notifications.selectors'
+import ConvertedBloodSugarReading from './models/converted_blood_sugar_reading'
+import {BLOOD_SUGAR_TYPES} from './redux/blood-sugar/blood-sugar.models'
 
 export type RootStackParamList = {
   LAUNCH: undefined
@@ -80,11 +72,13 @@ export type RootStackParamList = {
   CONTACT_A_DOCTOR: undefined
   HOME: undefined
   BP_HISTORY: {bps: BloodPressure[]}
+  ADD_BP_STACK: undefined
+  ADD_BS_STACK: undefined
   ADD_BP: undefined
   ADD_BS: undefined
-  BS_HISTORY: {bloodSugars: BloodSugar[]}
+  BS_HISTORY: undefined
   ADD_MEDICINE: undefined
-  DETAILS_MODAL_SCREEN: {bp?: BloodPressure; bs?: BloodSugar}
+  DETAILS_MODAL_SCREEN: {bp?: BloodPressure; bs?: ConvertedBloodSugarReading}
   MEDICATION_DETAILS: {medication: Medication; isEditing: boolean}
   MEDICATION_FREQUENCY: {
     updateDays: (days: string) => void
@@ -99,19 +93,25 @@ export type RootStackParamList = {
     cancelCallback: () => void
   }
   ADD_DATA_WARNING_MODAL_SCREEN: {displayText: string}
+  WRITE_A_REVIEW_MODAL_SCREEN: undefined
+  BS_TYPE: {
+    updateType: (type: BLOOD_SUGAR_TYPES) => void
+    type?: BLOOD_SUGAR_TYPES
+  }
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
 
+const getModalOptions = () => {
+  return {
+    cardStyleInterpolator: forModalPresentationIOS,
+    cardOverlayEnabled: true,
+  }
+}
+
 const Navigation = () => {
   const intl = useIntl()
 
-  const getModalOptions = () => {
-    return {
-      cardStyleInterpolator: forModalPresentationIOS,
-      cardOverlayEnabled: true,
-    }
-  }
   return (
     <>
       <Stack.Navigator
@@ -148,6 +148,15 @@ const Navigation = () => {
           }}
         />
         <Stack.Screen
+          name={SCREENS.WRITE_A_REVIEW_MODAL_SCREEN}
+          component={WriteAReviewModalScreen}
+          options={{
+            cardStyleInterpolator:
+              CardStyleInterpolators.forModalPresentationIOS,
+            cardOverlayEnabled: true,
+          }}
+        />
+        <Stack.Screen
           name={SCREENS.MEDICATION_FREQUENCY}
           component={MedicationFrequencyScreen}
           options={getModalOptions()}
@@ -157,14 +166,15 @@ const Navigation = () => {
           component={MedicationTimeScreen}
           options={getModalOptions()}
         />
+
         <Stack.Screen
           name={SCREENS.MAIN_STACK}
           component={MainStack}
           options={{cardStyleInterpolator: forFade}}
         />
         <Stack.Screen name={SCREENS.SCAN_STACK} component={ScanStack} />
-        <Stack.Screen name={SCREENS.ADD_BP} component={AddBPStack} />
-        <Stack.Screen name={SCREENS.ADD_BS} component={AddBSStack} />
+        <Stack.Screen name={SCREENS.ADD_BP_STACK} component={AddBPStack} />
+        <Stack.Screen name={SCREENS.ADD_BS_STACK} component={AddBSStack} />
       </Stack.Navigator>
     </>
   )
@@ -511,6 +521,7 @@ function AddBSStack({navigation}: Props) {
 
   return (
     <Stack.Navigator
+      mode="modal"
       screenOptions={{
         ...navigationStyle,
         headerStyle: {
@@ -518,7 +529,10 @@ function AddBSStack({navigation}: Props) {
           height: headerHeightIncludingSafeArea + 6,
         },
         ...sharedNavigationOptions,
-        gestureEnabled: true,
+        gestureEnabled: false,
+        cardStyle: {backgroundColor: 'rgba(47, 54, 61, 0.0)'},
+        animationEnabled: true,
+        ...getModalOptions(),
       }}>
       <Stack.Screen
         name={SCREENS.ADD_BS}
@@ -535,7 +549,15 @@ function AddBSStack({navigation}: Props) {
               />
             )
           },
-          gestureEnabled: false,
+        }}
+      />
+      <Stack.Screen
+        name={SCREENS.BS_TYPE}
+        component={BSTypeScreen}
+        options={{
+          headerShown: false,
+          animationEnabled: true,
+          cardStyleInterpolator: forModalPresentationIOS,
         }}
       />
     </Stack.Navigator>

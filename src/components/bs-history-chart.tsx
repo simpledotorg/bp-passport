@@ -10,10 +10,7 @@ import {
   VictoryVoronoiContainer,
 } from 'victory-native'
 
-import {
-  BloodSugar,
-  BLOOD_SUGAR_TYPES,
-} from '../redux/blood-sugar/blood-sugar.models'
+import {BLOOD_SUGAR_TYPES} from '../redux/blood-sugar/blood-sugar.models'
 import {colors} from '../styles'
 import {
   IDefineAChartRequest,
@@ -26,13 +23,22 @@ import {DateAxisComponent} from './victory-chart-parts/date-axis-component'
 import {TitleBar} from './victory-chart-parts/title-bar'
 import {ChartTypeSelection} from './bs-history/chart-type-selection'
 
+import {
+  convertBloodSugarValue,
+  BloodSugarCode,
+  determinePrecision,
+} from '../utils/blood-sugars'
+
+import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
+
 type Props = {
-  bloodSugarReadings: BloodSugar[]
+  bloodSugarReadings: ConvertedBloodSugarReading[]
+  displayUnits: BloodSugarCode
 }
 
-export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
+export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
   const [requestedChart, setRequestedChart] = useState<IDefineAChartRequest>(
-    getStartingChartRequest(bloodSugarReadings),
+    getStartingChartRequest(bloodSugarReadings, displayUnits),
   )
 
   const [chartData, setChartData] = useState<ChartData | null>(null)
@@ -41,14 +47,12 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
     setChartData(null)
     setRequestedChart(
       requestedChart.withUpdatedReadings(bloodSugarReadings) ??
-        getStartingChartRequest(bloodSugarReadings),
+        getStartingChartRequest(bloodSugarReadings, displayUnits),
     )
   }, [bloodSugarReadings])
 
   useEffect(() => {
-    if (requestedChart) {
-      setChartData(new ChartData(requestedChart))
-    }
+    setChartData(new ChartData(requestedChart))
   }, [requestedChart])
 
   const getMaxThreshhold = (): number => {
@@ -57,12 +61,33 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
     }
 
     switch (chartData.getChartType()) {
-      case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
-        return 126
+      case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+        return Number(
+          convertBloodSugarValue(
+            displayUnits,
+            BLOOD_SUGAR_TYPES.BEFORE_EATING,
+            '126',
+            BloodSugarCode.MG_DL,
+          ).toFixed(determinePrecision(displayUnits)),
+        )
       case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
-        return 7
+        return Number(
+          convertBloodSugarValue(
+            displayUnits,
+            BLOOD_SUGAR_TYPES.HEMOGLOBIC,
+            '7',
+            BloodSugarCode.MG_DL,
+          ).toFixed(determinePrecision(displayUnits)),
+        )
       default:
-        return 200
+        return Number(
+          convertBloodSugarValue(
+            displayUnits,
+            chartData.getChartType(),
+            '200',
+            BloodSugarCode.MG_DL,
+          ).toFixed(determinePrecision(displayUnits)),
+        )
     }
   }
 
@@ -75,7 +100,14 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
       case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
         return null
       default:
-        return 70
+        return Number(
+          convertBloodSugarValue(
+            displayUnits,
+            chartData.getChartType(),
+            '70',
+            BloodSugarCode.MG_DL,
+          ).toFixed(determinePrecision(displayUnits)),
+        )
     }
   }
 
@@ -114,7 +146,11 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
   const changeChartTypeHandler = (newChartType: BLOOD_SUGAR_TYPES): void => {
     setChartData(null)
     setRequestedChart(
-      requestedChart.changeRequestedType(newChartType, bloodSugarReadings),
+      requestedChart.changeRequestedType(
+        newChartType,
+        bloodSugarReadings,
+        displayUnits,
+      ),
     )
   }
 
@@ -168,7 +204,13 @@ export const BsHistoryChart = ({bloodSugarReadings}: Props) => {
           }}
           scale={{x: 'linear'}}
           theme={VictoryTheme.material}
-          containerComponent={<VictoryVoronoiContainer radius={30} />}>
+          containerComponent={
+            chartData.getScatterDataForGraph().length ? (
+              <VictoryVoronoiContainer radius={30} />
+            ) : (
+              <></>
+            )
+          }>
           <VictoryAxis
             tickCount={chartData.getAxisTickValues().length}
             tickFormat={(tick) => {

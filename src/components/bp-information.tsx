@@ -5,7 +5,7 @@ import {format} from 'date-fns'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {colors, redHeart, smallWarningSign} from '../styles'
-import {BodyText} from './'
+import {BodyText} from './text'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {dateLocale} from '../constants/languages'
 
@@ -79,7 +79,7 @@ export const BpInformation = ({bp, style = {}}: Props) => {
         }}>
         <Image source={redHeart} style={[styles.informationIcon]} />
         <View style={{flex: 1}}>
-          <View style={{flexDirection: 'row', flexWrap: 'wrap', flex: 1}}>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
             <BodyText
               style={{
                 fontSize: 18,

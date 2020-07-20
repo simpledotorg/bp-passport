@@ -77,3 +77,18 @@ export const setLanguage = (locale: string) => ({
   type: PatientActionTypes.SET_LANGUAGE,
   payload: locale,
 })
+
+export const setHasReviewed = (hasReviewed: boolean) => ({
+  type: PatientActionTypes.SET_HAS_REVIEWED,
+  payload: hasReviewed,
+})
+
+export const setNormalBpBsCount = (count: number) => ({
+  type: PatientActionTypes.SET_NORMAL_BP_BS_COUNT,
+  payload: count,
+})
+
+export const setBloodSugarUnit = (locale: string) => ({
+  type: PatientActionTypes.SET_BLOOD_SUGAR_UNIT,
+  payload: locale,
+})

@@ -39,7 +39,6 @@ function BpHistoryScreen({navigation, route}: Props) {
   const bps = /*bpsAll.slice(0, 5)*/ isAnimating
     ? bpsAll.slice(0, 5)
     : [...bpsAll]
-  const bpsChart = /*bpsAll.slice(0, 5)*/ isAnimating ? [] : [...bpsAll]
 
   useFocusEffect(
     React.useCallback(() => {
@@ -50,7 +49,9 @@ function BpHistoryScreen({navigation, route}: Props) {
 
   return (
     <View style={{flex: 1}}>
-      <ScrollView contentContainerStyle={{paddingVertical: 18}}>
+      <ScrollView
+        contentContainerStyle={{paddingVertical: 18}}
+        scrollIndicatorInsets={{right: 1}}>
         <View
           style={[
             containerStyles.containerSegment,

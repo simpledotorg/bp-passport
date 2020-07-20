@@ -15,6 +15,7 @@ import {IDefineAdateAxisLabel} from '../victory-chart-parts/i-define-a-date-axis
 import {getMonthYearTitle, getYearTitle} from '../../utils/dates'
 import {IDefineChartsAvailable} from './i-define-charts-available'
 import {LineGraphDataPoint} from './line-graph-data-point'
+import {BloodSugarCode, determinePrecision} from '../../utils/blood-sugars'
 
 export class ChartData implements IDefineChartsAvailable {
   private readonly _requestedChart: IDefineAChartRequest
@@ -23,7 +24,8 @@ export class ChartData implements IDefineChartsAvailable {
   private readonly hasPostPrandialReadings: boolean
   private readonly hasFastingReadings: boolean
   private readonly hasHemoglobicReadings: boolean
-
+  private readonly hasBeforeEatingReadings: boolean
+  private readonly hasAfterEatingReadings: boolean
   private readonly dateAxis: DateAxis
   private readonly aggregatedData: AggregatedBloodSugarData[] = []
   private readonly _hasNextPeriod: boolean
@@ -43,6 +45,13 @@ export class ChartData implements IDefineChartsAvailable {
     )
     this.hasHemoglobicReadings = requestedChart.readings.hasReadingType(
       BLOOD_SUGAR_TYPES.HEMOGLOBIC,
+    )
+
+    this.hasBeforeEatingReadings = requestedChart.readings.hasReadingType(
+      BLOOD_SUGAR_TYPES.BEFORE_EATING,
+    )
+    this.hasAfterEatingReadings = requestedChart.readings.hasReadingType(
+      BLOOD_SUGAR_TYPES.AFTER_EATING,
     )
 
     const filteredReadings = filterReadings(this._requestedChart)
@@ -96,8 +105,8 @@ export class ChartData implements IDefineChartsAvailable {
         return
       }
 
-      const minValue = Number(aggregateRecord.minReading?.blood_sugar_value)
-      const maxValue = Number(aggregateRecord.maxReading?.blood_sugar_value)
+      const minValue = aggregateRecord.minReading?.value
+      const maxValue = aggregateRecord.maxReading?.value
 
       if (minValue === maxValue) {
         return
@@ -117,6 +126,10 @@ export class ChartData implements IDefineChartsAvailable {
     return this._requestedChart.chartType
   }
 
+  public getDisplayUnits(): BloodSugarCode {
+    return this._requestedChart.getDisplayUnits()
+  }
+
   public getHasRandomReadings(): boolean {
     return this.hasRandomReadings
   }
@@ -129,12 +142,20 @@ export class ChartData implements IDefineChartsAvailable {
     return this.hasFastingReadings
   }
 
+  public getHasBeforeEatingReadings(): boolean {
+    return this.hasBeforeEatingReadings
+  }
+
+  public getHasAfterEatingReadings(): boolean {
+    return this.hasAfterEatingReadings
+  }
+
   public getHasHemoglobicReadings(): boolean {
     return this.hasHemoglobicReadings
   }
 
   public getMaxReading(): number | null {
-    return this.aggregatedData.reduce(
+    const value = this.aggregatedData.reduce(
       (
         memo: number | null,
         current: AggregatedBloodSugarData,
@@ -144,16 +165,24 @@ export class ChartData implements IDefineChartsAvailable {
           return memo
         }
 
-        const currentValue = Number(maxValueForCurrentDay.blood_sugar_value)
-
-        return !memo || currentValue > memo ? currentValue : memo
+        return !memo || maxValueForCurrentDay.value > memo
+          ? maxValueForCurrentDay.value
+          : memo
       },
       null,
     )
+
+    return value
+      ? Number(
+          value.toFixed(
+            determinePrecision(this._requestedChart.getDisplayUnits()),
+          ),
+        )
+      : null
   }
 
   public getMinReading(): number | null {
-    return this.aggregatedData.reduce(
+    const value = this.aggregatedData.reduce(
       (
         memo: number | null,
         current: AggregatedBloodSugarData,
@@ -163,12 +192,20 @@ export class ChartData implements IDefineChartsAvailable {
           return memo
         }
 
-        const currentValue = Number(minValueForCurrentDay.blood_sugar_value)
-
-        return !memo || currentValue < memo ? currentValue : memo
+        return !memo || minValueForCurrentDay.value < memo
+          ? minValueForCurrentDay.value
+          : memo
       },
       null,
     )
+
+    return value
+      ? Number(
+          value.toFixed(
+            determinePrecision(this._requestedChart.getDisplayUnits()),
+          ),
+        )
+      : null
   }
 
   public getIndexValues(): number[] {

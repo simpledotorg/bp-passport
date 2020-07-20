@@ -1,9 +1,19 @@
+import {IntlShape} from 'react-intl'
+
 export enum BLOOD_SUGAR_TYPES {
-  RANDOM_BLOOD_SUGAR = 'random',
-  FASTING_BLOOD_SUGAR = 'fasting',
-  POST_PRANDIAL = 'prandial',
+  RANDOM_BLOOD_SUGAR = 'random', // legacy, now becomes AFTER_EATING
+  FASTING_BLOOD_SUGAR = 'fasting', // legacy, now becomes BEFORE_EATING
+  POST_PRANDIAL = 'prandial', // legacy, now becomes AFTER_EATING
   HEMOGLOBIC = 'hemoglobic',
+  BEFORE_EATING = 'before_eating',
+  AFTER_EATING = 'after_eating',
 }
+
+export const BLOOD_SUGAR_TYPES_ORDERED = [
+  BLOOD_SUGAR_TYPES.BEFORE_EATING,
+  BLOOD_SUGAR_TYPES.AFTER_EATING,
+  BLOOD_SUGAR_TYPES.HEMOGLOBIC,
+]
 
 export interface BloodSugar {
   blood_sugar_value: string
@@ -19,50 +29,59 @@ export interface BloodSugar {
     village_or_colony: string
   }
   offline?: boolean
+  blood_sugar_unit?: string
 }
 
-declare global {
-  interface Array<T> {
-    getMinReading(this: T[]): T | null
+export enum BLOOD_SUGAR_INPUT_TYPES {
+  DECIMAL = 'DECIMAL',
+  PERCENTAGE = 'PERCENTAGE',
+}
 
-    getMaxReading(this: T[]): T | null
+export interface BloodSugarInfo {
+  type: BLOOD_SUGAR_TYPES
+  title: string
+  subtitle: string
+}
+
+export const bloodSugarTypeToInfo = (
+  type: BLOOD_SUGAR_TYPES,
+  intl: IntlShape,
+): BloodSugarInfo => {
+  switch (type) {
+    case BLOOD_SUGAR_TYPES.AFTER_EATING:
+      return {
+        type,
+        title: intl.formatMessage({
+          id: 'bs.after-eating-title',
+        }),
+        subtitle: intl.formatMessage({
+          id: 'bs.after-eating-description',
+        }),
+      }
+    case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+      return {
+        type,
+        title: intl.formatMessage({
+          id: 'bs.before-eating-title',
+        }),
+        subtitle: intl.formatMessage({
+          id: 'bs.before-eating-description',
+        }),
+      }
+    case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
+      return {
+        type,
+        title: intl.formatMessage({
+          id: 'bs.hemoglobic-code',
+        }),
+        subtitle: intl.formatMessage({
+          id: 'bs.hemoglobic-description',
+        }),
+      }
   }
-}
-
-if (!Array.prototype.getMinReading) {
-  Array.prototype.getMinReading = function <T extends BloodSugar>(
-    this: T[],
-  ): BloodSugar | null {
-    return this.reduce(
-      (memo: BloodSugar | null, current: BloodSugar): BloodSugar | null => {
-        const readingValue = Number(current.blood_sugar_value)
-
-        if (!memo) {
-          return current
-        }
-
-        return Number(memo.blood_sugar_value) < readingValue ? memo : current
-      },
-      null,
-    )
-  }
-}
-
-if (!Array.prototype.getMaxReading) {
-  Array.prototype.getMaxReading = function <T extends BloodSugar>(
-    this: T[],
-  ): BloodSugar | null {
-    return this.reduce(
-      (memo: BloodSugar | null, current: BloodSugar): BloodSugar | null => {
-        const readingValue = Number(current.blood_sugar_value)
-
-        if (!memo) {
-          return current
-        }
-
-        return Number(memo.blood_sugar_value) > readingValue ? memo : current
-      },
-      null,
-    )
+  return {
+    type,
+    title: 'not found',
+    subtitle: 'todo',
   }
 }

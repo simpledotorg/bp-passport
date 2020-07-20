@@ -7,50 +7,59 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native'
 import {FormattedMessage, useIntl} from 'react-intl'
-import {format} from 'date-fns'
-
 import {colors, purpleDrop, mediumWarningSign} from '../styles'
 import {BodyHeader, BodyText, Button} from './'
+import {BLOOD_SUGAR_TYPES} from '../redux/blood-sugar/blood-sugar.models'
 import {
-  BloodSugar,
-  BLOOD_SUGAR_TYPES,
-} from '../redux/blood-sugar/blood-sugar.models'
-import {
-  displayDate,
   isHighBloodSugar,
   isLowBloodSugar,
   showWarning,
   getBloodSugarDetails,
+  getDisplayBloodSugarUnit,
+  BloodSugarCode,
+  convertBloodSugarValue,
+  getReadingTypeId,
+  getReadingType,
+  determinePrecision,
 } from '../utils/blood-sugars'
 import {useThunkDispatch} from '../redux/store'
 import {deleteBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
 import {ButtonType} from './button'
+import {format} from 'date-fns'
+import {dateLocale} from '../constants/languages'
+import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
 
 type Props = {
-  bs: BloodSugar
+  bs: ConvertedBloodSugarReading
+  displayUnits: BloodSugarCode
   close: () => void
 }
 
-export const BsModal = ({bs, close}: Props) => {
-  const intl = useIntl()
-  const dispatch = useThunkDispatch()
+const displayDateAndTime = (bsIn: ConvertedBloodSugarReading) => {
+  return bsIn.recorded_at
+    ? format(new Date(bsIn.recorded_at), `dd-MMM-yyy, h:mm a`, {
+        locale: dateLocale(),
+      })
+    : null
+}
 
-  const getBSText = () => {
-    if (isHighBloodSugar(bs)) {
-      return (
-        <BodyText
-          style={[
-            styles.bsText,
-            {
-              color: colors.red1,
-            },
-          ]}>
-          <FormattedMessage id="general.high" />
-        </BodyText>
-      )
-    }
+const ValueStatusLabel = ({bs}: any) => {
+  if (isHighBloodSugar(bs)) {
+    return (
+      <BodyText
+        style={[
+          styles.bsText,
+          {
+            color: colors.red1,
+          },
+        ]}>
+        <FormattedMessage id="general.high" />
+      </BodyText>
+    )
+  }
 
-    return isLowBloodSugar(bs) ? (
+  if (isLowBloodSugar(bs)) {
+    return (
       <BodyText
         style={[
           styles.bsText,
@@ -60,109 +69,194 @@ export const BsModal = ({bs, close}: Props) => {
         ]}>
         <FormattedMessage id="general.low" />
       </BodyText>
-    ) : (
-      <BodyText
-        style={[
-          styles.bsText,
-          {
-            color: colors.green1,
-          },
-        ]}>
-        <FormattedMessage id="general.normal" />
-      </BodyText>
     )
   }
 
-  const getNotes = () => {
-    const bsDetails = getBloodSugarDetails(bs)
-    if (isHighBloodSugar(bs) && showWarning(bs)) {
-      return (
-        <View
+  return (
+    <BodyText
+      style={[
+        styles.bsText,
+        {
+          color: colors.green1,
+        },
+      ]}>
+      <FormattedMessage id="general.normal" />
+    </BodyText>
+  )
+}
+
+const HighBloodSugarWarning = () => {
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        marginVertical: 34,
+      }}>
+      <Image source={mediumWarningSign} />
+      <View style={{flexDirection: 'column', flex: 1, paddingLeft: 16}}>
+        <BodyText
           style={{
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            marginVertical: 34,
+            color: colors.grey0,
+            fontWeight: 'bold',
+            fontSize: 18,
+            lineHeight: 26,
           }}>
-          <Image source={mediumWarningSign} />
-          <View style={{flexDirection: 'column', flex: 1, paddingLeft: 16}}>
-            <BodyText
-              style={{
-                color: colors.grey0,
-                fontWeight: 'bold',
-                fontSize: 18,
-                lineHeight: 26,
-              }}>
-              <FormattedMessage id="alert.title" />
-            </BodyText>
-            <BodyText
-              style={{
-                lineHeight: 26,
-              }}>
-              <FormattedMessage
-                id="alert.description-high"
-                values={{
-                  label: <FormattedMessage id={'bs.blood-sugar'} />,
-                }}
-              />
-            </BodyText>
-          </View>
-        </View>
-      )
+          <FormattedMessage id="alert.title" />
+        </BodyText>
+        <BodyText
+          style={{
+            lineHeight: 26,
+          }}>
+          <FormattedMessage
+            id="alert.description-high"
+            values={{
+              label: <FormattedMessage id={'bs.blood-sugar'} />,
+            }}
+          />
+        </BodyText>
+      </View>
+    </View>
+  )
+}
+
+const LowBloodSugarWarning = () => {
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        marginVertical: 34,
+      }}>
+      <Image source={mediumWarningSign} />
+      <View style={{flexDirection: 'column', flex: 1, paddingLeft: 16}}>
+        <BodyText
+          style={{
+            color: colors.grey0,
+            fontWeight: 'bold',
+            fontSize: 18,
+            lineHeight: 26,
+          }}>
+          <FormattedMessage id="alert.title" />
+        </BodyText>
+        <BodyText
+          style={{
+            lineHeight: 26,
+          }}>
+          <FormattedMessage id="alert.description-low" />
+        </BodyText>
+      </View>
+    </View>
+  )
+}
+
+const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
+  const bsDetails = getBloodSugarDetails(bs)
+
+  const getNormalLimit = () => {
+    if (bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
+      return `${bsDetails.high} %`
     }
 
-    return isLowBloodSugar(bs) && showWarning(bs) ? (
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'flex-start',
-          marginVertical: 34,
-        }}>
-        <Image source={mediumWarningSign} />
-        <View style={{flexDirection: 'column', flex: 1, paddingLeft: 16}}>
-          <BodyText
-            style={{
-              color: colors.grey0,
-              fontWeight: 'bold',
-              fontSize: 18,
-              lineHeight: 26,
-            }}>
-            <FormattedMessage id="alert.title" />
-          </BodyText>
-          <BodyText
-            style={{
-              lineHeight: 26,
-            }}>
-            <FormattedMessage id="alert.description-low" />
-          </BodyText>
-        </View>
-      </View>
-    ) : (
-      <BodyText style={{lineHeight: 26, marginVertical: 34}}>
-        <FormattedMessage
-          id="general.sheet-normal-disclaimer"
-          values={{
-            label: <FormattedMessage id={bsDetails.languageTypeCode} />,
-            limit: (
-              <BodyText>
-                {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
-                  <>
-                    {bsDetails.high}
-                    <BodyText>%</BodyText>
-                  </>
-                ) : (
-                  <>
-                    {bsDetails.high} <FormattedMessage id="bs.mgdl" />
-                  </>
-                )}
-              </BodyText>
-            ),
-          }}
-        />
-      </BodyText>
-    )
+    const convertedValue = convertBloodSugarValue(
+      displayUnits,
+      bsDetails.type,
+      bsDetails.high.toString(),
+      BloodSugarCode.MG_DL,
+    ).toFixed(determinePrecision(displayUnits))
+    return `${convertedValue} ${getDisplayBloodSugarUnit(displayUnits)}`
+  }
+  return (
+    <BodyText style={{lineHeight: 26, marginVertical: 34}}>
+      <FormattedMessage
+        id="general.sheet-normal-disclaimer"
+        values={{
+          label: <FormattedMessage id={getReadingTypeId(bs)} />,
+          limit: <BodyText>{getNormalLimit()}</BodyText>,
+        }}
+      />
+    </BodyText>
+  )
+}
+
+const BloodSugarNotes = ({bs, displayUnits}: any) => {
+  if (isHighBloodSugar(bs) && showWarning(bs)) {
+    return <HighBloodSugarWarning />
   }
 
-  const details = getBloodSugarDetails(bs)
+  return isLowBloodSugar(bs) && showWarning(bs) ? (
+    <LowBloodSugarWarning />
+  ) : (
+    <NormalBloodSugarDisclaimer bs={bs} displayUnits={displayUnits} />
+  )
+}
+const CloseButton = ({intl, close}: any) => {
+  return (
+    <Button
+      style={[
+        {
+          flex: 1,
+        },
+      ]}
+      buttonType={ButtonType.LightBlue}
+      title={intl.formatMessage({id: 'general.close'})}
+      onPress={() => {
+        close()
+      }}
+    />
+  )
+}
+
+const DeleteButton = ({intl, bs, close}: any) => {
+  const dispatch = useThunkDispatch()
+  return (
+    <Button
+      style={{
+        backgroundColor: colors.white100,
+        flex: 1,
+      }}
+      buttonType={ButtonType.Delete}
+      title={intl.formatMessage({id: 'general.delete'})}
+      onPress={() => {
+        Alert.alert(
+          intl.formatMessage({id: 'bs.delete-bs'}),
+          intl.formatMessage({id: 'bs.delete-bs-confirm'}),
+          [
+            {
+              text: intl.formatMessage({id: 'general.cancel'}),
+            },
+            {
+              text: intl.formatMessage({id: 'general.ok'}),
+              style: 'destructive',
+              onPress: () => {
+                dispatch(deleteBloodSugar(bs))
+                close()
+              },
+            },
+          ],
+          {cancelable: true},
+        )
+      }}
+    />
+  )
+}
+
+const getReadingUnits = (
+  bloodSugar: ConvertedBloodSugarReading,
+  units: BloodSugarCode,
+) => {
+  return bloodSugar.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
+    ? '% '
+    : getDisplayBloodSugarUnit(units)
+}
+
+export const BsModal: (Props: Props) => any = ({
+  bs,
+  displayUnits,
+  close,
+}: Props) => {
+  const intl = useIntl()
+
   return (
     <TouchableWithoutFeedback
       onPress={(e) => {
@@ -187,32 +281,28 @@ export const BsModal = ({bs, close}: Props) => {
             <BodyText
               style={{
                 lineHeight: 26,
-                paddingTop: 12,
                 fontSize: 18,
                 color: colors.grey0,
               }}>
-              {`${bs.blood_sugar_value}`}
-              {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
-                <>
-                  % <FormattedMessage id={details.languageTypeCode} />
-                </>
-              ) : (
-                <>
-                  {' '}
-                  <FormattedMessage id="bs.mgdl" />{' '}
-                  <FormattedMessage id={details.languageTypeCode} />
-                </>
-              )}{' '}
-              {getBSText()}
+              {`${bs.value} ${getReadingUnits(bs, displayUnits)} `}
+              <ValueStatusLabel bs={bs} />
             </BodyText>
             <BodyText
               style={{
-                lineHeight: 26,
-                paddingTop: 8,
-                fontSize: 16,
+                lineHeight: 20,
+                fontSize: 14,
+                color: colors.grey1,
+                fontWeight: 'bold',
+              }}>
+              {getReadingType(bs)}
+            </BodyText>
+            <BodyText
+              style={{
+                lineHeight: 20,
+                fontSize: 14,
                 color: colors.grey1,
               }}>
-              {displayDate(bs)}
+              {`${displayDateAndTime(bs)}`}
             </BodyText>
             {bs.facility && (
               <BodyText style={{lineHeight: 26, paddingTop: 8}}>
@@ -226,50 +316,10 @@ export const BsModal = ({bs, close}: Props) => {
             )}
           </View>
         </View>
-        {getNotes()}
+        <BloodSugarNotes bs={bs} displayUnits={displayUnits} />
         <View style={{flexDirection: 'row'}}>
-          <Button
-            style={[
-              {
-                flex: 1,
-              },
-            ]}
-            buttonType={ButtonType.LightBlue}
-            title={intl.formatMessage({id: 'general.close'})}
-            onPress={() => {
-              close()
-            }}
-          />
-          {bs.offline && (
-            <Button
-              style={{
-                backgroundColor: colors.white100,
-                flex: 1,
-              }}
-              buttonType={ButtonType.Delete}
-              title={intl.formatMessage({id: 'general.delete'})}
-              onPress={() => {
-                Alert.alert(
-                  intl.formatMessage({id: 'bs.delete-bs'}),
-                  intl.formatMessage({id: 'bs.delete-bs-confirm'}),
-                  [
-                    {
-                      text: intl.formatMessage({id: 'general.cancel'}),
-                    },
-                    {
-                      text: intl.formatMessage({id: 'general.ok'}),
-                      style: 'destructive',
-                      onPress: () => {
-                        dispatch(deleteBloodSugar(bs))
-                        close()
-                      },
-                    },
-                  ],
-                  {cancelable: true},
-                )
-              }}
-            />
-          )}
+          <CloseButton close={close} intl={intl} />
+          {bs.offline && <DeleteButton close={close} bs={bs} intl={intl} />}
         </View>
       </View>
     </TouchableWithoutFeedback>
