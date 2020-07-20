@@ -10,8 +10,8 @@ interface IState {
 }
 
 export class HealthReminders extends Component<IState> {
-  SLIDER_WIDTH = Dimensions.get('window').width * 0.75
-  ITEM_WIDTH = Math.round(this.SLIDER_WIDTH)
+  SLIDER_WIDTH = Dimensions.get('window').width
+  ITEM_WIDTH = Math.round(this.SLIDER_WIDTH) - 36
   ITEM_HEIGHT = Math.round((this.ITEM_WIDTH * 3) / 4)
 
   constructor(props: any) {
@@ -33,9 +33,10 @@ export class HealthReminders extends Component<IState> {
           width: 6,
           height: 6,
           borderRadius: 3,
-          marginHorizontal: 0,
-          marginVertical: 0,
           backgroundColor: '#0075EB',
+        }}
+        dotContainerStyle={{
+          marginHorizontal: 6,
         }}
         inactiveDotStyle={{
           backgroundColor: '#ADB2B8',
@@ -48,8 +49,14 @@ export class HealthReminders extends Component<IState> {
 
   render() {
     return (
-      <View style={{alignContent: 'center', alignItems: 'center'}}>
+      <View
+        style={{
+          alignContent: 'center',
+          alignItems: 'center',
+          overflow: 'visible',
+        }}>
         <Carousel
+          inactiveSlideScale={1}
           data={(this.state as IState).entries}
           renderItem={this._renderItem}
           sliderWidth={this.SLIDER_WIDTH}
