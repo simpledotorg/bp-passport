@@ -184,5 +184,7 @@
   "health-reminders.healthy": "Monitorea tus medidas para comer saludable y hacer ejercicio",
   "health-reminders.doctor": "Consulta con tu doctor para definir metas y para aprender a como tomar tu presión y glucosa correctamente",
   "write-a-review.title": "Escribe una calificación",
-  "write-a-review.description": "Califícanos en el {store} y dínos que piensas"
+  "write-a-review.description": "Califícanos en el {store} y dínos que piensas",
+  "write-a-review.google-play-store": "Google Play Store",
+  "write-a-review.apple-app-store": "App Store"
 }
