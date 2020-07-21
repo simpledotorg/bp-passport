@@ -184,5 +184,7 @@
   "health-reminders.healthy": "ਸਿਹਤਮੰਦ ਭੋਜਨ ਖਾਣ ਅਤੇ ਵਧੇਰੇ ਕਸਰਤ ਕਰਨ ਲਈ ਆਪਣੀ ਰੀਡਿੰਗ ਦੇਖੋ",
   "health-reminders.doctor": "ਟੀਚੇ ਨਿਰਧਾਰਤ ਕਰਨ ਲਈ ਆਪਣੇ ਡਾਕਟਰ ਨਾਲ ਗੱਲ ਕਰੋ ਅਤੇ ਸਿੱਖੋ ਕਿ ਸਹੀ ਬੀਪੀ ਅਤੇ ਬਲੱਡ ਸ਼ੂਗਰ ਰੀਡਿੰਗ ਕਿਵੇਂ ਲੈਣੀ ਹੈ",
   "write-a-review.title": "ਸਮੀਖਿਆ ਲਿਖੋ",
-  "write-a-review.description": "ਸਾਨੂੰ {store} 'ਤੇ ਰੇਟਿੰਗ ਦਿਓ ਅਤੇ ਸਾਨੂੰ ਦੱਸੋ ਕਿ ਤੁਸੀਂ ਕੀ ਸੋਚਦੇ ਹੋ"
+  "write-a-review.description": "ਸਾਨੂੰ {store} 'ਤੇ ਰੇਟਿੰਗ ਦਿਓ ਅਤੇ ਸਾਨੂੰ ਦੱਸੋ ਕਿ ਤੁਸੀਂ ਕੀ ਸੋਚਦੇ ਹੋ",
+  "write-a-review.google-play-store": "Google Play Store",
+  "write-a-review.apple-app-store": "App Store"
 }
