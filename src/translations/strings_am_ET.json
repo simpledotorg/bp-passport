@@ -61,8 +61,8 @@
   "page-titles.all-bs": "ሁሉም የደም ስኳር መጠኖች",
   "page-titles.new-bs": "የደም ስኳር መጠን ያክሉ",
   "page-titles.add-medicine": "መድኃኒት ያክሉ",
-  "general.sheet-high-disclaimer": "ከፍተኛ {መለያ} በ {ገደብ} ላይ ወይም ከዛ በላይ ነው። ማስታወሻ ፣ የእርስዎ የግል “ከፍተኛ” {መለያ} የተለየ ሊሆን ይችላል። ከሐኪምዎ ጋር ይወያዩ።",
-  "general.sheet-normal-disclaimer": "መደበኛው {መለያ} ከ {ገደብ} በታች ነው። ማስታወሻ ፣ የእርስዎ የግል “የተለመደ” {መለያ} የተለየ ሊሆን ይችላል። ከሐኪምዎ ጋር ይወያዩ።",
+  "general.sheet-high-disclaimer": "ከፍተኛ {label} በ {limit} ላይ ወይም ከዛ በላይ ነው። ማስታወሻ ፣ የእርስዎ የግል “ከፍተኛ” {label} የተለየ ሊሆን ይችላል። ከሐኪምዎ ጋር ይወያዩ።",
+  "general.sheet-normal-disclaimer": "መደበኛው {label} ከ {limit} በታች ነው። ማስታወሻ ፣ የእርስዎ የግል “የተለመደ” {label} የተለየ ሊሆን ይችላል። ከሐኪምዎ ጋር ይወያዩ።",
   "general.add-bs": "የደም ስኳር መጠን ያክሉ",
   "general.save": "አስቀምጥ",
   "general.done": "ተጠናቅቋል",
@@ -184,5 +184,7 @@
   "health-reminders.healthy": "የበለጠ ጤናማ ለመሆን እና የአካል ብቃት እንቅስቃሴ ለማድረግ  ንባብዎን ይመልከቱ",
   "health-reminders.doctor": "ግቦችን ለማውጣት እና ትክክለኛውን የደም ግፊት እና የደም ስኳር ንባቦችን እንዴት መውሰድ እንደሚችሉ ለመማር ከሐኪምዎ ጋር ይነጋገሩ",
   "write-a-review.title": "ግምገማ ጻፍ",
-  "write-a-review.description": "በ {store} ላይ ደረጃ ይስጡን እና ምን እንደሚያስቡ ይንገሩን"
+  "write-a-review.description": "በ {store} ላይ ደረጃ ይስጡን እና ምን እንደሚያስቡ ይንገሩን",
+  "write-a-review.google-play-store": "Google Play Store",
+  "write-a-review.apple-app-store": "App Store"
 }
