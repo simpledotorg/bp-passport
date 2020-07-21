@@ -10,6 +10,7 @@ import {FormattedMessage, useIntl} from 'react-intl'
 import {colors, purpleDrop, mediumWarningSign} from '../styles'
 import {BodyHeader, BodyText, Button} from './'
 import {BLOOD_SUGAR_TYPES} from '../redux/blood-sugar/blood-sugar.models'
+import {isSmallDevice} from '../utils/device'
 import {
   isHighBloodSugar,
   isLowBloodSugar,
@@ -265,7 +266,7 @@ export const BsModal: (Props: Props) => any = ({
       }}>
       <View
         style={{
-          padding: 24,
+          padding: isSmallDevice() ? 20 : 24,
         }}>
         <BodyHeader
           style={{
