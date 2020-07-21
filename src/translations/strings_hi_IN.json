@@ -184,5 +184,7 @@
   "health-reminders.healthy": "पौष्टिक आहार लेने और अधिक व्यायाम करने के लिए अपनी रीडिंग देखें",
   "health-reminders.doctor": "लक्ष्य तय करने के लिए अपने डॉक्टर से बात करें, और बीपी व ब्लड शुगर की सटीक रीडिंग लेना सीखें",
   "write-a-review.title": "कोई समीक्षा लिखें",
-  "write-a-review.description": "हमें {store} पर रेट करें और हमें बताएं कि आप क्या सोचते हैं"
+  "write-a-review.description": "हमें {store} पर रेट करें और हमें बताएं कि आप क्या सोचते हैं",
+  "write-a-review.google-play-store": "Google Play Store",
+  "write-a-review.apple-app-store": "App Store"
 }
