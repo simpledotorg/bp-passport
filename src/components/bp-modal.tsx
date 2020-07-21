@@ -17,6 +17,7 @@ import {useThunkDispatch} from '../redux/store'
 import {deleteBloodPressure} from '../redux/blood-pressure/blood-pressure.actions'
 import {ButtonType} from './button'
 import {dateLocale} from '../constants/languages'
+import {isSmallDevice} from '../utils/device'
 
 type Props = {
   bp: BloodPressure
@@ -123,7 +124,7 @@ export const BpModal = ({bp, close}: Props) => {
       }}>
       <View
         style={{
-          padding: 24,
+          padding: isSmallDevice() ? 20 : 24,
         }}>
         <BodyHeader
           style={{
