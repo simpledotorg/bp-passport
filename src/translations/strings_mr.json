@@ -184,5 +184,7 @@
   "health-reminders.healthy": "जास्त पौष्टिक आहार घेण्यासाठी आणि जास्त व्यायाम करण्यासाठी तुमच्या वाचनांवर लक्ष ठेवा",
   "health-reminders.doctor": "ध्येय निश्चित करण्यासाठी तुमच्या डॉक्टरांशी बोला आणि बीपी आणि रक्तातील साखरेची वाचने अचूकपणे कशी घ्यावी ते शिका",
   "write-a-review.title": "समीक्षा लिहा",
-  "write-a-review.description": "आम्हाला {store} वर रेट करा आणि तुम्हाला काय वाटते ते आम्हाला सांगा"
+  "write-a-review.description": "आम्हाला {store} वर रेट करा आणि तुम्हाला काय वाटते ते आम्हाला सांगा",
+  "write-a-review.google-play-store": "Google Play Store",
+  "write-a-review.apple-app-store": "App Store"
 }

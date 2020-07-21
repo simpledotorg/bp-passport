@@ -184,5 +184,7 @@
   "health-reminders.healthy": "ఆరోగ్యకరమైన వాటిని తినడానికి మరియు ఎక్కువ వ్యాయమం చేయడానికి మీ రీడింగ్‌లను చూడండి",
   "health-reminders.doctor": "లక్ష్యాలు సెట్ చేయడానికి మరియు ఖచ్చితమైన బిపి మరియు రక్తంలోని చక్కెర రీడింగ్‌లను ఎలా లెక్కించాలనే దాన్ని తెలుసుకోవడానికి మీ వైద్యుడితో మాట్లాడండి",
   "write-a-review.title": "సమీక్షని వ్రాయండి",
-  "write-a-review.description": "{store}లో మాకు రేటు చేసి, మీ అభిప్రాయాన్ని మాకు తెలియజేయండి"
+  "write-a-review.description": "{store}లో మాకు రేటు చేసి, మీ అభిప్రాయాన్ని మాకు తెలియజేయండి",
+  "write-a-review.google-play-store": "Google Play Store",
+  "write-a-review.apple-app-store": "App Store"
 }
