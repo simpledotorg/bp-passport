@@ -178,7 +178,7 @@
   "alert.description-high": "Votre {label} est très élevée. Contactez un médecin de toute urgence pour faire contrôler votre état de santé.",
   "alert.description-low": "Votre glycémie est très basse. Mangez des aliments sucrés, comme des fruits, pour augmenter votre glycémie et contactez un médecin de toute urgence.",
   "health-reminders.title": "Rappels sur la santé",
-  "health-reminders.app": "Apportez votre application à chaque visite chez le médecin pour partager vos mesures",
+  "health-reminders.app": "Apportez votre app à chaque visite chez le médecin pour partager vos mesures",
   "health-reminders.check": "Vérifiez si votre tension artérielle ou votre glycémie vous semble trop élevée ou trop basse : ne faites pas de supposition",
   "health-reminders.sugar": "Prévoyez des aliments sucrés, comme des fruits, pour éviter l'hypoglycémie",
   "health-reminders.healthy": "Surveillez vos mesures pour manger plus sainement et faire plus d'exercice",
