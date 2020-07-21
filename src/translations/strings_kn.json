@@ -184,5 +184,7 @@
   "health-reminders.healthy": "ಆರೋಗ್ಯಪೂರ್ಣವಾಗಿ ಆಹಾರ ಸೇವನೆ ಮಾಡುವುದಕ್ಕಾಗಿ ನಿಮ್ಮ ರೀಡಿಂಗ್‌ಗಳನ್ನು ಗಮನಿಸುತ್ತಿರಿ ಮತ್ತು ಹೆಚ್ಚು ವ್ಯಾಯಾಮ ಮಾಡಿ",
   "health-reminders.doctor": "ಗುರಿಗಳನ್ನು ಹೊಂದಿಸುವುದಕ್ಕಾಗಿ ನಿಮ್ಮ ವೈದ್ಯರೊಂದಿಗೆ ಮಾತನಾಡಿ ಮತ್ತು ನಿಖರವಾದ ಬಿಪಿ ಮತ್ತು ರಕ್ತದ ಸಕ್ಕರೆ ರೀಡಿಂಗ್‌ಗಳನ್ನು ಹೇಗೆ ತೆಗೆದುಕೊಳ್ಳುವುದು ಎಂಬುದನ್ನು ತಿಳಿಯಿರಿ",
   "write-a-review.title": "ವಿಮರ್ಶೆಯನ್ನು ಬರೆಯಿರಿ",
-  "write-a-review.description": "{store} ನಲ್ಲಿ ನಮ್ಮನ್ನು ರೇಟ್ ಮಾಡಿ ಮತ್ತು ನಿಮ್ಮ ಭಾವನೆಯನ್ನು ನಮಗೆ ತಿಳಿಸಿ"
+  "write-a-review.description": "{store} ನಲ್ಲಿ ನಮ್ಮನ್ನು ರೇಟ್ ಮಾಡಿ ಮತ್ತು ನಿಮ್ಮ ಭಾವನೆಯನ್ನು ನಮಗೆ ತಿಳಿಸಿ",
+  "write-a-review.google-play-store": "Google Play Store",
+  "write-a-review.apple-app-store": "App Store"
 }
