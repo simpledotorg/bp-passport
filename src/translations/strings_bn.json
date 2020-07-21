@@ -184,5 +184,7 @@
   "health-reminders.healthy": "স্বাস্থ্যকর খাবার খেতে আপনার রিডিংগুলি লক্ষ্য করুন এবং বেশি শরীরচর্চা করুন",
   "health-reminders.doctor": "লক্ষ্য স্থির করতে আপনার ডাক্তারের সাথে কথা বলুন এবং কীভাবে নির্ভুল বিপি এবং ব্লাড সুগারের রিডিংগুলি নিতে হয় তা শিখুন",
   "write-a-review.title": "একটি পর্যালোচনা লিখুন",
-  "write-a-review.description": "{store} এ আমাদের রেট দিন এবং আমাদের আপনার মত জানান"
+  "write-a-review.description": "{store} এ আমাদের রেট দিন এবং আমাদের আপনার মত জানান",
+  "write-a-review.google-play-store": "Google Play Store",
+  "write-a-review.apple-app-store": "App Store"
 }
