@@ -31,6 +31,27 @@ export class DateAxis {
     return values
   }
 
+  private static populateTickValuesForAFewMonths(
+    dateEntries: DateEntry[],
+  ): MonthNameAxisLabel[] {
+    console.log('populateTickValuesForAFewMonths')
+    const values: MonthNameAxisLabel[] = []
+    dateEntries.forEach((dateEntry) => {
+      if (
+        !values.find((value) => {
+          return (
+            value.month === dateEntry.getDate().getMonth() &&
+            value.year === dateEntry.getDate().getFullYear()
+          )
+        })
+      ) {
+        // values.push(new MonthInitialAxisLabel(dateEntry.getDate()))
+        values.push(new MonthNameAxisLabel(dateEntry.getDate()))
+      }
+    })
+    return values
+  }
+
   private static populateTickValuesForAYear(
     dateEntries: DateEntry[],
   ): MonthInitialAxisLabel[] {
@@ -82,6 +103,8 @@ export class DateAxis {
 
     if (months === 0) {
       this.tickValues = DateAxis.populateTickValuesForAMonth(this.dates)
+    } else if (months <= 4) {
+      this.tickValues = DateAxis.populateTickValuesForAFewMonths(this.dates)
     } else if (months < 12) {
       this.tickValues = DateAxis.populateTickValuesForAYear(this.dates)
     } else {
@@ -89,12 +112,27 @@ export class DateAxis {
     }
   }
 
+  /*
   public static CreateForRequestedMonth(
     requestedMonth: number,
     requestedYear: number,
   ): DateAxis {
     const startDate = new Date(Date.UTC(requestedYear, requestedMonth, 1))
     const endDate = addDays(addMonths(startDate, 1), -1)
+
+    return new DateAxis(startDate, endDate)
+  }
+  */
+
+  public static CreateForRequestedMonth(
+    requestedMonth: number,
+    requestedYear: number,
+    monthCount: number = 1,
+  ): DateAxis {
+    const startDate = new Date(
+      Date.UTC(requestedYear, requestedMonth - (monthCount - 1), 1),
+    )
+    const endDate = addDays(addMonths(startDate, monthCount), -1)
 
     return new DateAxis(startDate, endDate)
   }

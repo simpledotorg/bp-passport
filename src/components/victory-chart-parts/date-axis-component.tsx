@@ -3,7 +3,7 @@ import {View} from 'react-native'
 import {DayOfMonthAxisLabel} from './day-of-month-axis-label'
 import {MonthNameAxisLabel} from './month-name-axis-label'
 import {MonthInitialAxisLabel} from './month-initial-axis-label'
-import {MonthAndYearLabel} from './month-and-year-label'
+import {MonthNameLabel} from './month-name-label'
 import {MonthInitialLabel} from './month-initial-label'
 import {DayOfMonthLabel} from './day-of-month-label'
 import {IDefineAdateAxisLabel} from './i-define-a-date-axis-label'
@@ -22,7 +22,7 @@ export const DateAxisComponent = ({tickValues}: Props) => {
       }}>
       {tickValues.map((value, index) => {
         if (value instanceof MonthNameAxisLabel) {
-          return <MonthAndYearLabel key={index} data={value} />
+          return <MonthNameLabel key={index} data={value} />
         } else if (value instanceof DayOfMonthAxisLabel) {
           return <DayOfMonthLabel key={index} data={value} />
         } else if (value instanceof MonthInitialAxisLabel) {

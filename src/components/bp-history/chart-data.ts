@@ -19,11 +19,13 @@ export class ChartData {
     this.dateAxis = DateAxis.CreateForRequestedMonth(
       requestedChart.requestedMonth,
       requestedChart.requestedYear,
+      requestedChart.monthCount,
     )
 
     this._chartTitle = getMonthYearTitle(
       requestedChart.requestedMonth,
       requestedChart.requestedYear,
+      requestedChart.monthCount,
     )
 
     this._hasPreviousPeriod = requestedChart.determineIfHasPreviousPeriod()

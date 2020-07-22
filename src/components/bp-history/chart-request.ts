@@ -8,11 +8,13 @@ export class ChartRequest {
   private readonly _chartTitle: string
   private readonly _requestedMonth: number
   private readonly _requestedYear: number
+  private readonly _monthCount: number
 
   private constructor(
     readings: BloodPressure[],
     requestedMonth?: number,
     requestedYear?: number,
+    monthCount?: number,
   ) {
     this._readings = readings
 
@@ -31,9 +33,17 @@ export class ChartRequest {
     this._chartTitle = getMonthYearTitle(
       this._requestedMonth,
       this._requestedYear,
+      this._monthCount,
     )
+
+    if (monthCount === undefined) {
+      this._monthCount = 4
+    } else {
+      this._monthCount = monthCount
+    }
   }
 
+  /*
   public static CreateFromAvailableReadings(
     readings: BloodPressure[],
   ): ChartRequest {
@@ -44,6 +54,12 @@ export class ChartRequest {
       : undefined
 
     return new ChartRequest(readings, date?.getMonth(), date?.getFullYear())
+  } */
+
+  public static CreateFromAvailableReadings(
+    readings: BloodPressure[],
+  ): ChartRequest {
+    return new ChartRequest(readings)
   }
 
   public getTitle(): string {
@@ -52,6 +68,10 @@ export class ChartRequest {
 
   public get requestedMonth(): number {
     return this._requestedMonth
+  }
+
+  public get monthCount(): number {
+    return this._monthCount
   }
 
   public get requestedYear(): number {
@@ -110,6 +130,7 @@ export class ChartRequest {
     return this.requestedMonth > dateOfOldestReading.getMonth()
   }
 
+  /*
   public determineIfHasNextPeriod(): boolean {
     const mostRecentReading = this.readings.mostRecent()
     if (mostRecentReading === null) {
@@ -126,5 +147,9 @@ export class ChartRequest {
     }
 
     return this.requestedMonth < dateOfMostRecentReading.getMonth()
+  } */
+
+  public determineIfHasNextPeriod(): boolean {
+    return this.requestedMonth < new Date().getMonth()
   }
 }
