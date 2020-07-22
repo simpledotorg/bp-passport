@@ -62,7 +62,7 @@
   "page-titles.new-bs": "Sukkaara dhiiga keessaa ida’aa",
   "page-titles.add-medicine": "Dawaa ida’aa",
   "general.sheet-high-disclaimer": "Ol aanaan {hangi} yookan {daangaa} oli. Yaadachiisa, \"ol aanaan\" dhuunfaa keetii {hangi} adda ta'uu danda'a. Haakima kee wajjiin mari'adhu.",
-  "general.sheet-normal-disclaimer": "Sirriin {hangi} {daangaa} irraa gadi.  Yaadachiisa, \"sirriin\" dhuunfaa keetii {hangi} adda ta'uu danda'a. Haakima kee wajjiin mari'adhu.",
+  "general.sheet-normal-disclaimer": "Sirriin {label} {limit} irraa gadi.  Yaadachiisa, \"sirriin\" dhuunfaa keetii {label} adda ta'uu danda'a. Haakima kee wajjiin mari'adhu.",
   "general.add-bs": "Sukkaara dhiiga keessaa ida’aa",
   "general.save": "Ol kaa’i",
   "general.done": "Taasifameera",
