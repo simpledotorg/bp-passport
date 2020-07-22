@@ -88,6 +88,8 @@ export const BpHistoryChart = ({bps}: Props) => {
     return <GraphLoadingPlaceholder chartTitle={requestedChart.getTitle()} />
   }
 
+  console.log('chartData: ', chartData)
+
   return (
     <>
       <TitleBar
