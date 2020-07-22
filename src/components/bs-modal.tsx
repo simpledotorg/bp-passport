@@ -87,6 +87,8 @@ const ValueStatusLabel = ({bs}: any) => {
 }
 
 const HighBloodSugarWarning = () => {
+  const intl = useIntl()
+
   return (
     <View
       style={{
@@ -112,7 +114,7 @@ const HighBloodSugarWarning = () => {
           <FormattedMessage
             id="alert.description-high"
             values={{
-              label: <FormattedMessage id={'bs.blood-sugar'} />,
+              label: intl.formatMessage({id: 'bs.blood-sugar'}).toLowerCase(),
             }}
           />
         </BodyText>
