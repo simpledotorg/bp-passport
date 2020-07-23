@@ -399,9 +399,11 @@ function AddBsScreen({navigation, route}: Props) {
                       displayText: intl.formatMessage(
                         {id: 'alert.description-high'},
                         {
-                          label: intl.formatMessage({
-                            id: 'bs.blood-sugar',
-                          }),
+                          label: intl
+                            .formatMessage({
+                              id: 'bs.blood-sugar',
+                            })
+                            .toLowerCase(),
                         },
                       ),
                     })
