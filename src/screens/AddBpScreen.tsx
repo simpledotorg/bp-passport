@@ -347,11 +347,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: colors.grey2,
     padding: 16,
-    fontSize: 16,
+    fontSize: 28,
     fontWeight: 'normal',
     fontStyle: 'normal',
     letterSpacing: 0.5,
-    color: colors.grey0,
+    color: colors.black,
     textAlign: 'center',
   },
   label: {
