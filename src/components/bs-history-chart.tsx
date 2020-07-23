@@ -45,6 +45,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
 
   useEffect(() => {
     setChartData(null)
+
     setRequestedChart(
       requestedChart.withUpdatedReadings(bloodSugarReadings) ??
         getStartingChartRequest(bloodSugarReadings, displayUnits),
@@ -115,6 +116,26 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
     if (!chartData) {
       throw new Error('Can not get max domain, not instance of chart data')
     }
+    switch (chartData.getChartType()) {
+      case BLOOD_SUGAR_TYPES.AFTER_EATING:
+      case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+        let maxValue = 0
+
+        requestedChart.readings
+          .filterByType(requestedChart.chartType)
+          .map((bs) => {
+            if (bs.value > maxValue) {
+              maxValue = bs.value
+            }
+          })
+
+        if (maxValue > 0) {
+          return maxValue
+        }
+        return 300
+      default:
+        break
+    }
 
     const threshhold = getMaxThreshhold()
     const difference = Math.round(threshhold / 10)
@@ -132,6 +153,23 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
       throw new Error('Can not get min domain, not instance of chart data')
     }
 
+    switch (chartData.getChartType()) {
+      case BLOOD_SUGAR_TYPES.AFTER_EATING:
+      case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+        let minValue = 70
+
+        requestedChart.readings
+          .filterByType(requestedChart.chartType)
+          .map((bs) => {
+            if (bs.value < minValue) {
+              minValue = bs.value
+            }
+          })
+        return minValue
+      default:
+        break
+    }
+
     const threshhold = getMinThreshhold() ?? getMaxThreshhold()
     const difference = Math.round(threshhold / 10)
     let base = chartData.getMinReading() ?? threshhold
@@ -144,7 +182,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
   }
 
   const changeChartTypeHandler = (newChartType: BLOOD_SUGAR_TYPES): void => {
-    //setChartData(null)
+    // setChartData(null)
     setRequestedChart(
       requestedChart.changeRequestedType(
         newChartType,
@@ -166,6 +204,23 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
 
   if (!chartData) {
     return <GraphLoadingPlaceholder chartsAvailable={requestedChart} />
+  }
+
+  const minThreshhold = getMinThreshhold()
+  const maxThreshhold = getMaxThreshhold()
+  const midAxis: any[] = []
+
+  switch (chartData.getChartType()) {
+    case BLOOD_SUGAR_TYPES.AFTER_EATING:
+      midAxis.push(135)
+      midAxis.push(265)
+      break
+    case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+      midAxis.push(98)
+      midAxis.push(154)
+      break
+    default:
+      break
   }
 
   return (
@@ -233,14 +288,36 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
               }
               return tick
             }}
-            tickValues={[getMaxThreshhold()]}
+            tickValues={[maxThreshhold]}
             style={{
               grid: {stroke: colors.grey2, strokeDasharray: 4},
               axis: {stroke: colors.grey3, strokeDasharray: 4, strokeWidth: 0},
               ticks: {opacity: 0},
             }}
           />
-          {getMinThreshhold() && (
+          {midAxis.map((data, index) => {
+            return (
+              <VictoryAxis
+                orientation="right"
+                dependentAxis
+                key={`mid-axis-${index}`}
+                tickValues={[data]}
+                style={{
+                  grid: {opacity: 0},
+                  axis: {
+                    opacity: 0,
+                  },
+                  ticks: {opacity: 0},
+                  tickLabels: {
+                    fill: colors.grey2,
+                  },
+                  axisLabel: {fontSize: 20, padding: 30},
+                }}
+              />
+            )
+          })}
+
+          {minThreshhold && (
             <VictoryAxis
               orientation="right"
               dependentAxis
@@ -250,7 +327,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
                 }
                 return tick
               }}
-              tickValues={[getMinThreshhold()]}
+              tickValues={[minThreshhold]}
               style={{
                 grid: {stroke: colors.grey2, strokeDasharray: 4},
                 axis: {
@@ -293,11 +370,17 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
 
           <VictoryScatter
             data={chartData.getScatterDataForGraph()}
-            size={3}
+            size={({active}) => (active ? 4 : 3)}
             style={{
               data: {
-                fill: ({datum}) =>
-                  datum.showOutOfRange ? colors.red1 : colors.green1,
+                fill: ({datum, active}) =>
+                  active
+                    ? colors.white
+                    : datum.showOutOfRange
+                    ? colors.red1
+                    : colors.green1,
+                stroke: colors.blue2,
+                strokeWidth: ({active}) => (active ? 2 : 0),
               },
             }}
             labelComponent={VictoryGraphToolTipHelper.getVictoryToolTip()}
