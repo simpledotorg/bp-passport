@@ -212,12 +212,24 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
 
   switch (chartData.getChartType()) {
     case BLOOD_SUGAR_TYPES.AFTER_EATING:
-      midAxis.push(135)
-      midAxis.push(265)
+      if (displayUnits === BloodSugarCode.MMOL_L) {
+        midAxis.push(7.5)
+        midAxis.push(14.7)
+      } else {
+        midAxis.push(135)
+        midAxis.push(265)
+      }
+
       break
     case BLOOD_SUGAR_TYPES.BEFORE_EATING:
-      midAxis.push(98)
-      midAxis.push(154)
+      if (displayUnits === BloodSugarCode.MMOL_L) {
+        midAxis.push(5.45)
+        midAxis.push(8.55)
+      } else {
+        midAxis.push(98)
+        midAxis.push(154)
+      }
+
       break
     default:
       break

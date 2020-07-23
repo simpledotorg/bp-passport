@@ -60,7 +60,7 @@ const LanguagePicker = () => {
 
   return (
     <>
-      <View style={{paddingTop: 24}}>
+      <View style={[styles.header, {paddingTop: 24}]}>
         <BodyHeader>
           <FormattedMessage id="settings.language" />
         </BodyHeader>

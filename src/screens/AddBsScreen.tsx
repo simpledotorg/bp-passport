@@ -276,15 +276,36 @@ function AddBsScreen({navigation, route}: Props) {
   }
 
   const cleanText = (input: string) => {
+    let ret = input
     if (type && allowDecimalPoint(type, selectedBloodSugarUnit)) {
-      return input.replace(/[^0-9.]/g, '')
+      ret = ret.replace(/[^0-9.]/g, '')
+    } else {
+      ret = ret.replace(/[^0-9]/g, '')
     }
 
-    return input.replace(/[^0-9]/g, '')
+    switch (type) {
+      case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
+        break
+      default:
+        if (selectedBloodSugarUnit === BloodSugarCode.MG_DL) {
+          const v = parseInt(ret, 10)
+          if (v > 1000) {
+            ret = '1000'
+          }
+        } else if (selectedBloodSugarUnit === BloodSugarCode.MMOL_L) {
+          const v = parseFloat(ret)
+          if (v > 55.5) {
+            ret = '55.5'
+          }
+        }
+        break
+    }
+    return ret
   }
 
   // need to do this way, beause if you change type then react complains that number of called hooks has changed
   let displayUnitLabel = getDisplayBloodSugarUnit(selectedBloodSugarUnit)
+
   if (type === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
     displayUnitLabel = '%'
   }
@@ -399,9 +420,11 @@ function AddBsScreen({navigation, route}: Props) {
                       displayText: intl.formatMessage(
                         {id: 'alert.description-high'},
                         {
-                          label: intl.formatMessage({
-                            id: 'bs.blood-sugar',
-                          }),
+                          label: intl
+                            .formatMessage({
+                              id: 'bs.blood-sugar',
+                            })
+                            .toLowerCase(),
                         },
                       ),
                     })
@@ -454,11 +477,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: colors.grey2,
     padding: 16,
-    fontSize: 16,
+    fontSize: 28,
     fontWeight: 'normal',
     fontStyle: 'normal',
     letterSpacing: 0.5,
-    color: colors.grey0,
+    color: colors.black,
     textAlign: 'center',
   },
   label: {

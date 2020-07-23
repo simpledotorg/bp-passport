@@ -231,7 +231,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                         alignItems: 'center',
                       },
                     ]}>
-                    <BodyText>
+                    <BodyText style={{flex: 1, marginRight: 10}}>
                       <FormattedMessage id="medicine.frequency" />
                     </BodyText>
                     <View style={{flexDirection: 'row'}}>
@@ -265,7 +265,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                         alignItems: 'center',
                       },
                     ]}>
-                    <BodyText>
+                    <BodyText style={{flex: 1, marginRight: 10}}>
                       <FormattedMessage id="medicine.time" />
                     </BodyText>
                     <View style={{flexDirection: 'row'}}>

@@ -41,7 +41,7 @@ export const isLowBloodSugar = (bs: ConvertedBloodSugarReading) => {
   }
 
   return bs.blood_sugar_unit === BloodSugarCode.MMOL_L
-    ? bs.value <= lowBSValue
+    ? bs.value < lowBSValue
     : bs.value < lowBSValue
 }
 
