@@ -50,7 +50,7 @@ function AddDataWarningModalScreen({navigation, route}: Props) {
             {
               backgroundColor: colors.white100,
               padding: 24,
-              width: 265,
+              marginHorizontal: 18,
             },
           ]}>
           <Image
@@ -64,7 +64,7 @@ function AddDataWarningModalScreen({navigation, route}: Props) {
             {displayText}
           </BodyText>
           <Button
-            buttonType={ButtonType.Normal}
+            buttonType={ButtonType.LightBlue}
             title={intl.formatMessage({id: 'general.ok'})}
             onPress={() => {
               navigation.pop()
