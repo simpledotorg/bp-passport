@@ -97,7 +97,7 @@ export const BpInformation = ({bp, style = {}}: Props) => {
           <BodyText
             style={{
               fontSize: 16,
-              color: colors.grey1,
+              color: colors.grey0,
             }}>
             {displayDate(bp)}
           </BodyText>
