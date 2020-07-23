@@ -213,7 +213,8 @@ function Home({navigation}: Props) {
               showList={HOME_PAGE_SHOW_LIMIT}
             />
             <MedicalDetailsSection meds={meds} navigation={navigation} />
-            <View style={[containerStyles.containerSegment]}>
+            <View
+              style={[containerStyles.containerSegment, {overflow: 'hidden'}]}>
               <HealthReminders />
             </View>
           </ScrollView>

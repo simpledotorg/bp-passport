@@ -42,7 +42,7 @@ function DetailsModalScreen({navigation, route}: Props) {
         <View
           style={{
             backgroundColor: colors.white100,
-            padding: 16,
+            padding: 0,
             width: '100%',
             borderTopLeftRadius: 4,
             borderTopRightRadius: 4,

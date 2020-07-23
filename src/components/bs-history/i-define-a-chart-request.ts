@@ -128,7 +128,6 @@ export const determineIfHasPreviousPeriod = (
   }
 
   const dateOfOldestReading = new Date(oldestReading.recorded_at)
-
   if (requestedChart instanceof RequestSingleMonthChart) {
     if (requestedChart.requestedYear < dateOfOldestReading.getFullYear()) {
       return false

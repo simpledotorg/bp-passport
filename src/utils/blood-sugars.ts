@@ -257,6 +257,20 @@ export const getReadingTypeId = (
   }
 }
 
+export const simplifyBloodSugarReadingType = (
+  bsType: BLOOD_SUGAR_TYPES,
+): BLOOD_SUGAR_TYPES => {
+  switch (bsType) {
+    case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
+      return BLOOD_SUGAR_TYPES.HEMOGLOBIC
+    case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
+    case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+      return BLOOD_SUGAR_TYPES.BEFORE_EATING
+    default:
+      return BLOOD_SUGAR_TYPES.AFTER_EATING
+  }
+}
+
 declare global {
   interface Array<T> {
     // tslint:disable-next-line: array-type
@@ -311,8 +325,11 @@ if (!Array.prototype.filterByTypes) {
     types: BLOOD_SUGAR_TYPES[],
   ): T[] {
     return this.filter((reading) => {
+      const typeSimplified = simplifyBloodSugarReadingType(
+        reading.blood_sugar_type as BLOOD_SUGAR_TYPES,
+      )
       return types.find((type) => {
-        return type === reading.blood_sugar_type
+        return type === typeSimplified
       })
     })
   }
@@ -324,7 +341,10 @@ if (!Array.prototype.filterByType) {
     type: BLOOD_SUGAR_TYPES,
   ): T[] {
     return this.filter((reading) => {
-      return type === reading.blood_sugar_type
+      const typeSimplified = simplifyBloodSugarReadingType(
+        reading.blood_sugar_type as BLOOD_SUGAR_TYPES,
+      )
+      return typeSimplified === type
     })
   }
 }

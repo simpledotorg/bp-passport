@@ -155,6 +155,7 @@ export class ChartData implements IDefineChartsAvailable {
   }
 
   public getMaxReading(): number | null {
+    // const arr = allValues ? this.aggregatedData : this._requestedChart.readings
     const value = this.aggregatedData.reduce(
       (
         memo: number | null,

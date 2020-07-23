@@ -4,6 +4,7 @@ import {AuthActionTypes} from './auth.types'
 import {AppThunk} from '../store'
 import {LoginState, AuthParams, PassportLinkedState} from './auth.models'
 import {getPatient} from '../patient/patient.actions'
+import analytics from '@react-native-firebase/analytics'
 
 export const setAuthParams = (authParams: AuthParams | undefined) => ({
   type: AuthActionTypes.SET_AUTH_PARAMS,
@@ -68,6 +69,26 @@ export const login = (passportId: string, otp: string): AppThunk => async (
     dispatch(setLoginState(LoginState.LoggedIn))
     dispatch(setPassportLinkedState(PassportLinkedState.Linking))
     dispatch(getPatient())
+
+    analytics()
+      .setUserProperty('has_passport', 'true')
+      .then(() => {
+        console.log('User has_passport set')
+      })
+      .catch((err) => {
+        console.log('Analytics >> has_passport failed', err)
+      })
+
+    analytics()
+      .logEvent('linked_passport', {
+        passportId,
+      })
+      .then(() => {
+        console.log('Analytics >> link passport worked')
+      })
+      .catch((err) => {
+        console.log('Analytics >> link passport failed', err)
+      })
 
     return true
   } catch (err) {

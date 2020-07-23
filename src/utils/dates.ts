@@ -43,7 +43,17 @@ export const getMonthName = (monthIndex: number, year: number): string => {
   })
 }
 
-export const getMonthYearTitle = (monthIndex: number, year: number): string => {
+export const getMonthYearTitle = (
+  monthIndex: number,
+  year: number,
+  monthCount: number = 1,
+): string => {
+  if (monthCount > 1) {
+    return `${getMonthName(
+      monthIndex - (monthCount - 1),
+      year,
+    )} - ${getMonthName(monthIndex, year)}-${year}`
+  }
   return `${getMonthName(monthIndex, year)}-${year}`
 }
 

@@ -7,6 +7,7 @@ import {
 import {useIntl} from 'react-intl'
 import {format} from 'date-fns'
 import ConvertedBloodSugarReading from '../../models/converted_blood_sugar_reading'
+import {dateLocale} from '../../constants/languages'
 
 export class ScatterGraphDataPoint {
   private intl = useIntl()
@@ -21,34 +22,31 @@ export class ScatterGraphDataPoint {
     this.y = reading.value
 
     this.label =
-      `${reading.value}${this.getDisplayUnits(
-        reading,
-      )} ${this.getBloodSugarType(reading)}${format(
-        new Date(reading.recorded_at),
-        'dd',
-      )}-` +
-      `${
-        this.intl.formatMessage({
-          id: `general.${format(
-            new Date(reading.recorded_at),
-            'MMM',
-          ).toLowerCase()}`,
-        }) + `-${format(new Date(reading.recorded_at), 'yyyy')}`
-      }`
+      `${reading.value}${this.getDisplayUnits(reading)} ` +
+      `${format(new Date(reading.recorded_at), 'dd-MMM-yyyy, HH:mm', {
+        locale: dateLocale(),
+      }).toUpperCase()}`
 
     this.showOutOfRange = isHighBloodSugar(reading) || isLowBloodSugar(reading)
   }
 
   private getDisplayUnits(reading: ConvertedBloodSugarReading): string {
+    if (reading.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
+      return `%`
+    }
+
     switch (reading.blood_sugar_unit) {
       case BloodSugarCode.PERCENT:
         return '%'
       case BloodSugarCode.MMOL_L:
-        return this.intl.formatMessage({id: 'bs.mmoll'})
+        return ' ' + this.intl.formatMessage({id: 'bs.mmoll'})
       default:
-        return this.intl.formatMessage({
-          id: 'bs.mgdl',
-        })
+        return (
+          ' ' +
+          this.intl.formatMessage({
+            id: 'bs.mgdl',
+          })
+        )
     }
   }
 
