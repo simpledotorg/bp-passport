@@ -144,7 +144,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
   }
 
   const changeChartTypeHandler = (newChartType: BLOOD_SUGAR_TYPES): void => {
-    setChartData(null)
+    //setChartData(null)
     setRequestedChart(
       requestedChart.changeRequestedType(
         newChartType,
@@ -155,12 +155,12 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
   }
 
   const movePreviousPeriod = (): void => {
-    setChartData(null)
+    // setChartData(null)
     setRequestedChart(requestedChart.moveToPreviousPeriod())
   }
 
   const moveNextPeriod = (): void => {
-    setChartData(null)
+    // setChartData(null)
     setRequestedChart(requestedChart.moveToNextPeriod())
   }
 
@@ -208,7 +208,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
             chartData.getScatterDataForGraph().length ? (
               <VictoryVoronoiContainer radius={30} />
             ) : (
-              <></>
+              <VictoryVoronoiContainer radius={30} />
             )
           }>
           <VictoryAxis

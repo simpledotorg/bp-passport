@@ -75,12 +75,12 @@ export const BpHistoryChart = ({bps}: Props) => {
   }
 
   const movePreviousPeriod = (): void => {
-    setChartData(null)
+    // setChartData(null)
     setRequestedChart(requestedChart.moveToPreviousPeriod())
   }
 
   const moveNextPeriod = (): void => {
-    setChartData(null)
+    // setChartData(null)
     setRequestedChart(requestedChart.moveToNextPeriod())
   }
 
