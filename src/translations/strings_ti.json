@@ -175,7 +175,7 @@
   "medicine.allow-notifications-body": "ናይ መድሓኒት መዘከሪታት ንምርካብ ምልክታታት ይፍቀዱ",
   "medicine.reminder-notification": "{day} {time}, መድሓኒቶም ይውሰዱ",
   "alert.title": "ሓገዝ ሕክምና ይርከብ",
-  "alert.description-high": "ዓቐንካ ልዑል ስለዝኾነ ኩነታት ጥዕካኻ ንምፍታሽ ብቅልጡፍ ሓኪምካ ርከቦ/ ቢዮ",
+  "alert.description-high": "ናትካ {label} ልዑል ስለዝኾነ ኩነታት ጥዕካኻ ንምፍታሽ ብቅልጡፍ ሓኪምካ ርከቦ/ ቢዮ።",
   "alert.description-low": "ዓቐን ሽኮር ደምካ ብጣዕሚ ትሑት ስለዝኾነ  መጠን ሽኮር ደም  ንምልዓል ትሕዝቶ ሽኮር ዘለዎም ምግብታት ከም ፍራምረ ተመገብ ከምእውን ብቅልጡፍ ሓኪምካ ርከቦ/ ቢዮ",
   "health-reminders.title": "መዘኻኸርቲ ጥዕና",
   "health-reminders.app": "እቲ ዘሎ መዝገብ/ንባብ ንክርኣ ናብ ሓኪምካ ትገብሮ ሕድሕድ ዑደት እታ ኣፕ(App) ሒዝካያ ምፃእ",
