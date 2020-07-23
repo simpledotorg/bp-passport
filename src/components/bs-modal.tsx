@@ -156,6 +156,8 @@ const LowBloodSugarWarning = () => {
 const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
   const bsDetails = getBloodSugarDetails(bs)
 
+  const intl = useIntl()
+
   const getNormalLimit = () => {
     if (bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
       return `${bsDetails.high} %`
@@ -174,7 +176,7 @@ const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
       <FormattedMessage
         id="general.sheet-normal-disclaimer"
         values={{
-          label: <FormattedMessage id={getReadingTypeId(bs)} />,
+          label: intl.formatMessage({id: getReadingTypeId(bs)}).toLowerCase(),
           limit: <BodyText>{getNormalLimit()}</BodyText>,
         }}
       />
