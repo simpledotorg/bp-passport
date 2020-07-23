@@ -95,12 +95,11 @@ export const BsInformation = ({bs, displayUnits, style = {}}: Props) => {
               style={{
                 fontSize: 18,
                 color: colors.grey0,
-                fontWeight: '500',
               }}>
               {`${bs.value}`}
               {bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
                 ? '%'
-                : getDisplayBloodSugarUnit(displayUnits)}{' '}
+                : ' ' + getDisplayBloodSugarUnit(displayUnits)}{' '}
             </BodyText>
             <View>{getBSText()}</View>
           </View>
