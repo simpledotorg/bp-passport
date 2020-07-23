@@ -8,11 +8,11 @@ export class VictoryGraphToolTipHelper {
       <VictoryTooltip
         renderInPortal={false}
         constrainToVisibleArea={true}
-        cornerRadius={20}
+        cornerRadius={16}
         pointerLength={5}
         flyoutStyle={{
           height: 32,
-          padding: 200,
+          padding: 5,
           fill: colors.grey0,
         }}
         style={{fill: colors.white}}
