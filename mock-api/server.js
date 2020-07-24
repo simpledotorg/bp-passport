@@ -15,6 +15,6 @@ app.use('/', mockapi.router)
 
 app.listen(port, (err) => {
   if (err) throw err
-  console.log(`> Mock API Ready on http://localhost:${port}`)
+  // console.log(`> Mock API Ready on http://localhost:${port}`)
   //This should now resolve: http://localhost:3000/api/patient
 })

@@ -1,143 +1,145 @@
 import React, {useState, useEffect} from 'react'
-import {
-  View,
-  Dimensions,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  ActivityIndicator,
-} from 'react-native'
-import {format, addMonths} from 'date-fns'
-import {FormattedMessage} from 'react-intl'
+import {View, Dimensions} from 'react-native'
+import {GraphLoadingPlaceholder} from './bs-history/graph-loading-placeholder'
 import {
   VictoryChart,
   VictoryTheme,
   VictoryScatter,
   VictoryAxis,
-  VictoryTooltip,
   VictoryLine,
+  VictoryVoronoiContainer,
 } from 'victory-native'
 
+import {BLOOD_SUGAR_TYPES} from '../redux/blood-sugar/blood-sugar.models'
+import {colors} from '../styles'
 import {
-  BloodSugar,
-  BLOOD_SUGAR_TYPES,
-} from '../redux/blood-sugar/blood-sugar.models'
-import {colors, containerStyles} from '../styles'
-import {isHighBloodSugar} from '../utils/blood-sugars'
-import {BodyText} from './text'
-import {DateRange} from '../utils/dates'
-import {generateChartData} from '../utils/data-transform'
-import {CHART_MONTH_RANGE} from '../utils/dates'
-import {dateLocale} from '../constants/languages'
+  IDefineAChartRequest,
+  getStartingChartRequest,
+} from './bs-history/i-define-a-chart-request'
+import {ChartData} from './bs-history/chart-data'
+import {VictoryGraphToolTipHelper} from './victory-chart-parts/victory-graph-tool-tip-helper'
+import {DateAxisComponent} from './victory-chart-parts/date-axis-component'
+
+import {TitleBar} from './victory-chart-parts/title-bar'
+import {ChartTypeSelection} from './bs-history/chart-type-selection'
+
+import {
+  convertBloodSugarValue,
+  BloodSugarCode,
+  determinePrecision,
+} from '../utils/blood-sugars'
+
+import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
 
 type Props = {
-  bss: BloodSugar[]
+  bloodSugarReadings: ConvertedBloodSugarReading[]
+  displayUnits: BloodSugarCode
 }
 
-export const BsHistoryChart = ({bss}: Props) => {
-  const [shownSugarType, setShownSugarType] = useState<BLOOD_SUGAR_TYPES>(
-    BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
+export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
+  const [requestedChart, setRequestedChart] = useState<IDefineAChartRequest>(
+    getStartingChartRequest(bloodSugarReadings, displayUnits),
   )
-  const [hasRandom, setHasRandom] = useState<boolean>(false)
-  const [hasFasting, setHasFasting] = useState<boolean>(false)
-  const [hasHemoglobic, setHasHemoglobic] = useState<boolean>(false)
 
-  const [chartData, setChartData] = useState<{
-    dates: DateRange[]
-    low: DateRange[]
-    high: DateRange[]
-    min: null | number
-    max: null | number
-  } | null>(null)
-
-  const averageList = (value: DateRange) => {
-    const valuesAccumulator = value.list.reduce(
-      (memo: number, current: any) => {
-        return (memo += Number(current.blood_sugar_value))
-      },
-      0,
-    )
-
-    return valuesAccumulator / value.list.length
-  }
+  const [chartData, setChartData] = useState<ChartData | null>(null)
 
   useEffect(() => {
-    setHasRandom(
-      !!bss.find((bs) => {
-        return (
-          bs.blood_sugar_type === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR ||
-          bs.blood_sugar_type === BLOOD_SUGAR_TYPES.POST_PRANDIAL
-        )
-      }),
-    )
+    setChartData(null)
 
-    setHasFasting(
-      !!bss.find((bs) => {
-        return bs.blood_sugar_type === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
-      }),
+    setRequestedChart(
+      requestedChart.withUpdatedReadings(bloodSugarReadings) ??
+        getStartingChartRequest(bloodSugarReadings, displayUnits),
     )
-
-    setHasHemoglobic(
-      !!bss.find((bs) => {
-        return bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
-      }),
-    )
-  }, [bss])
+  }, [bloodSugarReadings])
 
   useEffect(() => {
-    if (hasRandom) {
-      setShownSugarType(BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR)
-    } else if (hasFasting) {
-      setShownSugarType(BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR)
-    } else {
-      setShownSugarType(BLOOD_SUGAR_TYPES.HEMOGLOBIC)
+    setChartData(new ChartData(requestedChart))
+  }, [requestedChart])
+
+  const getMaxThreshhold = (): number => {
+    if (!chartData) {
+      throw new Error('Unable to get max threshold as chart data is null')
     }
-  }, [hasRandom, hasFasting, hasHemoglobic])
 
-  useEffect(() => {
-    const filteredValues = bss.filter((bs) => {
-      if (shownSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
-        return bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
-      } else if (shownSugarType === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR) {
-        return bs.blood_sugar_type === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
-      } else {
-        return (
-          bs.blood_sugar_type !== BLOOD_SUGAR_TYPES.HEMOGLOBIC &&
-          bs.blood_sugar_type !== BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
+    switch (chartData.getChartType()) {
+      case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+        return Number(
+          convertBloodSugarValue(
+            displayUnits,
+            BLOOD_SUGAR_TYPES.BEFORE_EATING,
+            '126',
+            BloodSugarCode.MG_DL,
+          ).toFixed(determinePrecision(displayUnits)),
         )
-      }
-    })
-
-    setChartData(
-      generateChartData(filteredValues, averageList, (value) => {
-        return isHighBloodSugar({
-          blood_sugar_value: value,
-          blood_sugar_type: shownSugarType,
-        } as BloodSugar)
-      }),
-    )
-  }, [bss, shownSugarType])
-
-  const generateScatter = (bss: DateRange[]): any[] => {
-    return bss.map((bs: DateRange) => {
-      return {x: bs.index, y: bs.averaged, label: bs.averaged}
-    })
+      case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
+        return Number(
+          convertBloodSugarValue(
+            displayUnits,
+            BLOOD_SUGAR_TYPES.HEMOGLOBIC,
+            '7',
+            BloodSugarCode.MG_DL,
+          ).toFixed(determinePrecision(displayUnits)),
+        )
+      default:
+        return Number(
+          convertBloodSugarValue(
+            displayUnits,
+            chartData.getChartType(),
+            '200',
+            BloodSugarCode.MG_DL,
+          ).toFixed(determinePrecision(displayUnits)),
+        )
+    }
   }
 
-  const getThreshhold = (): number => {
-    switch (shownSugarType) {
-      case BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR:
-        return 126
+  const getMinThreshhold = (): number | null => {
+    if (!chartData) {
+      throw new Error('Unable to get min threshold as chart data is null')
+    }
+
+    switch (chartData.getChartType()) {
       case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
-        return 7
+        return null
       default:
-        return 200
+        return Number(
+          convertBloodSugarValue(
+            displayUnits,
+            chartData.getChartType(),
+            '70',
+            BloodSugarCode.MG_DL,
+          ).toFixed(determinePrecision(displayUnits)),
+        )
     }
   }
 
   const getMaxDomain = () => {
-    const threshhold = getThreshhold()
+    if (!chartData) {
+      throw new Error('Can not get max domain, not instance of chart data')
+    }
+    switch (chartData.getChartType()) {
+      case BLOOD_SUGAR_TYPES.AFTER_EATING:
+      case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+        let maxValue = 0
+
+        requestedChart.readings
+          .filterByType(requestedChart.chartType)
+          .map((bs) => {
+            if (bs.value > maxValue) {
+              maxValue = bs.value
+            }
+          })
+
+        if (maxValue > 0) {
+          return maxValue
+        }
+        return 300
+      default:
+        break
+    }
+
+    const threshhold = getMaxThreshhold()
     const difference = Math.round(threshhold / 10)
-    let base = chartData?.max ?? threshhold
+    let base = chartData.getMaxReading() ?? threshhold
 
     if (base < threshhold) {
       base = threshhold
@@ -147,9 +149,30 @@ export const BsHistoryChart = ({bss}: Props) => {
   }
 
   const getMinDomain = () => {
-    const threshhold = getThreshhold()
+    if (!chartData) {
+      throw new Error('Can not get min domain, not instance of chart data')
+    }
+
+    switch (chartData.getChartType()) {
+      case BLOOD_SUGAR_TYPES.AFTER_EATING:
+      case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+        let minValue = 70
+
+        requestedChart.readings
+          .filterByType(requestedChart.chartType)
+          .map((bs) => {
+            if (bs.value < minValue) {
+              minValue = bs.value
+            }
+          })
+        return minValue
+      default:
+        break
+    }
+
+    const threshhold = getMinThreshhold() ?? getMaxThreshhold()
     const difference = Math.round(threshhold / 10)
-    let base = chartData?.min ?? threshhold
+    let base = chartData.getMinReading() ?? threshhold
 
     if (base > threshhold) {
       base = threshhold
@@ -158,99 +181,69 @@ export const BsHistoryChart = ({bss}: Props) => {
     return base - difference
   }
 
-  if (!chartData) {
-    return (
-      <View
-        style={[
-          containerStyles.fill,
-          containerStyles.centeredContent,
-          {height: 260},
-        ]}>
-        <ActivityIndicator size="large" color={colors.blue1} />
-      </View>
+  const changeChartTypeHandler = (newChartType: BLOOD_SUGAR_TYPES): void => {
+    // setChartData(null)
+    setRequestedChart(
+      requestedChart.changeRequestedType(
+        newChartType,
+        bloodSugarReadings,
+        displayUnits,
+      ),
     )
+  }
+
+  const movePreviousPeriod = (): void => {
+    // setChartData(null)
+    setRequestedChart(requestedChart.moveToPreviousPeriod())
+  }
+
+  const moveNextPeriod = (): void => {
+    // setChartData(null)
+    setRequestedChart(requestedChart.moveToNextPeriod())
+  }
+
+  if (!chartData) {
+    return <GraphLoadingPlaceholder chartsAvailable={requestedChart} />
+  }
+
+  const minThreshhold = getMinThreshhold()
+  const maxThreshhold = getMaxThreshhold()
+  const midAxis: any[] = []
+
+  switch (chartData.getChartType()) {
+    case BLOOD_SUGAR_TYPES.AFTER_EATING:
+      if (displayUnits === BloodSugarCode.MMOL_L) {
+        midAxis.push(7.5)
+        midAxis.push(14.7)
+      } else {
+        midAxis.push(135)
+        midAxis.push(265)
+      }
+
+      break
+    case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+      if (displayUnits === BloodSugarCode.MMOL_L) {
+        midAxis.push(5.45)
+        midAxis.push(8.55)
+      } else {
+        midAxis.push(98)
+        midAxis.push(154)
+      }
+
+      break
+    default:
+      break
   }
 
   return (
     <>
-      <View style={{flexDirection: 'row'}}>
-        {hasRandom && (
-          <TouchableWithoutFeedback
-            onPress={() => {
-              setShownSugarType(BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR)
-              // setChartData(null)
-            }}>
-            <View
-              style={[
-                styles.pill,
-                shownSugarType === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR
-                  ? styles.pillActive
-                  : {},
-              ]}>
-              <BodyText
-                style={{
-                  color:
-                    shownSugarType === BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR
-                      ? colors.white100
-                      : colors.blue2,
-                }}>
-                <FormattedMessage id="bs.random-blood-code" />/
-                <FormattedMessage id="bs.post-prenial-code" />
-              </BodyText>
-            </View>
-          </TouchableWithoutFeedback>
-        )}
-        {hasFasting && (
-          <TouchableWithoutFeedback
-            onPress={() => {
-              setShownSugarType(BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR)
-              //  setChartData(null)
-            }}>
-            <View
-              style={[
-                styles.pill,
-                shownSugarType === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
-                  ? styles.pillActive
-                  : {},
-              ]}>
-              <BodyText
-                style={{
-                  color:
-                    shownSugarType === BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR
-                      ? colors.white100
-                      : colors.blue2,
-                }}>
-                <FormattedMessage id="bs.fasting-code" />
-              </BodyText>
-            </View>
-          </TouchableWithoutFeedback>
-        )}
-        {hasHemoglobic && (
-          <TouchableWithoutFeedback
-            onPress={() => {
-              setShownSugarType(BLOOD_SUGAR_TYPES.HEMOGLOBIC)
-              //  setChartData(null)
-            }}>
-            <View
-              style={[
-                styles.pill,
-                shownSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC
-                  ? styles.pillActive
-                  : {},
-              ]}>
-              <BodyText
-                style={{
-                  color:
-                    shownSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC
-                      ? colors.white100
-                      : colors.blue2,
-                }}>
-                <FormattedMessage id="bs.hemoglobic-code" />
-              </BodyText>
-            </View>
-          </TouchableWithoutFeedback>
-        )}
-      </View>
+      <TitleBar
+        chartTitle={chartData.getTitle()}
+        hasPreviousPeriod={chartData.hasPreviousPeriod()}
+        moveToPreviousPeriodHandler={movePreviousPeriod}
+        hasNextPeriod={chartData.hasNextPeriod()}
+        moveToNextPeriodHandler={moveNextPeriod}
+      />
       <View
         style={{
           height: 260,
@@ -259,48 +252,7 @@ export const BsHistoryChart = ({bss}: Props) => {
           borderTopWidth: 1,
           position: 'relative',
         }}>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            flexDirection: 'row',
-            paddingLeft: 6,
-          }}>
-          {[...Array(CHART_MONTH_RANGE)].map((value, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  flex: 1,
-                  flexShrink: 0,
-                }}>
-                <BodyText
-                  style={{
-                    color: colors.grey0,
-                    fontWeight: '500',
-                    fontSize: 14,
-                    lineHeight: 18,
-                  }}>
-                  {format(addMonths(chartData.dates[0].date, index), 'MMM', {
-                    locale: dateLocale(),
-                  })}
-                </BodyText>
-                <BodyText
-                  style={{
-                    color: colors.grey2,
-                    fontWeight: '500',
-                    fontSize: 14,
-                    lineHeight: 18,
-                  }}>
-                  {format(addMonths(chartData.dates[0].date, index), 'yyy', {
-                    locale: dateLocale(),
-                  })}
-                </BodyText>
-              </View>
-            )
-          })}
-          <View style={{width: 32}} />
-        </View>
+        <DateAxisComponent tickValues={chartData.getAxisTickValues()} />
         <VictoryChart
           maxDomain={{
             y: getMaxDomain(),
@@ -318,19 +270,20 @@ export const BsHistoryChart = ({bss}: Props) => {
             },
           }}
           scale={{x: 'linear'}}
-          theme={VictoryTheme.material}>
+          theme={VictoryTheme.material}
+          containerComponent={
+            chartData.getScatterDataForGraph().length ? (
+              <VictoryVoronoiContainer radius={30} />
+            ) : (
+              <VictoryVoronoiContainer radius={30} />
+            )
+          }>
           <VictoryAxis
-            tickCount={CHART_MONTH_RANGE}
+            tickCount={chartData.getAxisTickValues().length}
             tickFormat={(tick) => {
-              return format(
-                addMonths(chartData.dates[0].date, tick / 4),
-                'MMM-yy',
-                {
-                  locale: dateLocale(),
-                },
-              )
+              return tick
             }}
-            tickValues={chartData.dates.map((date, index) => index)}
+            tickValues={chartData.getIndexValues()}
             style={{
               grid: {stroke: colors.grey3, strokeDasharray: 4},
               axis: {stroke: colors.grey3, opacity: 0},
@@ -339,93 +292,117 @@ export const BsHistoryChart = ({bss}: Props) => {
             }}
           />
           <VictoryAxis
-            orientation="left"
-            style={{
-              axis: {
-                strokeWidth: 2,
-                stroke: colors.white100,
-              },
-              tickLabels: {
-                opacity: 0,
-              },
-              ticks: {
-                opacity: 0,
-              },
-              grid: {
-                opacity: 0,
-              },
-            }}
-          />
-          <VictoryAxis
             orientation="right"
             dependentAxis
             tickFormat={(tick) => {
-              if (shownSugarType === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
+              if (chartData.getChartType() === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
                 return `${tick}%`
               }
               return tick
             }}
-            tickValues={[getThreshhold()]}
+            tickValues={[maxThreshhold]}
             style={{
               grid: {stroke: colors.grey2, strokeDasharray: 4},
               axis: {stroke: colors.grey3, strokeDasharray: 4, strokeWidth: 0},
               ticks: {opacity: 0},
             }}
           />
+          {midAxis.map((data, index) => {
+            return (
+              <VictoryAxis
+                orientation="right"
+                dependentAxis
+                key={`mid-axis-${index}`}
+                tickValues={[data]}
+                style={{
+                  grid: {opacity: 0},
+                  axis: {
+                    opacity: 0,
+                  },
+                  ticks: {opacity: 0},
+                  tickLabels: {
+                    fill: colors.grey2,
+                  },
+                  axisLabel: {fontSize: 20, padding: 30},
+                }}
+              />
+            )
+          })}
 
-          <VictoryLine
-            data={[...chartData.low, ...chartData.high].map((bs) => {
-              if (bs.list.length) {
-                return {x: bs.index, y: bs.averaged}
-              }
-
-              return null
-            })}
-            style={{
-              data: {
-                stroke: colors.grey1,
-                strokeWidth: 1,
-              },
-            }}
-          />
+          {minThreshhold && (
+            <VictoryAxis
+              orientation="right"
+              dependentAxis
+              tickFormat={(tick) => {
+                if (chartData.getChartType() === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
+                  return `${tick}%`
+                }
+                return tick
+              }}
+              tickValues={[minThreshhold]}
+              style={{
+                grid: {stroke: colors.grey2, strokeDasharray: 4},
+                axis: {
+                  stroke: colors.grey3,
+                  strokeDasharray: 4,
+                  strokeWidth: 0,
+                },
+                ticks: {opacity: 0},
+              }}
+            />
+          )}
+          {chartData.getMinMaxDataForGraph().map((line) => {
+            return (
+              <VictoryLine
+                key={line.index}
+                data={[
+                  {x: line.index, y: line.max},
+                  {x: line.index, y: line.min},
+                ]}
+                style={{
+                  data: {
+                    stroke: colors.grey4,
+                    strokeWidth: 6,
+                  },
+                }}
+              />
+            )
+          })}
+          {chartData.displayLineGraph && (
+            <VictoryLine
+              data={chartData.getLineGraphData()}
+              style={{
+                data: {
+                  stroke: colors.grey1,
+                  strokeWidth: 1,
+                },
+              }}
+            />
+          )}
 
           <VictoryScatter
-            data={generateScatter(chartData.low)}
-            size={4}
+            data={chartData.getScatterDataForGraph()}
+            size={({active}) => (active ? 4 : 3)}
             style={{
               data: {
-                fill: colors.green1,
+                fill: ({datum, active}) =>
+                  active
+                    ? colors.white
+                    : datum.showOutOfRange
+                    ? colors.red1
+                    : colors.green1,
+                stroke: colors.blue2,
+                strokeWidth: ({active}) => (active ? 2 : 0),
               },
             }}
-            labelComponent={<VictoryTooltip renderInPortal={false} />}
-          />
-          <VictoryScatter
-            data={generateScatter(chartData.high)}
-            size={4}
-            style={{
-              data: {
-                fill: colors.red1,
-              },
-            }}
-            labelComponent={<VictoryTooltip renderInPortal={false} />}
+            labelComponent={VictoryGraphToolTipHelper.getVictoryToolTip()}
           />
         </VictoryChart>
       </View>
+      <ChartTypeSelection
+        chartTypesAvailable={chartData}
+        changeChartTypeHandler={changeChartTypeHandler}
+      />
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  pill: {
-    alignSelf: 'flex-start',
-    backgroundColor: colors.blue3,
-    borderRadius: 100,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    marginBottom: 12,
-    marginRight: 12,
-  },
-  pillActive: {
-    backgroundColor: colors.blue2,
-  },
-})

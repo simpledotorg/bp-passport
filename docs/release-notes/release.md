@@ -1,5 +1,37 @@
 # BP Passport
 
+## Version 1.05 (Iteration 12)
+
+### Features and Fixes
+
+- Patient - Better Add BS Experience
+- Patient - Health Reminder Cards - Update UI
+- Can't scan QR code
+- Language updates (New languages)
+- Connect to BP Passport - Firebase Analytics Event
+- Patient - BP/BS Details Sheet - Update UI
+- Patient - Blood Pressure Graph - 4 Months Of Data
+- Patient - Blood Sugar Graphs - Update UI
+- Patient - Blood Sugar alert / General modals - Update UI
+- Patient - Blood Sugar Rows - Update UI
+- Patient - Add BP/BS - Figma Styling Issue
+- Patient - Settings Screen - Grouping change
+- Patient - Language Support
+- Patient - Blood sugar row - Space between value and unit
+- Patient - BS details sheet - Label lowercase
+- Patient - Medicine Details
+- Patient - Add BS - Upper value limit
+
+## Version 1.04
+
+### What's New
+
+- Increase android notification size
+- Tooltip formatted improved for blood pressure/blood sugar graphs
+- Tooltips now displaying in Android for blood pressure/blood sugar graphs
+- All data points displaying for blood sugar graph
+- Alerts showing for very high/low blood pressure/blood sugar
+
 ## Version 1.00
 
 ### Many changes and tweaks as per Claudio's priority list:

@@ -4,21 +4,19 @@ import {
   View,
   StyleSheet,
   TouchableHighlight,
-  Dimensions,
   ActivityIndicator,
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {FormattedMessage} from 'react-intl'
 import {useFocusEffect} from '@react-navigation/native'
-import {VictoryChart, VictoryTheme, VictoryLine} from 'victory-native'
 
 import {containerStyles, colors} from '../styles'
 import {BodyHeader, BpInformation, BpHistoryChart, Line} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
-import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
+// import {getTestData} from '../components/bp-history/test-data'
 
 type BpHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -41,18 +39,19 @@ function BpHistoryScreen({navigation, route}: Props) {
   const bps = /*bpsAll.slice(0, 5)*/ isAnimating
     ? bpsAll.slice(0, 5)
     : [...bpsAll]
-  const bpsChart = /*bpsAll.slice(0, 5)*/ isAnimating ? [] : [...bpsAll]
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log('didfocus!')
+      // console.log('didfocus!')
       setIsAnimating(false)
     }, []),
   )
 
   return (
     <View style={{flex: 1}}>
-      <ScrollView contentContainerStyle={{paddingVertical: 18}}>
+      <ScrollView
+        contentContainerStyle={{paddingVertical: 18}}
+        scrollIndicatorInsets={{right: 1}}>
         <View
           style={[
             containerStyles.containerSegment,
@@ -77,7 +76,7 @@ function BpHistoryScreen({navigation, route}: Props) {
                 <ActivityIndicator size="large" color={colors.blue1} />
               </View>
             ) : (
-              <BpHistoryChart bps={bpsChart} />
+              <BpHistoryChart bps={bps} />
             )}
           </View>
         </View>
@@ -95,7 +94,7 @@ function BpHistoryScreen({navigation, route}: Props) {
             <Line />
             <View>
               {bps?.map((bp, index) => (
-                <>
+                <View key={index}>
                   <TouchableHighlight
                     underlayColor={colors.grey4}
                     onPress={() => {
@@ -116,7 +115,7 @@ function BpHistoryScreen({navigation, route}: Props) {
                     <BpInformation bp={bp} />
                   </TouchableHighlight>
                   {index < bps.length - 1 && <Line key={'line' + index} />}
-                </>
+                </View>
               ))}
             </View>
           </View>

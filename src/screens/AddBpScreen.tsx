@@ -1,11 +1,5 @@
-import React, {useState, useContext, useRef, useEffect} from 'react'
-import {
-  SafeAreaView,
-  View,
-  StyleSheet,
-  TextInput,
-  TouchableWithoutFeedback,
-} from 'react-native'
+import React, {useState, useRef, useEffect} from 'react'
+import {SafeAreaView, View, StyleSheet, TextInput} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {useIntl} from 'react-intl'
@@ -14,11 +8,18 @@ import {containerStyles, colors} from '../styles'
 import {Button, BodyText, ButtonType} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
+import {
+  hasReviewedSelector,
+  normalBpBsCountSelector,
+} from '../redux/patient/patient.selectors'
 
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {useThunkDispatch} from '../redux/store'
 import {addBloodPressure} from '../redux/blood-pressure/blood-pressure.actions'
 import {ScrollView} from 'react-native-gesture-handler'
+import {setNormalBpBsCount} from '../redux/patient/patient.actions'
+import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
+import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
 
 type AddBpScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -32,13 +33,40 @@ type Props = {
   route: AddBpScreen
 }
 
-const MIN_SYSTOLIC_BP = 70 // Potentially change to 70
+const MIN_SYSTOLIC_BP = 70
 const MAX_SYSTOLIC_BP = 300
-const MIN_DIASTOLIC_BP = 40 // Potentially change to 40
+const MIN_DIASTOLIC_BP = 40
 const MAX_DIASTOLIC_BP = 180
+
+const getHistoricValues = (): number => {
+  const bpsAll = bloodPressuresSelector() ?? []
+  const normalBpCount = bpsAll.length
+
+  const bsAll = bloodSugarsSelector() ?? []
+  const normalBsCount = bsAll.length
+
+  return normalBpCount + normalBsCount
+}
+
+const getBpBsCount = (): number => {
+  const count = normalBpBsCountSelector()
+  const historicCount = getHistoricValues()
+
+  if (count || count === 0) {
+    return count
+  }
+
+  const dispatch = useThunkDispatch()
+
+  dispatch(setNormalBpBsCount(historicCount))
+
+  return historicCount
+}
 
 function AddBpScreen({navigation, route}: Props) {
   const intl = useIntl()
+  const hasReviewed = hasReviewedSelector()
+  const normalBpBsCount = getBpBsCount()
 
   const systolicRef = useRef<null | any>(null)
   const diastolicRef = useRef<null | any>(null)
@@ -63,11 +91,17 @@ function AddBpScreen({navigation, route}: Props) {
     )
   }
 
-  const getErrorGateway = (systolicInput: string, diastolicInput: string) => {
+  const getErrorGateway = (
+    systolicInput: string,
+    diastolicInput: string,
+  ): void => {
     setErrors(getErrors(systolicInput, diastolicInput))
   }
 
-  const getErrors = (systolicInput: string, diastolicInput: string) => {
+  const getErrors = (
+    systolicInput: string,
+    diastolicInput: string,
+  ): string | null => {
     if (systolicInput === '' && diastolicInput === '') {
       return null
     }
@@ -91,6 +125,11 @@ function AddBpScreen({navigation, route}: Props) {
     return null
   }
 
+  const showWarning = (bpIn: BloodPressure) => {
+    // This is a high blood pressure that is high enough to warrant a warning
+    return bpIn.systolic >= 180 || bpIn.diastolic >= 110
+  }
+
   const save = () => {
     const newBloodPressure: BloodPressure = {
       diastolic: Number(diastolic),
@@ -102,6 +141,28 @@ function AddBpScreen({navigation, route}: Props) {
     dispatch(addBloodPressure(newBloodPressure))
 
     navigation.goBack()
+
+    if (showWarning(newBloodPressure)) {
+      if (normalBpBsCount < 4) {
+        dispatch(setNormalBpBsCount(normalBpBsCount + 1))
+      }
+      setTimeout(() => {
+        navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN, {
+          displayText: intl.formatMessage(
+            {id: 'alert.description-high'},
+            {label: intl.formatMessage({id: 'general.bp'})},
+          ),
+        })
+      }, 250)
+    } else if (!hasReviewed) {
+      if (normalBpBsCount >= 4) {
+        setTimeout(() => {
+          navigation.navigate(SCREENS.WRITE_A_REVIEW_MODAL_SCREEN)
+        }, 250)
+      } else {
+        dispatch(setNormalBpBsCount(normalBpBsCount + 1))
+      }
+    }
   }
 
   useEffect(() => {
@@ -148,7 +209,12 @@ function AddBpScreen({navigation, route}: Props) {
     }
   }, [systolic])
 
-  // paragraph.match(regex)
+  const systolicLabel = `${intl.formatMessage({
+    id: 'general.top',
+  })} (${intl.formatMessage({id: 'general.systolic'})})`
+  const diastolicLabel = `${intl.formatMessage({
+    id: 'general.bottom',
+  })} (${intl.formatMessage({id: 'general.diastolic'})})`
 
   return (
     <View style={{flex: 1}}>
@@ -158,79 +224,91 @@ function AddBpScreen({navigation, route}: Props) {
           style={{padding: 24, flex: 1}}
           keyboardShouldPersistTaps="handled">
           <View style={{flexDirection: 'row'}}>
-            <TextInput
-              maxLength={6}
-              placeholderTextColor={colors.grey1}
-              autoFocus={true}
-              ref={systolicRef}
-              onFocus={() => {
-                systolicRef.current.setNativeProps({
-                  borderColor: colors.blue2,
-                })
-              }}
-              onBlur={() => {
-                systolicRef.current.setNativeProps({
-                  borderColor: colors.grey2,
-                })
-              }}
-              style={[styles.input, {marginRight: 4}]}
-              onChangeText={(text) => {
-                validateInput('systolic', text)
-                getErrorGateway(text, diastolic)
-              }}
-              placeholder={intl.formatMessage({id: 'general.systolic'})}
-              value={systolic.toString()}
-              keyboardType={'number-pad'}
-              onSubmitEditing={() => {
-                if (diastolic === '') {
-                  diastolicRef?.current?.focus()
-                } else if (!isSaveDisabled()) {
-                  save()
-                }
-              }}
-            />
-            <TextInput
-              maxLength={6}
-              placeholderTextColor={colors.grey1}
-              ref={diastolicRef}
-              onFocus={() => {
-                diastolicRef.current.setNativeProps({
-                  borderColor: colors.blue2,
-                })
-              }}
-              onBlur={() => {
-                diastolicRef.current.setNativeProps({
-                  borderColor: colors.grey2,
-                })
-              }}
-              style={[styles.input, {marginLeft: 4}]}
-              onChangeText={(text) => {
-                validateInput('diastolic', text)
-                getErrorGateway(systolic, text)
-              }}
-              placeholder={intl.formatMessage({id: 'general.diastolic'})}
-              value={diastolic.toString()}
-              keyboardType={'number-pad'}
-              returnKeyType={'done'}
-              onSubmitEditing={() => {
-                if (!isSaveDisabled()) {
-                  save()
-                }
-              }}
-            />
+            <View style={{flexDirection: 'column', flex: 1}}>
+              <TextInput
+                returnKeyType="done"
+                maxLength={6}
+                placeholderTextColor={colors.grey1}
+                autoFocus={true}
+                ref={systolicRef}
+                onFocus={() => {
+                  systolicRef.current.setNativeProps({
+                    borderColor: colors.blue2,
+                    placeholder: '',
+                  })
+                }}
+                onBlur={() => {
+                  systolicRef.current.setNativeProps({
+                    borderColor: colors.grey2,
+                    placeholder: '0',
+                  })
+                }}
+                style={[styles.input, {marginRight: 4}]}
+                onChangeText={(text) => {
+                  validateInput('systolic', text)
+                  getErrorGateway(text, diastolic)
+                }}
+                // placeholder={}
+                placeholder="0"
+                value={systolic.toString()}
+                keyboardType={'number-pad'}
+                onSubmitEditing={() => {
+                  if (diastolic === '') {
+                    diastolicRef?.current?.focus()
+                  } else if (!isSaveDisabled()) {
+                    save()
+                  }
+                }}
+              />
+              <BodyText style={styles.label}>{systolicLabel}</BodyText>
+            </View>
+            <BodyText style={{padding: 16, color: colors.grey1}}>/</BodyText>
+            <View style={{flexDirection: 'column', flex: 1}}>
+              <TextInput
+                maxLength={6}
+                placeholderTextColor={colors.grey1}
+                ref={diastolicRef}
+                onFocus={() => {
+                  diastolicRef.current.setNativeProps({
+                    borderColor: colors.blue2,
+                    placeholder: '',
+                  })
+                }}
+                onBlur={() => {
+                  diastolicRef.current.setNativeProps({
+                    borderColor: colors.grey2,
+                    placeholder: '0',
+                  })
+                }}
+                style={[styles.input, {marginLeft: 4}]}
+                onChangeText={(text) => {
+                  validateInput('diastolic', text)
+                  getErrorGateway(systolic, text)
+                }}
+                onKeyPress={({nativeEvent}) => {
+                  if (
+                    nativeEvent.key === 'Backspace' &&
+                    diastolic.length === 0
+                  ) {
+                    systolicRef.current.focus()
+                    setSystolic(
+                      systolic.toString().substring(0, systolic.length - 1),
+                    )
+                  }
+                }}
+                placeholder="0"
+                value={diastolic.toString()}
+                keyboardType={'number-pad'}
+                returnKeyType={'done'}
+                onSubmitEditing={() => {
+                  if (!isSaveDisabled()) {
+                    save()
+                  }
+                }}
+              />
+              <BodyText style={styles.label}>{diastolicLabel}</BodyText>
+            </View>
           </View>
-          <Button
-            title={intl.formatMessage({id: 'general.save'})}
-            buttonType={ButtonType.Normal}
-            disabled={isSaveDisabled()}
-            style={{
-              marginTop: 24,
-            }}
-            onPress={() => {
-              console.log('onPress')
-              save()
-            }}
-          />
           {errors && showErrors && (
             <BodyText
               style={{
@@ -241,6 +319,17 @@ function AddBpScreen({navigation, route}: Props) {
               {errors}
             </BodyText>
           )}
+          <Button
+            title={intl.formatMessage({id: 'general.save'})}
+            buttonType={ButtonType.Normal}
+            disabled={isSaveDisabled()}
+            style={{
+              marginTop: 24,
+            }}
+            onPress={() => {
+              save()
+            }}
+          />
         </ScrollView>
       </SafeAreaView>
     </View>
@@ -255,14 +344,21 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: colors.white100,
     borderStyle: 'solid',
-    borderWidth: 1,
+    borderBottomWidth: 2,
     borderColor: colors.grey2,
     padding: 16,
-    fontSize: 16,
+    fontSize: 28,
     fontWeight: 'normal',
     fontStyle: 'normal',
     letterSpacing: 0.5,
-    color: colors.grey0,
-    flex: 1,
+    color: colors.black,
+    textAlign: 'center',
+  },
+  label: {
+    marginTop: 6,
+    color: colors.grey1,
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: 'center',
   },
 })

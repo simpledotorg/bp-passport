@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from 'react'
-import {View, Image, StatusBar, TouchableWithoutFeedback} from 'react-native'
+import React from 'react'
+import {View, TouchableWithoutFeedback} from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 
 import {containerStyles, colors} from '../styles'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
-import {BodyHeader, BodyText, BpModal, BsModal} from '../components'
+import {BpModal, BsModal} from '../components'
+import {bloodSugarUnitSelector} from '../redux/patient/patient.selectors'
+import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
 
 type DetailsModalScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -25,6 +27,7 @@ type Props = {
 
 function DetailsModalScreen({navigation, route}: Props) {
   const {bp, bs} = route.params
+  const displayUnits = bloodSugarUnitSelector()
 
   return (
     <TouchableWithoutFeedback
@@ -39,7 +42,7 @@ function DetailsModalScreen({navigation, route}: Props) {
         <View
           style={{
             backgroundColor: colors.white100,
-            padding: 16,
+            padding: 0,
             width: '100%',
             borderTopLeftRadius: 4,
             borderTopRightRadius: 4,
@@ -55,6 +58,7 @@ function DetailsModalScreen({navigation, route}: Props) {
           {bs && (
             <BsModal
               bs={bs}
+              displayUnits={displayUnits}
               close={() => {
                 navigation.goBack()
               }}

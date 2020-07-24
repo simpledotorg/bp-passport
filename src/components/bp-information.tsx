@@ -4,10 +4,10 @@ import {FormattedMessage} from 'react-intl'
 import {format} from 'date-fns'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
-import {colors, redHeart} from '../styles'
-import {BodyText} from './'
+import {colors, redHeart, smallWarningSign} from '../styles'
+import {BodyText} from './text'
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
-import {dateLocale, LanguageCode} from '../constants/languages'
+import {dateLocale} from '../constants/languages'
 
 type Props = {
   bp: BloodPressure
@@ -15,6 +15,11 @@ type Props = {
 }
 
 export const BpInformation = ({bp, style = {}}: Props) => {
+  const showWarning = (bpIn: BloodPressure) => {
+    // This is a high blood pressure that is high enough to warrant a warning
+    return bpIn.systolic >= 180 || bpIn.diastolic >= 110
+  }
+
   const isBloodPressureHigh = (bpIn: BloodPressure) => {
     // A “High BP” is a BP whose Systolic value is greater than or equal to 140 or whose
     // Diastolic value is greater than or equal to 90. All other BPs are “Normal BP”.
@@ -31,15 +36,20 @@ export const BpInformation = ({bp, style = {}}: Props) => {
 
   const getBPText = () => {
     return isBloodPressureHigh(bp) ? (
-      <BodyText
-        style={[
-          styles.bpText,
-          {
-            color: colors.red1,
-          },
-        ]}>
-        <FormattedMessage id="general.high" />
-      </BodyText>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <BodyText
+          style={[
+            styles.bpText,
+            {
+              color: colors.red1,
+            },
+          ]}>
+          <FormattedMessage id="general.high" />
+        </BodyText>
+        {showWarning(bp) && (
+          <Image source={smallWarningSign} style={styles.warningIcon} />
+        )}
+      </View>
     ) : (
       <BodyText
         style={[
@@ -52,7 +62,6 @@ export const BpInformation = ({bp, style = {}}: Props) => {
       </BodyText>
     )
   }
-
   return (
     <View
       style={{
@@ -70,7 +79,7 @@ export const BpInformation = ({bp, style = {}}: Props) => {
         }}>
         <Image source={redHeart} style={[styles.informationIcon]} />
         <View style={{flex: 1}}>
-          <View style={{flexDirection: 'row', flexWrap: 'wrap', flex: 1}}>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
             <BodyText
               style={{
                 fontSize: 18,
@@ -78,19 +87,17 @@ export const BpInformation = ({bp, style = {}}: Props) => {
               }}>
               {`${bp.systolic} / ${bp.diastolic}`}
             </BodyText>
-            <BodyText
+            <View
               style={{
-                fontSize: 18,
-                color: colors.grey0,
                 marginLeft: 8,
               }}>
               {getBPText()}
-            </BodyText>
+            </View>
           </View>
           <BodyText
             style={{
               fontSize: 16,
-              color: colors.grey1,
+              color: colors.grey0,
             }}>
             {displayDate(bp)}
           </BodyText>
@@ -116,5 +123,9 @@ const styles = StyleSheet.create({
   informationIcon: {
     marginRight: 16,
     flexShrink: 0,
+  },
+  warningIcon: {
+    marginLeft: 4,
+    marginTop: 3,
   },
 })

@@ -5,7 +5,7 @@ import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {BloodSugar} from '../redux/blood-sugar/blood-sugar.models'
 import {getChartDateRange, DateRange} from './dates'
 
-const getIndexFromBP = (
+export const getIndexFromBP = (
   dates: DateRange[],
   input: BloodPressure | BloodSugar,
 ): number | null => {
@@ -39,7 +39,7 @@ const getMaxValue = (value: any) => {
   )
 }
 
-export const generateChartData = (
+export const generateAverageChartData = (
   input: BloodPressure[] | BloodSugar[],
   calculateAverage: (current: DateRange) => number | {},
   isHigh: (value: any) => boolean,

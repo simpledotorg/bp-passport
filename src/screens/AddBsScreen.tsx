@@ -1,10 +1,11 @@
-import React, {useState, useContext, useRef, useEffect} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import {
   SafeAreaView,
   View,
   StyleSheet,
   TextInput,
-  TouchableWithoutFeedback,
+  ScrollView,
+  TouchableHighlight,
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -15,14 +16,38 @@ import {containerStyles, colors} from '../styles'
 import {Picker, BodyText, Button, ButtonType} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import {
   BLOOD_SUGAR_TYPES,
   BloodSugar,
+  BLOOD_SUGAR_INPUT_TYPES,
 } from '../redux/blood-sugar/blood-sugar.models'
 import {useThunkDispatch} from '../redux/store'
 import {addBloodSugar} from '../redux/blood-sugar/blood-sugar.actions'
-import {ScrollView} from 'react-native-gesture-handler'
+
+import {
+  isHighBloodSugar,
+  isLowBloodSugar,
+  showWarning,
+  BloodSugarCode,
+  convertBloodSugarValue,
+  getDisplayBloodSugarUnit,
+  determinePrecision,
+  getBloodSugarDetails,
+  mmolToMg,
+  mgToMmol,
+} from '../utils/blood-sugars'
+import {
+  hasReviewedSelector,
+  normalBpBsCountSelector,
+} from '../redux/patient/patient.selectors'
+import {setNormalBpBsCount} from '../redux/patient/patient.actions'
+
+import {bloodSugarUnitSelector} from '../redux/patient/patient.selectors'
+import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
+import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
+import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
 
 type AddBsScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -42,117 +67,267 @@ interface PickerItemExtended extends Item {
   type: string
 }
 
-enum INPUT_TYPES {
-  DECIMAL = 'DECIMAL',
-  PERCENTAGE = 'PERCENTAGE',
+const getHistoricValues = (): number => {
+  const bpsAll = bloodPressuresSelector() ?? []
+  const normalBpCount = bpsAll.length
+
+  const bsAll = bloodSugarsSelector() ?? []
+  const normalBsCount = bsAll.length
+
+  return normalBpCount + normalBsCount
+}
+
+const getBpBsCount = (): number => {
+  const count = normalBpBsCountSelector()
+  const historicCount = getHistoricValues()
+
+  if (count || count === 0) {
+    return count
+  }
+
+  const dispatch = useThunkDispatch()
+
+  dispatch(setNormalBpBsCount(historicCount))
+
+  return historicCount
+}
+
+const allowDecimalPoint = (
+  type: BLOOD_SUGAR_TYPES | undefined,
+  selectedBloodSugarUnit: BloodSugarCode,
+) => {
+  console.log('selectedBloodSugarUnit: ', selectedBloodSugarUnit)
+  return (
+    type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ||
+    selectedBloodSugarUnit === BloodSugarCode.MMOL_L
+  )
 }
 
 function AddBsScreen({navigation, route}: Props) {
   const intl = useIntl()
-
   const dispatch = useThunkDispatch()
+  const hasReviewed = hasReviewedSelector()
+  const normalBpBsCount = getBpBsCount()
 
+  /*
   const SUGAR_TYPES: PickerItemExtended[] = [
     {
-      label: intl.formatMessage({id: 'bs.random-blood-sugar'}),
-      value: BLOOD_SUGAR_TYPES.RANDOM_BLOOD_SUGAR,
+      label: `${intl.formatMessage({
+        id: 'bs.placeholder-title',
+      })} (${intl.formatMessage({id: 'bs.placeholder-description'})})`,
+      value: null,
       min: 30,
       max: 1000,
-      type: INPUT_TYPES.DECIMAL,
+      type: BLOOD_SUGAR_INPUT_TYPES.DECIMAL,
     },
     {
-      label: intl.formatMessage({id: 'bs.fasting-blood-sugar'}),
-      value: BLOOD_SUGAR_TYPES.FASTING_BLOOD_SUGAR,
+      label: intl.formatMessage({id: 'bs.after-eating-title'}),
+      value: BLOOD_SUGAR_TYPES.AFTER_EATING,
       min: 30,
       max: 1000,
-      type: INPUT_TYPES.DECIMAL,
+      type: BLOOD_SUGAR_INPUT_TYPES.DECIMAL,
     },
     {
-      label: intl.formatMessage({id: 'bs.post-prandial'}),
-      value: BLOOD_SUGAR_TYPES.POST_PRANDIAL,
+      label: intl.formatMessage({id: 'bs.before-eating-title'}),
+      value: BLOOD_SUGAR_TYPES.BEFORE_EATING,
       min: 30,
       max: 1000,
-      type: INPUT_TYPES.DECIMAL,
+      type: BLOOD_SUGAR_INPUT_TYPES.DECIMAL,
     },
     {
       label: intl.formatMessage({id: 'bs.hemoglobic'}),
       value: BLOOD_SUGAR_TYPES.HEMOGLOBIC,
       min: 3,
       max: 25,
-      type: INPUT_TYPES.PERCENTAGE,
+      type: BLOOD_SUGAR_INPUT_TYPES.PERCENTAGE,
     },
   ]
+  */
 
-  const [type, setType] = useState<string>(SUGAR_TYPES[0].value)
+  // const [type, setType] = useState<string>(SUGAR_TYPES[0].value)
   const [reading, setReading] = useState<string>('')
   const [errors, setErrors] = useState<null | string>(null)
   const inputRef = useRef<null | any>(null)
+  const [type, setType] = useState<BLOOD_SUGAR_TYPES | undefined>(undefined)
+
+  // BLOOD_SUGAR_TYPES
+
+  const typeToTitle = (t: BLOOD_SUGAR_TYPES | undefined): string => {
+    if (t) {
+      switch (t) {
+        case BLOOD_SUGAR_TYPES.AFTER_EATING:
+          return intl.formatMessage({
+            id: 'bs.after-eating-title',
+          })
+        case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+          return intl.formatMessage({
+            id: 'bs.before-eating-title',
+          })
+        case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
+          return intl.formatMessage({
+            id: 'bs.hemoglobic',
+          })
+      }
+    }
+    return (
+      intl.formatMessage({
+        id: 'bs.placeholder-title',
+      }) +
+      ' (' +
+      intl.formatMessage({id: 'bs.placeholder-description'}) +
+      ')'
+    )
+  }
+
+  const dropdownTitle = typeToTitle(type)
 
   const [showErrors, setShowErrors] = useState(false)
 
-  const readingPrevious = useRef(reading)
+  const selectedBloodSugarUnit =
+    bloodSugarUnitSelector() ?? BloodSugarCode.MG_DL
 
-  const getErrors = (input: string) => {
+  const getErrors = (input: string): string | null => {
     if (input === '') {
       return null
     }
 
-    const foundType = SUGAR_TYPES.find((sugarType) => {
-      return sugarType.value === type
-    })
+    const t = type ?? BLOOD_SUGAR_TYPES.BEFORE_EATING
 
-    if (foundType) {
-      const isPercentage = foundType.type === INPUT_TYPES.PERCENTAGE
+    let v = parseFloat(input)
 
-      if (Number(input) < foundType.min) {
-        return intl.formatMessage(
-          {id: 'add-bs.bs-less-than-error'},
-          {value: `${foundType.min}${isPercentage ? '%' : ''}`},
-        )
-      } else if (Number(input) > foundType.max) {
-        return intl.formatMessage(
-          {id: 'add-bs.bs-more-than-error'},
-          {value: `${foundType.max}${isPercentage ? '%' : ''}`},
-        )
-      }
+    const isMmol = selectedBloodSugarUnit === BloodSugarCode.MMOL_L
+
+    let min = 30
+    let max = 1000
+
+    switch (t) {
+      case BLOOD_SUGAR_TYPES.AFTER_EATING:
+      case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+        if (isMmol) {
+          v = mmolToMg(v)
+        }
+        if (v < min) {
+          const minV = isMmol ? mgToMmol(min) : min
+          return intl.formatMessage(
+            {id: 'add-bs.bs-less-than-error'},
+            {value: `${minV}`},
+          )
+        } else if (v > max) {
+          const maxV = isMmol ? mgToMmol(max) : max
+
+          return intl.formatMessage(
+            {id: 'add-bs.bs-more-than-error'},
+            {value: `${maxV}`},
+          )
+        }
+
+        break
+      case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
+        min = 3
+        max = 25
+        if (v < min) {
+          return intl.formatMessage(
+            {id: 'add-bs.bs-less-than-error'},
+            {value: `${min}%`},
+          )
+        } else if (v > max) {
+          return intl.formatMessage(
+            {id: 'add-bs.bs-more-than-error'},
+            {value: `${max}%`},
+          )
+        }
+        break
     }
 
     return null
   }
 
   useEffect(() => {
-    setErrors(getErrors(reading))
+    const newErrors = getErrors(reading)
+    if (newErrors !== errors) {
+      setErrors(newErrors)
+      setShowErrors(newErrors != null)
+    }
   }, [type])
 
   useEffect(() => {
-    let errorShowTimeout: any = null
-
-    if (reading !== readingPrevious.current) {
-      clearTimeout(errorShowTimeout)
+    if (reading === '') {
+      if (errors != null) {
+        setErrors(null)
+        setShowErrors(false)
+      }
+      return
     }
 
-    if (errors) {
-      errorShowTimeout = setTimeout(() => setShowErrors(true), 1500)
-    } else {
-      setShowErrors(false)
+    const newErrors = getErrors(reading)
+
+    if (newErrors === null) {
+      if (showErrors) {
+        setShowErrors(false)
+      }
+
+      if (errors != null) {
+        setErrors(null)
+      }
+
+      return
     }
 
-    readingPrevious.current = reading
+    if (newErrors !== errors) {
+      setErrors(newErrors)
+    }
+
+    const errorShowTimeout = setTimeout(() => {
+      setShowErrors(true)
+    }, 1500)
 
     return () => {
       clearTimeout(errorShowTimeout)
     }
-  }, [errors, reading])
+  }, [reading])
 
   const isSaveDisabled = (): boolean => {
     return !!(reading === '' || errors || isNaN(Number(reading)))
   }
 
   const cleanText = (input: string) => {
-    if (type === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
-      return input.replace(/[^0-9.]/g, '')
+    let ret = input
+    if (allowDecimalPoint(type, selectedBloodSugarUnit)) {
+      ret = ret.replace(/[^0-9.]/g, '')
+    } else {
+      ret = ret.replace(/[^0-9]/g, '')
     }
-    return input.replace(/[^0-9]/g, '')
+
+    /*
+    switch (type) {
+      case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
+        break
+      default:
+        if (selectedBloodSugarUnit === BloodSugarCode.MG_DL) {
+          const v = parseInt(ret, 10)
+          if (v > 1000) {
+            ret = '1000'
+          }
+        } else if (selectedBloodSugarUnit === BloodSugarCode.MMOL_L) {
+          const v = parseFloat(ret)
+          if (v > 55.5) {
+            ret = '55.5'
+          }
+        }
+        break
+    } */
+    return ret
+  }
+
+  // need to do this way, beause if you change type then react complains that number of called hooks has changed
+  let displayUnitLabel = getDisplayBloodSugarUnit(selectedBloodSugarUnit)
+
+  if (type === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
+    displayUnitLabel = '%'
+  }
+
+  const updateType = (t: BLOOD_SUGAR_TYPES) => {
+    setType(t)
   }
 
   return (
@@ -167,15 +342,20 @@ function AddBsScreen({navigation, route}: Props) {
           keyboardShouldPersistTaps="handled">
           <View
             style={{
-              position: 'relative',
-              marginBottom: 24,
+              flexDirection: 'column',
+              flex: 1,
+              alignItems: 'center',
+              marginBottom: 32,
             }}>
             <TextInput
-              style={[styles.input]}
+              maxLength={6}
+              placeholderTextColor={colors.grey1}
+              autoFocus={true}
               ref={inputRef}
               onFocus={() => {
                 inputRef.current.setNativeProps({
                   borderColor: colors.blue2,
+                  placeholder: '',
                 })
               }}
               onBlur={() => {
@@ -183,46 +363,43 @@ function AddBsScreen({navigation, route}: Props) {
                   borderColor: colors.grey2,
                 })
               }}
-              autoFocus={true}
-              placeholder={intl.formatMessage({id: 'bs.blood-sugar'})}
-              placeholderTextColor={colors.grey1}
-              value={reading}
+              style={[styles.input, {marginRight: 4}]}
               onChangeText={(textIn) => {
-                const text = cleanText(textIn)
-
-                setReading(text)
-                if (text === '') {
-                  setErrors(null)
-                } else if (text !== '') {
-                  setErrors(getErrors(text))
-                }
+                const text = setReading(cleanText(textIn))
               }}
+              // placeholder={}
+
+              value={reading}
               keyboardType={
-                type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? 'numeric' : 'number-pad'
+                allowDecimalPoint(type, selectedBloodSugarUnit)
+                  ? 'numeric'
+                  : 'number-pad'
               }
-              maxLength={6}
             />
-            <BodyText
-              style={{
-                position: 'absolute',
-                right: 12,
-                top: 14,
-                color: colors.grey1,
-              }}>
-              {type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ? (
-                '%'
-              ) : (
-                <FormattedMessage id="bs.mgdl" />
-              )}
-            </BodyText>
+            <BodyText style={styles.label}>{displayUnitLabel}</BodyText>
           </View>
+          <View style={styles.dropdownBorder}>
+            <TouchableHighlight
+              onPress={() => {
+                navigation.navigate(SCREENS.BS_TYPE, {updateType, type})
+              }}
+              underlayColor={colors.grey4}>
+              <View style={styles.dropdown}>
+                <BodyText style={styles.dropdownLabel}>
+                  {dropdownTitle}
+                </BodyText>
+                <Icon name="expand-more" size={30} color={colors.grey1} />
+              </View>
+            </TouchableHighlight>
+          </View>
+          {/* 
           <Picker
             value={type}
             items={SUGAR_TYPES}
             onValueChange={(value: string) => {
               setType(value)
             }}
-          />
+          />*/}
           <Button
             title={intl.formatMessage({id: 'general.save'})}
             disabled={isSaveDisabled()}
@@ -232,27 +409,61 @@ function AddBsScreen({navigation, route}: Props) {
             }}
             onPress={() => {
               const newBloodSugar: BloodSugar = {
-                blood_sugar_type: type,
+                blood_sugar_type: type ?? BLOOD_SUGAR_TYPES.AFTER_EATING,
                 blood_sugar_value: reading,
                 offline: true,
                 recorded_at: new Date().toISOString(),
+                blood_sugar_unit: selectedBloodSugarUnit,
               }
+
+              const convertedValue = new ConvertedBloodSugarReading(
+                newBloodSugar,
+                selectedBloodSugarUnit,
+              )
 
               dispatch(addBloodSugar(newBloodSugar))
 
               navigation.goBack()
+
+              if (showWarning(convertedValue)) {
+                if (normalBpBsCount < 4) {
+                  dispatch(setNormalBpBsCount(normalBpBsCount + 1))
+                }
+                if (isHighBloodSugar(convertedValue)) {
+                  setTimeout(() => {
+                    navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN, {
+                      displayText: intl.formatMessage(
+                        {id: 'alert.description-high'},
+                        {
+                          label: intl
+                            .formatMessage({
+                              id: 'bs.blood-sugar',
+                            })
+                            .toLowerCase(),
+                        },
+                      ),
+                    })
+                  }, 250)
+                } else if (isLowBloodSugar(convertedValue)) {
+                  setTimeout(() => {
+                    navigation.navigate(SCREENS.ADD_DATA_WARNING_MODAL_SCREEN, {
+                      displayText: intl.formatMessage({
+                        id: 'alert.description-low',
+                      }),
+                    })
+                  }, 250)
+                }
+              } else if (!hasReviewed) {
+                if (normalBpBsCount >= 4) {
+                  setTimeout(() => {
+                    navigation.navigate(SCREENS.WRITE_A_REVIEW_MODAL_SCREEN)
+                  }, 250)
+                } else {
+                  dispatch(setNormalBpBsCount(normalBpBsCount + 1))
+                }
+              }
             }}
           />
-          {!errors && !showErrors && reading === '' && (
-            <BodyText
-              style={{
-                textAlign: 'center',
-                marginTop: 24,
-                color: colors.grey1,
-              }}>
-              <FormattedMessage id="bs.select-rbs-if-unsure" />
-            </BodyText>
-          )}
           {errors && showErrors && (
             <BodyText
               style={{
@@ -273,18 +484,45 @@ export default AddBsScreen
 
 const styles = StyleSheet.create({
   input: {
-    position: 'relative',
     height: 56,
+    width: 144,
     borderRadius: 4,
     backgroundColor: colors.white100,
     borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: colors.grey3,
+    borderBottomWidth: 2,
+    borderColor: colors.grey2,
     padding: 16,
-    fontSize: 16,
+    fontSize: 28,
     fontWeight: 'normal',
     fontStyle: 'normal',
     letterSpacing: 0.5,
+    color: colors.black,
+    textAlign: 'center',
+  },
+  label: {
+    marginTop: 6,
+    color: colors.grey1,
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: 'center',
+  },
+  dropdownBorder: {
+    borderColor: colors.grey3,
+    borderWidth: 1,
+    borderRadius: 4,
+  },
+  dropdown: {
+    height: 56,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: colors.grey3,
+    borderWidth: 1,
+    borderRadius: 4,
+  },
+  dropdownLabel: {
     color: colors.grey0,
+    fontSize: 16,
+    flex: 1,
   },
 })

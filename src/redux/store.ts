@@ -16,12 +16,12 @@ import {LoginState} from './auth/auth.models'
 export type RootState = ReturnType<typeof rootReducer>
 
 const loggerMiddleware = createLogger()
-const middlewares = [thunkMiddleware, loggerMiddleware]
+const middlewares = [thunkMiddleware /*, loggerMiddleware*/]
 
 const migrations: MigrationManifest = {
   1: (state) => {
     // migration clear out device state
-    console.log('Do migration!')
+    //  console.log('Do migration!')
     return {
       ...state,
       auth: {
