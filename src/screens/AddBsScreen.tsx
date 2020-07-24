@@ -92,7 +92,13 @@ const getBpBsCount = (): number => {
 const allowDecimalPoint = (
   type: BLOOD_SUGAR_TYPES | undefined,
   selectedBloodSugarUnit: BloodSugarCode,
-) => type === BLOOD_SUGAR_TYPES.HEMOGLOBIC
+) => {
+  console.log('selectedBloodSugarUnit: ', selectedBloodSugarUnit)
+  return (
+    type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ||
+    selectedBloodSugarUnit === BloodSugarCode.MMOL_L
+  )
+}
 
 function AddBsScreen({navigation, route}: Props) {
   const intl = useIntl()
@@ -355,7 +361,6 @@ function AddBsScreen({navigation, route}: Props) {
 
               value={reading}
               keyboardType={
-                type !== undefined &&
                 allowDecimalPoint(type, selectedBloodSugarUnit)
                   ? 'numeric'
                   : 'number-pad'
