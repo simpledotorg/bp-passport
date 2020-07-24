@@ -176,7 +176,7 @@ const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
       <FormattedMessage
         id="general.sheet-normal-disclaimer"
         values={{
-          label: intl.formatMessage({id: 'general.bp'}),
+          label: intl.formatMessage({id: 'bs.blood-sugar'}).toLowerCase(),
           limit: <BodyText>{getNormalLimit()}</BodyText>,
         }}
       />
@@ -185,6 +185,8 @@ const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
 }
 
 const BloodSugarNotes = ({bs, displayUnits}: any) => {
+  console.log('1', isHighBloodSugar(bs))
+  console.log('2', showWarning(bs))
   if (isHighBloodSugar(bs) && showWarning(bs)) {
     return <HighBloodSugarWarning />
   }

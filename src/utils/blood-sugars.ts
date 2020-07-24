@@ -22,12 +22,11 @@ export const showWarning = (bs: ConvertedBloodSugarReading): boolean => {
     return true
   }
 
-  const warningHighBSValue = getBloodSugarDetails(bs).warningHigh
-  if (warningHighBSValue === undefined || warningHighBSValue === null) {
-    return false
+  if (isHighBloodSugar(bs)) {
+    return true
   }
 
-  return bs.value >= warningHighBSValue
+  return false
 }
 
 export const isHighBloodSugar = (bs: ConvertedBloodSugarReading) => {
