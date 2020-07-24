@@ -167,7 +167,7 @@ const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
       displayUnits,
       bsDetails.type,
       bsDetails.high.toString(),
-      BloodSugarCode.MG_DL,
+      displayUnits,
     ).toFixed(determinePrecision(displayUnits))
     return `${convertedValue} ${getDisplayBloodSugarUnit(displayUnits)}`
   }
@@ -176,7 +176,7 @@ const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
       <FormattedMessage
         id="general.sheet-normal-disclaimer"
         values={{
-          label: intl.formatMessage({id: getReadingTypeId(bs)}).toLowerCase(),
+          label: intl.formatMessage({id: 'bs.blood-sugar'}).toLowerCase(),
           limit: <BodyText>{getNormalLimit()}</BodyText>,
         }}
       />

@@ -41,6 +41,8 @@ export interface BloodSugarInfo {
   type: BLOOD_SUGAR_TYPES
   title: string
   subtitle: string
+  min: number
+  max: number
 }
 
 export const bloodSugarTypeToInfo = (
@@ -57,6 +59,8 @@ export const bloodSugarTypeToInfo = (
         subtitle: intl.formatMessage({
           id: 'bs.after-eating-description',
         }),
+        min: 30,
+        max: 1000,
       }
     case BLOOD_SUGAR_TYPES.BEFORE_EATING:
       return {
@@ -67,6 +71,8 @@ export const bloodSugarTypeToInfo = (
         subtitle: intl.formatMessage({
           id: 'bs.before-eating-description',
         }),
+        min: 30,
+        max: 1000,
       }
     case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
       return {
@@ -77,11 +83,15 @@ export const bloodSugarTypeToInfo = (
         subtitle: intl.formatMessage({
           id: 'bs.hemoglobic-description',
         }),
+        min: 3,
+        max: 25,
       }
   }
   return {
     type,
     title: 'not found',
     subtitle: 'todo',
+    min: 0,
+    max: 0,
   }
 }

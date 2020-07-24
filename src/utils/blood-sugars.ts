@@ -22,12 +22,11 @@ export const showWarning = (bs: ConvertedBloodSugarReading): boolean => {
     return true
   }
 
-  const warningHighBSValue = getBloodSugarDetails(bs).warningHigh
-  if (warningHighBSValue === undefined || warningHighBSValue === null) {
-    return false
+  if (isHighBloodSugar(bs)) {
+    return true
   }
 
-  return bs.value >= warningHighBSValue
+  return false
 }
 
 export const isHighBloodSugar = (bs: ConvertedBloodSugarReading) => {
@@ -113,6 +112,14 @@ export enum BloodSugarCode {
   MMOL_L = 'mmol/L',
   MG_DL = 'mg/dL',
   PERCENT = '%',
+}
+
+export const mgToMmol = (mgDl: number) => {
+  return toCorrectPrecision(0.0555 * mgDl, BloodSugarCode.MMOL_L)
+}
+
+export const mmolToMg = (mmol: number) => {
+  return toCorrectPrecision(mmol / 0.0555, BloodSugarCode.MG_DL)
 }
 
 const toCorrectPrecision = (
