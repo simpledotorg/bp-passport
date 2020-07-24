@@ -283,7 +283,7 @@ function AddBsScreen({navigation, route}: Props) {
 
   const cleanText = (input: string) => {
     let ret = input
-    if (type && allowDecimalPoint(type, selectedBloodSugarUnit)) {
+    if (allowDecimalPoint(type, selectedBloodSugarUnit)) {
       ret = ret.replace(/[^0-9.]/g, '')
     } else {
       ret = ret.replace(/[^0-9]/g, '')
