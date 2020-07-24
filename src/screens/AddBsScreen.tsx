@@ -34,6 +34,9 @@ import {
   convertBloodSugarValue,
   getDisplayBloodSugarUnit,
   determinePrecision,
+  getBloodSugarDetails,
+  mmolToMg,
+  mgToMmol,
 } from '../utils/blood-sugars'
 import {
   hasReviewedSelector,
@@ -106,6 +109,7 @@ function AddBsScreen({navigation, route}: Props) {
   const hasReviewed = hasReviewedSelector()
   const normalBpBsCount = getBpBsCount()
 
+  /*
   const SUGAR_TYPES: PickerItemExtended[] = [
     {
       label: `${intl.formatMessage({
@@ -138,6 +142,7 @@ function AddBsScreen({navigation, route}: Props) {
       type: BLOOD_SUGAR_INPUT_TYPES.PERCENTAGE,
     },
   ]
+  */
 
   // const [type, setType] = useState<string>(SUGAR_TYPES[0].value)
   const [reading, setReading] = useState<string>('')
@@ -186,48 +191,52 @@ function AddBsScreen({navigation, route}: Props) {
       return null
     }
 
-    const foundType = SUGAR_TYPES.find((sugarType) => {
-      return sugarType.value === type
-    })
+    const t = type ?? BLOOD_SUGAR_TYPES.BEFORE_EATING
 
-    if (foundType) {
-      const isPercentage = foundType.type === BLOOD_SUGAR_INPUT_TYPES.PERCENTAGE
+    let v = parseFloat(input)
 
-      const minValue: number = isPercentage
-        ? foundType.min
-        : Number(
-            convertBloodSugarValue(
-              selectedBloodSugarUnit,
-              foundType.value,
-              foundType.min.toString(),
-              BloodSugarCode.MG_DL,
-            ).toFixed(determinePrecision(selectedBloodSugarUnit)),
+    const isMmol = selectedBloodSugarUnit === BloodSugarCode.MMOL_L
+
+    let min = 30
+    let max = 1000
+
+    switch (t) {
+      case BLOOD_SUGAR_TYPES.AFTER_EATING:
+      case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+        if (isMmol) {
+          v = mmolToMg(v)
+        }
+        if (v < min) {
+          const minV = isMmol ? mgToMmol(min) : min
+          return intl.formatMessage(
+            {id: 'add-bs.bs-less-than-error'},
+            {value: `${minV}`},
           )
+        } else if (v > max) {
+          const maxV = isMmol ? mgToMmol(max) : max
 
-      if (Number(input) < minValue) {
-        return intl.formatMessage(
-          {id: 'add-bs.bs-less-than-error'},
-          {value: `${minValue}${isPercentage ? '%' : ''}`},
-        )
-      }
-
-      const maxValue: number = isPercentage
-        ? foundType.max
-        : Number(
-            convertBloodSugarValue(
-              selectedBloodSugarUnit,
-              foundType.value,
-              foundType.max.toString(),
-              BloodSugarCode.MG_DL,
-            ).toFixed(determinePrecision(selectedBloodSugarUnit)),
+          return intl.formatMessage(
+            {id: 'add-bs.bs-more-than-error'},
+            {value: `${maxV}`},
           )
+        }
 
-      if (Number(input) > maxValue) {
-        return intl.formatMessage(
-          {id: 'add-bs.bs-more-than-error'},
-          {value: `${maxValue}${isPercentage ? '%' : ''}`},
-        )
-      }
+        break
+      case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
+        min = 3
+        max = 25
+        if (v < min) {
+          return intl.formatMessage(
+            {id: 'add-bs.bs-less-than-error'},
+            {value: `${min}%`},
+          )
+        } else if (v > max) {
+          return intl.formatMessage(
+            {id: 'add-bs.bs-more-than-error'},
+            {value: `${max}%`},
+          )
+        }
+        break
     }
 
     return null
@@ -289,6 +298,7 @@ function AddBsScreen({navigation, route}: Props) {
       ret = ret.replace(/[^0-9]/g, '')
     }
 
+    /*
     switch (type) {
       case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
         break
@@ -305,7 +315,7 @@ function AddBsScreen({navigation, route}: Props) {
           }
         }
         break
-    }
+    } */
     return ret
   }
 

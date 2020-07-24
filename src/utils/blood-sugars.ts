@@ -118,6 +118,10 @@ export const mgToMmol = (mgDl: number) => {
   return toCorrectPrecision(0.0555 * mgDl, BloodSugarCode.MMOL_L)
 }
 
+export const mmolToMg = (mmol: number) => {
+  return toCorrectPrecision(mmol / 0.0555, BloodSugarCode.MG_DL)
+}
+
 const toCorrectPrecision = (
   value?: number | string,
   displayUnits?: string,
