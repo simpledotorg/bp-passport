@@ -114,6 +114,10 @@ export enum BloodSugarCode {
   PERCENT = '%',
 }
 
+export const mgToMmol = (mgDl: number) => {
+  return toCorrectPrecision(0.0555 * mgDl, BloodSugarCode.MMOL_L)
+}
+
 const toCorrectPrecision = (
   value?: number | string,
   displayUnits?: string,

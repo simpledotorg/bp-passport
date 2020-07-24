@@ -167,7 +167,7 @@ const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
       displayUnits,
       bsDetails.type,
       bsDetails.high.toString(),
-      BloodSugarCode.MG_DL,
+      displayUnits,
     ).toFixed(determinePrecision(displayUnits))
     return `${convertedValue} ${getDisplayBloodSugarUnit(displayUnits)}`
   }
@@ -185,8 +185,6 @@ const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
 }
 
 const BloodSugarNotes = ({bs, displayUnits}: any) => {
-  console.log('1', isHighBloodSugar(bs))
-  console.log('2', showWarning(bs))
   if (isHighBloodSugar(bs) && showWarning(bs)) {
     return <HighBloodSugarWarning />
   }
