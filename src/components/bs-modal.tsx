@@ -176,7 +176,7 @@ const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
       <FormattedMessage
         id="general.sheet-normal-disclaimer"
         values={{
-          label: intl.formatMessage({id: getReadingTypeId(bs)}).toLowerCase(),
+          label: intl.formatMessage({id: 'general.bp'}),
           limit: <BodyText>{getNormalLimit()}</BodyText>,
         }}
       />
