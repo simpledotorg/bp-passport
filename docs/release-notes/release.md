@@ -1,5 +1,13 @@
 # BP Passport
 
+## Version 1.06
+
+### Hot Fixes
+
+- Fixed text input getting cut off on android
+- Fixed font size for health reminders
+- Increased spacing of the BP infos
+
 ## Version 1.05 (Iteration 12)
 
 ### Features and Fixes
