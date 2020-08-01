@@ -340,7 +340,7 @@ export default AddBpScreen
 
 const styles = StyleSheet.create({
   input: {
-    height: 56,
+    minHeight: 56,
     borderRadius: 4,
     backgroundColor: colors.white100,
     borderStyle: 'solid',
