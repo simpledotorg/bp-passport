@@ -484,7 +484,7 @@ export default AddBsScreen
 
 const styles = StyleSheet.create({
   input: {
-    height: 56,
+    minHeight: 56,
     width: 144,
     borderRadius: 4,
     backgroundColor: colors.white100,
