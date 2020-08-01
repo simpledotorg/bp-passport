@@ -16,6 +16,7 @@ export const HealthReminder = ({data}: Props) => {
       <BodyText
         style={{
           textAlign: 'center',
+          fontSize: 18,
         }}>
         <FormattedMessage id={data.translationId} />
       </BodyText>
