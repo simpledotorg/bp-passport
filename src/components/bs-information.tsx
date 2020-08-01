@@ -77,6 +77,7 @@ export const BsInformation = ({bs, displayUnits, style = {}}: Props) => {
         flexDirection: 'row',
         alignItems: 'center',
         flex: 1,
+        justifyContent: 'center',
       }}>
       <View
         style={{
@@ -101,9 +102,14 @@ export const BsInformation = ({bs, displayUnits, style = {}}: Props) => {
                 ? '%'
                 : ' ' + getDisplayBloodSugarUnit(displayUnits)}{' '}
             </BodyText>
-            <View>{getBSText()}</View>
+            {getBSText()}
           </View>
-          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              marginTop: 2,
+            }}>
             <BodyText
               style={{
                 fontSize: 16,
