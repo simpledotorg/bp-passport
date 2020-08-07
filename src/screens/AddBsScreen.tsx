@@ -61,12 +61,6 @@ type Props = {
   route: AddBsScreen
 }
 
-interface PickerItemExtended extends Item {
-  min: number
-  max: number
-  type: string
-}
-
 const getHistoricValues = (): number => {
   const bpsAll = bloodPressuresSelector() ?? []
   const normalBpCount = bpsAll.length
@@ -109,48 +103,12 @@ function AddBsScreen({navigation, route}: Props) {
   const hasReviewed = hasReviewedSelector()
   const normalBpBsCount = getBpBsCount()
 
-  /*
-  const SUGAR_TYPES: PickerItemExtended[] = [
-    {
-      label: `${intl.formatMessage({
-        id: 'bs.placeholder-title',
-      })} (${intl.formatMessage({id: 'bs.placeholder-description'})})`,
-      value: null,
-      min: 30,
-      max: 1000,
-      type: BLOOD_SUGAR_INPUT_TYPES.DECIMAL,
-    },
-    {
-      label: intl.formatMessage({id: 'bs.after-eating-title'}),
-      value: BLOOD_SUGAR_TYPES.AFTER_EATING,
-      min: 30,
-      max: 1000,
-      type: BLOOD_SUGAR_INPUT_TYPES.DECIMAL,
-    },
-    {
-      label: intl.formatMessage({id: 'bs.before-eating-title'}),
-      value: BLOOD_SUGAR_TYPES.BEFORE_EATING,
-      min: 30,
-      max: 1000,
-      type: BLOOD_SUGAR_INPUT_TYPES.DECIMAL,
-    },
-    {
-      label: intl.formatMessage({id: 'bs.hemoglobic'}),
-      value: BLOOD_SUGAR_TYPES.HEMOGLOBIC,
-      min: 3,
-      max: 25,
-      type: BLOOD_SUGAR_INPUT_TYPES.PERCENTAGE,
-    },
-  ]
-  */
-
-  // const [type, setType] = useState<string>(SUGAR_TYPES[0].value)
   const [reading, setReading] = useState<string>('')
   const [errors, setErrors] = useState<null | string>(null)
   const inputRef = useRef<null | any>(null)
   const [type, setType] = useState<BLOOD_SUGAR_TYPES | undefined>(undefined)
 
-  // BLOOD_SUGAR_TYPES
+  const [saveIsDisabled, setSaveIsDisabled] = useState(true)
 
   const typeToTitle = (t: BLOOD_SUGAR_TYPES | undefined): string => {
     if (t) {
@@ -248,7 +206,23 @@ function AddBsScreen({navigation, route}: Props) {
       setErrors(newErrors)
       setShowErrors(newErrors != null)
     }
+    refreshSaveDisabled()
   }, [type])
+
+  const refreshSaveDisabled = () => {
+    const saveIsDisabledNow = !!(
+      reading === '' ||
+      errors ||
+      isNaN(Number(reading))
+    )
+    console.log('1: ', !!(reading === ''))
+    console.log('2: ', !!errors, errors)
+    console.log('3: ', !!isNaN(Number(reading)))
+    console.log('4: ', saveIsDisabledNow)
+    if (saveIsDisabledNow !== saveIsDisabled) {
+      setSaveIsDisabled(saveIsDisabledNow)
+    }
+  }
 
   useEffect(() => {
     if (reading === '') {
@@ -270,6 +244,7 @@ function AddBsScreen({navigation, route}: Props) {
         setErrors(null)
       }
 
+      refreshSaveDisabled()
       return
     }
 
@@ -281,14 +256,12 @@ function AddBsScreen({navigation, route}: Props) {
       setShowErrors(true)
     }, 1500)
 
+    refreshSaveDisabled()
+
     return () => {
       clearTimeout(errorShowTimeout)
     }
-  }, [reading])
-
-  const isSaveDisabled = (): boolean => {
-    return !!(reading === '' || errors || isNaN(Number(reading)))
-  }
+  }, [reading, errors])
 
   const cleanText = (input: string) => {
     let ret = input
@@ -298,24 +271,6 @@ function AddBsScreen({navigation, route}: Props) {
       ret = ret.replace(/[^0-9]/g, '')
     }
 
-    /*
-    switch (type) {
-      case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
-        break
-      default:
-        if (selectedBloodSugarUnit === BloodSugarCode.MG_DL) {
-          const v = parseInt(ret, 10)
-          if (v > 1000) {
-            ret = '1000'
-          }
-        } else if (selectedBloodSugarUnit === BloodSugarCode.MMOL_L) {
-          const v = parseFloat(ret)
-          if (v > 55.5) {
-            ret = '55.5'
-          }
-        }
-        break
-    } */
     return ret
   }
 
@@ -367,8 +322,6 @@ function AddBsScreen({navigation, route}: Props) {
               onChangeText={(textIn) => {
                 const text = setReading(cleanText(textIn))
               }}
-              // placeholder={}
-
               value={reading}
               keyboardType={
                 allowDecimalPoint(type, selectedBloodSugarUnit)
@@ -392,17 +345,9 @@ function AddBsScreen({navigation, route}: Props) {
               </View>
             </TouchableHighlight>
           </View>
-          {/* 
-          <Picker
-            value={type}
-            items={SUGAR_TYPES}
-            onValueChange={(value: string) => {
-              setType(value)
-            }}
-          />*/}
           <Button
             title={intl.formatMessage({id: 'general.save'})}
-            disabled={isSaveDisabled()}
+            disabled={saveIsDisabled}
             buttonType={ButtonType.Normal}
             style={{
               marginTop: 24,

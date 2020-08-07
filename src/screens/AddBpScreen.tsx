@@ -71,6 +71,8 @@ function AddBpScreen({navigation, route}: Props) {
   const systolicRef = useRef<null | any>(null)
   const diastolicRef = useRef<null | any>(null)
 
+  const [saveIsDisabled, setSaveIsDisabled] = useState(true)
+
   const [systolic, setSystolic] = useState('')
   const [diastolic, setDiastolic] = useState('')
   const [errors, setErrors] = useState<null | string>(null)
@@ -81,14 +83,17 @@ function AddBpScreen({navigation, route}: Props) {
 
   const dispatch = useThunkDispatch()
 
-  const isSaveDisabled = () => {
-    return !!(
+  const refreshSaveDisabled = () => {
+    const saveIsDisabledNow = !!(
       systolic === '' ||
       diastolic === '' ||
       errors ||
       isNaN(Number(systolic)) ||
       isNaN(Number(diastolic))
     )
+    if (saveIsDisabledNow !== saveIsDisabled) {
+      setSaveIsDisabled(saveIsDisabledNow)
+    }
   }
 
   const getErrorGateway = (
@@ -184,6 +189,8 @@ function AddBpScreen({navigation, route}: Props) {
     systolicPrevious.current = systolic
     diastolicPrevious.current = diastolic
 
+    refreshSaveDisabled()
+
     return () => {
       clearTimeout(errorShowTimeout)
     }
@@ -255,7 +262,7 @@ function AddBpScreen({navigation, route}: Props) {
                 onSubmitEditing={() => {
                   if (diastolic === '') {
                     diastolicRef?.current?.focus()
-                  } else if (!isSaveDisabled()) {
+                  } else if (!saveIsDisabled) {
                     save()
                   }
                 }}
@@ -301,7 +308,7 @@ function AddBpScreen({navigation, route}: Props) {
                 keyboardType={'number-pad'}
                 returnKeyType={'done'}
                 onSubmitEditing={() => {
-                  if (!isSaveDisabled()) {
+                  if (!saveIsDisabled) {
                     save()
                   }
                 }}
@@ -322,7 +329,7 @@ function AddBpScreen({navigation, route}: Props) {
           <Button
             title={intl.formatMessage({id: 'general.save'})}
             buttonType={ButtonType.Normal}
-            disabled={isSaveDisabled()}
+            disabled={saveIsDisabled}
             style={{
               marginTop: 24,
             }}
