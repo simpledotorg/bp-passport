@@ -316,16 +316,7 @@ function AddBpScreen({navigation, route}: Props) {
               <BodyText style={styles.label}>{diastolicLabel}</BodyText>
             </View>
           </View>
-          {errors && showErrors && (
-            <BodyText
-              style={{
-                textAlign: 'center',
-                marginTop: 24,
-                color: colors.red1,
-              }}>
-              {errors}
-            </BodyText>
-          )}
+
           <Button
             title={intl.formatMessage({id: 'general.save'})}
             buttonType={ButtonType.Normal}
@@ -337,6 +328,16 @@ function AddBpScreen({navigation, route}: Props) {
               save()
             }}
           />
+          {errors && showErrors && (
+            <BodyText
+              style={{
+                textAlign: 'center',
+                marginTop: 24,
+                color: colors.red1,
+              }}>
+              {errors}
+            </BodyText>
+          )}
         </ScrollView>
       </SafeAreaView>
     </View>
@@ -353,7 +354,9 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderBottomWidth: 2,
     borderColor: colors.grey2,
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+    paddingTop: 0,
     fontSize: 28,
     fontWeight: 'normal',
     fontStyle: 'normal',
