@@ -1,5 +1,11 @@
 # BP Passport
 
+## Version 1.07
+
+### Iteration 13 (Fixes/polish)
+
+- Patients - Add BP - Top padding
+
 ## Version 1.06
 
 ### Hot Fixes
