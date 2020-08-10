@@ -208,30 +208,26 @@ function AddBsScreen({navigation, route}: Props) {
       setShowErrors(hasErrors)
     }
 
-    if (hasErrors === null) {
-      return
+    let ret
+    let saveIsDisabledNow = false // assume able to save
+
+    if (hasErrors) {
+      const errorShowTimeout = setTimeout(() => {
+        setShowErrors(true)
+      }, 1500)
+      ret = () => {
+        clearTimeout(errorShowTimeout)
+      }
+      saveIsDisabledNow = true
+    } else {
+      // no errors...
+      saveIsDisabledNow = !!(reading === '' || isNaN(Number(reading)))
     }
 
-    const errorShowTimeout = setTimeout(() => {
-      setShowErrors(true)
-    }, 1500)
+    setSaveIsDisabled(saveIsDisabledNow)
 
-    return () => {
-      clearTimeout(errorShowTimeout)
-    }
+    return ret
   }, [type, reading])
-
-  useEffect(() => {
-    const saveIsDisabledNow = !!(
-      reading === '' ||
-      errors ||
-      isNaN(Number(reading))
-    )
-
-    if (saveIsDisabledNow !== saveIsDisabled) {
-      setSaveIsDisabled(saveIsDisabledNow)
-    }
-  }, [errors])
 
   const cleanText = (input: string) => {
     let ret = input
