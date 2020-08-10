@@ -83,9 +83,10 @@ function ScanPassportScreen({navigation}: Props) {
   }, [error, uiState, modalIsVisible])
 
   // test a working/not working code in the simulator
+
   /*
   useEffect(() => {
-    const good = '0c66e959-a8a2-4dab-89c6-a600b77e99f7'
+    const good = '1f4a4b90-b2da-4eba-8287-24f61a7f1dcf'
     const bad = 'fdsfds'
     onBarCodeRead({
       data: good,
