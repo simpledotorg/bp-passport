@@ -160,7 +160,7 @@ const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
 
   const getNormalLimit = () => {
     if (bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
-      return `${bsDetails.high} %`
+      return `${bsDetails.high}%`
     }
 
     const convertedValue = convertBloodSugarValue(
@@ -171,12 +171,15 @@ const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
     ).toFixed(determinePrecision(displayUnits))
     return `${convertedValue} ${getDisplayBloodSugarUnit(displayUnits)}`
   }
+
+  const typeS = getReadingType(bs).toLowerCase()
+
   return (
     <BodyText style={{lineHeight: 26, marginVertical: 34}}>
       <FormattedMessage
-        id="general.sheet-normal-disclaimer"
+        id="general.bs-sheet-normal-disclaimer"
         values={{
-          label: intl.formatMessage({id: 'bs.blood-sugar'}).toLowerCase(),
+          label: typeS,
           limit: <BodyText>{getNormalLimit()}</BodyText>,
         }}
       />

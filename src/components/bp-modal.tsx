@@ -106,7 +106,7 @@ export const BpModal = ({bp, close}: Props) => {
     ) : (
       <BodyText style={{lineHeight: 26, marginVertical: 34}}>
         <FormattedMessage
-          id="general.sheet-normal-disclaimer"
+          id="general.bp-sheet-normal-disclaimer"
           values={{
             label: <FormattedMessage id={'general.bp'} />,
             limit: '140/90',
