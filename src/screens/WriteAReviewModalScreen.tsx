@@ -5,6 +5,7 @@ import {
   Image,
   Platform,
   Linking,
+  Dimensions,
 } from 'react-native'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -70,7 +71,7 @@ function WriteAReviewModalScreen({navigation}: Props) {
             {
               backgroundColor: colors.white100,
               padding: 24,
-              width: 265,
+              width: Dimensions.get('window').width - 36,
             },
           ]}>
           <Image
