@@ -183,6 +183,7 @@ function AddBpScreen({navigation, route}: Props) {
     if (errors) {
       errorShowTimeout = setTimeout(() => setShowErrors(true), 1500)
     } else {
+      setErrors(null)
       setShowErrors(false)
     }
 

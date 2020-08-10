@@ -202,66 +202,36 @@ function AddBsScreen({navigation, route}: Props) {
 
   useEffect(() => {
     const newErrors = getErrors(reading)
+    const hasErrors = newErrors != null
     if (newErrors !== errors) {
       setErrors(newErrors)
-      setShowErrors(newErrors != null)
+      setShowErrors(hasErrors)
     }
-    refreshSaveDisabled()
-  }, [type])
 
-  const refreshSaveDisabled = () => {
-    const saveIsDisabledNow = !!(
-      reading === '' ||
-      errors ||
-      isNaN(Number(reading))
-    )
-    console.log('1: ', !!(reading === ''))
-    console.log('2: ', !!errors, errors)
-    console.log('3: ', !!isNaN(Number(reading)))
-    console.log('4: ', saveIsDisabledNow)
-    if (saveIsDisabledNow !== saveIsDisabled) {
-      setSaveIsDisabled(saveIsDisabledNow)
-    }
-  }
-
-  useEffect(() => {
-    if (reading === '') {
-      if (errors != null) {
-        setErrors(null)
-        setShowErrors(false)
-      }
+    if (hasErrors === null) {
       return
-    }
-
-    const newErrors = getErrors(reading)
-
-    if (newErrors === null) {
-      if (showErrors) {
-        setShowErrors(false)
-      }
-
-      if (errors != null) {
-        setErrors(null)
-      }
-
-      refreshSaveDisabled()
-      return
-    }
-
-    if (newErrors !== errors) {
-      setErrors(newErrors)
     }
 
     const errorShowTimeout = setTimeout(() => {
       setShowErrors(true)
     }, 1500)
 
-    refreshSaveDisabled()
-
     return () => {
       clearTimeout(errorShowTimeout)
     }
-  }, [reading, errors])
+  }, [type, reading])
+
+  useEffect(() => {
+    const saveIsDisabledNow = !!(
+      reading === '' ||
+      errors ||
+      isNaN(Number(reading))
+    )
+
+    if (saveIsDisabledNow !== saveIsDisabled) {
+      setSaveIsDisabled(saveIsDisabledNow)
+    }
+  }, [errors])
 
   const cleanText = (input: string) => {
     let ret = input
