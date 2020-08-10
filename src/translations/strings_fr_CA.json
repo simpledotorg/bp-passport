@@ -63,7 +63,7 @@
   "page-titles.add-medicine": "Ajouter un médicament",
   "general.bp-sheet-high-disclaimer": "Pression artérielle élevée à ou supérieure à {limit}. Votre pression artérielle « élevée » personnelle pourrait être différente; discutez-en avec votre médecin.",
   "general.bp-sheet-normal-disclaimer": "Pression artérielle normale inférieure à {limit}. Votre pression artérielle « normale » personnelle pourrait être différente; discutez-en avec votre médecin.",
-  "general.bs-sheet-high-disclaimer": "Glycémie élevée « {label} » est à ou supérieure à {limit}. Votre glycémie « élevée » personnelle pourrait être différente; discutez-en avec votre médecin.",
+  "general.bs-sheet-high-disclaimer": "Glycémie élevée « {label} » à ou supérieure à {limit}. Votre glycémie « élevée » personnelle pourrait être différente; discutez-en avec votre médecin.",
   "general.bs-sheet-normal-disclaimer": "Glycémie normale « {label} » inférieure à {limit}. Votre glycémie « normale » personnelle pourrait être différente; discutez-en avec votre médecin.",
   "general.add-bs": "Ajouter une glycémie",
   "general.save": "Enregistrer",
