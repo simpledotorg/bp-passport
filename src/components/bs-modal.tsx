@@ -153,6 +153,40 @@ const LowBloodSugarWarning = () => {
   )
 }
 
+const HighBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
+  const bsDetails = getBloodSugarDetails(bs)
+
+  const intl = useIntl()
+
+  const getNormalLimit = () => {
+    if (bs.blood_sugar_type === BLOOD_SUGAR_TYPES.HEMOGLOBIC) {
+      return `${bsDetails.high}%`
+    }
+
+    const convertedValue = convertBloodSugarValue(
+      displayUnits,
+      bsDetails.type,
+      bsDetails.high.toString(),
+      displayUnits,
+    ).toFixed(determinePrecision(displayUnits))
+    return `${convertedValue} ${getDisplayBloodSugarUnit(displayUnits)}`
+  }
+
+  const typeS = getReadingType(bs).toLowerCase()
+
+  return (
+    <BodyText style={{lineHeight: 26, marginVertical: 34}}>
+      <FormattedMessage
+        id="general.bs-sheet-high-disclaimer"
+        values={{
+          label: typeS,
+          limit: <BodyText>{getNormalLimit()}</BodyText>,
+        }}
+      />
+    </BodyText>
+  )
+}
+
 const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
   const bsDetails = getBloodSugarDetails(bs)
 
@@ -188,8 +222,12 @@ const NormalBloodSugarDisclaimer = ({bs, displayUnits}: any) => {
 }
 
 const BloodSugarNotes = ({bs, displayUnits}: any) => {
-  if (isHighBloodSugar(bs) && showWarning(bs)) {
+  if (showWarning(bs)) {
     return <HighBloodSugarWarning />
+  }
+
+  if (isHighBloodSugar(bs)) {
+    return <HighBloodSugarDisclaimer bs={bs} displayUnits={displayUnits} />
   }
 
   return isLowBloodSugar(bs) && showWarning(bs) ? (
