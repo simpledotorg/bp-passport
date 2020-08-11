@@ -1,6 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react'
 import {
-  SafeAreaView,
   View,
   StyleSheet,
   TextInput,
@@ -10,13 +9,14 @@ import {
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {useIntl, FormattedMessage} from 'react-intl'
-import {Item} from 'react-native-picker-select'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 import {containerStyles, colors} from '../styles'
 import {Picker, BodyText, Button, ButtonType} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 
 import {
   BLOOD_SUGAR_TYPES,
@@ -90,7 +90,6 @@ const allowDecimalPoint = (
   type: BLOOD_SUGAR_TYPES | undefined,
   selectedBloodSugarUnit: BloodSugarCode,
 ) => {
-  console.log('selectedBloodSugarUnit: ', selectedBloodSugarUnit)
   return (
     type === BLOOD_SUGAR_TYPES.HEMOGLOBIC ||
     selectedBloodSugarUnit === BloodSugarCode.MMOL_L
@@ -255,11 +254,11 @@ function AddBsScreen({navigation, route}: Props) {
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white100}]}>
-        <ScrollView
+        <KeyboardAwareScrollView
           style={{
-            flex: 1,
             padding: 24,
           }}
+          extraScrollHeight={44}
           keyboardShouldPersistTaps="handled">
           <View
             style={{
@@ -385,7 +384,7 @@ function AddBsScreen({navigation, route}: Props) {
               {errors}
             </BodyText>
           )}
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     </View>
   )

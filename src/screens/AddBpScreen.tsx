@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react'
-import {SafeAreaView, View, StyleSheet, TextInput} from 'react-native'
+import {View, StyleSheet, TextInput, ScrollView} from 'react-native'
+import {SafeAreaView} from 'react-native-safe-area-context'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {useIntl} from 'react-intl'
@@ -16,10 +17,10 @@ import {
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {useThunkDispatch} from '../redux/store'
 import {addBloodPressure} from '../redux/blood-pressure/blood-pressure.actions'
-import {ScrollView} from 'react-native-gesture-handler'
 import {setNormalBpBsCount} from '../redux/patient/patient.actions'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
 import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 
 type AddBpScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -228,10 +229,11 @@ function AddBpScreen({navigation, route}: Props) {
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white100}]}>
-        <ScrollView
-          style={{padding: 24, flex: 1}}
+        <KeyboardAwareScrollView
+          style={{padding: 24}}
+          extraScrollHeight={44}
           keyboardShouldPersistTaps="handled">
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', backgroundColor: 'red'}}>
             <View style={{flexDirection: 'column', flex: 1}}>
               <TextInput
                 returnKeyType="done"
@@ -339,7 +341,7 @@ function AddBpScreen({navigation, route}: Props) {
               {errors}
             </BodyText>
           )}
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     </View>
   )
