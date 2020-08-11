@@ -233,7 +233,7 @@ function AddBpScreen({navigation, route}: Props) {
           style={{padding: 24}}
           extraScrollHeight={44}
           keyboardShouldPersistTaps="handled">
-          <View style={{flexDirection: 'row', backgroundColor: 'red'}}>
+          <View style={{flexDirection: 'row'}}>
             <View style={{flexDirection: 'column', flex: 1}}>
               <TextInput
                 returnKeyType="done"
