@@ -2,9 +2,22 @@
 
 ## Version 1.07
 
-### Iteration 13 (Fixes/polish)
+### Claudio's List:
 
 - Patients - Add BP - Top padding
+- Patients - Add BS - Upper limit
+- Patients - BP/BS rows - Spacing between lines is inconsistent
+- Patients - BS Trend - Tooltip fixes
+- Patients - Review modal - Update width
+- Patients - Home screen - Wrong spanish string
+- Patients - Language options - Show Bengali (BN) and Bengali (IN) options
+- Patients - Sheet disclaimer copy - Use new strings and variables
+
+### AS Testing Bugs:
+
+- iOS 10.3.1 Small screen devices require scrolling the Save button
+- Scan QR codes - unable to re-scan when pressing 'back' on validation code screen
+- Blood Sugar Graphs - no y axis labels when in mmol/L
 
 ## Version 1.06
 
