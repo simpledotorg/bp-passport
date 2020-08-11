@@ -225,17 +225,10 @@ dependencies {
 
     implementation project(":react-native-push-notification")
 
-    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
-      exclude group:'com.facebook.fbjni'
-    }
+    debugImplementation 'com.facebook.flipper:flipper:0.52.1'
+    debugImplementation 'com.facebook.soloader:soloader:0.9.0'
 
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.facebook.flipper'
-    }
-
-    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.facebook.flipper'
-    }
+    releaseImplementation 'com.facebook.flipper:flipper-noop:0.52.1'
 /*
     def appCenterSdkVersion = '3.1.0'
     implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
