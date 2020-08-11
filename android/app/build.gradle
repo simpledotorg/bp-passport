@@ -131,6 +131,8 @@ def enableHermes = project.ext.react.get("enableHermes", false);
 def isAppCenterBuild = System.properties.containsKey('APPCENTER_KEYSTORE_PASSWORD');
 
 android {
+
+
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     compileOptions {
@@ -142,7 +144,7 @@ android {
         applicationId "org.simple.bppassport"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 303
+        versionCode 380
         versionName "1.07"
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
