@@ -19,9 +19,10 @@ const loggerMiddleware = createLogger()
 const middlewares = [thunkMiddleware /*, loggerMiddleware*/]
 
 if (__DEV__) {
+  /*
   console.log('DEV MODE!')
   const createDebugger = require('redux-flipper').default
-  middlewares.push(createDebugger())
+  middlewares.push(createDebugger()) */
 }
 
 const migrations: MigrationManifest = {
