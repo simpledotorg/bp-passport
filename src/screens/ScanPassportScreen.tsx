@@ -11,6 +11,7 @@ import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {useThunkDispatch} from '../redux/store'
 import {activate} from '../redux/auth/auth.actions'
+import {useIsFocused} from '@react-navigation/native'
 
 type ScanScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -37,6 +38,8 @@ function ScanPassportScreen({navigation}: Props) {
   const [hasReadCode, setHasReadCode] = useState(false)
   const [error, setError] = useState<Error | undefined>(undefined)
   const [modalIsVisible, setModalIsVisible] = useState(false)
+
+  const isFocused = useIsFocused()
 
   const dispatch = useThunkDispatch()
 
@@ -82,8 +85,14 @@ function ScanPassportScreen({navigation}: Props) {
     }
   }, [error, uiState, modalIsVisible])
 
-  // test a working/not working code in the simulator
+  useEffect(() => {
+    if (isFocused && hasReadCode) {
+      // Just focused - eg. back button tapped - need to be able to rescan now
+      setHasReadCode(false)
+    }
+  }, [isFocused])
 
+  // test a working/not working code in the simulator
   /*
   useEffect(() => {
     const good = '1f4a4b90-b2da-4eba-8287-24f61a7f1dcf'
@@ -92,7 +101,8 @@ function ScanPassportScreen({navigation}: Props) {
       data: good,
       type: RNCamera.Constants.BarCodeType.qr,
     })
-  }, []) */
+  }, [])
+  */
 
   return (
     <>
