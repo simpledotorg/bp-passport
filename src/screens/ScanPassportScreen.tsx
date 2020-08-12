@@ -93,16 +93,16 @@ function ScanPassportScreen({navigation}: Props) {
   }, [isFocused])
 
   // test a working/not working code in the simulator
+
   /*
   useEffect(() => {
-    const good = '1f4a4b90-b2da-4eba-8287-24f61a7f1dcf'
+    const good = 'dc98b0ef-12b9-43be-add1-01ba8fb56c33'
     const bad = 'fdsfds'
     onBarCodeRead({
       data: good,
       type: RNCamera.Constants.BarCodeType.qr,
     })
-  }, [])
-  */
+  }, []) */
 
   return (
     <>
