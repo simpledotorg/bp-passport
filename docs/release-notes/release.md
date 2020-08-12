@@ -2,6 +2,14 @@
 
 ## Version 1.07
 
+### Claudio's New List:
+
+- Translation updates added
+- BS Graph - Pill styling
+- BP details sheet - Crashing on tap
+- BS Graph - Missing y-axis labels
+- BP Graph - Missing y-axis label
+
 ### Claudio's List:
 
 - Patients - Add BP - Top padding
