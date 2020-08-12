@@ -46,16 +46,8 @@ export const BpHistoryChart = ({bps}: Props) => {
     if (!chartData) {
       throw new Error('Can not get max domain, not instance of chart data')
     }
-
-    const threshhold = BloodPressure.diastolicUpperThreshold
-    const difference = Math.round(threshhold / 10)
-    let base = chartData.getMaxDataValue() ?? threshhold
-
-    if (base < threshhold) {
-      base = threshhold
-    }
-
-    return base + difference
+    const defaultMax = 190
+    return Math.max(defaultMax, chartData.getMaxDataValue() || defaultMax)
   }
 
   const getMinDomain = () => {
@@ -63,15 +55,8 @@ export const BpHistoryChart = ({bps}: Props) => {
       throw new Error('Can not get min domain, not instance of chart data')
     }
 
-    const threshhold = BloodPressure.systolicUpperThreshold
-    const difference = Math.round(threshhold / 10)
-    let base = chartData.getMinDataValue() ?? threshhold
-
-    if (base > threshhold) {
-      base = threshhold
-    }
-
-    return base - difference
+    const defaultMin = 50
+    return Math.min(defaultMin, chartData.getMinDataValue() || defaultMin)
   }
 
   const movePreviousPeriod = (): void => {
@@ -128,13 +113,7 @@ export const BpHistoryChart = ({bps}: Props) => {
           }}
           scale={{x: 'linear'}}
           theme={VictoryTheme.material}
-          containerComponent={
-            chartData.getScatterDataForGraph().length ? (
-              <VictoryVoronoiContainer radius={30} />
-            ) : (
-              <></>
-            )
-          }>
+          containerComponent={<VictoryVoronoiContainer radius={30} />}>
           <VictoryAxis
             tickCount={chartData.getAxisTickValues().length}
             tickFormat={(tick) => {

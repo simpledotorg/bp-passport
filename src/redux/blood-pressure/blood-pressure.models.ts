@@ -15,11 +15,11 @@ export class BloodPressure {
   offline?: boolean
 
   static get diastolicUpperThreshold(): number {
-    return 140
+    return 90
   }
 
   static get systolicUpperThreshold(): number {
-    return 90
+    return 140
   }
 }
 

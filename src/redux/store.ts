@@ -18,6 +18,13 @@ export type RootState = ReturnType<typeof rootReducer>
 const loggerMiddleware = createLogger()
 const middlewares = [thunkMiddleware /*, loggerMiddleware*/]
 
+if (__DEV__) {
+  /*
+  console.log('DEV MODE!')
+  const createDebugger = require('redux-flipper').default
+  middlewares.push(createDebugger()) */
+}
+
 const migrations: MigrationManifest = {
   1: (state) => {
     // migration clear out device state

@@ -38,6 +38,7 @@ export const ChartTypeSelection = ({
         position: 'relative',
         flexDirection: 'row',
         flexWrap: 'wrap',
+        marginRight: -20,
         paddingTop: 20,
       }}>
       {hasAfterEatingTypes(chartTypesAvailable) && (

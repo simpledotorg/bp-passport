@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react'
-import {SafeAreaView, View, StyleSheet, TextInput} from 'react-native'
+import {View, StyleSheet, TextInput, ScrollView} from 'react-native'
+import {SafeAreaView} from 'react-native-safe-area-context'
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {useIntl} from 'react-intl'
@@ -16,10 +17,10 @@ import {
 import {BloodPressure} from '../redux/blood-pressure/blood-pressure.models'
 import {useThunkDispatch} from '../redux/store'
 import {addBloodPressure} from '../redux/blood-pressure/blood-pressure.actions'
-import {ScrollView} from 'react-native-gesture-handler'
 import {setNormalBpBsCount} from '../redux/patient/patient.actions'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
 import {bloodSugarsSelector} from '../redux/blood-sugar/blood-sugar.selectors'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 
 type AddBpScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -71,6 +72,8 @@ function AddBpScreen({navigation, route}: Props) {
   const systolicRef = useRef<null | any>(null)
   const diastolicRef = useRef<null | any>(null)
 
+  const [saveIsDisabled, setSaveIsDisabled] = useState(true)
+
   const [systolic, setSystolic] = useState('')
   const [diastolic, setDiastolic] = useState('')
   const [errors, setErrors] = useState<null | string>(null)
@@ -81,14 +84,17 @@ function AddBpScreen({navigation, route}: Props) {
 
   const dispatch = useThunkDispatch()
 
-  const isSaveDisabled = () => {
-    return !!(
+  const refreshSaveDisabled = () => {
+    const saveIsDisabledNow = !!(
       systolic === '' ||
       diastolic === '' ||
       errors ||
       isNaN(Number(systolic)) ||
       isNaN(Number(diastolic))
     )
+    if (saveIsDisabledNow !== saveIsDisabled) {
+      setSaveIsDisabled(saveIsDisabledNow)
+    }
   }
 
   const getErrorGateway = (
@@ -178,11 +184,14 @@ function AddBpScreen({navigation, route}: Props) {
     if (errors) {
       errorShowTimeout = setTimeout(() => setShowErrors(true), 1500)
     } else {
+      setErrors(null)
       setShowErrors(false)
     }
 
     systolicPrevious.current = systolic
     diastolicPrevious.current = diastolic
+
+    refreshSaveDisabled()
 
     return () => {
       clearTimeout(errorShowTimeout)
@@ -220,8 +229,9 @@ function AddBpScreen({navigation, route}: Props) {
     <View style={{flex: 1}}>
       <SafeAreaView
         style={[containerStyles.fill, {backgroundColor: colors.white100}]}>
-        <ScrollView
-          style={{padding: 24, flex: 1}}
+        <KeyboardAwareScrollView
+          style={{padding: 24}}
+          extraScrollHeight={44}
           keyboardShouldPersistTaps="handled">
           <View style={{flexDirection: 'row'}}>
             <View style={{flexDirection: 'column', flex: 1}}>
@@ -255,7 +265,7 @@ function AddBpScreen({navigation, route}: Props) {
                 onSubmitEditing={() => {
                   if (diastolic === '') {
                     diastolicRef?.current?.focus()
-                  } else if (!isSaveDisabled()) {
+                  } else if (!saveIsDisabled) {
                     save()
                   }
                 }}
@@ -301,7 +311,7 @@ function AddBpScreen({navigation, route}: Props) {
                 keyboardType={'number-pad'}
                 returnKeyType={'done'}
                 onSubmitEditing={() => {
-                  if (!isSaveDisabled()) {
+                  if (!saveIsDisabled) {
                     save()
                   }
                 }}
@@ -309,6 +319,18 @@ function AddBpScreen({navigation, route}: Props) {
               <BodyText style={styles.label}>{diastolicLabel}</BodyText>
             </View>
           </View>
+
+          <Button
+            title={intl.formatMessage({id: 'general.save'})}
+            buttonType={ButtonType.Normal}
+            disabled={saveIsDisabled}
+            style={{
+              marginTop: 24,
+            }}
+            onPress={() => {
+              save()
+            }}
+          />
           {errors && showErrors && (
             <BodyText
               style={{
@@ -319,18 +341,7 @@ function AddBpScreen({navigation, route}: Props) {
               {errors}
             </BodyText>
           )}
-          <Button
-            title={intl.formatMessage({id: 'general.save'})}
-            buttonType={ButtonType.Normal}
-            disabled={isSaveDisabled()}
-            style={{
-              marginTop: 24,
-            }}
-            onPress={() => {
-              save()
-            }}
-          />
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     </View>
   )
@@ -346,7 +357,9 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderBottomWidth: 2,
     borderColor: colors.grey2,
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+    paddingTop: 0,
     fontSize: 28,
     fontWeight: 'normal',
     fontStyle: 'normal',

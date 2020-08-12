@@ -18,6 +18,15 @@ export class ScatterGraphDataPoint {
 
     this.x = index
 
+    console.log(
+      'BloodPressure.diastolicUpperThreshold > ',
+      BloodPressure.diastolicUpperThreshold,
+    )
+    console.log(
+      'BloodPressure.systolicUpperThreshold > ',
+      BloodPressure.systolicUpperThreshold,
+    )
+
     const value = useDiastolic ? diastolicAverage : systolicAverage
     if (value) {
       this.y = value
