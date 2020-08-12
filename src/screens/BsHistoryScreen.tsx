@@ -56,7 +56,7 @@ function BsHistoryScreen({navigation, route}: Props) {
         <View
           style={[
             containerStyles.containerSegment,
-            {paddingVertical: 22, paddingHorizontal: 24},
+            {padding: 0, paddingVertical: 22, paddingHorizontal: 24},
           ]}>
           <View style={[{flexShrink: 0}]}>
             <View>

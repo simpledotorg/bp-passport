@@ -46,7 +46,6 @@ export const BpHistoryChart = ({bps}: Props) => {
     if (!chartData) {
       throw new Error('Can not get max domain, not instance of chart data')
     }
-
     const defaultMax = 190
     return Math.max(defaultMax, chartData.getMaxDataValue() || defaultMax)
   }
