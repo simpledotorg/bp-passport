@@ -2,6 +2,12 @@
 
 ## Version 1.07
 
+### Claudio's New New List:
+
+- BS/BP Graph - Y axis labels
+- BS/BP Graph - Point select style
+- BS/BP Graph - Y axis line style + threshold colors
+
 ### Claudio's New List:
 
 - Translation updates added

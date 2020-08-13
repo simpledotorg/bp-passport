@@ -132,7 +132,7 @@ export const BpHistoryChart = ({bps}: Props) => {
             dependentAxis
             tickValues={[90, 140]}
             style={{
-              grid: {stroke: colors.grey2, strokeDasharray: 4},
+              grid: {stroke: colors.grey1, strokeDasharray: 0},
               axis: {stroke: colors.grey3, strokeDasharray: 4, strokeWidth: 0},
               ticks: {opacity: 0},
             }}
@@ -158,11 +158,17 @@ export const BpHistoryChart = ({bps}: Props) => {
           <VictoryScatter
             labelComponent={VictoryGraphToolTipHelper.getVictoryToolTip()}
             data={chartData.getScatterDataForGraph()}
-            size={5}
+            size={({active}) => (active ? 4 : 3)}
             style={{
               data: {
-                fill: ({datum}) =>
-                  datum.showOutOfRange ? colors.red1 : colors.green1,
+                fill: ({datum, active}) =>
+                  active
+                    ? colors.white
+                    : datum.showOutOfRange
+                    ? colors.red1
+                    : colors.green1,
+                stroke: colors.blue2,
+                strokeWidth: ({active}) => (active ? 2 : 0),
               },
             }}
           />
