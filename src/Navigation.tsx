@@ -141,20 +141,12 @@ const Navigation = () => {
         <Stack.Screen
           name={SCREENS.ADD_DATA_WARNING_MODAL_SCREEN}
           component={AddDataWarningModalScreen}
-          options={{
-            cardStyleInterpolator:
-              CardStyleInterpolators.forModalPresentationIOS,
-            cardOverlayEnabled: true,
-          }}
+          options={getModalOptions()}
         />
         <Stack.Screen
           name={SCREENS.WRITE_A_REVIEW_MODAL_SCREEN}
           component={WriteAReviewModalScreen}
-          options={{
-            cardStyleInterpolator:
-              CardStyleInterpolators.forModalPresentationIOS,
-            cardOverlayEnabled: true,
-          }}
+          options={getModalOptions()}
         />
         <Stack.Screen
           name={SCREENS.MEDICATION_FREQUENCY}

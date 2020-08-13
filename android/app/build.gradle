@@ -131,6 +131,8 @@ def enableHermes = project.ext.react.get("enableHermes", false);
 def isAppCenterBuild = System.properties.containsKey('APPCENTER_KEYSTORE_PASSWORD');
 
 android {
+
+
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     compileOptions {
@@ -142,8 +144,8 @@ android {
         applicationId "org.simple.bppassport"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 301
-        versionName "1.05"
+        versionCode 382
+        versionName "1.07"
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
     }
@@ -231,6 +233,7 @@ dependencies {
 
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.flipper'
+        exclude group:'com.squareup.okhttp3', module:'okhttp'
     }
 
     debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {

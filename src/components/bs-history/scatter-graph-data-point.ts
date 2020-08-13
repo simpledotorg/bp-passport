@@ -22,10 +22,10 @@ export class ScatterGraphDataPoint {
     this.y = reading.value
 
     this.label =
-      `${reading.value}${this.getDisplayUnits(reading)} ` +
+      `${reading.value}${this.getDisplayUnits(reading)}, ` +
       `${format(new Date(reading.recorded_at), 'dd-MMM-yyyy, HH:mm', {
         locale: dateLocale(),
-      }).toUpperCase()}`
+      })}`
 
     this.showOutOfRange = isHighBloodSugar(reading) || isLowBloodSugar(reading)
   }

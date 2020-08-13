@@ -11,6 +11,7 @@ import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {useThunkDispatch} from '../redux/store'
 import {activate} from '../redux/auth/auth.actions'
+import {useIsFocused} from '@react-navigation/native'
 
 type ScanScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -37,6 +38,8 @@ function ScanPassportScreen({navigation}: Props) {
   const [hasReadCode, setHasReadCode] = useState(false)
   const [error, setError] = useState<Error | undefined>(undefined)
   const [modalIsVisible, setModalIsVisible] = useState(false)
+
+  const isFocused = useIsFocused()
 
   const dispatch = useThunkDispatch()
 
@@ -82,10 +85,18 @@ function ScanPassportScreen({navigation}: Props) {
     }
   }, [error, uiState, modalIsVisible])
 
+  useEffect(() => {
+    if (isFocused && hasReadCode) {
+      // Just focused - eg. back button tapped - need to be able to rescan now
+      setHasReadCode(false)
+    }
+  }, [isFocused])
+
   // test a working/not working code in the simulator
+
   /*
   useEffect(() => {
-    const good = '0c66e959-a8a2-4dab-89c6-a600b77e99f7'
+    const good = 'dc98b0ef-12b9-43be-add1-01ba8fb56c33'
     const bad = 'fdsfds'
     onBarCodeRead({
       data: good,

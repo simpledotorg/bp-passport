@@ -99,7 +99,7 @@ export const HomeHeaderTitle = () => {
       )}
       {hasPassportShortcode && (
         <Text style={{...navigation.homeSubHeaderTitleStyle}} numberOfLines={1}>
-          <FormattedMessage id="general.bp-passport" /> {passport?.shortcode}
+          BP Passport {passport?.shortcode}
         </Text>
       )}
     </View>

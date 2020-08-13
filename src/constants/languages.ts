@@ -5,6 +5,7 @@ import paTranslations from '../translations/strings_pa_IN.json'
 import frTranslations from '../translations/strings_fr.json'
 import esTranslations from '../translations/strings_es.json'
 import bnTranslations from '../translations/strings_bn.json'
+import bnInTranslations from '../translations/strings_bn_IN.json'
 import amTranslations from '../translations/strings_am_ET.json'
 import frCATranslations from '../translations/strings_fr_CA.json'
 import knTranslations from '../translations/strings_kn.json'
@@ -19,6 +20,7 @@ export enum LanguageCode {
   MARATHI = 'mr',
   PUNJABI = 'pa',
   BENGALI = 'bn',
+  BENGALI_INDIA = 'bnIN',
   FRENCH = 'fr',
   SPANISH = 'es',
   AMHARIC = 'am',
@@ -41,6 +43,7 @@ export const DEFAULT_LANGUAGE_CODE = LanguageCode.ENGLISH
 
 export const AVAILABLE_TRANSLATIONS: LanguageCode[] = [
   LanguageCode.AMHARIC,
+  LanguageCode.BENGALI_INDIA,
   LanguageCode.BENGALI,
   LanguageCode.ENGLISH,
   LanguageCode.FRENCH,
@@ -63,6 +66,7 @@ export const dateLocale = () => {
   const code: LanguageCode = reduxState.patient.locale ?? DEFAULT_LANGUAGE_CODE
   switch (code) {
     case LanguageCode.BENGALI:
+    case LanguageCode.BENGALI_INDIA:
       return bn
     case LanguageCode.FRENCH:
       return fr
@@ -89,6 +93,8 @@ export const languageCodeToDisplayTitle = (code: LanguageCode) => {
       return 'አማርኛ'
     case LanguageCode.BENGALI:
       return 'বাংলা'
+    case LanguageCode.BENGALI_INDIA:
+      return 'বাঙালি'
     case LanguageCode.ENGLISH:
       return 'English'
     case LanguageCode.FRENCH:
@@ -122,6 +128,8 @@ export const translationsForCode = (code: LanguageCode) => {
       return amTranslations
     case LanguageCode.BENGALI:
       return bnTranslations
+    case LanguageCode.BENGALI_INDIA:
+      return bnInTranslations
     case LanguageCode.ENGLISH:
       return enTranslations
     case LanguageCode.FRENCH:

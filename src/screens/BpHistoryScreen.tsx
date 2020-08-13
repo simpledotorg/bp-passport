@@ -16,7 +16,7 @@ import {BodyHeader, BpInformation, BpHistoryChart, Line} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
-// import {getTestData} from '../components/bp-history/test-data'
+import {getTestData} from '../components/bp-history/test-data'
 
 type BpHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -35,6 +35,8 @@ type Props = {
 
 function BpHistoryScreen({navigation, route}: Props) {
   const bpsAll = bloodPressuresSelector() ?? []
+  // const bpsAll: BloodPressure[] = []
+  // const bpsAll = getTestData()
   const [isAnimating, setIsAnimating] = useState(true)
   const bps = /*bpsAll.slice(0, 5)*/ isAnimating
     ? bpsAll.slice(0, 5)

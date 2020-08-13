@@ -150,6 +150,9 @@ export class ChartRequest {
   } */
 
   public determineIfHasNextPeriod(): boolean {
-    return this.requestedMonth < new Date().getMonth()
+    return (
+      this.requestedMonth < new Date().getMonth() ||
+      this.requestedYear < new Date().getFullYear()
+    )
   }
 }

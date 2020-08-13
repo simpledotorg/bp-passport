@@ -27,6 +27,7 @@ import {
   convertBloodSugarValue,
   BloodSugarCode,
   determinePrecision,
+  mgToMmol,
 } from '../utils/blood-sugars'
 
 import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
@@ -99,6 +100,15 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
 
     switch (chartData.getChartType()) {
       case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
+        /*
+        return Number(
+          convertBloodSugarValue(
+            displayUnits,
+            BLOOD_SUGAR_TYPES.HEMOGLOBIC,
+            '17',
+            BloodSugarCode.MG_DL,
+          ).toFixed(determinePrecision(displayUnits)),
+        ) */
         return null
       default:
         return Number(
@@ -112,77 +122,8 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
     }
   }
 
-  const getMaxDomain = () => {
-    if (!chartData) {
-      throw new Error('Can not get max domain, not instance of chart data')
-    }
-    switch (chartData.getChartType()) {
-      case BLOOD_SUGAR_TYPES.AFTER_EATING:
-      case BLOOD_SUGAR_TYPES.BEFORE_EATING:
-        let maxValue = 0
-
-        requestedChart.readings
-          .filterByType(requestedChart.chartType)
-          .map((bs) => {
-            if (bs.value > maxValue) {
-              maxValue = bs.value
-            }
-          })
-
-        if (maxValue > 0) {
-          return maxValue
-        }
-        return 300
-      default:
-        break
-    }
-
-    const threshhold = getMaxThreshhold()
-    const difference = Math.round(threshhold / 10)
-    let base = chartData.getMaxReading() ?? threshhold
-
-    if (base < threshhold) {
-      base = threshhold
-    }
-
-    return base + difference
-  }
-
-  const getMinDomain = () => {
-    if (!chartData) {
-      throw new Error('Can not get min domain, not instance of chart data')
-    }
-
-    switch (chartData.getChartType()) {
-      case BLOOD_SUGAR_TYPES.AFTER_EATING:
-      case BLOOD_SUGAR_TYPES.BEFORE_EATING:
-        let minValue = 70
-
-        requestedChart.readings
-          .filterByType(requestedChart.chartType)
-          .map((bs) => {
-            if (bs.value < minValue) {
-              minValue = bs.value
-            }
-          })
-        return minValue
-      default:
-        break
-    }
-
-    const threshhold = getMinThreshhold() ?? getMaxThreshhold()
-    const difference = Math.round(threshhold / 10)
-    let base = chartData.getMinReading() ?? threshhold
-
-    if (base > threshhold) {
-      base = threshhold
-    }
-
-    return base - difference
-  }
-
   const changeChartTypeHandler = (newChartType: BLOOD_SUGAR_TYPES): void => {
-    // setChartData(null)
+    setChartData(null)
     setRequestedChart(
       requestedChart.changeRequestedType(
         newChartType,
@@ -210,7 +151,42 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
   const maxThreshhold = getMaxThreshhold()
   const midAxis: any[] = []
 
-  switch (chartData.getChartType()) {
+  let minDomain = 0
+  let maxDomain = 300
+
+  const chartType = chartData.getChartType()
+
+  let maxValue = 0
+  let minValue = 45
+
+  requestedChart.readings.filterByType(requestedChart.chartType).map((bs) => {
+    if (bs.value > maxValue) {
+      maxValue = bs.value
+    }
+    if (bs.value < minValue) {
+      minValue = bs.value
+    }
+  })
+
+  switch (chartType) {
+    case BLOOD_SUGAR_TYPES.AFTER_EATING:
+      maxDomain = Math.max(maxValue, 300)
+      minDomain = Math.min(minValue, 14)
+      break
+    case BLOOD_SUGAR_TYPES.BEFORE_EATING:
+      maxDomain = Math.max(maxValue, 170)
+      minDomain = Math.min(minValue, 45)
+      break
+    case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
+      minDomain = 0
+      maxDomain = Math.max(maxValue, 16)
+
+      break
+    default:
+      break
+  }
+
+  switch (chartType) {
     case BLOOD_SUGAR_TYPES.AFTER_EATING:
       if (displayUnits === BloodSugarCode.MMOL_L) {
         midAxis.push(7.5)
@@ -232,6 +208,11 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
 
       break
     default:
+      midAxis.push(0)
+      midAxis.push(3.5)
+      midAxis.push(10.5)
+      midAxis.push(14)
+
       break
   }
 
@@ -255,10 +236,10 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
         <DateAxisComponent tickValues={chartData.getAxisTickValues()} />
         <VictoryChart
           maxDomain={{
-            y: getMaxDomain(),
+            y: maxDomain,
           }}
           minDomain={{
-            y: getMinDomain(),
+            y: minDomain,
           }}
           width={Dimensions.get('window').width - 24}
           height={310}
@@ -271,13 +252,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
           }}
           scale={{x: 'linear'}}
           theme={VictoryTheme.material}
-          containerComponent={
-            chartData.getScatterDataForGraph().length ? (
-              <VictoryVoronoiContainer radius={30} />
-            ) : (
-              <VictoryVoronoiContainer radius={30} />
-            )
-          }>
+          containerComponent={<VictoryVoronoiContainer radius={30} />}>
           <VictoryAxis
             tickCount={chartData.getAxisTickValues().length}
             tickFormat={(tick) => {
@@ -302,7 +277,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
             }}
             tickValues={[maxThreshhold]}
             style={{
-              grid: {stroke: colors.grey2, strokeDasharray: 4},
+              grid: {stroke: colors.grey1, strokeDasharray: 0},
               axis: {stroke: colors.grey3, strokeDasharray: 4, strokeWidth: 0},
               ticks: {opacity: 0},
             }}
@@ -313,6 +288,14 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
                 orientation="right"
                 dependentAxis
                 key={`mid-axis-${index}`}
+                tickFormat={(tick) => {
+                  if (
+                    chartData.getChartType() === BLOOD_SUGAR_TYPES.HEMOGLOBIC
+                  ) {
+                    return `${tick}%`
+                  }
+                  return tick
+                }}
                 tickValues={[data]}
                 style={{
                   grid: {opacity: 0},
@@ -341,7 +324,7 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
               }}
               tickValues={[minThreshhold]}
               style={{
-                grid: {stroke: colors.grey2, strokeDasharray: 4},
+                grid: {stroke: colors.grey1, strokeDasharray: 0},
                 axis: {
                   stroke: colors.grey3,
                   strokeDasharray: 4,

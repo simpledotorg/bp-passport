@@ -79,7 +79,11 @@ export const BpInformation = ({bp, style = {}}: Props) => {
         }}>
         <Image source={redHeart} style={[styles.informationIcon]} />
         <View style={{flex: 1}}>
-          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+            }}>
             <BodyText
               style={{
                 fontSize: 18,
