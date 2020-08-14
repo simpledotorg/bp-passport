@@ -326,23 +326,24 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
               }}
             />
           )}
-          {chartData.getMinMaxDataForGraph().map((line) => {
-            return (
-              <VictoryLine
-                key={line.index}
-                data={[
-                  {x: line.index, y: line.max},
-                  {x: line.index, y: line.min},
-                ]}
-                style={{
-                  data: {
-                    stroke: colors.grey4,
-                    strokeWidth: 6,
-                  },
-                }}
-              />
-            )
-          })}
+          {!chartData.displayLineGraph &&
+            chartData.getMinMaxDataForGraph().map((line) => {
+              return (
+                <VictoryLine
+                  key={line.index}
+                  data={[
+                    {x: line.index, y: line.max},
+                    {x: line.index, y: line.min},
+                  ]}
+                  style={{
+                    data: {
+                      stroke: colors.grey4,
+                      strokeWidth: 6,
+                    },
+                  }}
+                />
+              )
+            })}
           {chartData.displayLineGraph && (
             <VictoryLine
               data={chartData.getLineGraphData()}

@@ -4,6 +4,7 @@
 
 ### Claudio's List:
 
+- HbA1C - Showing line
 - BS Graph - Wrong default graph
 - BS/BP Graph - Y axis labels
 - BS/BP Graph - Point select style
