@@ -46,15 +46,16 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
 
   useEffect(() => {
     setChartData(null)
-
-    setRequestedChart(
-      requestedChart.withUpdatedReadings(bloodSugarReadings) ??
-        getStartingChartRequest(bloodSugarReadings, displayUnits),
+    const newRequestedChart = getStartingChartRequest(
+      bloodSugarReadings,
+      displayUnits,
     )
+    setRequestedChart(newRequestedChart)
   }, [bloodSugarReadings])
 
   useEffect(() => {
-    setChartData(new ChartData(requestedChart))
+    const newChartData = new ChartData(requestedChart)
+    setChartData(newChartData)
   }, [requestedChart])
 
   const getMaxThreshhold = (): number => {
@@ -100,15 +101,6 @@ export const BsHistoryChart = ({bloodSugarReadings, displayUnits}: Props) => {
 
     switch (chartData.getChartType()) {
       case BLOOD_SUGAR_TYPES.HEMOGLOBIC:
-        /*
-        return Number(
-          convertBloodSugarValue(
-            displayUnits,
-            BLOOD_SUGAR_TYPES.HEMOGLOBIC,
-            '17',
-            BloodSugarCode.MG_DL,
-          ).toFixed(determinePrecision(displayUnits)),
-        ) */
         return null
       default:
         return Number(

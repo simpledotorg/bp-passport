@@ -2,22 +2,17 @@
 
 ## Version 1.07
 
-### Claudio's New New List:
+### Claudio's List:
 
+- BS Graph - Wrong default graph
 - BS/BP Graph - Y axis labels
 - BS/BP Graph - Point select style
 - BS/BP Graph - Y axis line style + threshold colors
-
-### Claudio's New List:
-
 - Translation updates added
 - BS Graph - Pill styling
 - BP details sheet - Crashing on tap
 - BS Graph - Missing y-axis labels
 - BP Graph - Missing y-axis label
-
-### Claudio's List:
-
 - Patients - Add BP - Top padding
 - Patients - Add BS - Upper limit
 - Patients - BP/BS rows - Spacing between lines is inconsistent
