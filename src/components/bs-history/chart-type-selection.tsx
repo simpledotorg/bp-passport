@@ -32,6 +32,11 @@ export const ChartTypeSelection = ({
 }: ChartSelectionProps) => {
   const intl = useIntl()
 
+  console.log(
+    'Rerender ChartTypeSelection >> ',
+    chartTypesAvailable.getChartType(),
+  )
+
   return (
     <View
       style={{
