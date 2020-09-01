@@ -1,5 +1,9 @@
 # BP Passport
 
+## Version 1.08
+
+- Adaptive Android Icon
+
 ## Version 1.07
 
 ### Claudio's List:
