@@ -30,6 +30,7 @@ export const setPassportLinkedState = (
 export const activate = (
   passportId: string,
 ): AppThunk<Promise<boolean>> => async () => {
+  
   try {
     await axios.post(`${API_ENDPOINT}/patient/activate`, {
       passport_id: passportId,
