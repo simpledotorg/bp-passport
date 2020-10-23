@@ -144,8 +144,8 @@ android {
         applicationId "org.simple.bppassport"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 383
-        versionName "1.07"
+        versionCode 401
+        versionName "1.09"
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
     }
