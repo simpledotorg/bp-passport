@@ -16,7 +16,7 @@
   "login.allow-camera-access": "Please allow camera access in settings",
   "scan-bp-passport.hold-camera": "Hold camera over this symbol on BP Passport",
   "scan-bp-passport.cant-verify-account": "Account not found",
-  "scan-bp-passport.dont-have-phone-number": "Contact the hospital where you get your BP measured and ask a nurse to add a phone number to your Simple account.",
+  "scan-bp-passport.dont-have-phone-number": "Please contact the hospital where you get your BP measured and ask a nurse to add a phone number to your Simple account.",
   "verify-pin.please-verify": "Enter the 6 digit verification code sent\nto the phone number associated with\nyour Simple account",
   "verify-pin.code": "Code",
   "verify-pin.wrong-pin": "Please enter the correct code",
