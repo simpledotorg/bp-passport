@@ -22,7 +22,7 @@ DerivedData
 *.xcuserstate
 
 # Environment
-.env.development
+#.env.development
 
 # Keys
 google-services.json
