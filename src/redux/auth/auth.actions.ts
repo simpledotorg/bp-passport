@@ -30,7 +30,6 @@ export const setPassportLinkedState = (
 export const activate = (
   passportId: string,
 ): AppThunk<Promise<boolean>> => async () => {
-  
   try {
     await axios.post(`${API_ENDPOINT}/patient/activate`, {
       passport_id: passportId,
@@ -38,6 +37,7 @@ export const activate = (
     return true
   } catch (err) {
     const response: AxiosResponse | undefined = err.response
+    console.log('response: ', JSON.stringify(response))
     if (response && response.status) {
       if (response.status === 404) {
         throw new Error("Can't verify account")
