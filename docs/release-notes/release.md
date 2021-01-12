@@ -1,5 +1,13 @@
 # BP Passport
 
+## Version 1.10
+
+### BP Passport authentication
+
+- India: https://api.simple.org
+- Bangladesh: https://api.bd.simple.org
+- Ethiopia: https://api.et.simple.org
+
 ## Version 1.08
 
 - Adaptive Android Icon
