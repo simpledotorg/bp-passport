@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {SafeAreaView, View, Image, Alert, StatusBar} from 'react-native'
-import {FormattedMessage} from 'react-intl'
+import {FormattedMessage, useIntl} from 'react-intl'
 import Modal from 'react-native-modal'
 import {RNCamera, BarCodeType} from 'react-native-camera'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -40,6 +40,7 @@ function ScanPassportScreen({navigation}: Props) {
   const [modalIsVisible, setModalIsVisible] = useState(false)
 
   const isFocused = useIsFocused()
+  const intl = useIntl()
 
   const dispatch = useThunkDispatch()
 
@@ -68,8 +69,8 @@ function ScanPassportScreen({navigation}: Props) {
     if (error && !modalIsVisible && uiState === UIState.Normal) {
       setTimeout(() => {
         Alert.alert(
-          'Error',
-          `${error}`,
+          intl.formatMessage({id: 'scan-bp-passport.cant-verify-account'}),
+          intl.formatMessage({id: 'scan-bp-passport.dont-have-phone-number'}),
           [
             {
               text: 'OK',
@@ -94,14 +95,24 @@ function ScanPassportScreen({navigation}: Props) {
 
   // test a working/not working code in the simulator
 
-  useEffect(() => {
-    const good = 'dc98b0ef-12b9-43be-add1-01ba8fb56c33'
-    const bad = 'fdsfds'
-    onBarCodeRead({
-      data: good,
-      type: RNCamera.Constants.BarCodeType.qr,
-    })
-  }, [])
+  /*
+
+Working examples:
+
+Ethiopia: 434bdbf8-d83e-47da-8299-65b1abd061ca
+
+India: 8e53a061-dd75-4026-b7b4-69d42c365b46
+
+*/
+
+  // useEffect(() => {
+  //   const good = 'gfdgfdgdf'
+  //   const bad = 'fdsfds'
+  //   onBarCodeRead({
+  //     data: good,
+  //     type: RNCamera.Constants.BarCodeType.qr,
+  //   })
+  // }, [])
 
   return (
     <>
