@@ -1,10 +1,19 @@
 import axios, {AxiosResponse} from 'axios'
-import {API_ENDPOINT} from '../../constants/api'
+import {
+  API_INDIA_ENDPOINT,
+  API_BANGLADESH_ENDPOINT,
+  API_ETHIOPIA_ENDPOINT,
+} from '../../constants/api'
 import {AuthActionTypes} from './auth.types'
 import {AppThunk} from '../store'
 import {LoginState, AuthParams, PassportLinkedState} from './auth.models'
 import {getPatient} from '../patient/patient.actions'
 import analytics from '@react-native-firebase/analytics'
+
+export const setApiEndpoint = (apiEndpoint: string | undefined) => ({
+  type: AuthActionTypes.SET_API_ENDPOINT,
+  payload: apiEndpoint,
+})
 
 export const setAuthParams = (authParams: AuthParams | undefined) => ({
   type: AuthActionTypes.SET_AUTH_PARAMS,
@@ -29,15 +38,36 @@ export const setPassportLinkedState = (
 
 export const activate = (
   passportId: string,
-): AppThunk<Promise<boolean>> => async () => {
-  
+): AppThunk<Promise<boolean>> => async (dispatch) => {
   try {
-    await axios.post(`${API_ENDPOINT}/patient/activate`, {
-      passport_id: passportId,
-    })
-    return true
+    let apiEndPoint: string | undefined
+    const possibles = [
+      API_INDIA_ENDPOINT,
+      API_BANGLADESH_ENDPOINT,
+      API_ETHIOPIA_ENDPOINT,
+    ]
+
+    for (const api of possibles) {
+      try {
+        console.log('trying api ', api)
+        await axios.post(`${api}/patient/activate`, {
+          passport_id: passportId,
+        })
+        apiEndPoint = api
+        break
+      } catch (err) {}
+    }
+
+    if (apiEndPoint) {
+      console.log('apiEndPoint found!', apiEndPoint)
+      dispatch(setApiEndpoint(apiEndPoint))
+      return true
+    } else {
+      throw new Error('No api match for passport')
+    }
   } catch (err) {
     const response: AxiosResponse | undefined = err.response
+    console.log('response: ', JSON.stringify(response))
     if (response && response.status) {
       if (response.status === 404) {
         throw new Error("Can't verify account")
@@ -49,12 +79,18 @@ export const activate = (
 
 export const login = (passportId: string, otp: string): AppThunk => async (
   dispatch,
+  getState,
 ) => {
   try {
-    const response = await axios.post(`${API_ENDPOINT}/patient/login`, {
+    const apiEndPoint = getState().auth.apiEndPoint ?? API_INDIA_ENDPOINT
+
+    console.log('login...', apiEndPoint)
+
+    const response = await axios.post(`${apiEndPoint}/patient/login`, {
       passport_id: passportId,
       otp,
     })
+
     const authParams: AuthParams = response.data?.patient
     if (
       !authParams.id ||
@@ -93,6 +129,7 @@ export const login = (passportId: string, otp: string): AppThunk => async (
 
     return true
   } catch (err) {
+    console.log('response...', JSON.stringify(err))
     throw err
   }
 }

@@ -17,10 +17,7 @@
       android:allowBackup="false"
       android:theme="@style/AppTheme" >
 
-      <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_name"
-                android:value="BPPassport-Channel"/>
-      <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_description"
-                    android:value="BPPassport Channel Description"/>
+
       <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"
                     android:resource="@color/notification_color"/>
       <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />

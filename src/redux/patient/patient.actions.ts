@@ -2,7 +2,7 @@ import axios, {AxiosRequestConfig, AxiosResponse} from 'axios'
 import {PatientActionTypes} from './patient.types'
 import {PatientResponseData, Patient} from './patient.models'
 import {AppThunk} from '../store'
-import {API_ENDPOINT} from '../../constants/api'
+import {API_INDIA_ENDPOINT} from '../../constants/api'
 import {mergeBloodPressures} from '../blood-pressure/blood-pressure.actions'
 import {mergeBloodSugars} from '../blood-sugar/blood-sugar.actions'
 import {mergeMedications} from '../medication/medication.actions'
@@ -28,7 +28,9 @@ export const getPatient = (): AppThunk => async (dispatch, getState) => {
     config.headers['Content-Type'] = 'application/json'
     config.headers['Cache-Control'] = 'no-cache'
 
-    const response = await axios.get(`${API_ENDPOINT}/patient`, config)
+    const apiEndPoint = getState().auth.apiEndPoint ?? API_INDIA_ENDPOINT
+
+    const response = await axios.get(`${apiEndPoint}/patient`, config)
     const patientResponseData: PatientResponseData = response.data?.patient
     if (!patientResponseData.id) {
       throw new Error('Invalid patient data')

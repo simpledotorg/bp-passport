@@ -246,11 +246,30 @@ function MainStack({navigation}: Props) {
       requestPermissions: false,
     })
 
+    PushNotificationAndroid.createChannel(
+      {
+        channelId: 'bp-passport', // (required)
+        channelName: 'BPPassport-Channel', // (required)
+        channelDescription: 'BPPassport Channel Description', // (optional) default: undefined.
+        playSound: true, // (optional) default: true
+        soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+        importance: 4, // (optional) default: 4. Int value of the Android notification importance
+        vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+      },
+      (created) => {
+        /*console.log(`createChannel returned '${created}'`)*/
+      }, // (optional) callback returns whether the channel was created, false means it already existed.
+    )
+
+    // PushNotificationAndroid.getChannels(function (channel_ids) {
+    //   console.log('channel ids: ', channel_ids) // ['channel_id_1']
+    // })
+
     PushNotificationIOS.addEventListener('register', onRegisteredIOS)
     return () => {
       PushNotificationIOS.removeEventListener('register', onRegisteredIOS)
     }
-  })
+  }, [])
 
   const onRegisteredIOS = (deviceToken?: string) => {
     dispatch(setDevicePushToken(deviceToken))

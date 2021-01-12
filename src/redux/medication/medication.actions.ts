@@ -33,7 +33,7 @@ export const refreshAllLocalPushReminders = (
 ) => {
   // console.log('refreshAllLocalPushReminders!')
   if (Platform.OS === 'ios') {
-    PushNotificationIOS.cancelAllLocalNotifications()
+    PushNotificationIOS.removeAllPendingNotificationRequests()
   } else if (Platform.OS === 'android') {
     PushNotificationAndroid.cancelAllLocalNotifications()
   }
@@ -86,6 +86,8 @@ export const refreshAllLocalPushReminders = (
           } else if (Platform.OS === 'android') {
             PushNotificationAndroid.localNotificationSchedule({
               date: fireDate,
+              channelId: 'bp-passport',
+              allowWhileIdle: true,
               autoCancel: true, // (optional) default: true
               largeIcon: 'ic_launcher', // (optional) default: "ic_launcher"
               smallIcon: 'ic_notification', // (optional) default: "ic_notification" with fallback for "ic_launcher"

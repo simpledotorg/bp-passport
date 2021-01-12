@@ -12,16 +12,24 @@ const INITIAL_STATE: {
   passportLinkedState: PassportLinkedState
   authParams?: AuthParams
   passport?: Passport
+  apiEndPoint?: string
 } = {
   loginState: LoginState.LoggedOut,
   passportLinkedState: PassportLinkedState.NotLinked,
   authParams: undefined,
   passport: undefined,
+  apiEndPoint: undefined,
 }
 
 const authReducer = (state = INITIAL_STATE, action) => {
   // console.log('authReducer update', state, action)
   switch (action.type) {
+    case AuthActionTypes.SET_API_ENDPOINT:
+      console.log('SETTING API ENDPOINT: ', action.payload)
+      return {
+        ...state,
+        apiEndPoint: action.payload,
+      }
     case AuthActionTypes.SET_AUTH_PARAMS:
       return {
         ...state,
