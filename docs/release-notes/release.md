@@ -1,5 +1,10 @@
 # BP Passport
 
+## Version 1.11
+
+- Daylight Saving fix
+- Diltiazem added to medications
+
 ## Version 1.10
 
 ### BP Passport authentication
