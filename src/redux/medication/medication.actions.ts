@@ -53,6 +53,7 @@ export const refreshAllLocalPushReminders = (
           const midnight = new Date(
             new Date().getTime() + i * oneDayMilliseconds,
           )
+
           midnight.setHours(0, 0, 0, 0) // midnight in past
 
           const reminderTime = midnight.getTime() + reminder.dayOffset * 1000
@@ -73,19 +74,30 @@ export const refreshAllLocalPushReminders = (
             locale: dateLocale(),
           })}`
 
+          const fireDateWithDLSavings = new Date(
+            fireDate.getTime() + midnight.getTimezoneOffset() * -1,
+          )
+
           const body = intl.formatMessage(
             {id: 'medicine.reminder-notification'},
             {day: whenDay, time: whenTime},
           )
+          //console.log(body)
           if (Platform.OS === 'ios') {
-            PushNotificationIOS.scheduleLocalNotification({
-              alertTitle: medication.name,
-              alertBody: body,
-              fireDate: fireDate.toISOString(),
+            PushNotificationIOS.addNotificationRequest({
+              id: `${fireDateWithDLSavings.getTime()}`,
+              title: medication.name,
+              body: body,
+              fireDate: fireDateWithDLSavings,
             })
+            // PushNotificationIOS.scheduleLocalNotification({
+            //   alertTitle: medication.name,
+            //   alertBody: body,
+            //   fireDate: fireDateWithDLSavings.toISOString(),
+            // })
           } else if (Platform.OS === 'android') {
             PushNotificationAndroid.localNotificationSchedule({
-              date: fireDate,
+              date: fireDateWithDLSavings,
               channelId: 'bp-passport',
               allowWhileIdle: true,
               autoCancel: true, // (optional) default: true
@@ -102,7 +114,7 @@ export const refreshAllLocalPushReminders = (
             })
           }
           scheduledCount++
-          if (scheduledCount >= 10) {
+          if (scheduledCount >= 15) {
             break
           }
         }
