@@ -81,7 +81,7 @@ function Home({navigation}: Props) {
       passportLinkedState === PassportLinkedState.Linking ||
       passportLinkedState === PassportLinkedState.Linked
     ) {
-      dispatch(getPatient()).catch((err) => {
+      dispatch(getPatient()).catch(err => {
         console.log('error loading api patient: ', err)
       })
     }
@@ -90,19 +90,20 @@ function Home({navigation}: Props) {
   const [appState, setAppState] = useState(AppState.currentState)
 
   useEffect(() => {
-    const unsubscribe = AppState.addEventListener('change', (nextAppState) => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
       setAppState(nextAppState)
     })
 
-    return unsubscribe
+    return () => {
+      subscription.remove()
+    }
   }, [])
 
   const bps: BloodPressure[] =
     bloodPressures?.slice(0, HOME_PAGE_SHOW_LIMIT) ?? []
   const bss: BloodSugar[] = bloodSugars?.slice(0, HOME_PAGE_SHOW_LIMIT) ?? []
   const convertedBloodSugarReadings = bss.map(
-    (reading) =>
-      new ConvertedBloodSugarReading(reading, bloodSugarDisplayUnits),
+    reading => new ConvertedBloodSugarReading(reading, bloodSugarDisplayUnits),
   )
 
   const meds: Medication[] = medications ?? []

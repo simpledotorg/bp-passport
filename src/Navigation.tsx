@@ -110,8 +110,6 @@ const getModalOptions = () => {
 }
 
 const Navigation = () => {
-  const intl = useIntl()
-
   return (
     <>
       <Stack.Navigator
@@ -201,22 +199,24 @@ function MainStack({navigation}: Props) {
   const [appState, setAppState] = useState(AppState.currentState)
   const dispatch = useDispatch()
   const pushNotificationPermission = pushNotificationPermissionSelector()
-  const navigationState = useNavigationState((state) => state)
-  const routes = useNavigationState((state) => state.routes)
+  const navigationState = useNavigationState(state => state)
+  const routes = useNavigationState(state => state.routes)
 
   useEffect(() => {
-    const unsubscribe = AppState.addEventListener('change', (nextAppState) => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
       setAppState(nextAppState)
     })
 
-    return unsubscribe
+    return () => {
+      subscription.remove()
+    }
   }, [])
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
       if (appState === 'active') {
         // This will run everytime the ios app comes back into the foreground
-        PushNotificationIOS.checkPermissions((permissions) => {
+        PushNotificationIOS.checkPermissions(permissions => {
           if (permissions.alert === true) {
             dispatch(
               setPushNotificationPermission(Permission.PermissionPermitted),
@@ -256,7 +256,7 @@ function MainStack({navigation}: Props) {
         importance: 4, // (optional) default: 4. Int value of the Android notification importance
         vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
       },
-      (created) => {
+      created => {
         /*console.log(`createChannel returned '${created}'`)*/
       }, // (optional) callback returns whether the channel was created, false means it already existed.
     )
