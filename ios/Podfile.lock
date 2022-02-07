@@ -266,16 +266,16 @@ PODS:
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
   - React-jsinspector (0.63.3)
-  - react-native-camera (3.40.0):
+  - react-native-camera (4.2.1):
     - React-Core
-    - react-native-camera/RCT (= 3.40.0)
-    - react-native-camera/RN (= 3.40.0)
-  - react-native-camera/RCT (3.40.0):
+    - react-native-camera/RCT (= 4.2.1)
+    - react-native-camera/RN (= 4.2.1)
+  - react-native-camera/RCT (4.2.1):
     - React-Core
-  - react-native-camera/RN (3.40.0):
+  - react-native-camera/RN (4.2.1):
     - React-Core
-  - react-native-safe-area-context (0.7.3):
-    - React
+  - react-native-safe-area-context (3.3.2):
+    - React-Core
   - React-RCTActionSheet (0.63.3):
     - React-Core/RCTActionSheetHeaders (= 0.63.3)
   - React-RCTAnimation (0.63.3):
@@ -355,18 +355,19 @@ PODS:
   - RNFBApp (8.4.7):
     - Firebase/CoreOnly (~> 6.34.0)
     - React-Core
-  - RNGestureHandler (1.9.0):
+  - RNGestureHandler (2.2.0):
     - React-Core
-  - RNLocalize (1.4.3):
+  - RNLocalize (2.1.9):
     - React-Core
   - RNReanimated (1.13.2):
     - React-Core
-  - RNScreens (2.16.1):
+  - RNScreens (3.10.2):
     - React-Core
+    - React-RCTImage
   - RNSVG (12.1.0):
     - React
-  - RNVectorIcons (6.6.0):
-    - React
+  - RNVectorIcons (9.0.0):
+    - React-Core
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -558,8 +559,8 @@ SPEC CHECKSUMS:
   React-jsi: df07aa95b39c5be3e41199921509bfa929ed2b9d
   React-jsiexecutor: b56c03e61c0dd5f5801255f2160a815f4a53d451
   React-jsinspector: 8e68ffbfe23880d3ee9bafa8be2777f60b25cbe2
-  react-native-camera: 35854c4f764a4a6cf61c1c3525888b92f0fe4b31
-  react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
+  react-native-camera: 3eae183c1d111103963f3dd913b65d01aef8110f
+  react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   React-RCTActionSheet: 53ea72699698b0b47a6421cb1c8b4ab215a774aa
   React-RCTAnimation: 1befece0b5183c22ae01b966f5583f42e69a83c2
   React-RCTBlob: 0b284339cbe4b15705a05e2313a51c6d8b51fa40
@@ -578,12 +579,12 @@ SPEC CHECKSUMS:
   RNDateTimePicker: 1dd15d7ed1ab7d999056bc77879a42920d139c12
   RNFBAnalytics: 6414e9fe1f36c3074f39cd6265b3def777dbfbdb
   RNFBApp: 804b98033f45c3a3e35b56de8c894f85ef5e4388
-  RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b
-  RNLocalize: 7c7aeda16c01db7a0918981c14875c0a53be9b79
+  RNGestureHandler: bf572f552ea324acd5b5464b8d30755b2d8c1de6
+  RNLocalize: 291e5e21b53cd30b5205c10ed95d31b0dc9b8d63
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
-  RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
+  RNScreens: d6da2b9e29cf523832c2542f47bf1287318b1868
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
-  RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
+  RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
 
 PODFILE CHECKSUM: 8f5288f35162f4e21740212295e11c40bcd4ab54
