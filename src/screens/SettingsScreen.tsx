@@ -51,7 +51,7 @@ const LanguagePicker = () => {
 
   const locales: Item[] = []
 
-  AVAILABLE_TRANSLATIONS.forEach((languageCode) => {
+  AVAILABLE_TRANSLATIONS.forEach(languageCode => {
     locales.push({
       label: languageCodeToDisplayTitle(languageCode),
       value: languageCode,
@@ -85,7 +85,7 @@ const BloodSugarUnitPicker = ({apiUser}: BloodSugarUnitPickerProps) => {
   const dispatch = useThunkDispatch()
 
   const bloodSugarUnits: Item[] = []
-  AVAILABLE_BLOOD_SUGAR_UNITS.forEach((bloodSugarUnit) => {
+  AVAILABLE_BLOOD_SUGAR_UNITS.forEach(bloodSugarUnit => {
     bloodSugarUnits.push({
       label: bloodSugarUnitToDisplayTitle(bloodSugarUnit),
       value: bloodSugarUnit,

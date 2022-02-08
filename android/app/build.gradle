@@ -130,6 +130,11 @@ def enableHermes = project.ext.react.get("enableHermes", false);
 
 def isAppCenterBuild = System.properties.containsKey('APPCENTER_KEYSTORE_PASSWORD');
 
+/**
+ * Architectures to build native code for in debug.
+ */
+def nativeArchitectures = project.getProperties().get("reactNativeDebugArchitectures")
+
 android {
 
 

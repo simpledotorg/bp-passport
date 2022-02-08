@@ -57,6 +57,7 @@ import {Permission} from './redux/notifications/notifications.models'
 import {pushNotificationPermissionSelector} from './redux/notifications/notifications.selectors'
 import ConvertedBloodSugarReading from './models/converted_blood_sugar_reading'
 import {BLOOD_SUGAR_TYPES} from './redux/blood-sugar/blood-sugar.models'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 export type RootStackParamList = {
   LAUNCH: undefined
@@ -279,7 +280,7 @@ function MainStack({navigation}: Props) {
     dispatch(setDevicePushToken(deviceToken))
   }
 
-  const headerHeightIncludingSafeArea = useHeaderHeight()
+  const headerHeightIncludingSafeArea = useSafeAreaInsets().top + 60
 
   const loginState = loginStateSelector()
   const passportLinkedState = passportLinkedStateSelector()
@@ -445,7 +446,7 @@ function MainStack({navigation}: Props) {
 
 function ScanStack({navigation}: Props) {
   const intl = useIntl()
-  const headerHeightIncludingSafeArea = useHeaderHeight()
+  const headerHeightIncludingSafeArea = useSafeAreaInsets().top + 60
 
   return (
     <Stack.Navigator
@@ -490,7 +491,7 @@ function ScanStack({navigation}: Props) {
 
 function AddBPStack({navigation}: Props) {
   const intl = useIntl()
-  const headerHeightIncludingSafeArea = useHeaderHeight()
+  const headerHeightIncludingSafeArea = useSafeAreaInsets().top + 60
 
   return (
     <Stack.Navigator
@@ -528,7 +529,7 @@ function AddBPStack({navigation}: Props) {
 
 function AddBSStack({navigation}: Props) {
   const intl = useIntl()
-  const headerHeightIncludingSafeArea = useHeaderHeight()
+  const headerHeightIncludingSafeArea = useSafeAreaInsets().top + 60
 
   return (
     <Stack.Navigator
