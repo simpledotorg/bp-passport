@@ -387,7 +387,7 @@
 				CODE_SIGN_ENTITLEMENTS = "BPPassport/BP Passport.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 515;
+				CURRENT_PROJECT_VERSION = 516;
 				DEVELOPMENT_TEAM = DBJVYHVN4H;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -396,7 +396,7 @@
 				);
 				INFOPLIST_FILE = BPPassport/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.11;
+				MARKETING_VERSION = 1.20;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -420,11 +420,11 @@
 				CODE_SIGN_ENTITLEMENTS = "BPPassport/BP Passport.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 515;
+				CURRENT_PROJECT_VERSION = 516;
 				DEVELOPMENT_TEAM = DBJVYHVN4H;
 				INFOPLIST_FILE = BPPassport/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.11;
+				MARKETING_VERSION = 1.20;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
