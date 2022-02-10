@@ -34,11 +34,10 @@ export class DateAxis {
   private static populateTickValuesForAFewMonths(
     dateEntries: DateEntry[],
   ): MonthNameAxisLabel[] {
-    console.log('populateTickValuesForAFewMonths')
     const values: MonthNameAxisLabel[] = []
-    dateEntries.forEach((dateEntry) => {
+    dateEntries.forEach(dateEntry => {
       if (
-        !values.find((value) => {
+        !values.find(value => {
           return (
             value.month === dateEntry.getDate().getMonth() &&
             value.year === dateEntry.getDate().getFullYear()
@@ -56,9 +55,9 @@ export class DateAxis {
     dateEntries: DateEntry[],
   ): MonthInitialAxisLabel[] {
     const values: MonthInitialAxisLabel[] = []
-    dateEntries.forEach((dateEntry) => {
+    dateEntries.forEach(dateEntry => {
       if (
-        !values.find((value) => {
+        !values.find(value => {
           return (
             value.month === dateEntry.getDate().getMonth() &&
             value.year === dateEntry.getDate().getFullYear()
@@ -75,10 +74,10 @@ export class DateAxis {
     dateEntries: DateEntry[],
   ): MonthNameAxisLabel[] {
     const values: MonthNameAxisLabel[] = []
-    dateEntries.forEach((dateEntry) => {
+    dateEntries.forEach(dateEntry => {
       if (
         values.length === 0 ||
-        !values.find((value) => {
+        !values.find(value => {
           return (
             value.month === dateEntry.getDate().getMonth() &&
             value.year === dateEntry.getDate().getFullYear()
@@ -181,7 +180,7 @@ export class DateAxis {
   ): DateEntry | undefined {
     const dateToFind = new Date(record.recorded_at)
 
-    return this.dates.find((date) => {
+    return this.dates.find(date => {
       return date.isSameDate(dateToFind)
     })
   }

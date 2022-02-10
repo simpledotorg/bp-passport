@@ -13,8 +13,6 @@ import {bloodSugarUnitSelector} from '../redux/patient/patient.selectors'
 import ConvertedBloodSugarReading from '../models/converted_blood_sugar_reading'
 import HistoryList from '../components/bs-history/history-list'
 
-import {getTestData} from '../components/bs-history/test-data'
-
 type BsHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   SCREENS.BS_HISTORY
@@ -42,8 +40,7 @@ function BsHistoryScreen({navigation, route}: Props) {
   useEffect(() => {
     setConvertedReadings(
       bloodSugars.map(
-        (bloodSugar) =>
-          new ConvertedBloodSugarReading(bloodSugar, displayUnits),
+        bloodSugar => new ConvertedBloodSugarReading(bloodSugar, displayUnits),
       ),
     )
   }, [bloodSugars])

@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react'
 import {Alert, Platform, AppState} from 'react-native'
 import {
   createStackNavigator,
-  useHeaderHeight,
   StackNavigationProp,
   StackNavigationOptions,
 } from '@react-navigation/stack'
@@ -57,6 +56,7 @@ import {Permission} from './redux/notifications/notifications.models'
 import {pushNotificationPermissionSelector} from './redux/notifications/notifications.selectors'
 import ConvertedBloodSugarReading from './models/converted_blood_sugar_reading'
 import {BLOOD_SUGAR_TYPES} from './redux/blood-sugar/blood-sugar.models'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 export type RootStackParamList = {
   LAUNCH: undefined
@@ -110,8 +110,6 @@ const getModalOptions = () => {
 }
 
 const Navigation = () => {
-  const intl = useIntl()
-
   return (
     <>
       <Stack.Navigator
@@ -201,22 +199,24 @@ function MainStack({navigation}: Props) {
   const [appState, setAppState] = useState(AppState.currentState)
   const dispatch = useDispatch()
   const pushNotificationPermission = pushNotificationPermissionSelector()
-  const navigationState = useNavigationState((state) => state)
-  const routes = useNavigationState((state) => state.routes)
+  const navigationState = useNavigationState(state => state)
+  const routes = useNavigationState(state => state.routes)
 
   useEffect(() => {
-    const unsubscribe = AppState.addEventListener('change', (nextAppState) => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
       setAppState(nextAppState)
     })
 
-    return unsubscribe
+    return () => {
+      subscription.remove()
+    }
   }, [])
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
       if (appState === 'active') {
         // This will run everytime the ios app comes back into the foreground
-        PushNotificationIOS.checkPermissions((permissions) => {
+        PushNotificationIOS.checkPermissions(permissions => {
           if (permissions.alert === true) {
             dispatch(
               setPushNotificationPermission(Permission.PermissionPermitted),
@@ -256,7 +256,7 @@ function MainStack({navigation}: Props) {
         importance: 4, // (optional) default: 4. Int value of the Android notification importance
         vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
       },
-      (created) => {
+      created => {
         /*console.log(`createChannel returned '${created}'`)*/
       }, // (optional) callback returns whether the channel was created, false means it already existed.
     )
@@ -279,7 +279,7 @@ function MainStack({navigation}: Props) {
     dispatch(setDevicePushToken(deviceToken))
   }
 
-  const headerHeightIncludingSafeArea = useHeaderHeight()
+  const headerHeightIncludingSafeArea = useSafeAreaInsets().top + 60
 
   const loginState = loginStateSelector()
   const passportLinkedState = passportLinkedStateSelector()
@@ -445,7 +445,7 @@ function MainStack({navigation}: Props) {
 
 function ScanStack({navigation}: Props) {
   const intl = useIntl()
-  const headerHeightIncludingSafeArea = useHeaderHeight()
+  const headerHeightIncludingSafeArea = useSafeAreaInsets().top + 60
 
   return (
     <Stack.Navigator
@@ -490,7 +490,7 @@ function ScanStack({navigation}: Props) {
 
 function AddBPStack({navigation}: Props) {
   const intl = useIntl()
-  const headerHeightIncludingSafeArea = useHeaderHeight()
+  const headerHeightIncludingSafeArea = useSafeAreaInsets().top + 60
 
   return (
     <Stack.Navigator
@@ -528,7 +528,7 @@ function AddBPStack({navigation}: Props) {
 
 function AddBSStack({navigation}: Props) {
   const intl = useIntl()
-  const headerHeightIncludingSafeArea = useHeaderHeight()
+  const headerHeightIncludingSafeArea = useSafeAreaInsets().top + 60
 
   return (
     <Stack.Navigator

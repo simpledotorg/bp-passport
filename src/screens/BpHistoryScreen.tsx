@@ -16,7 +16,6 @@ import {BodyHeader, BpInformation, BpHistoryChart, Line} from '../components'
 import SCREENS from '../constants/screens'
 import {RootStackParamList} from '../Navigation'
 import {bloodPressuresSelector} from '../redux/blood-pressure/blood-pressure.selectors'
-import {getTestData} from '../components/bp-history/test-data'
 
 type BpHistoryScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

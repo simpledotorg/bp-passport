@@ -31,13 +31,13 @@ export class ChartData {
     this._hasPreviousPeriod = requestedChart.determineIfHasPreviousPeriod()
     this._hasNextPeriod = requestedChart.determineIfHasNextPeriod()
 
-    requestedChart.readings.forEach((bloodPressureReading) => {
+    requestedChart.readings.forEach(bloodPressureReading => {
       const dateEntry = this.dateAxis.getDateEntryFor(bloodPressureReading)
       if (!dateEntry) {
         return
       }
 
-      let aggregateRecord = this.aggregatedData.find((record) => {
+      let aggregateRecord = this.aggregatedData.find(record => {
         return record.getDateEntry() === dateEntry
       })
 
@@ -52,7 +52,7 @@ export class ChartData {
 
   public getScatterDataForGraph(): ScatterGraphDataPoint[] {
     const data: ScatterGraphDataPoint[] = []
-    this.aggregatedData.forEach((aggregateRecord) => {
+    this.aggregatedData.forEach(aggregateRecord => {
       const index = aggregateRecord.getDateEntry().getIndex()
 
       data.push(
@@ -66,7 +66,7 @@ export class ChartData {
 
   public getLineGraph(useDiastolic: boolean): LineGraphDataPoint[] {
     const data: LineGraphDataPoint[] = []
-    this.aggregatedData.forEach((aggregateRecord) => {
+    this.aggregatedData.forEach(aggregateRecord => {
       const index = aggregateRecord.getDateEntry().getIndex()
 
       if (useDiastolic) {
@@ -81,7 +81,7 @@ export class ChartData {
 
   private static removeNulls = (values: (number | null)[]): number[] => {
     const returnValues: number[] = []
-    values.forEach((value) => {
+    values.forEach(value => {
       if (value) {
         returnValues.push(value)
       }
@@ -126,7 +126,7 @@ export class ChartData {
   }
 
   public getIndexValues(): number[] {
-    return this.dateAxis.getDates().map((dateEntry) => {
+    return this.dateAxis.getDates().map(dateEntry => {
       return dateEntry.getIndex()
     })
   }

@@ -105,7 +105,7 @@ function MedicineTimeScreen({navigation, route}: Props) {
                 mode={'time'}
                 minuteInterval={1}
                 is24Hour={true}
-                display="clock"
+                display="spinner"
                 textColor="black"
                 onChange={(event, dateIn) => {
                   if (dateIn) {

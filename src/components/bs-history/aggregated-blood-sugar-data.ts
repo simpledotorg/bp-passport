@@ -44,42 +44,69 @@ export class AggregatedBloodSugarData {
   }
 }
 
-declare global {
-  interface Array<T> {
-    // tslint:disable-next-line: array-type
-    getScatterDataForGraph(): ScatterGraphDataPoint[]
+// declare global {
+//   interface Array<T> {
+//     // tslint:disable-next-line: array-type
+//     getScatterDataForGraph(): ScatterGraphDataPoint[]
 
-    getLineGraphData(): LineGraphDataPoint[]
-  }
+//     getLineGraphData(): LineGraphDataPoint[]
+//   }
+// }
+
+// if (!Array.prototype.getScatterDataForGraph) {
+//   Array.prototype.getScatterDataForGraph = function <
+//     T extends AggregatedBloodSugarData
+//   >(this: T[]): ScatterGraphDataPoint[] {
+//     const data: ScatterGraphDataPoint[] = []
+//     this.forEach(aggregateRecord => {
+//       const index = aggregateRecord.getDateEntry().getIndex()
+//       aggregateRecord.getReadings().forEach(reading => {
+//         data.push(new ScatterGraphDataPoint(index, reading))
+//       })
+//     })
+
+//     return data
+//   }
+// }
+
+// if (!Array.prototype.getLineGraphData) {
+//   Array.prototype.getLineGraphData = function <
+//     T extends AggregatedBloodSugarData
+//   >(this: T[]): LineGraphDataPoint[] {
+//     const data: LineGraphDataPoint[] = []
+//     this.forEach(aggregateRecord => {
+//       const index = aggregateRecord.getDateEntry().getIndex()
+//       aggregateRecord.getReadings().forEach(reading => {
+//         data.push(new LineGraphDataPoint(index, reading))
+//       })
+//     })
+//     return data
+//   }
+// }
+
+export const getScatterDataForGraph = <T extends AggregatedBloodSugarData>(
+  arr: T[],
+): ScatterGraphDataPoint[] => {
+  const data: ScatterGraphDataPoint[] = []
+  arr.forEach(aggregateRecord => {
+    const index = aggregateRecord.getDateEntry().getIndex()
+    aggregateRecord.getReadings().forEach(reading => {
+      data.push(new ScatterGraphDataPoint(index, reading))
+    })
+  })
+
+  return data
 }
 
-if (!Array.prototype.getScatterDataForGraph) {
-  Array.prototype.getScatterDataForGraph = function <
-    T extends AggregatedBloodSugarData
-  >(this: T[]): ScatterGraphDataPoint[] {
-    const data: ScatterGraphDataPoint[] = []
-    this.forEach((aggregateRecord) => {
-      const index = aggregateRecord.getDateEntry().getIndex()
-      aggregateRecord.getReadings().forEach((reading) => {
-        data.push(new ScatterGraphDataPoint(index, reading))
-      })
+export const getLineGraphData = <T extends AggregatedBloodSugarData>(
+  arr: T[],
+): LineGraphDataPoint[] => {
+  const data: LineGraphDataPoint[] = []
+  arr.forEach(aggregateRecord => {
+    const index = aggregateRecord.getDateEntry().getIndex()
+    aggregateRecord.getReadings().forEach(reading => {
+      data.push(new LineGraphDataPoint(index, reading))
     })
-
-    return data
-  }
-}
-
-if (!Array.prototype.getLineGraphData) {
-  Array.prototype.getLineGraphData = function <
-    T extends AggregatedBloodSugarData
-  >(this: T[]): LineGraphDataPoint[] {
-    const data: LineGraphDataPoint[] = []
-    this.forEach((aggregateRecord) => {
-      const index = aggregateRecord.getDateEntry().getIndex()
-      aggregateRecord.getReadings().forEach((reading) => {
-        data.push(new LineGraphDataPoint(index, reading))
-      })
-    })
-    return data
-  }
+  })
+  return data
 }
