@@ -116,7 +116,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
         if (Platform.OS === 'ios') {
           const askForIosPermissions = () => {
             PushNotificationIOS.requestPermissions().then(
-              (data) => {
+              data => {
                 if (data.alert) {
                   dispatch(
                     setPushNotificationPermission(
@@ -133,7 +133,7 @@ function MedicationDetailsScreen({navigation, route}: Props) {
                   )
                 }
               },
-              (data) => {
+              data => {
                 console.log(
                   'PushNotificationIOS.requestPermissions failed',
                   data,

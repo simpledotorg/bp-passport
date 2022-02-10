@@ -1,5 +1,10 @@
 import {DateEntry} from '../victory-chart-parts/date-entry'
-import {BloodPressure} from '../../redux/blood-pressure/blood-pressure.models'
+import {
+  BloodPressure,
+  getAvgValue,
+  getMaxValue,
+  getMinValue,
+} from '../../redux/blood-pressure/blood-pressure.models'
 
 export class AggregatedBloodPressureData {
   private dateEntry: DateEntry
@@ -40,7 +45,7 @@ export class AggregatedBloodPressureData {
 
   public getMaxDiastolicReading(): number | null {
     if (!this.maxDiastolicReading) {
-      this.maxDiastolicReading = this.readings.getMaxValue(true)
+      this.maxDiastolicReading = getMaxValue(this.readings, true)
     }
 
     return this.maxDiastolicReading
@@ -48,7 +53,7 @@ export class AggregatedBloodPressureData {
 
   public getMinDiastolicReading(): number | null {
     if (!this.minDiastolicReading) {
-      this.minDiastolicReading = this.readings.getMinValue(true)
+      this.minDiastolicReading = getMinValue(this.readings, true)
     }
 
     return this.minDiastolicReading
@@ -56,14 +61,14 @@ export class AggregatedBloodPressureData {
 
   public getMaxSystolicReading(): number | null {
     if (!this.maxSystolicReading) {
-      this.maxSystolicReading = this.readings.getMaxValue(false)
+      this.maxSystolicReading = getMaxValue(this.readings, false)
     }
     return this.maxSystolicReading
   }
 
   public getMinSystolicReading(): number | null {
     if (!this.minSystolicReading) {
-      this.minSystolicReading = this.readings.getMinValue(false)
+      this.minSystolicReading = getMinValue(this.readings, false)
     }
 
     return this.minSystolicReading
@@ -71,7 +76,7 @@ export class AggregatedBloodPressureData {
 
   public getDiastolicAverage(): number | null {
     if (!this.avgDiastolicReading) {
-      this.avgDiastolicReading = this.readings.getAvgValue(true)
+      this.avgDiastolicReading = getAvgValue(this.readings, true)
     }
 
     return this.avgDiastolicReading
@@ -79,7 +84,7 @@ export class AggregatedBloodPressureData {
 
   public getSystolicAverage(): number | null {
     if (!this.avgSystolicReading) {
-      this.avgSystolicReading = this.readings.getAvgValue(false)
+      this.avgSystolicReading = getAvgValue(this.readings, false)
     }
 
     return this.avgSystolicReading

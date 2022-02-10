@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react'
 import {Alert, Platform, AppState} from 'react-native'
 import {
   createStackNavigator,
-  useHeaderHeight,
   StackNavigationProp,
   StackNavigationOptions,
 } from '@react-navigation/stack'

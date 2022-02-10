@@ -38,7 +38,7 @@ export const setPassportLinkedState = (
 
 export const activate = (
   passportId: string,
-): AppThunk<Promise<boolean>> => async (dispatch) => {
+): AppThunk<Promise<boolean>> => async dispatch => {
   try {
     let apiEndPoint: string | undefined
     const possibles = [
@@ -49,7 +49,6 @@ export const activate = (
 
     for (const api of possibles) {
       try {
-        console.log('trying api ', api)
         await axios.post(`${api}/patient/activate`, {
           passport_id: passportId,
         })
@@ -59,7 +58,6 @@ export const activate = (
     }
 
     if (apiEndPoint) {
-      console.log('apiEndPoint found!', apiEndPoint)
       dispatch(setApiEndpoint(apiEndPoint))
       return true
     } else {
@@ -67,7 +65,6 @@ export const activate = (
     }
   } catch (err) {
     const response: AxiosResponse | undefined = err.response
-    console.log('response: ', JSON.stringify(response))
     if (response && response.status) {
       if (response.status === 404) {
         throw new Error("Can't verify account")
@@ -112,7 +109,7 @@ export const login = (passportId: string, otp: string): AppThunk => async (
       .then(() => {
         console.log('User has_passport set')
       })
-      .catch((err) => {
+      .catch(err => {
         console.log('Analytics >> has_passport failed', err)
       })
 
@@ -123,7 +120,7 @@ export const login = (passportId: string, otp: string): AppThunk => async (
       .then(() => {
         console.log('Analytics >> link passport worked')
       })
-      .catch((err) => {
+      .catch(err => {
         console.log('Analytics >> link passport failed', err)
       })
 

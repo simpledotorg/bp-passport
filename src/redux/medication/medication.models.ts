@@ -1,5 +1,3 @@
-import {format} from 'date-fns'
-
 export interface Medication {
   name: string
   rxnorm_code?: string
@@ -67,7 +65,7 @@ export const ordedDays = (arrayOfDays: Day[]): string => {
 }
 
 export const toDays = (daysString: string): Day[] => {
-  return daysString.split('').map((s) => Number(s) as Day)
+  return daysString.split('').map(s => Number(s) as Day)
 }
 
 export const ALL_DAYS_ORDERED = [

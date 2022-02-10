@@ -73,8 +73,6 @@ export const BpHistoryChart = ({bps}: Props) => {
     return <GraphLoadingPlaceholder chartTitle={requestedChart.getTitle()} />
   }
 
-  console.log('chartData: ', chartData)
-
   return (
     <>
       <TitleBar
@@ -116,7 +114,7 @@ export const BpHistoryChart = ({bps}: Props) => {
           containerComponent={<VictoryVoronoiContainer radius={30} />}>
           <VictoryAxis
             tickCount={chartData.getAxisTickValues().length}
-            tickFormat={(tick) => {
+            tickFormat={tick => {
               return tick
             }}
             tickValues={chartData.getIndexValues()}

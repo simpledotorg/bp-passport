@@ -1,6 +1,10 @@
 import {BLOOD_SUGAR_TYPES} from '../../redux/blood-sugar/blood-sugar.models'
 
-import {AggregatedBloodSugarData} from './aggregated-blood-sugar-data'
+import {
+  AggregatedBloodSugarData,
+  getLineGraphData,
+  getScatterDataForGraph,
+} from './aggregated-blood-sugar-data'
 import {DateAxis} from '../victory-chart-parts/date-axis'
 import {ScatterGraphDataPoint} from './scatter-graph-data-point'
 import {RequestSingleMonthChart} from './request-single-month-chart'
@@ -27,7 +31,7 @@ export class ChartData implements IDefineChartsAvailable {
   private readonly hasBeforeEatingReadings: boolean
   private readonly hasAfterEatingReadings: boolean
   private readonly dateAxis: DateAxis
-  private readonly aggregatedData: AggregatedBloodSugarData[] = []
+  public readonly aggregatedData: AggregatedBloodSugarData[] = []
   private readonly _hasNextPeriod: boolean
   private readonly _hasPreviousPeriod: boolean
 
@@ -75,13 +79,13 @@ export class ChartData implements IDefineChartsAvailable {
     this._hasPreviousPeriod = determineIfHasPreviousPeriod(requestedChart)
     this._hasNextPeriod = determineIfHasNextPeriod(requestedChart)
 
-    filteredReadings.forEach((bloodSugarReading) => {
+    filteredReadings.forEach(bloodSugarReading => {
       const dateEntry = this.dateAxis.getDateEntryFor(bloodSugarReading)
       if (!dateEntry) {
         return
       }
 
-      let aggregateRecord = this.aggregatedData.find((record) => {
+      let aggregateRecord = this.aggregatedData.find(record => {
         return record.getDateEntry() === dateEntry
       })
 
@@ -95,12 +99,12 @@ export class ChartData implements IDefineChartsAvailable {
   }
 
   public getScatterDataForGraph(): ScatterGraphDataPoint[] {
-    return this.aggregatedData.getScatterDataForGraph()
+    return getScatterDataForGraph(this.aggregatedData)
   }
 
   public getMinMaxDataForGraph(): {index: number; min: number; max: number}[] {
     const values: {index: number; min: number; max: number}[] = []
-    this.aggregatedData.forEach((aggregateRecord) => {
+    this.aggregatedData.forEach(aggregateRecord => {
       if (!aggregateRecord.minReading || !aggregateRecord.maxReading) {
         return
       }
@@ -210,7 +214,7 @@ export class ChartData implements IDefineChartsAvailable {
   }
 
   public getIndexValues(): number[] {
-    return this.dateAxis.getDates().map((dateEntry) => {
+    return this.dateAxis.getDates().map(dateEntry => {
       return dateEntry.getIndex()
     })
   }
@@ -237,7 +241,7 @@ export class ChartData implements IDefineChartsAvailable {
 
   public getLineGraphData(): LineGraphDataPoint[] {
     if (this.displayLineGraph) {
-      return this.aggregatedData.getLineGraphData()
+      return getLineGraphData(this.aggregatedData)
     }
 
     return []
