@@ -1,4 +1,68 @@
 {
-  "name": "BPPassport",
-  "displayName": "BP Passport"
+  "expo": {
+    "name": "BP Passport",
+    "slug": "bp-passport",
+    "version": "1.21",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": "bp-passport",
+    "plugins": [
+      [
+        "expo-barcode-scanner",
+        {
+          "cameraPermission": "To enable QR code scan and login with a BP Passport account"
+        }
+      ],
+      "expo-localization",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ]
+    ],
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0C3966"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "buildNumber": "525",
+      "bundleIdentifier": "org.simple.bppassport",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "To enable QR code scan and login with a BP Passport account"
+      }
+    },
+    "android": {
+      "versionCode": "525",
+      "package": "org.simple.bppassport",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0C3966"
+      },
+      "icon": "./assets/icon.png",
+      "useNextNotificationsApi": true
+    },
+    "notification": {
+      "icon": "./assets/notification-icon.png",
+      "color": "#FF3355",
+      "iosDisplayInForeground": true,
+      "androidMode": "default",
+      "androidCollapsedTitle": "BP Passport"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fc0becd5-0392-4d5a-81d0-73f25d294dbd"
+      }
+    },
+    "owner": "asquared"
+  }
 }

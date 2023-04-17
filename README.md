@@ -1,63 +1,28 @@
-# BP Passport - Simple for Patients
+# BP Passport
 
-BP Passport is a native mobile application written in React Native - a JavaScript library that renders native, cross-platform iOS and Android code.
+BP Passport is a native mobile application written in React Native and powered by [Expo Managed Workflow](https://docs.expo.dev/introduction/managed-vs-bare/).
 
-The source code for the project has been written in basic Typescript. This enables the linter to highlight any issues with undefined model properties or non-interfaced methods. Any new files should either be .ts or .tsx files - Typescript's equivalent to Javasctipt's js and jsx files (files with UI rendering code).
+The source code for the project has been written in basic Typescript. This enables the linter to highlight any issues with undefined model properties or non-interfaced methods. Any new files should either be .ts or .tsx files - Typescript's equivalent to Javascript's js and jsx files (files with UI rendering code).
 
 ## Getting Started
-
-### Android & iOS Environments
-
-1. Follow the [React Native getting started guide here](https://facebook.github.io/react-native/docs/getting-started). Select the **React Native CLI Quickstart** tab, there's no Expo required in this project.
-
-- Install dependencies listed - Node, Watchman, JDK.
-- Install React Native CLI globally.
-
-3. Install [Android Studio](https://developer.android.com/studio)
-
-4. Install/update the [latest version of Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12).
-
-5. Install [CocoaPods](https://cocoapods.org) (iOS package management tool):
-
-```
-sudo gem install cocoapods
-```
 
 ### Project Setup
 
 1. Clone this repository
 
-2. CD to the BP Passport project root, then install package dependencies:
+2. CD to the BP Passport project root, then install package dependencies as follows:
 
-```
-yarn
-```
+#### Expo Environment
 
-3. CD to `[projectroot]/ios` folder and install the project iOS pod dependencies:
+Do not install Expo globally. Remove expo from global npm if you've already installed it globally. Instead any expo commands will be run via `npx`.
 
-```
-pod install
-```
+#### Installing the Dependencies
 
-4. CD to `[projectroot]` folder and create your own development environment file:
+Each time you switch branches you may need to run the following:
 
-```
-cp .env.development.default .env.development
-```
+`npx expo install`
 
-5. Optionally create your own production/release enviroment file:
-
-```
-cp .env.production.default .env.production
-```
-
-6. CD to `[projectroot]/android/app` folder and make a copy of the `keystore-placeholder.properties` file:
-
-```
-cp keystore-placeholder.properties keystore.properties
-```
-
-NB - you can update the values in the new `keystore-placeholder.properties` file, if you wish to sign android release builds locally. This file is required in order for the android app to build.
+The BP Passport codebase contains a number of modules with native iOS and Android code. However, those modules are all installed as Expo plugins. You will never need to run either Xcode or Android Studio when working in this project.
 
 ### VSCode Environment
 
@@ -65,94 +30,63 @@ NB - you can update the values in the new `keystore-placeholder.properties` file
 
 2. CD to `[projectroot]` folder and open the project in VSCode:
 
-```
-code .
-```
-
 3. With the BP Project open, select the `Extensions` from the left side activity bar. VSCode should display any exensions that were enabled for this project. Please search and then add/update the following VSCode extensions:
 
 - ESLint
 - Prettier - Code formatter
 - React Native Tools
-- TSLint
+- Prettier-ESLint
 
-4. With the 4 extensions above all enabled for this project, next using VSCode project explorer panel, open the `.vscode` folder at the root. From inside that folder, create a new file named `settings.json` and paste the following into your new `settings.json` file:
+### Building with EAS
 
-```
-{
-    "editor.formatOnSave": true,
-    "javascript.format.enable": false,
-    "editor.codeActionsOnSave": {
-        "source.fixAll.tslint": true
-    }
-  }
-```
+Building new development build, all platforms
 
-## Running the App
+`profile=development npm run build-dev`
 
-During development, it will probably be preferable to run the app directly from VSCode. But VSCode relies on the React Native CLI to build and run both the Android and Xcode projects via the command line. This is not always a reliable option, especially when switching between source code branches with modified package dependencies.
+Building new development-simulator build, all platforms
 
-So, to begin with, ensure that both iOS and Android apps can be compiled and run from Android Studio and Xcode.
+`npm run build-dev`
 
-### Running the Android App from Android Studio
+Building new production build
 
-1. Open Android Studio
+`profile=production npm run build`
 
-2. Open the Android source project from `[projectroot]/android`
+Building new preview (internal ASquared) build
 
-3. Android uses gradle to manage package dependenices and gradle should start configuring the android project as soon as you open it in Android Studio. This may take a little while the first time.
+`profile=preview npm run build`
 
-4. To run the app in debug mode in an Android emulator, you will need at least 1 virtual device. Use Android Studio's Virtual Device Manager to add a new emulator such as a Pixel 2 or 3.
+Building a new TestFlight and Google Play Beta build (staging api)
 
-5. Press the 'Run app' green play button to build and run the app on your chosen Android emulator.
+`profile=production npm run submit`
 
-### Running the iOS App from Xcode
+### Developing and Running the Project in development
 
-1. CD `[projectroot]/ios` and open `BPPassport.xcworkspace` in Xcode.
+1. Install the latest build with the profile `development-simulator` on either your Android phone or iPhone device from here:
 
-2. Select whichever iOS simulator you'd like to run the app in and then select the large build and run play button on the top left to compile. Then run the app in the chosen iOS simulator.
+https://expo.dev/accounts/asquared/projects/bp-passport/builds
 
-## Running/Debugging the App from VSCode
+Alternatively, you can select which simulator build to install and run on your device simulator by running the command:
 
-Running and debugging directly from VSCode can be a preferable development flow as you have direct access to the console log in your IDE. To set this up:
+`eas build:run -p <platform>`
 
-1. CD to `[projectroot]` folder and open the project in VSCode:
+<platform> choose either ios or android
 
-```
-code .
-```
+Builds will be listed chronologically with the newest listed first. Compare the CLI build ID with the build 'extra details' by clicking on a build from this list.
 
-2. With the BP Project open, select the `Run & Debug` icons from the main left side activity bar.
+https://expo.dev/accounts/asquared/projects/bp-passport/builds
 
-3. Select the `create a launch.json file`
+2. Run
 
-4. Using the `Add Configuration` option, add both of the following run and debug options:
+`npm start`
 
-- React Native: Debug iOS
-- React Native: Debug Android
+3. Scan the QR code with your phone and it should open up the app you just downloaded and shortly afterwards load in the latest javascript. You don't need to be wired to your mac for this to work.
 
-5. Save the updated `launch.json` file.
+### Reloading the development app
 
-6. A dropdown should now appear top left that will enable you to run and debug the app in either iOS Simulator or Android Emulator.
+1. Press 'r' when in the node terminal that is running the local development server.
 
-Please note that before attempting to debug/run the React Native project from VSCode, you will need to ensure that React Native's metro bundler is not already running in any background terminal window. It if is, close the window!
+...or
 
-## Switching git branches
+2. Shake your phone
 
-**Everytime you switch branches, run the following steps**:
-
-1. Close any terminal window running metro bundler
-
-2. Close VSCode
-
-3. CD to the BP Passport project root then update package dependencies:
-
-```
-yarn
-```
-
-4. CD to `[projectroot]/ios` folder and update the project iOS pods dependencies:
-
-```
-pod install
-```
+3. Choose the 'Reload' option

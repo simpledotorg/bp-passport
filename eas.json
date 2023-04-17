@@ -1,0 +1,34 @@
+{
+  "cli": {
+    "version": ">= 3.7.2",
+    "promptToConfigurePushNotifications": false
+  },
+  "build": {
+    "fast": {
+      "ios": {
+        "resourceClass": "m-medium"
+      }
+    },
+    "development": {
+      "extends": "fast",
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "extends": "fast",
+      "distribution": "internal"
+    },
+    "development-simulator": {
+      "extends": "development",
+      "ios": {
+        "simulator": true
+      }
+    },
+    "production": {
+      "extends": "fast"
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
