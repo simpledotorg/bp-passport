@@ -5,18 +5,18 @@ import {
 } from '../constants/languages'
 
 export default function useBestAvailableLanguage() {
-  const userLocals: string[] = []
-  const getUserLocals = getLocales()
-  getUserLocals.forEach((language) => {
-    userLocals.push(language.languageCode)
+  const userLocales = []
+  const getUserLocales = getLocales()
+  getUserLocales.forEach((language) => {
+    userLocales.push(language.languageCode)
   })
 
-  const matchingLocals = AVAILABLE_TRANSLATIONS.filter((local) => {
-    return userLocals.includes(local)
+  const matchingLocales = userLocales.filter((local) => {
+    return AVAILABLE_TRANSLATIONS.includes(local)
   })
 
-  if (matchingLocals[0]) {
-    return matchingLocals[0]
+  if (matchingLocales[0]) {
+    return matchingLocales[0]
   } else {
     return DEFAULT_LANGUAGE_CODE
   }
