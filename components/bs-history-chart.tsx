@@ -44,6 +44,11 @@ export const BsHistoryChart = ({ bloodSugarReadings, displayUnits }: Props) => {
   const [chartData, setChartData] = useState<ChartData | null>(null)
 
   useEffect(() => {
+    const newChartData = new ChartData(requestedChart)
+    setChartData(newChartData)
+  }, [requestedChart])
+
+  useEffect(() => {
     setChartData(null)
     const newRequestedChart = getStartingChartRequest(
       bloodSugarReadings,
@@ -51,11 +56,6 @@ export const BsHistoryChart = ({ bloodSugarReadings, displayUnits }: Props) => {
     )
     setRequestedChart(newRequestedChart)
   }, [bloodSugarReadings])
-
-  useEffect(() => {
-    const newChartData = new ChartData(requestedChart)
-    setChartData(newChartData)
-  }, [requestedChart])
 
   const getMaxThreshhold = (): number => {
     if (!chartData) {
