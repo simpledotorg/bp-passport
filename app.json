@@ -2,7 +2,7 @@
   "expo": {
     "name": "BP Passport",
     "slug": "bp-passport",
-    "version": "1.21",
+    "version": "1.22",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -31,7 +31,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "525",
+      "buildNumber": "526",
       "bundleIdentifier": "org.simple.bppassport",
       "supportsTablet": true,
       "infoPlist": {
@@ -39,7 +39,7 @@
       }
     },
     "android": {
-      "versionCode": "525",
+      "versionCode": "526",
       "package": "org.simple.bppassport",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
