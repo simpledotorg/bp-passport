@@ -31,15 +31,15 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "526",
+      "buildNumber": "527",
       "bundleIdentifier": "org.simple.bppassport",
-      "supportsTablet": true,
+      "supportsTablet": false,
       "infoPlist": {
         "NSCameraUsageDescription": "To enable QR code scan and login with a BP Passport account"
       }
     },
     "android": {
-      "versionCode": "526",
+      "versionCode": "527",
       "package": "org.simple.bppassport",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
