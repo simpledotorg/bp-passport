@@ -22,7 +22,7 @@ Each time you switch branches you may need to run the following:
 
 `npx expo install`
 
-The BP Passport codebase contains a number of modules with native iOS and Android code. However, those modules are all installed as Expo plugins. You will never need to run either Xcode or Android Studio when working in this project.
+The BP Passport codebase contains a number of modules with native iOS and Android code. However, those modules are all installed as Expo plugins. You will never need to run either Xcode or Android Studio when working in this project, unless you build the app locally instead of with EAS (see [Building Android locally](#building-android-locally-without-eas)).
 
 ### VSCode Environment
 
@@ -58,6 +58,45 @@ Building new preview (internal ASquared) build
 Building a new TestFlight and Google Play Beta build (staging api)
 
 `profile=production npm run submit`
+
+### Building Android locally (without EAS)
+
+You can build a development APK on your own machine without an Expo account.
+
+Prerequisites:
+
+- Node.js (tested with 22)
+- JDK 17 (tested with Amazon Corretto 17), with `JAVA_HOME` pointing to it
+- Android SDK with the Android 13 (API 33) platform installed, with `ANDROID_HOME` pointing to it (usually `~/Library/Android/sdk` on macOS)
+
+1. Install the exact dependency versions from the lockfile
+
+`npm ci`
+
+2. Generate the native Android project from `app.json`
+
+`npx expo prebuild --platform android --no-install`
+
+3. Discard the dependency version changes prebuild makes to `package.json`. They put it out of sync with `package-lock.json` and make `npm ci` fail.
+
+`git checkout -- package.json`
+
+4. Build the debug APK
+
+`cd android && ./gradlew assembleDebug`
+
+The APK is written to `android/app/build/outputs/apk/debug/app-debug.apk`.
+
+5. Install it on a running emulator or connected device, then start the development server as usual
+
+`adb install -r android/app/build/outputs/apk/debug/app-debug.apk`
+
+`npm start`
+
+Notes:
+
+- `android/` and `ios/` are generated and git-ignored. Re-run step 2 after changing `app.json` or adding a native module, or run `npx expo prebuild --platform android --clean --no-install` to regenerate from scratch.
+- The app targets Android SDK 33 because Expo 48 can't build against SDK 35. Google Play requires SDK 35 for new releases, which needs an Expo SDK upgrade.
 
 ### Developing and Running the Project in development
 
