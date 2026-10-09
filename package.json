@@ -1,11 +1,10 @@
 {
   "name": "bp-passport",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "npx expo start --dev-client --scheme bp-passport",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "build-dev": "npx eas-cli build --profile development-simulator --platform all",
     "submit": "npx eas-cli build --profile $profile --platform all --auto-submit",
@@ -47,7 +46,9 @@
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
-    "victory-native": "^36.6.8"
+    "victory-native": "^36.6.8",
+    "react": "18.2.0",
+    "react-native": "0.71.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

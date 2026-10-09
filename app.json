@@ -19,8 +19,8 @@
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 35,
-            "targetSdkVersion": 35
+            "compileSdkVersion": 33,
+            "targetSdkVersion": 33
           },
           "ios": {
             "useFrameworks": "static"
