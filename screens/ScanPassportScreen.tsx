@@ -1,11 +1,18 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { SafeAreaView, View, Image, Alert, StatusBar } from 'react-native'
+import {
+  SafeAreaView,
+  View,
+  Image,
+  Alert,
+  StatusBar,
+  TextInput,
+} from 'react-native'
 import { FormattedMessage, useIntl } from 'react-intl'
 import Modal from 'react-native-modal'
 import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { containerStyles, qrImage, qrMaskImage, colors } from '../styles'
-import { BodyHeader, BodyText, LoadingOverlay } from '../components'
+import { BodyHeader, BodyText, Button, LoadingOverlay } from '../components'
 import SCREENS from '../constants/screens'
 import { RootStackParamList } from '../navigation/Navigation'
 import { useThunkDispatch } from '../redux/store'
@@ -38,6 +45,7 @@ function ScanPassportScreen({ navigation }: Props) {
   const [error, setError] = useState<Error | undefined>(undefined)
   const [modalIsVisible, setModalIsVisible] = useState(false)
   const [hasPermission, setHasPermission] = useState<boolean | null>(null)
+  const [devPassportId, setDevPassportId] = useState('')
 
   const isFocused = useIsFocused()
   const intl = useIntl()
@@ -196,11 +204,66 @@ India: 8e53a061-dd75-4026-b7b4-69d42c365b46
     )
   }, [])
 
-  if (hasPermission === null) {
-    return noCameraAccess
-  }
-  if (hasPermission === false) {
-    return noCameraAccess
+  // Dev builds only: emulators can't scan a QR code, so allow typing the passport ID
+  const devPassportEntry = __DEV__ ? (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 12,
+        backgroundColor: colors.grey4,
+      }}
+    >
+      <TextInput
+        style={{
+          flex: 1,
+          height: 48,
+          marginRight: 12,
+          paddingHorizontal: 12,
+          backgroundColor: colors.white100,
+          color: colors.grey0,
+        }}
+        value={devPassportId}
+        onChangeText={setDevPassportId}
+        placeholder="Dev: BP Passport ID"
+        autoCapitalize="none"
+        autoCorrect={false}
+      />
+      <Button
+        title="Use ID"
+        disabled={devPassportId.trim() === ''}
+        onPress={() =>
+          onBarCodeRead({
+            type: BarCodeScanner.Constants.BarCodeType.qr,
+            data: devPassportId.trim(),
+          } as BarCodeScannerResult)
+        }
+      />
+    </View>
+  ) : null
+
+  const loadingModal = (
+    <Modal
+      isVisible={modalIsVisible}
+      style={{
+        alignItems: 'center',
+      }}
+      onModalHide={() => {
+        setModalIsVisible(false)
+      }}
+    >
+      <LoadingOverlay />
+    </Modal>
+  )
+
+  if (!hasPermission) {
+    return (
+      <>
+        {noCameraAccess}
+        {devPassportEntry}
+        {loadingModal}
+      </>
+    )
   }
 
   return (
@@ -277,17 +340,8 @@ India: 8e53a061-dd75-4026-b7b4-69d42c365b46
           </View>
         </View>
       </SafeAreaView>
-      <Modal
-        isVisible={modalIsVisible}
-        style={{
-          alignItems: 'center',
-        }}
-        onModalHide={() => {
-          setModalIsVisible(false)
-        }}
-      >
-        <LoadingOverlay />
-      </Modal>
+      {devPassportEntry}
+      {loadingModal}
     </>
   )
 }
