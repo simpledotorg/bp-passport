@@ -1,5 +1,19 @@
+import Constants from 'expo-constants'
+
 export default function useApi() {
   if (__DEV__) {
+    const localApi: string | undefined = Constants.expoConfig?.extra?.localApi
+    if (localApi) {
+      return {
+        API_INDIA_ENDPOINT: localApi,
+        API_BANGLADESH_ENDPOINT: localApi,
+        API_ETHIOPIA_ENDPOINT: localApi,
+        API_SRI_LANKA_CURRENT_ENDPOINT: localApi,
+        API_SRI_LANKA_FUTURE_ENDPOINT: localApi,
+        MOCK_API_ENDPOINT: localApi,
+      }
+    }
+
     const API_INDIA_ENDPOINT = 'https://api-demo.simple.org/api/v4'
     const API_BANGLADESH_ENDPOINT = 'https://api-demo.bd.simple.org/api/v4'
     const API_ETHIOPIA_ENDPOINT = 'https://api-demo.et.simple.org/api/v4'
